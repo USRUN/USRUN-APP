@@ -1,0 +1,5 @@
+tao branch cua nguoi dev:
+- feature/ngocvtt
+
+tao branch cho moi tinh nang:
+- feature/ngocvtt/ten_tinh_nang_phat_trien
