@@ -1,7 +1,101 @@
 {
     "usrun":"USRUN",
 
-    "errorMessages": "error",
+    "error": "error",
     "notice": "Notice",
-    "ok": "OK"
+    "ok": "OK",
+    "alreadyAMember": "Already a member?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+
+    "profile": "PROFILE",
+    "uFeed": "U - FEED",
+    "events": "EVENTS",
+    "teams": "TEAMS",
+    "settings": "SETTINGS",
+    "record": "RECORD",
+    "search": "SEARCH",
+
+
+    "errorTitle": "Error",
+    "errorTitleIsRequired": "Title is required",
+    "errorLoginFail": "Login failed",
+    "errorLogoutFail": "Logout failed",
+    "errorUserCancelledLogin": "User has cancelled login",
+    "errorNetworkUnstable": "Network unstable",
+    "errorUserNotFoundCreateNew": "Account not found. Do you want to sign up a new account?",
+    "errorNameIsRequired": "Name is required",
+    "errorBirthday": "User should be over 12 years old",
+    "errorEmailInvalid":"Email Invalid",
+    "errorPasswordShort":"Password must contain at least 8 characters",
+    "errorInvalidPassword": "Invalid password",
+    "errorEmailIsUsed": "Email %s has been used.",
+    "errorTeamTypeIsRequired": "Team type is required",
+    "errorSportTypeIsRequired": "Sport type is required",
+    "errorLeaderBoardTypeIsRequired": "Leaderboard type is required",
+    "errorSelectionEmpty": "Your selection is empty",
+    "errorYouShouldAddPeople": "You should add people",
+    "errorNoInternetAccess":  "No Internet Access. Please check your internet connection.",
+    "errorGenderIsRequired": "Gender is required",
+    "errorHeightIsRequired": "Height is required",
+    "errorWeightIsRequired": "Weight is required",
+    "errorUserNotFound": "User not found",
+    "errorEmailPassword": "Email and password incorrect",
+
+
+    "requestTimeOut": "Request time out",
+
+    "errorMessages": {
+        "-1": "UNKNOWN",
+        "101": "System under maintenance. Please try again later!",
+        "102": "New version available. Please update app to continue!",
+    
+        "1000": "Field required",
+        "1001": "Access denied",
+        "1002": "Update fail",
+        "1003": "Image invalid",
+        "1004": "OTP invalid",
+        "1005": "Your OTP is expired",
+    
+        "2000": "User not found",
+        "2001": "User cannot join",
+        "2002": "User joined",
+        "2003": "User quit failed",
+        "2004": "User not in",
+        "2005": "Owner cannot quit team",
+        "2008": "User updated password failed",
+        "2009": "User follow failed",
+        "2010": "Follower not found",
+        "2011": "Account has existed",
+        "2012": "User is connected",
+        "2013": "User cannot connect",
+        "2014": "User's email is used",
+        "2015": "Open ID is used for another account",
+        "2016": "User cannot disconnect",
+        "2017": "Login failed",
+        "2018": "User is in event",
+        "2022": "Reset password failed. Please try again!",
+        "2023": "This email has not been used. Do you want to create an account with this email?",
+        "2024": "The account related to this email does not have password to reset because it is logged in using Facebook/Google",
+    
+        "3000": "Team not found",
+        "3001": "Team cannot be created",
+    
+    
+        "4000": "Event not found",
+        "4001": "EVENT_EVENT_EXIT",
+        "4002": "EVENT_UN_ACTIVE",
+    
+        "5000": "Activity not found",
+        "5001": "Activity add failed",
+    
+        "6000": "Fund not found",
+    
+        "7000": "Leaderboard not found",
+        "7001": "Leaderboard create fail",
+        "7002": "Leaderboard not support",
+        "7003": "Leaderboard access denied",
+        "7004": "Leaderboard delete failed"
+      }
+
 }

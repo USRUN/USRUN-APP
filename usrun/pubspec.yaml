@@ -19,13 +19,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
-  flutter_statusbar_manager: ^1.0.2
-
-  
   
   reflectable: any
+  
+  image_picker: ^0.6.1+8
+  shared_preferences: ^0.5.0
+  sprintf: ^4.0.2
+  gradient_app_bar: ^0.1.3
 
+  
+  path_provider: ^1.2.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -50,6 +53,26 @@ flutter:
   assets:
     - assets/localization/en.json
     - assets/localization/vi.json
+
+    - assets/images/logo_text.png
+    - assets/images/welcome.png
+    - assets/images/login_fb.png
+    - assets/images/login_gg.png
+    - assets/images/or_line.png
+    - assets/images/login_email.png
+
+    - assets/images/drawer_background.png
+    - assets/images/drawer_background_darker.jpg
+
+    - assets/images/avatar.png
+    - assets/images/ic_image_default.png
+
+    - assets/images/ic_record.png
+    - assets/images/ic_event.png
+    - assets/images/ic_ufeed.png
+    - assets/images/ic_profile.jpg
+    - assets/images/ic_team.png
+    - assets/images/ic_settings.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

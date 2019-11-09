@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/page/welcome_page.dart';
-import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
+import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
 
 void main() {
   ErrorWidget.builder = (FlutterErrorDetails details) => Container();
-  FlutterStatusbarManager.setColor(Colors.black.withOpacity(0));
   initializeReflectable();
-  setLanguage("vi");
   runApp(UsRunApp());
 }
 
@@ -22,16 +21,57 @@ class UsRunApp extends StatefulWidget {
   final Widget child;
   UsRunApp({this.child}) : super(key: _appGlobalkey);
 
+  static restartApp(int errorCode) async {
+    if (errorCode == 0) {
+      _restart();
+    }
+    else {
+      if (errorCode == ACCESS_DENY) {
+        //await UserManager.logout();
+        //_resetUserConnectCheck();
+        _restart();
+        return;
+      }
+
+      //update deviceToken to ""
+      Map<String, String> newData = {
+        'deviceToken': "",
+        'os': getPlatform().toString()
+      };
+      //Response response = await UserManager.updateProfile(newData);
+
+      // if (response.success) {
+      //   await UserManager.logout();
+      //   _resetUserConnectCheck();
+      //   _restart();
+      // } else {
+      //   showAlert(_appGlobalKey.currentState.context, R.strings.errorTitle, R.strings.errorLogoutFail, null);
+      // }
+    }
+  }
+
+   static _restart() {
+    _needInit = true;
+    _appGlobalkey.currentState.restart();
+  }
+
   @override
   _UsRunAppState createState() => _UsRunAppState();
 }
 
 class _UsRunAppState extends State<UsRunApp> {
   Key key = new UniqueKey();
+  
+  void restart() {
+    setState(() {
+      key = new UniqueKey();
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       key: key,
       home: SplashPage(),
     );
@@ -58,11 +98,12 @@ class _SplashPageState extends State<StatefulWidget> {
   Widget build(BuildContext context){
     print("Build Splash");
     return Scaffold(
-      body: Center(child: Text("R.strings.usrun"),),
+      body: Center(child: Image.asset(R.images.logoUsRun, width: 300,),),
     );
   }
 
-  void _initApp(){
+  void _initApp() async {
+    await initialize(context);
     showPage(context, WelcomePage());
   }
 }

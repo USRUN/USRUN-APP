@@ -68,3 +68,167 @@ const LEADER_BOARD_NOT_SUPPORT  = 7002;
 const LEADER_BOARD_ACCESS_DENIED= 7003;
 const LEADER_BOARD_DELETE_FAIL  = 7004;
 
+
+enum StatType {
+  week,
+  month,
+  year,
+}
+
+
+
+@reflector
+enum Gender {
+  Other,
+  Male,
+  Female,
+}
+
+@reflector
+enum FollowingPrivacy {
+  FreeToFollow,
+  RequestToFollow
+}
+
+@reflector
+enum ActivitiesPrivacy {
+  Public,
+  FollowersOnly,
+  Private
+}
+
+@reflector
+enum FollowStatus {
+  None,
+  Requesting,
+  Followed,
+  Accepted,
+  Denied,
+}
+
+@reflector
+enum LoginChannel {
+  Facebook,
+  Google,
+  Strava,
+  UsRun,
+}
+
+@reflector
+enum EventType {
+  League,
+  Team,
+  User
+}
+
+@reflector
+enum UserRole {
+  Owner,
+  Admin,
+  Member
+}
+
+@reflector
+enum TeamVerifyStatus {
+  None,
+  Verified,
+  Public,
+}
+
+@reflector
+enum MemberStatus {
+  WaitingApprove,
+  Active,
+  Public
+}
+
+
+@reflector
+enum SportType {
+  OTHER,
+  CYCLING,
+  RUNNING,
+  WALKING,
+  TRIATHLON,
+  SWIMMING,
+}
+
+@reflector
+enum LeaderBoardType {
+  Team,
+  Individual,
+}
+
+@reflector
+enum LeaderBoardPrivacy {
+  OnlyMe,
+  AllParticipants,
+  CustomParticipants,
+}
+
+enum ClubType {
+  OTHER,
+  CASUAL_CLUB,
+  RACING_TEAM,
+  SHOP,
+  COMPANY,
+}
+
+enum RecordActivityType {
+  UPRACE,
+  STRAVA,
+  GARMIN,
+}
+
+@reflector
+enum TeamType {
+  ALL,
+  COMPANY,
+  SPORTSCLUB,
+  SCHOOL,
+}
+
+// List<String> sportTypesTitle = [
+//   R.strings.other,
+//   R.strings.cycling,
+//   R.strings.running,
+//   R.strings.walking,
+//   R.strings.triathlon,
+//   R.strings.swimming,
+// ];
+
+// List<String> leagueTypesTitle = [
+//   "",
+//   R.strings.company,
+//   R.strings.sportClub,
+//   R.strings.school,
+// ];
+
+@reflector
+enum PushType {
+  ActivityComplete,
+  LikeOrComment,
+  Mention,
+  JoinEvent,
+  Follow,
+  RequestFollow,
+  FollowerActivityComplete
+}
+
+enum PlatformType {
+  Unknown,
+  iOS,
+  Android,
+}
+
+enum AppNotificationType {
+  SYSTEM_ALERT,
+  OPEN_STORE,
+  OPEN_WEB,
+}
+
+@reflector
+enum EventCertificateType {
+  None,
+  Achieved,
+}
