@@ -16,8 +16,6 @@ class AvatarView extends StatelessWidget {
     this.size = 50,
   });
 
-
-
   @override
   Widget build(BuildContext context) {
 

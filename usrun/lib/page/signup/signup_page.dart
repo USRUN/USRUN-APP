@@ -11,92 +11,159 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/widget/ui_button.dart';
+import 'package:usrun/widget/input_field.dart';
 
-class SignUpPage extends StatelessWidget{
-
+class SignUpPage extends StatelessWidget {
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _retypePasswordController =
+      TextEditingController();
   final String email;
 
-  
   SignUpPage({this.email});
 
-   @override 
-  Widget build(BuildContext context){
-
-    if(email != null && email.isNotEmpty) {
+  @override
+  Widget build(BuildContext context) {
+    if (email != null && email.isNotEmpty) {
       _emailController.text = email;
     }
 
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      appBar: GradientAppBar(gradient: R.colors.uiGradient, title: Text(R.strings.signIn, style: TextStyle(color: Colors.white),),),
-      //child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: SizedBox(
-            height: windowHeight -100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(height: 25,),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Email", style: R.styles.labelStyle,),
-                      TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                        border: UnderlineInputBorder(),
-                        hintText: "Type your email here",
-                        hintStyle: TextStyle(fontSize: 20)
-                      ),
-                      ),
-                      SizedBox(height: 25,),
-                        Text("Password", style: R.styles.labelStyle,),
-                        TextField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                          border: UnderlineInputBorder(),
-                          hintText: "Type your password here",
-                          hintStyle: TextStyle(fontSize: 20)
-                        ),
-                      ),
-                      SizedBox(height: 25,),
-                        Text("Re-type Password", style: R.styles.labelStyle,),
-                        TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: R.colors.majorOrange)),
-                          border: UnderlineInputBorder(),
-                          hintText: "Enter your password again",
-                          hintStyle: TextStyle(fontSize: 20)
-                        ),
-                      ),
-                      SizedBox(height: 25,),
-                      Text("Password must contain at least 8 characters with one number and one uppercase letter", style: TextStyle(color: R.colors.labelText,fontStyle: FontStyle.italic),)
-                    ],
-                  ),
-                ),
-                Spacer(),
-                UIButton(gradient: R.colors.uiGradient, text: R.strings.signUp, onTap: () => _validateSignUpInfo(context),),
-                SizedBox(height: 22,)
-            ],
+      resizeToAvoidBottomInset: true,
+      appBar: GradientAppBar(
+        leading: new IconButton(
+          icon: Image.asset(
+            R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
           ),
-            ), 
-            
-        )
+          onPressed: () => pop(context),
+        ),
+        gradient: R.colors.uiGradient,
+        centerTitle: true,
+        title: Text(
+          R.strings.signUp,
+          style: TextStyle(
+              color: Colors.white, fontSize: R.appRatio.appFontSize22),
+        ),
+      ),
+      backgroundColor: R.colors.appBackground,
+      body: CustomScrollView(slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: R.appRatio.appPadding15,
+              right: R.appRatio.appPadding15,
+            ),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: R.appRatio.appWidth181,
+                              child: InputField(
+                                controller: _firstName,
+                                enableFullWidth: false,
+                                labelTitle: "First Name",
+                                hintText: "First Name",
+                              ),
+                            ),
+                            Container(
+                              width: R.appRatio.appWidth181,
+                              child: InputField(
+                                controller: _lastName,
+                                enableFullWidth: false,
+                                labelTitle: "Last Name",
+                                hintText: "Last Name",
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: R.appRatio.appSpacing25,
+                        ),
+                        InputField(
+                          controller: _emailController,
+                          enableFullWidth: true,
+                          labelTitle: "Email",
+                          hintText: "Type your email here",
+                        ),
+                        SizedBox(
+                          height: R.appRatio.appSpacing25,
+                        ),
+                        InputField(
+                          controller: _passwordController,
+                          enableFullWidth: true,
+                          labelTitle: "Password",
+                          hintText: "Type your password here",
+                          obscureText: true,
+                        ),
+                        SizedBox(
+                          height: R.appRatio.appSpacing25,
+                        ),
+                        InputField(
+                          controller: _retypePasswordController,
+                          enableFullWidth: true,
+                          labelTitle: "Re-type Password",
+                          hintText: "Enter your password again",
+                          obscureText: true,
+                        ),
+                        SizedBox(
+                          height: R.appRatio.appSpacing25,
+                        ),
+                        Text(
+                          "Password must contain at least 8 characters with one number and one uppercase letter",
+                          style: TextStyle(
+                              color: R.colors.orangeNoteText,
+                              fontStyle: FontStyle.italic,
+                              fontSize: R.appRatio.appFontSize14),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll: false,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: R.appRatio.appPadding25,
+                bottom: R.appRatio.appPadding25,
+              ),
+              child: UIButton(
+                width: R.appRatio.appWidth381,
+                height: R.appRatio.appHeight60,
+                gradient: R.colors.uiGradient,
+                text: R.strings.signUp,
+                textSize: R.appRatio.appFontSize22,
+                onTap: () => _validateSignUpInfo(context),
+              ),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 
-  void _signUp(BuildContext context, LoginChannel channel, Map<String, String> params) async {
+  void _signUp(BuildContext context, LoginChannel channel,
+      Map<String, String> params) async {
     showLoading(context);
     Response<User> response = await UserManager.create(params);
     hideLoading(context);
@@ -107,8 +174,7 @@ class SignUpPage extends StatelessWidget{
       if (response.object.userId == null) {
         // userId==null => prepare create user
         //showPage(context, ProfileEditPage(userInfo: response.object, loginChannel: channel, exParams: params, type: ProfileEditType.SignUp)); // pass empty user
-      }
-      else {
+      } else {
         // có user và đúng thông tin => save user + goto app page
         UserManager.saveUser(response.object);
         DataManager.setLoginChannel(channel.index);
@@ -171,18 +237,19 @@ class SignUpPage extends StatelessWidget{
     _adapterSignUp(LoginChannel.UsRun, params, context);
   }
 
-  void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params, BuildContext context) async {
+  void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
+      BuildContext context) async {
     showLoading(context);
     Map loginParams = await UserManager.adapterLogin(channel, params);
     hideLoading(context);
 
     if (loginParams == null) {
-      showAlert(context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
+      showAlert(
+          context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
     } else if (loginParams['error'] != null) {
       showAlert(context, R.strings.errorLoginFail, loginParams['error'], null);
     } else {
       _signUp(context, channel, loginParams);
     }
   }
-  
 }

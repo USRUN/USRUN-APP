@@ -11,23 +11,9 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 
 // === MAIN === //
-double windowWidth = 0;
-double windowHeight = 0;
-double formWidth = 0;
-double hdRatio = 0.563;
-
 Future<void> initialize(BuildContext context) async {
   await setLanguage("en");
-
-  Size size = MediaQuery.of(context).size;
-  windowWidth = size.width;
-  if (windowWidth > 414) windowWidth = 414;
-
-  formWidth = windowWidth - 40;
-
-  windowHeight = size.height;
-
-
+  R.initAppRatio(context);
 }
 
 enum RouteType {
@@ -35,10 +21,6 @@ enum RouteType {
   present,
   show,
 }
-
-
-
-
 
 Future setLanguage(String lang) async{
   String jsonContent = await rootBundle.loadString("assets/localization/$lang.json");

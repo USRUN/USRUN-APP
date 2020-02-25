@@ -7,33 +7,341 @@ class R {
   static Strings strings = Strings();
   static final _Images images = _Images();
   static final Styles styles = Styles();
+  static AppRatio appRatio = AppRatio();
+  static _MyIcons myIcons = _MyIcons();
 
-  static void initLocalized(String jsonContent){
+  static void initLocalized(String jsonContent) {
     R.strings = MapperObject.create<Strings>(jsonContent);
+  }
+
+  static void initAppRatio(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    appRatio.setUpAppRatio(size.width, size.height, devicePixelRatio, textScaleFactor);
+  }
+
+  static void changeAppTheme(String appTheme) {
+    if (appTheme.compareTo('Light') != 0 && appTheme.compareTo('Black') != 0) {
+      appTheme = 'Light';
+    }
+
+    myIcons.changeTheme(appTheme);
   }
 }
 
-class _Color{
-  final Color blue = Color(0xFF03318C);
+class AppRatio {
+  /* 
+    + This is private variables.
+    + Figma design information.
+  */
+  final double _figmaDeviceWidth                = 411;
+  final double _figmaDeviceHeight               = 731;
 
-  final Gradient uiGradient = LinearGradient(
-    colors: [
+  final double _figmaFontSize12                 = 12;
+  final double _figmaFontSize14                 = 14;
+  final double _figmaFontSize16                 = 16;
+  final double _figmaFontSize18                 = 18;
+  final double _figmaFontSize20                 = 20;
+  final double _figmaFontSize22                 = 22;
+  final double _figmaFontSize24                 = 24;
+  final double _figmaFontSize26                 = 26;
+  final double _figmaFontSize28                 = 28;  
 
-      Color(0xFFFC8800), Color(0xFFF26B30),Color(0xFFEE4C3E), Color(0xFFDA2A16)
-    ],
-    stops: [0.0, 0.25, 0.5, 1.0]
-  );
+  final double _figmaWidth75                    = 75;
+  final double _figmaWidth181                   = 181;
+  final double _figmaWidth300                   = 300;
+  final double _figmaWidth381                   = 381;
 
-  final Color red = Color(0xFFDA2A16);
-  final Color pinkRed = Color(0xFFEE4C3E);
-  final Color majorOrange = Color(0xFFF26B30);
-  final Color yellow = Color(0xFFFC8800);
-  final Color labelText = Color(0xFFFD632C);
+  final double _figmaHeight60                   = 60;
+  final double _figmaHeight50                   = 50;
+  final double _figmaHeight40                   = 40;
+
+  final double _figmaPadding15                  = 15;
+  final double _figmaPadding20                  = 20;
+  final double _figmaPadding25                  = 25;
+  final double _figmaPadding40                  = 40;
+
+  final double _figmaSpacing10                  = 10;
+  final double _figmaSpacing15                  = 15;
+  final double _figmaSpacing20                  = 20;
+  final double _figmaSpacing25                  = 25;
+  final double _figmaSpacing30                  = 30;
+  final double _figmaSpacing35                  = 35;
+  final double _figmaSpacing40                  = 40;
+
+  final double _figmaAppBarIconSize             = 22.5;
+  final double _figmaWelcomPageLogoTextSize     = 160;
+
+  final double _figmaIconSize15                 = 15;
+  final double _figmaIconSize18                 = 18;
+  final double _figmaIconSize20                 = 20;
+  final double _figmaIconSize25                 = 25;
+  final double _figmaIconSize30                 = 30;
+
+  /* 
+    + This is public variables.
+    + Information of device screen.
+  */
+  double deviceWidth;
+  double deviceHeight;
+  double devicePixelRatio;
+  double textScaleFactor;
+
+  /*
+    + This is public variables.
+    + Official and real object information.
+  */
+  double appFontSize12;
+  double appFontSize14;
+  double appFontSize16;
+  double appFontSize18;
+  double appFontSize20;
+  double appFontSize22;
+  double appFontSize24;
+  double appFontSize26;
+  double appFontSize28;
+
+  double appWidth75;
+  double appWidth181;
+  double appWidth300;
+  double appWidth381;
+
+  double appHeight60;
+  double appHeight50;
+  double appHeight40;
+
+  double appPadding15;
+  double appPadding20;
+  double appPadding25;
+  double appPadding40;
+
+  double appSpacing10;
+  double appSpacing15;
+  double appSpacing20;
+  double appSpacing25;
+  double appSpacing30;
+  double appSpacing35;
+  double appSpacing40;
+
+  double appAppBarIconSize;
+  double appWelcomPageLogoTextSize;
+
+  double appIconSize15;
+  double appIconSize18;
+  double appIconSize20;
+  double appIconSize25;
+  double appIconSize30;
+
+  /*
+    + This is private function.
+    + Formula for finding suitable size of object
+  */
+  double _computeWidth(num figmaObjSize) {
+    return (this.deviceWidth / this._figmaDeviceWidth) * figmaObjSize;
+  }
+
+  double _computeHeight(num figmaObjSize) {
+    double result = (this.deviceHeight / this._figmaDeviceHeight) * figmaObjSize;
+    return (result > figmaObjSize) ? figmaObjSize : result;
+  }
+
+  double _computeFontSize(double desiredFontSize) {
+    double result =  ((this.textScaleFactor == 1.0) ? 
+                      (_computeWidth(desiredFontSize)) : 
+                      (desiredFontSize - (desiredFontSize * (this.textScaleFactor - 1.0)))
+                    );
+    return (result > desiredFontSize) ? desiredFontSize : result;
+  }
+
+  /* 
+    + This is public function.
+    + This is used when initializing application.
+    + Set up app ratio.
+  */
+  void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor) {
+    // Store device width and height
+    this.deviceWidth = deviceWidth;
+    this.deviceHeight = deviceHeight;
+    this.devicePixelRatio = devicePixelRatio;
+    this.textScaleFactor = textScaleFactor;
+    // print("Width x Height x DPR x TSF: $deviceWidth, $deviceHeight, $devicePixelRatio, $textScaleFactor");
+
+    // Find font size
+    appFontSize12 = _computeFontSize(this._figmaFontSize12);
+    appFontSize14 = _computeFontSize(this._figmaFontSize14);
+    appFontSize16 = _computeFontSize(this._figmaFontSize16);
+    appFontSize18 = _computeFontSize(this._figmaFontSize18);
+    appFontSize20 = _computeFontSize(this._figmaFontSize20);
+    appFontSize22 = _computeFontSize(this._figmaFontSize22);
+    appFontSize24 = _computeFontSize(this._figmaFontSize24);
+    appFontSize26 = _computeFontSize(this._figmaFontSize26);
+    appFontSize28 = _computeFontSize(this._figmaFontSize28);
+    // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
+
+    // Find width & height of objects
+    appWidth75 = _computeWidth(this._figmaWidth75);
+    appWidth181 = _computeWidth(this._figmaWidth181);
+    appWidth300 = _computeWidth(this._figmaWidth300);
+    appWidth381 = _computeWidth(this._figmaWidth381);
+
+    appHeight60 = _computeHeight(this._figmaHeight60);
+    appHeight50 = _computeHeight(this._figmaHeight50);
+    appHeight40 = _computeHeight(this._figmaHeight40);
+
+    // Find padding
+    appPadding15 = _computeWidth(this._figmaPadding15);
+    appPadding20 = _computeWidth(this._figmaPadding20);
+    appPadding25 = _computeWidth(this._figmaPadding25);
+    appPadding40 = _computeWidth(this._figmaPadding40);
+
+    // Find spacing
+    appSpacing10 = _computeWidth(this._figmaSpacing10);
+    appSpacing15 = _computeWidth(this._figmaSpacing15);
+    appSpacing20 = _computeWidth(this._figmaSpacing20);
+    appSpacing25 = _computeWidth(this._figmaSpacing25);
+    appSpacing30 = _computeWidth(this._figmaSpacing30);
+    appSpacing35 = _computeWidth(this._figmaSpacing35);
+    appSpacing40 = _computeWidth(this._figmaSpacing40);
+
+    // Find icon size 
+    appAppBarIconSize = _computeWidth(this._figmaAppBarIconSize);
+    appWelcomPageLogoTextSize = _computeWidth(this._figmaWelcomPageLogoTextSize);
+
+    // Find icon size
+    appIconSize15 = _computeWidth(this._figmaIconSize15);
+    appIconSize18 = _computeWidth(this._figmaIconSize18);
+    appIconSize20 = _computeWidth(this._figmaIconSize20);
+    appIconSize25 = _computeWidth(this._figmaIconSize25);
+    appIconSize30 = _computeWidth(this._figmaIconSize30);
+
+    /*
+      ...
+      Define MORE here
+      ...
+    */
+  }
 }
 
-class _Images{
-  final String logoUsRun = 'assets/images/logo_text.png';
+class _Color {
+  // Gradient color
+  final Gradient uiGradient = LinearGradient(colors: [
+    Color(0xFFFC8800),
+    Color(0xFFF26B30),
+    Color(0xFFEE4C3E),
+    Color(0xFFDA2A16)
+  ], stops: [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ]);
 
+  /*
+    + [NgocVo] Unused colors
+      - final Color yellow = Color(0xFFFC8800);
+      - final Color red = Color(0xFFDA2A16);
+      - final Color pinkRed = Color(0xFFEE4C3E);
+      - final Color blue = Color(0xFF03318C);
+  */
+  
+  // Official/Main color of app
+  Color majorOrange                   = Color(0xFFFD632C);
+
+  // Default is Light theme
+  // #FD632C = RGB(253, 99, 44)
+  // #FFEBDE = RGB(255, 235, 222)
+  // #000000 = RGB(0, 0, 0)
+  Color labelText                     = Color(0xFFFD632C);
+  Color contentText                   = Color(0xFF000000);
+  Color orangeNoteText                = Color(0xFFFD632C);
+  Color normalNoteText                = Color(0xFF808080);
+  Color lighterNormalNoteText         = Color(0xFFABABAB);
+  Color appBackground                 = Color(0xFFFFFFFF);
+  Color boxBackground                 = Color(0xFFFFFFFF);
+  Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
+  Color btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
+  Color textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
+  Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
+  Color discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
+  Color notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+
+  // User need to change theme
+  void changeTheme(String theme) {
+    if (theme.compareTo('Light') == 0) {
+      labelText                     = Color(0xFFFD632C);
+      contentText                   = Color(0xFF000000);
+      orangeNoteText                = Color(0xFFFD632C);
+      normalNoteText                = Color(0xFF808080);
+      lighterNormalNoteText         = Color(0xFFABABAB);
+      appBackground                 = Color(0xFFFFFFFF);
+      boxBackground                 = Color(0xFFFFFFFF);
+      sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
+      btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
+      textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
+      tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
+      discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
+      notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+    }
+    else {
+      // #212121 = RGB(33, 33, 33)
+      // #FFFFFF = RGB(255, 255, 255)
+      // #ABABAB = RGB(171, 171, 171)
+      labelText                     = Color(0xFFFD632C);
+      contentText                   = Color(0xFFFFFFFF);
+      orangeNoteText                = Color(0xFFFD632C);
+      normalNoteText                = Color(0xFFABABAB);
+      lighterNormalNoteText         = Color(0xFFABABAB);
+      appBackground                 = Color(0xFF121212);
+      boxBackground                 = Color(0xFF212121);
+      sectionBackgroundLayer        = Color.fromRGBO(33, 33, 33, 0.5);
+      btnShadow                     =  Color.fromRGBO(255, 255, 255, 0.5);
+      textShadow                    = Color.fromRGBO(255, 255, 255, 0.25);
+      tabLayer                      = Color.fromRGBO(255, 255, 255, 0.1);
+      discussionLayer               = Color.fromRGBO(171, 171, 171, 0.2);
+      notiLayer                     = Color.fromRGBO(171, 171, 171, 0.2);
+    }
+  }
+}
+
+class _MyIcons {
+  // Default icons (These are never change by Light/Black theme)
+  final String appBarBackBtn = 'assets/myicons/icon-white-back.png';
+  final String appBarCheckBtn = 'assets/myicons/icon-big-white-check.png';
+  final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
+  final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
+  final String drawerRecord = 'assets/myicons/icon-white-record.png';
+  final String drawerEvents = 'assets/myicons/icon-white-events-02.png';
+  final String drawerUfeed = 'assets/myicons/icon-white-news-feed-02.png';
+  final String drawerProfile = 'assets/myicons/icon-white-profile.png';
+  final String drawerTeams = 'assets/myicons/icon-white-teams.png';
+  final String drawerSettings = 'assets/myicons/icon-white-settings.png';
+
+  // Default is Light theme 
+  String imageDefault = 'assets/myicons/icon-white-image-default.png';
+  
+  // User wants to change theme
+  void changeTheme(String theme) {
+    if (theme.compareTo('Light') == 0) {
+      imageDefault = 'assets/myicons/icon-white-image-default.png';
+
+      // TODO: "Light" icons
+    }
+    else {
+      imageDefault = 'assets/myicons/icon-black-image-default.png';
+
+      // TODO: "Black" icons
+    }
+  }
+}
+
+class _Images {
+  // USRUN logo images
+  final String appIcon = 'assets/usrunlogo/app-icon.png';
+  final String logoText = 'assets/usrunlogo/logo-text.png';
+  final String logo = 'assets/usrunlogo/logo.png';
+
+  // Common images
   final String welcomeBanner = 'assets/images/welcome.png';
 
   final String loginFacebook = 'assets/images/login_fb.png';
@@ -45,17 +353,7 @@ class _Images{
   final String drawer_bg_darker = 'assets/images/drawer_background_darker.jpg';
 
   final String avatar = 'assets/images/avatar.png';
-  final String icImageDefault = 'assets/images/ic_image_default.png';
-
-  final String icRecord = 'assets/images/ic_record.png';
-  final String icEvent = 'assets/images/ic_event.png';
-  final String icUfeed = 'assets/images/ic_ufeed.png';
-  final String icProfile = 'assets/images/ic_profile.jpg';
-  final String icTeam = 'assets/images/ic_team.png';
-  final String icSettings = 'assets/images/ic_settings.png';
-
 }
-
 
 @reflector
 class Strings {
@@ -68,15 +366,23 @@ class Strings {
   String alreadyAMember;
   String signIn;
   String signUp;
+  String resetPassword;
 
   String profile;
+
   String record;
+
   String uFeed;
+
   String events;
+
   String teams;
+
   String settings;
+  String changePassword;
+
   String search;
-  
+
   Map<String, dynamic> errorMessages;
 
   String errorTitle;
@@ -108,5 +414,20 @@ class Strings {
 }
 
 class Styles {
-  final TextStyle labelStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: R.colors.labelText);
+  final TextStyle labelStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: R.appRatio.appFontSize18,
+      color: R.colors.labelText);
+
+  final TextStyle shadowLabelStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: R.appRatio.appFontSize18,
+      color: R.colors.labelText,
+      shadows: <Shadow>[
+        Shadow(
+          offset: Offset(2.0, 2.0),
+          blurRadius: 4.0,
+          color: R.colors.textShadow,
+        ),
+      ]);
 }

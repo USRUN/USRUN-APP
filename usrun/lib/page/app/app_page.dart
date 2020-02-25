@@ -23,13 +23,12 @@ class DrawerItem {
 
 class AppPage extends StatefulWidget {
   final drawerItems = [
-    DrawerItem(R.strings.record, R.images.icRecord),
-    DrawerItem(R.strings.uFeed, R.images.icUfeed),
-    DrawerItem(R.strings.events, R.images.icEvent),
-    DrawerItem(R.strings.teams, R.images.icTeam),
-    DrawerItem(R.strings.profile, R.images.icProfile),
-    DrawerItem(R.strings.settings, R.images.icSettings),
-
+    DrawerItem(R.strings.record, R.myIcons.drawerRecord),
+    DrawerItem(R.strings.uFeed, R.myIcons.drawerUfeed),
+    DrawerItem(R.strings.events, R.myIcons.drawerEvents),
+    DrawerItem(R.strings.teams, R.myIcons.drawerTeams),
+    DrawerItem(R.strings.profile, R.myIcons.drawerProfile),
+    DrawerItem(R.strings.settings, R.myIcons.drawerSettings),
   ];
 
   @override
@@ -87,11 +86,11 @@ class _AppPageState extends State<AppPage> {
           width: MediaQuery.of(context).size.width *0.7,
         ),
           child: Stack(children: <Widget>[ 
-            Image.asset(R.images.drawer_bg, height: windowHeight + 20),
+            Image.asset(R.images.drawer_bg, height: R.appRatio.deviceHeight + 20),
             Center(
               child: Column(
               children: <Widget>[
-                SizedBox(height: windowHeight/8),
+                SizedBox(height: R.appRatio.deviceHeight/8),
                 // Container(
                 //   margin: EdgeInsets.only(right: 20),
                 //   width: 140,

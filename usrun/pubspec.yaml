@@ -26,9 +26,10 @@ dependencies:
   shared_preferences: ^0.5.0
   sprintf: ^4.0.2
   gradient_app_bar: ^0.1.3
-
+  flutter_launcher_icons: ^0.7.4
   
   path_provider: ^1.2.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -38,6 +39,10 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.0.0
 
+flutter_icons:
+  image_path: "assets/usrunlogo/app-icon.png" 
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -54,7 +59,6 @@ flutter:
     - assets/localization/en.json
     - assets/localization/vi.json
 
-    - assets/images/logo_text.png
     - assets/images/welcome.png
     - assets/images/login_fb.png
     - assets/images/login_gg.png
@@ -63,16 +67,25 @@ flutter:
 
     - assets/images/drawer_background.png
     - assets/images/drawer_background_darker.jpg
-
     - assets/images/avatar.png
-    - assets/images/ic_image_default.png
 
-    - assets/images/ic_record.png
-    - assets/images/ic_event.png
-    - assets/images/ic_ufeed.png
-    - assets/images/ic_profile.jpg
-    - assets/images/ic_team.png
-    - assets/images/ic_settings.png
+    - assets/myicons/icon-white-back.png
+    - assets/myicons/icon-orange-close.png
+    - assets/myicons/icon-orange-search.png
+    - assets/myicons/icon-big-white-check.png
+    - assets/myicons/icon-white-image-default.png
+    - assets/myicons/icon-black-image-default.png
+
+    - assets/myicons/icon-white-record.png
+    - assets/myicons/icon-white-events-02.png
+    - assets/myicons/icon-white-news-feed-02.png
+    - assets/myicons/icon-white-profile.png
+    - assets/myicons/icon-white-teams.png
+    - assets/myicons/icon-white-settings.png
+    
+    - assets/usrunlogo/app-icon.png
+    - assets/usrunlogo/logo-text.png
+    - assets/usrunlogo/logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -7,15 +7,22 @@
     "alreadyAMember": "Already a member?",
     "signIn": "Sign In",
     "signUp": "Sign Up",
+    "resetPassword": "Reset Password",
 
     "profile": "PROFILE",
-    "uFeed": "U - FEED",
-    "events": "EVENTS",
-    "teams": "TEAMS",
-    "settings": "SETTINGS",
-    "record": "RECORD",
-    "search": "SEARCH",
 
+    "uFeed": "U - FEED",
+
+    "events": "EVENTS",
+
+    "teams": "TEAMS",
+
+    "settings": "SETTINGS",
+    "changePassword": "Change Password",
+
+    "record": "RECORD",
+
+    "search": "SEARCH",
 
     "errorTitle": "Error",
     "errorTitleIsRequired": "Title is required",
