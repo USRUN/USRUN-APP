@@ -20,6 +20,7 @@
 # is commented out by default.
 #.vscode/
 **/lib/main.reflectable.dart
+**/android/gradle.properties
 
 # Flutter/Dart/Pub related
 **/doc/api/

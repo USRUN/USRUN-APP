@@ -11,7 +11,8 @@ void main() {
   ErrorWidget.builder = (FlutterErrorDetails details) => Container();
   initializeReflectable();
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((res) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((res) {
     runApp(UsRunApp());
   });
 }
@@ -72,7 +73,11 @@ class _UsRunAppState extends State<UsRunApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'USRUN',
       key: key,
+      theme: ThemeData(
+        primaryColor: Color(0xFFFD632C),
+      ),
       home: SplashPage(),
     );
   }
@@ -96,6 +101,7 @@ class _SplashPageState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     print("Build Splash");
+    
     return Scaffold(
       body: Center(
         child: Image.asset(
