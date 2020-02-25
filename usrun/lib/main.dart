@@ -90,18 +90,8 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<StatefulWidget> {
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-
-    if (_needInit) {
-      Future.delayed(Duration(milliseconds: 100), () => _initApp());
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("Build Splash");
-    
+    _initApp();
     return Scaffold(
       body: Center(
         child: Image.asset(
@@ -112,8 +102,7 @@ class _SplashPageState extends State<StatefulWidget> {
     );
   }
 
-  void _initApp() async {
-    await initialize(context);
-    showPage(context, WelcomePage());
+  Future<void> _initApp() {
+    return Future.delayed(Duration(milliseconds: 2000), () => initialize(context)).then((_) => showPage(context, WelcomePage()));
   }
 }
