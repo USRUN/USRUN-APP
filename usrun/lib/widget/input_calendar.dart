@@ -51,7 +51,7 @@ class _InputCalendarState extends State<InputCalendar> {
                     )),
             ),
             SizedBox(
-              height: R.appRatio.appSpacing15,
+              height: R.appRatio.appSpacing10,
             ),
             GestureDetector(
                 child: Container(

@@ -228,7 +228,7 @@ class _DropdownMenuRouteLayout<T> extends SingleChildLayoutDelegate {
   final TextDirection textDirection;
   final double maxHeightBox; // QuocTK
   final Rect itemRect; // QuocTK
-  final double moreSpacing = R.appRatio.appHeight60; // QuocTK
+  final double moreSpacing = R.appRatio.appHeight50; // QuocTK
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
