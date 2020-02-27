@@ -12,6 +12,7 @@ class ResetPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GradientAppBar(
@@ -63,14 +64,16 @@ class ResetPasswordPage extends StatelessWidget {
                 height: R.appRatio.appSpacing40,
               ),
               UIButton(
-                width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
-                gradient: R.colors.uiGradient,
-                text: 'Reset',
-                textSize: R.appRatio.appFontSize22,
-                // TODO: Function for resetting password
-                // onTap: () => _yourFunction('yourParameter'),
-              ),
+                  width: R.appRatio.appWidth381,
+                  height: R.appRatio.appHeight60,
+                  gradient: R.colors.uiGradient,
+                  text: 'Reset',
+                  textSize: R.appRatio.appFontSize22,
+                  // TODO: Function for resetting password
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    //_yourFunction('yourParameter'),
+                  }),
             ],
           ),
         ),

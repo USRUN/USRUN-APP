@@ -36,7 +36,7 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
-   int _selectedDrawerIndex = 0;
+  int _selectedDrawerIndex = 0;
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -57,78 +57,108 @@ class _AppPageState extends State<AppPage> {
         return new Text("Error");
     }
   }
-  
+
   _onSelectItem(int index) {
-    setState(() {_selectedDrawerIndex = index;});
+    setState(() {
+      _selectedDrawerIndex = index;
+    });
     Navigator.of(context).pop(); // close the drawer
   }
 
   @override
   Widget build(BuildContext context) {
-
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(
-        new ListTile(
-          leading: new Image.asset(d.icon,width: 30, height: 30,),
-          title: new Text(d.title, style: prefix0.TextStyle(fontSize: 18,color: i==_selectedDrawerIndex?Colors.yellow:Colors.white),),
-          selected: i == _selectedDrawerIndex,
-          onTap: () => _onSelectItem(i),
-        )
-      );
+      drawerOptions.add(new ListTile(
+        leading: new Image.asset(
+          d.icon,
+          width: 30,
+          height: 30,
+        ),
+        title: new Text(
+          d.title,
+          style: prefix0.TextStyle(
+              fontSize: 18,
+              color: i == _selectedDrawerIndex ? Colors.yellow : Colors.white),
+        ),
+        selected: i == _selectedDrawerIndex,
+        onTap: () => _onSelectItem(i),
+      ));
     }
 
     return Scaffold(
-      appBar: GradientAppBar(gradient: R.colors.uiGradient, title: Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.white),)),
-      drawer:  Container(
+      appBar: GradientAppBar(
+          gradient: R.colors.uiGradient,
+          title: Text(
+            widget.drawerItems[_selectedDrawerIndex].title,
+            style: TextStyle(color: Colors.white),
+          )),
+      drawer: Container(
           constraints: new BoxConstraints.expand(
-          width: MediaQuery.of(context).size.width *0.7,
-        ),
-          child: Stack(children: <Widget>[ 
-            Image.asset(R.images.drawer_bg, height: R.appRatio.deviceHeight + 20),
-            Center(
-              child: Column(
-              children: <Widget>[
-                SizedBox(height: R.appRatio.deviceHeight/8),
-                // Container(
-                //   margin: EdgeInsets.only(right: 20),
-                //   width: 140,
-                //   height: 140,
-                //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.yellowAccent.withOpacity(0.5)),
-                //   child: Align(alignment: Alignment.center, child: AvatarView(image: R.images.avatar, admin: true, size: 120,),)
-                // ),
-                Center(
+            width: MediaQuery.of(context).size.width * 0.7,
+          ),
           child: Stack(
             children: <Widget>[
-                Container( width: 130,
-                   height: 130,
-                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.yellow[200])),
-               Positioned.fill(
-                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Container(
-                    color: Colors.black.withOpacity(0),
-                  ),
+              Image.asset(R.images.drawer_bg,
+                  height: R.appRatio.deviceHeight + 20),
+              Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: R.appRatio.deviceHeight / 8),
+                    // Container(
+                    //   margin: EdgeInsets.only(right: 20),
+                    //   width: 140,
+                    //   height: 140,
+                    //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.yellowAccent.withOpacity(0.5)),
+                    //   child: Align(alignment: Alignment.center, child: AvatarView(image: R.images.avatar, admin: true, size: 120,),)
+                    // ),
+                    Center(
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                              width: 130,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.yellow[200])),
+                          Positioned.fill(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                              child: Container(
+                                color: Colors.black.withOpacity(0),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 20),
+                            width: 130,
+                            height: 130,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: null,
+                              // AvatarView(
+                              //   image: R.images.avatar,
+                              //   admin: true,
+                              //   size: 120,
+                              // ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7 - 100,
+                      child: Column(children: drawerOptions),
+                    )
+                  ],
                 ),
-               ),
-              Container(
-                  margin: EdgeInsets.only(right: 20),
-                  width: 130,
-                  height: 130,
-                  child: Align(alignment: Alignment.center, child: AvatarView(image: R.images.avatar, admin: true, size: 120,),)
-                ),
+              )
             ],
-          ),
-        ),
-      
-                SizedBox(height: 50,),
-                Container(width: MediaQuery.of(context).size.width *0.7 - 100, child:  Column(children: drawerOptions),)
-            
-               ],
-              ),)
-            ],)
-      ),
+          )),
       body: _getDrawerItemWidget(_selectedDrawerIndex),
     );
   }

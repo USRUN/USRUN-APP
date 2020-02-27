@@ -14,8 +14,8 @@ import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
 
 class SignUpPage extends StatelessWidget {
-  final TextEditingController _firstName = TextEditingController();
-  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _retypePasswordController =
@@ -73,7 +73,7 @@ class SignUpPage extends StatelessWidget {
                             Container(
                               width: R.appRatio.appWidth181,
                               child: InputField(
-                                controller: _firstName,
+                                controller: _firstNameController,
                                 enableFullWidth: false,
                                 labelTitle: "First Name",
                                 hintText: "First Name",
@@ -82,7 +82,7 @@ class SignUpPage extends StatelessWidget {
                             Container(
                               width: R.appRatio.appWidth181,
                               child: InputField(
-                                controller: _lastName,
+                                controller: _lastNameController,
                                 enableFullWidth: false,
                                 labelTitle: "Last Name",
                                 hintText: "Last Name",
@@ -98,6 +98,7 @@ class SignUpPage extends StatelessWidget {
                           enableFullWidth: true,
                           labelTitle: "Email",
                           hintText: "Type your email here",
+                          textInputType: TextInputType.emailAddress,
                         ),
                         SizedBox(
                           height: R.appRatio.appSpacing25,

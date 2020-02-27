@@ -2,7 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/page/reset_password/reset_password.dart';
+import 'package:usrun/page/setting/change_password.dart';
+import 'package:usrun/page/signin/signin_page.dart';
+import 'package:usrun/page/signup/signup_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/page/profile/edit_profile.dart';
 import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
 import 'package:flutter/services.dart';
@@ -103,6 +108,8 @@ class _SplashPageState extends State<StatefulWidget> {
   }
 
   Future<void> _initApp() {
-    return Future.delayed(Duration(milliseconds: 2000), () => initialize(context)).then((_) => showPage(context, WelcomePage()));
+    return Future.delayed(
+            Duration(milliseconds: 100), () => initialize(context)) //test 100ms -> 2000ms
+        .then((_) => showPage(context, EditProfilePage())); //test WelcomePage()
   }
 }

@@ -6,41 +6,86 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 class AvatarView extends StatelessWidget {
-  final String image;
-  final double size;
-  final bool admin;
+  // final String teamImageURL;
+  // final bool isVerfiedTeam;
+
+  final String avatarImageURL;
+  final double avatarImageSize;
+  final BoxShadow avatarBoxShadow;
+  final BoxBorder avatarBoxBorder;
+  final bool enableSquareAvatarImage;
+  final double radiusSquareBorder;
+  final Function pressAvatarImage;
+  final String supportImageURL;
 
   AvatarView({
-    @required this.image,
-    this.admin = false,
-    this.size = 50,
+    @required this.avatarImageURL,
+    @required this.avatarImageSize,
+    this.avatarBoxShadow,
+    this.avatarBoxBorder,
+    this.enableSquareAvatarImage = false,
+    this.radiusSquareBorder = 5,
+    this.pressAvatarImage,
+    this.supportImageURL,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    return Container(
-      width: size,
-      height: size,
-      child: Stack(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-            child: ImageCacheManager.getImage(
-                url: image, width: size, height: size, fit: BoxFit.cover),
-          ),
-          this.admin ? Align(
-            alignment: Alignment.bottomRight,
-            child: Transform.rotate(
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.lightGreen,
-                size: 30,
+    return Center(
+      child: Container(
+        width: this.avatarImageSize,
+        height: this.avatarImageSize,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: (this.enableSquareAvatarImage
+              ? BorderRadius.all(Radius.circular(this.radiusSquareBorder))
+              : BorderRadius.all(Radius.circular(this.avatarImageSize / 2))),
+          border: this.avatarBoxBorder,
+          boxShadow: (this.avatarBoxShadow != null
+              ? [
+                  this.avatarBoxShadow,
+                ]
+              : null),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            if (this.pressAvatarImage != null) {
+              this.pressAvatarImage();
+            }
+          },
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(this.avatarImageSize / 2),
+                ),
+                child: ImageCacheManager.getImage(
+                  url: this.avatarImageURL,
+                  width: this.avatarImageSize,
+                  height: this.avatarImageSize,
+                  fit: BoxFit.cover,
+                ),
               ),
-              angle: 0,
-            ),
-          ): Container()
-        ],
+              Align(
+                alignment: Alignment.bottomRight,
+                child: (this.supportImageURL == null
+                    ? null
+                    : ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular((this.avatarImageSize / 4) / 2),
+                        ),
+                        child: ImageCacheManager.getImage(
+                          url: this.supportImageURL,
+                          fit: BoxFit.cover,
+                          width: this.avatarImageSize / 4,
+                          height: this.avatarImageSize / 4,
+                        ),
+                      )),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

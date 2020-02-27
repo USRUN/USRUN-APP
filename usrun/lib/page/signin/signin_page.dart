@@ -5,7 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/app/app_page.dart';
-import 'package:usrun/page/password/reset_password.dart';
+import 'package:usrun/page/reset_password/reset_password.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
 
@@ -15,6 +15,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GradientAppBar(
@@ -52,6 +53,7 @@ class SignInPage extends StatelessWidget {
                       enableFullWidth: true,
                       labelTitle: "Email",
                       hintText: "Type your email here",
+                      textInputType: TextInputType.emailAddress,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing25,

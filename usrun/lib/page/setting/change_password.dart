@@ -13,6 +13,7 @@ class ChangePasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: GradientAppBar(
@@ -36,9 +37,11 @@ class ChangePasswordPage extends StatelessWidget {
               R.myIcons.appBarCheckBtn,
               width: R.appRatio.appAppBarIconSize,
             ),
-            // TODO: Function for resetting password
-            // onPressed: () => _yourFunction('yourParameter'),
-            onPressed: null,
+            // TODO: Function for changing password
+            onPressed: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+              // _yourFunction('yourParameter'),
+            },
           ),
         ],
       ),
