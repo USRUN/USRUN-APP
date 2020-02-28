@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
-
 import 'package:usrun/util/image_cache_manager.dart';
 
 class AvatarView extends StatelessWidget {
-  // final String teamImageURL;
-  // final bool isVerfiedTeam;
-
   final String avatarImageURL;
   final double avatarImageSize;
   final BoxShadow avatarBoxShadow;

@@ -136,12 +136,10 @@ class _AppPageState extends State<AppPage> {
                             height: 130,
                             child: Align(
                               alignment: Alignment.center,
-                              child: null,
-                              // AvatarView(
-                              //   image: R.images.avatar,
-                              //   admin: true,
-                              //   size: 120,
-                              // ),
+                              child: AvatarView(
+                                avatarImageURL: R.images.avatar,
+                                avatarImageSize: 120,
+                              ),
                             ),
                           ),
                         ],
