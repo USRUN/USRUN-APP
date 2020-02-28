@@ -76,6 +76,10 @@ flutter:
     - assets/myicons/icon-big-white-check.png
     - assets/myicons/icon-white-image-default.png
     - assets/myicons/icon-black-image-default.png
+    - assets/myicons/icon-color-stars.png
+    - assets/myicons/icon-color-letter.png
+    - assets/myicons/icon-color-developers.png
+    - assets/myicons/icon-color-update-version.png
 
     - assets/myicons/icon-white-record.png
     - assets/myicons/icon-white-events-02.png

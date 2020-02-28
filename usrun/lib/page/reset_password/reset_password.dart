@@ -15,6 +15,7 @@ class ResetPasswordPage extends StatelessWidget {
     FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
         leading: new IconButton(
           icon: Image.asset(

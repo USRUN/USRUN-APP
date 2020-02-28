@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
-import 'package:usrun/page/profile/edit_profile.dart';
+import 'package:usrun/page/setting/about_us.dart';
 import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
 import 'package:flutter/services.dart';
@@ -106,6 +106,6 @@ class _SplashPageState extends State<StatefulWidget> {
   Future<void> _initApp() {
     return Future.delayed(
             Duration(milliseconds: 100), () => initialize(context)) //raw: 2000ms
-        .then((_) => showPage(context, WelcomePage())); //raw: WelcomePage()
+        .then((_) => showPage(context, AboutUs())); //raw: WelcomePage()
   }
 }

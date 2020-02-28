@@ -50,6 +50,7 @@ class AppRatio {
 
   final double _figmaWidth80                    = 80;
   final double _figmaWidth181                   = 181;
+  final double _figmaWidth200                   = 200;
   final double _figmaWidth300                   = 300;
   final double _figmaWidth381                   = 381;
 
@@ -63,6 +64,7 @@ class AppRatio {
   final double _figmaPadding15                  = 15;
   final double _figmaPadding20                  = 20;
   final double _figmaPadding25                  = 25;
+  final double _figmaPadding30                  = 30;
   final double _figmaPadding40                  = 40;
 
   final double _figmaSpacing5                   = 5;
@@ -79,8 +81,10 @@ class AppRatio {
   final double _figmaIconSize20                 = 20;
   final double _figmaIconSize25                 = 25;
   final double _figmaIconSize30                 = 30;
+  final double _figmaIconSize35                 = 35;
+  final double _figmaIconSize40                 = 40;
 
-  final double _figmaAppBarIconSize             = 22.5;
+  final double _figmaAppBarIconSize             = 22;
   final double _figmaWelcomPageLogoTextSize     = 160;
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
@@ -112,6 +116,7 @@ class AppRatio {
 
   double appWidth80;
   double appWidth181;
+  double appWidth200;
   double appWidth300;
   double appWidth381;
 
@@ -125,6 +130,7 @@ class AppRatio {
   double appPadding15;
   double appPadding20;
   double appPadding25;
+  double appPadding30;
   double appPadding40;
 
   double appSpacing5;
@@ -141,6 +147,8 @@ class AppRatio {
   double appIconSize20;
   double appIconSize25;
   double appIconSize30;
+  double appIconSize35;
+  double appIconSize40;
 
   double appAppBarIconSize;
   double appWelcomPageLogoTextSize;
@@ -206,6 +214,7 @@ class AppRatio {
     // Find width & height of objects
     appWidth80 = _computeWidth(this._figmaWidth80);
     appWidth181 = _computeWidth(this._figmaWidth181);
+    appWidth200 = _computeWidth(this._figmaWidth200);
     appWidth300 = _computeWidth(this._figmaWidth300);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
@@ -220,6 +229,7 @@ class AppRatio {
     appPadding15 = _computeWidth(this._figmaPadding15);
     appPadding20 = _computeWidth(this._figmaPadding20);
     appPadding25 = _computeWidth(this._figmaPadding25);
+    appPadding30 = _computeWidth(this._figmaPadding30);
     appPadding40 = _computeWidth(this._figmaPadding40);
 
     // Find spacing
@@ -238,6 +248,8 @@ class AppRatio {
     appIconSize20 = _computeWidth(this._figmaIconSize20);
     appIconSize25 = _computeWidth(this._figmaIconSize25);
     appIconSize30 = _computeWidth(this._figmaIconSize30);
+    appIconSize35 = _computeWidth(this._figmaIconSize35);
+    appIconSize40 = _computeWidth(this._figmaIconSize40);
 
     // Find size of other things
     appAppBarIconSize = _computeWidth(this._figmaAppBarIconSize);
@@ -299,6 +311,7 @@ class _Color {
   Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
   Color notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+  Color drawLine                      = Color(0xFFABABAB);
 
   // User need to change theme
   void changeTheme(String theme) {
@@ -316,6 +329,7 @@ class _Color {
       tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
       notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+      drawLine                      = Color(0xFFABABAB);
     }
     else {
       // #212121 = RGB(33, 33, 33)
@@ -334,6 +348,7 @@ class _Color {
       tabLayer                      = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer               = Color.fromRGBO(171, 171, 171, 0.2);
       notiLayer                     = Color.fromRGBO(171, 171, 171, 0.2);
+      drawLine                      = Color(0xFF000000);
     }
   }
 }
@@ -350,6 +365,10 @@ class _MyIcons {
   final String drawerProfile = 'assets/myicons/icon-white-profile.png';
   final String drawerTeams = 'assets/myicons/icon-white-teams.png';
   final String drawerSettings = 'assets/myicons/icon-white-settings.png';
+  final String aboutUsUSRUN = 'assets/myicons/icon-color-letter.png';
+  final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
+  final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
+  final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
 
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
@@ -415,6 +434,41 @@ class Strings {
 
   String settings;
   String changePassword;
+  String aboutUs;
+  String inAppNotifications;
+  String privacyProfile;
+  String hotContact;
+  String legal;
+  String faqs;
+
+  String aboutUsUSRUNTitle;
+  String aboutUsUSRUNSubtitle;
+  String aboutUsDevelopersTitle;
+  String aboutUsDevelopersSubtitle;
+  String aboutUsVersionTitle;
+  String aboutUsVersionSubtitle;
+  String aboutUsRateAppTitle;
+  String aboutUsRateAppSubtitle;
+
+  String aboutDevelopers;
+  String aboutDevName_1;
+  String aboutDevTitle_1;
+  String aboutDevName_2;
+  String aboutDevTitle_2;
+  String aboutDevName_3;
+  String aboutDevTitle_3;
+  String aboutDevName_4;
+  String aboutDevTitle_4;
+  String aboutDevName_5;
+  String aboutDevTitle_5;
+
+  String aboutUSRUN_1;
+  String aboutUSRUN_2;
+  String aboutUSRUN_3;
+  String aboutUSRUN_4;
+  String aboutUSRUN_5;
+  String aboutUSRUN_6;
+  String aboutUSRUN_7;
 
   String search;
 

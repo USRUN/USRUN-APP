@@ -9,6 +9,7 @@ class FeedPage extends StatelessWidget{
    @override 
   Widget build(BuildContext context){
     return Scaffold(
+      backgroundColor: R.colors.appBackground,
       body: Center(child: Text(R.strings.uFeed),),
     );
   }

@@ -32,6 +32,7 @@ class SignUpPage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
         leading: new IconButton(
           icon: Image.asset(
@@ -48,7 +49,6 @@ class SignUpPage extends StatelessWidget {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
       ),
-      backgroundColor: R.colors.appBackground,
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
