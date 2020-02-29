@@ -94,7 +94,7 @@ class LineButton extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,
-                        color: R.colors.majorOrange,
+                        color: R.colors.blurMajorOrange,
                       ),
                     ),
                   )
@@ -242,7 +242,7 @@ class LineButton extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,
-                        color: R.colors.majorOrange,
+                        color: R.colors.blurMajorOrange,
                       ),
                     ),
                   )
