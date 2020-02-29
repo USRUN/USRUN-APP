@@ -34,49 +34,47 @@ class ResetPasswordPage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.only(
-          left: R.appRatio.appPadding15,
-          right: R.appRatio.appPadding15,
+          left: R.appRatio.appSpacing15,
+          right: R.appRatio.appSpacing15,
         ),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SizedBox(
-                height: R.appRatio.appSpacing20,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(
+              height: R.appRatio.appSpacing20,
+            ),
+            Text(
+              'Enter your email address which was used for registering account, and we will send you a reset password to this email.',
+              style: TextStyle(
+                color: R.colors.majorOrange,
+                fontSize: R.appRatio.appFontSize18,
+                fontWeight: FontWeight.bold,
               ),
-              Text(
-                'Enter your email address which was used for registering account, and we will send you a reset password to this email.',
-                style: TextStyle(
-                  color: R.colors.majorOrange,
-                  fontSize: R.appRatio.appFontSize18,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing30,
-              ),
-              InputField(
-                controller: _emailController,
-                enableFullWidth: true,
-                hintText: "Email",
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing40,
-              ),
-              UIButton(
-                  width: R.appRatio.appWidth381,
-                  height: R.appRatio.appHeight60,
-                  gradient: R.colors.uiGradient,
-                  text: 'Reset',
-                  textSize: R.appRatio.appFontSize22,
-                  // TODO: Function for resetting password
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    //_yourFunction('yourParameter'),
-                  }),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing30,
+            ),
+            InputField(
+              controller: _emailController,
+              enableFullWidth: true,
+              hintText: "Email",
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing40,
+            ),
+            UIButton(
+                width: R.appRatio.appWidth381,
+                height: R.appRatio.appHeight60,
+                gradient: R.colors.uiGradient,
+                text: 'Reset',
+                textSize: R.appRatio.appFontSize22,
+                // TODO: Function for resetting password
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  //_yourFunction('yourParameter'),
+                }),
+          ],
         ),
       ),
     );

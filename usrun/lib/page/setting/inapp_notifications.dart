@@ -6,9 +6,10 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/line_button.dart';
 
-class SettingPage extends StatelessWidget {
+class InAppNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -23,7 +24,7 @@ class SettingPage extends StatelessWidget {
         gradient: R.colors.uiGradient,
         centerTitle: true,
         title: Text(
-          R.strings.settings,
+          R.strings.inAppNotifications,
           style: TextStyle(
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
@@ -37,14 +38,14 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing20,
               ),
               /* 
-                  ACCOUNT
+                  ACTIVITIES
               */
               Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
                 ),
                 child: Text(
-                  R.strings.settingsAccountLabel,
+                  R.strings.notiActLabel,
                   textAlign: TextAlign.start,
                   style: R.styles.shadowLabelStyle,
                 ),
@@ -53,149 +54,15 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsAccountTypeTitle,
+                mainText: R.strings.notiActReactionTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.student,
-                resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.changePassword,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountPrivacyProfileTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountConnectGoogleTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.connected,
-                resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountConnectFacebookTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.disconnected,
-                resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              /* 
-                  DISPLAY
-              */
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                ),
-                child: Text(
-                  R.strings.settingsDisplayLabel,
-                  textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
-                ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayDefaultTabTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: "News Feed",
-                resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayMeasureTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                enableSwitchButton: true,
-                switchButtonOnTitle: "M",
-                switchButtonOffTitle: "Km",
-                switchStatus: true,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayThemeTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiActReactionSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayLanguageTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                enableSwitchButton: true,
-                switchButtonOnTitle: "En",
-                switchButtonOffTitle: "Vi",
                 switchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
@@ -203,41 +70,50 @@ class SettingPage extends StatelessWidget {
                 },
               ),
               SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              /* 
-                  NOTIFICATIONS
-              */
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                ),
-                child: Text(
-                  R.strings.settingsNotiLabel,
-                  textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
-                ),
-              ),
-              SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsNotiInAppTitle,
+                mainText: R.strings.notiActDiscussionTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiActDiscussionSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsNotiEmailTitle,
+                mainText: R.strings.notiActShareTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                subText: R.strings.settingsNotiEmailSubtitle,
+                subText: R.strings.notiActShareSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiActMentionInDiscussionTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiActMentionInDiscussionSubtitle,
                 subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
@@ -254,14 +130,14 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing25,
               ),
               /* 
-                  SUPPORT & OTHERS
+                  EVENTS
               */
               Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
                 ),
                 child: Text(
-                  R.strings.settingsSOLabel,
+                  R.strings.notiEvtLabel,
                   textAlign: TextAlign.start,
                   style: R.styles.shadowLabelStyle,
                 ),
@@ -270,67 +146,224 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOFAQsTitle,
+                mainText: R.strings.notiEvtInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiEvtInfoSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOContactTitle,
+                mainText: R.strings.notiEvtReminder6HTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiEvtReminder6HSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOLegalTitle,
+                mainText: R.strings.notiEvtReminder24HTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiEvtReminder24HSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOAboutUsTitle,
+                mainText: R.strings.notiEvtRankChangesTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiEvtRankChangesSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOLogOutTitle,
+                mainText: R.strings.notiEvtInvitationTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiEvtInvitationSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
                 },
-              )
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              /* 
+                  FOLLOWING & FOLLOWERS
+              */
+              Padding(
+                padding: EdgeInsets.only(
+                  left: R.appRatio.appSpacing15,
+                ),
+                child: Text(
+                  R.strings.notiFFLabel,
+                  textAlign: TextAlign.start,
+                  style: R.styles.shadowLabelStyle,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiFFNewFollowersTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiFFNewFollowersSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiFFNewActivitiesTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiFFNewActivitiesSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              /* 
+                  TEAMS
+              */
+              Padding(
+                padding: EdgeInsets.only(
+                  left: R.appRatio.appSpacing15,
+                ),
+                child: Text(
+                  R.strings.notiTMLabel,
+                  textAlign: TextAlign.start,
+                  style: R.styles.shadowLabelStyle,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiTMInvitationTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiTMInvitationSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiTMPlansTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiTMPlansSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.notiTMPostsTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.notiTMPostsSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                enableSwitchButton: true,
+                switchButtonOnTitle: "On",
+                switchButtonOffTitle: "Off",
+                switchStatus: true,
+                switchFunction: (state) {
+                  // TODO: Implementing here
+                  print('Current State of SWITCH IS: $state');
+                },
+              ),
             ],
           ),
         ),

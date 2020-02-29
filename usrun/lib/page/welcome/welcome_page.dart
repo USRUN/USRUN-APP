@@ -34,9 +34,9 @@ class WelcomePage extends StatelessWidget {
                   Spacer(),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: R.appRatio.appPadding25,
-                      right: R.appRatio.appPadding25,
-                      bottom: R.appRatio.appPadding25,
+                      left: R.appRatio.appSpacing25,
+                      right: R.appRatio.appSpacing25,
+                      bottom: R.appRatio.appSpacing25,
                     ),
                     child: Container(
                       color: Colors.white.withOpacity(0.5),

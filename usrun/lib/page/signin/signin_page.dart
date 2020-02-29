@@ -39,8 +39,8 @@ class SignInPage extends StatelessWidget {
         SliverToBoxAdapter(
           child: Container(
             padding: EdgeInsets.only(
-              left: R.appRatio.appPadding15,
-              right: R.appRatio.appPadding15,
+              left: R.appRatio.appSpacing15,
+              right: R.appRatio.appSpacing15,
             ),
             child: Container(
               child: Column(
@@ -89,8 +89,8 @@ class SignInPage extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(
-                top: R.appRatio.appPadding25,
-                bottom: R.appRatio.appPadding25,
+                top: R.appRatio.appSpacing25,
+                bottom: R.appRatio.appSpacing25,
               ),
               child: UIButton(
                 width: R.appRatio.appWidth381,

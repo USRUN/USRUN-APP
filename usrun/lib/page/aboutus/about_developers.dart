@@ -31,8 +31,8 @@ class AboutDevelopers extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
-            left: R.appRatio.appPadding25,
-            right: R.appRatio.appPadding25,
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
           ),
           child: Center(
             child: Column(

@@ -48,24 +48,21 @@ class AppRatio {
   final double _figmaFontSize26                 = 26;
   final double _figmaFontSize28                 = 28;  
 
+  final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
   final double _figmaWidth181                   = 181;
   final double _figmaWidth200                   = 200;
   final double _figmaWidth300                   = 300;
   final double _figmaWidth381                   = 381;
 
+  final double _figmaHeight25                   = 25;
+  final double _figmaHeight30                   = 30;
   final double _figmaHeight40                   = 40;
   final double _figmaHeight50                   = 50;
   final double _figmaHeight60                   = 60;
   final double _figmaHeight70                   = 70;
   final double _figmaHeight80                   = 80;
   final double _figmaHeight320                  = 320;
-
-  final double _figmaPadding15                  = 15;
-  final double _figmaPadding20                  = 20;
-  final double _figmaPadding25                  = 25;
-  final double _figmaPadding30                  = 30;
-  final double _figmaPadding40                  = 40;
 
   final double _figmaSpacing5                   = 5;
   final double _figmaSpacing10                  = 10;
@@ -114,24 +111,21 @@ class AppRatio {
   double appFontSize26;
   double appFontSize28;
 
+  double appWidth70;
   double appWidth80;
   double appWidth181;
   double appWidth200;
   double appWidth300;
   double appWidth381;
 
+  double appHeight25;
+  double appHeight30;
   double appHeight40;
   double appHeight50;
   double appHeight60;
   double appHeight70;
   double appHeight80;
   double appHeight320;
-
-  double appPadding15;
-  double appPadding20;
-  double appPadding25;
-  double appPadding30;
-  double appPadding40;
 
   double appSpacing5;
   double appSpacing10;
@@ -212,25 +206,21 @@ class AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+    appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
     appWidth181 = _computeWidth(this._figmaWidth181);
     appWidth200 = _computeWidth(this._figmaWidth200);
     appWidth300 = _computeWidth(this._figmaWidth300);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
+    appHeight25 = _computeHeight(this._figmaHeight25);
+    appHeight30 = _computeHeight(this._figmaHeight30);
     appHeight40 = _computeHeight(this._figmaHeight40);
     appHeight50 = _computeHeight(this._figmaHeight50);
     appHeight60 = _computeHeight(this._figmaHeight60);
     appHeight70 = _computeHeight(this._figmaHeight70);
     appHeight80 = _computeHeight(this._figmaHeight80);
     appHeight320 = _computeHeight(this._figmaHeight320);
-
-    // Find padding
-    appPadding15 = _computeWidth(this._figmaPadding15);
-    appPadding20 = _computeWidth(this._figmaPadding20);
-    appPadding25 = _computeWidth(this._figmaPadding25);
-    appPadding30 = _computeWidth(this._figmaPadding30);
-    appPadding40 = _computeWidth(this._figmaPadding40);
 
     // Find spacing
     appSpacing5 = _computeWidth(this._figmaSpacing5);
@@ -290,9 +280,10 @@ class _Color {
       - final Color blue = Color(0xFF03318C);
   */
   
-  // Official/Main color of app
+  // Official/Main/Common color of app
   Color majorOrange                   = Color(0xFFFD632C);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
+  Color grayABABAB                    = Color(0xFFABABAB);
 
   // Default is Light theme
   // #FD632C = RGB(253, 99, 44)
@@ -311,7 +302,6 @@ class _Color {
   Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
   Color notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
-  Color drawLine                      = Color(0xFFABABAB);
 
   // User need to change theme
   void changeTheme(String theme) {
@@ -329,7 +319,6 @@ class _Color {
       tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
       notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
-      drawLine                      = Color(0xFFABABAB);
     }
     else {
       // #212121 = RGB(33, 33, 33)
@@ -348,7 +337,6 @@ class _Color {
       tabLayer                      = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer               = Color.fromRGBO(171, 171, 171, 0.2);
       notiLayer                     = Color.fromRGBO(171, 171, 171, 0.2);
-      drawLine                      = Color(0xFF000000);
     }
   }
 }
@@ -372,16 +360,19 @@ class _MyIcons {
 
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
+  String nextIcon = 'assets/myicons/icon-black-next.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
     if (theme.compareTo('Light') == 0) {
       defaultIcon = 'assets/myicons/icon-black-image-default.png';
+      nextIcon = 'assets/myicons/icon-black-next.png';
 
       // TODO: "Light" icons
     }
     else {
       defaultIcon = 'assets/myicons/icon-white-image-default.png';
+      nextIcon = 'assets/myicons/icon-white-next.png';
 
       // TODO: "Black" icons
     }
@@ -445,6 +436,93 @@ class Strings {
   String hotContact;
   String legal;
   String faqs;
+
+  String notiActLabel;
+  String notiActReactionTitle;
+  String notiActReactionSubtitle;
+  String notiActDiscussionTitle;
+  String notiActDiscussionSubtitle;
+  String notiActShareTitle;
+  String notiActShareSubtitle;
+  String notiActMentionInDiscussionTitle;
+  String notiActMentionInDiscussionSubtitle;
+  String notiEvtLabel;
+  String notiEvtInfoTitle;
+  String notiEvtInfoSubtitle;
+  String notiEvtReminder6HTitle;
+  String notiEvtReminder6HSubtitle;
+  String notiEvtReminder24HTitle;
+  String notiEvtReminder24HSubtitle;
+  String notiEvtRankChangesTitle;
+  String notiEvtRankChangesSubtitle;
+  String notiEvtInvitationTitle;
+  String notiEvtInvitationSubtitle;
+  String notiFFLabel;
+  String notiFFNewFollowersTitle;
+  String notiFFNewFollowersSubtitle;
+  String notiFFNewActivitiesTitle;
+  String notiFFNewActivitiesSubtitle;
+  String notiTMLabel;
+  String notiTMInvitationTitle;
+  String notiTMInvitationSubtitle;
+  String notiTMPlansTitle;
+  String notiTMPlansSubtitle;
+  String notiTMPostsTitle;
+  String notiTMPostsSubtitle;
+
+  String statusEveryone;
+  String statusFollowers;
+  String statusFollowing;
+  String statusOnlyMe;
+
+  String privacyFindLabel;
+  String privacyFindEmailTitle;
+  String privacyFindUserCodeTitle;
+  String privacyFindNameTitle;
+  String privacyFollowLabel;
+  String privacyFollowFeatureTitle;
+  String privacyFollowFeatureSubtitle;
+  String privacyActLabel;
+  String privacyActLimitPeopleTitle;
+  String privacyActLimitPeopleSubtitle;
+  String privacyOPILabel;
+  String privacyOPISeeUserCodeTitle;
+  String privacyOPISeeDetailedInfoTitle;
+  String privacyOPISeeDetailedInfoSubtitle;
+  String privacyOPISeeFollowersTitle;
+  String privacyOPISeeFollowingTitle;
+  String privacyOPISeePhotosTitle;
+  String privacyOPISeeEventBadgesTitle;
+  String privacyOPISeeStatsTitle;
+  String privacyOPISeeEventsTitle;
+  String privacyOPISeeTeamsTitle;
+  String privacyOPISeeTeamPlansTitle;
+
+  String student;
+  String connected;
+  String disconnected;
+
+  String settingsAccountLabel;
+  String settingsAccountTypeTitle;
+  String settingsAccountChangePasswordTitle;
+  String settingsAccountPrivacyProfileTitle;
+  String settingsAccountConnectGoogleTitle;
+  String settingsAccountConnectFacebookTitle;
+  String settingsDisplayLabel;
+  String settingsDisplayDefaultTabTitle;
+  String settingsDisplayMeasureTitle;
+  String settingsDisplayThemeTitle;
+  String settingsDisplayLanguageTitle;
+  String settingsNotiLabel;
+  String settingsNotiInAppTitle;
+  String settingsNotiEmailTitle;
+  String settingsNotiEmailSubtitle;
+  String settingsSOLabel;
+  String settingsSOFAQsTitle;
+  String settingsSOContactTitle;
+  String settingsSOLegalTitle;
+  String settingsSOAboutUsTitle;
+  String settingsSOLogOutTitle;
 
   String aboutUsUSRUNTitle;
   String aboutUsUSRUNSubtitle;

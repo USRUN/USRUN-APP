@@ -6,9 +6,10 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/line_button.dart';
 
-class SettingPage extends StatelessWidget {
+class PrivacyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -23,7 +24,7 @@ class SettingPage extends StatelessWidget {
         gradient: R.colors.uiGradient,
         centerTitle: true,
         title: Text(
-          R.strings.settings,
+          R.strings.privacyProfile,
           style: TextStyle(
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
@@ -37,14 +38,14 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing20,
               ),
               /* 
-                  ACCOUNT
+                  HOW PEOPLE CAN FIND YOU
               */
               Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
                 ),
                 child: Text(
-                  R.strings.settingsAccountLabel,
+                  R.strings.privacyFindLabel,
                   textAlign: TextAlign.start,
                   style: R.styles.shadowLabelStyle,
                 ),
@@ -53,9 +54,9 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsAccountTypeTitle,
+                mainText: R.strings.privacyFindEmailTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.student,
+                resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
@@ -68,35 +69,9 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.changePassword,
+                mainText: R.strings.privacyFindUserCodeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountPrivacyProfileTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountConnectGoogleTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.connected,
+                resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
@@ -109,9 +84,9 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsAccountConnectFacebookTitle,
+                mainText: R.strings.privacyFindNameTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.disconnected,
+                resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
@@ -124,14 +99,14 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing25,
               ),
               /* 
-                  DISPLAY
+                  PEOPLE FOLLOW YOU
               */
               Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
                 ),
                 child: Text(
-                  R.strings.settingsDisplayLabel,
+                  R.strings.privacyFollowLabel,
                   textAlign: TextAlign.start,
                   style: R.styles.shadowLabelStyle,
                 ),
@@ -140,111 +115,16 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsDisplayDefaultTabTitle,
+                mainText: R.strings.privacyFollowFeatureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: "News Feed",
-                resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayMeasureTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                enableSwitchButton: true,
-                switchButtonOnTitle: "M",
-                switchButtonOffTitle: "Km",
-                switchStatus: true,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayThemeTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                enableSwitchButton: true,
-                switchButtonOnTitle: "On",
-                switchButtonOffTitle: "Off",
-                switchStatus: false,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsDisplayLanguageTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                enableSwitchButton: true,
-                switchButtonOnTitle: "En",
-                switchButtonOffTitle: "Vi",
-                switchStatus: true,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              /* 
-                  NOTIFICATIONS
-              */
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                ),
-                child: Text(
-                  R.strings.settingsNotiLabel,
-                  textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
-                ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsNotiInAppTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              LineButton(
-                mainText: R.strings.settingsNotiEmailTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                subText: R.strings.settingsNotiEmailSubtitle,
+                subText: R.strings.privacyFollowFeatureSubtitle,
                 subTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
+                switchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -254,14 +134,14 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing25,
               ),
               /* 
-                  SUPPORT & OTHERS
+                  ACTIVITIES
               */
               Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
                 ),
                 child: Text(
-                  R.strings.settingsSOLabel,
+                  R.strings.privacyActLabel,
                   textAlign: TextAlign.start,
                   style: R.styles.shadowLabelStyle,
                 ),
@@ -270,8 +150,41 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOFAQsTitle,
+                mainText: R.strings.privacyActLimitPeopleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.privacyActLimitPeopleSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              /* 
+                  OTHER PERSONAL INFORMATION
+              */
+              Padding(
+                padding: EdgeInsets.only(
+                  left: R.appRatio.appSpacing15,
+                ),
+                child: Text(
+                  R.strings.privacyOPILabel,
+                  textAlign: TextAlign.start,
+                  style: R.styles.shadowLabelStyle,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeUserCodeTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -283,8 +196,12 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOContactTitle,
+                mainText: R.strings.privacyOPISeeDetailedInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.privacyOPISeeDetailedInfoSubtitle,
+                subTextFontSize: R.appRatio.appFontSize14,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -296,8 +213,10 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOLegalTitle,
+                mainText: R.strings.privacyOPISeeFollowersTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -309,8 +228,10 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOAboutUsTitle,
+                mainText: R.strings.privacyOPISeeFollowingTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -322,15 +243,92 @@ class SettingPage extends StatelessWidget {
                 height: R.appRatio.appSpacing15,
               ),
               LineButton(
-                mainText: R.strings.settingsSOLogOutTitle,
+                mainText: R.strings.privacyOPISeePhotosTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              )
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeEventBadgesTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeEventsTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeStatsTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeTeamsTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing15,
+              ),
+              LineButton(
+                mainText: R.strings.privacyOPISeeTeamPlansTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                resultText: R.strings.statusEveryone,
+                resultTextFontSize: R.appRatio.appFontSize14,
+                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                enableBottomUnderline: true,
+                lineFunction: () {
+                  // TODO: Implement function here
+                  print("Line function");
+                },
+              ),
             ],
           ),
         ),

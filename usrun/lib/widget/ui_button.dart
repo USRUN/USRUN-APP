@@ -65,7 +65,7 @@ class UIButton extends StatelessWidget {
                 color: this.textColor,
                 fontWeight: this.fontWeight)),
       ),
-      onTap: this.enable ? this.onTap : null,
+      onTap: (this.enable && this.onTap != null) ? this.onTap : null,
     );
   }
 }

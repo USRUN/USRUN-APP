@@ -49,8 +49,8 @@ class ChangePasswordPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
-            left: R.appRatio.appPadding15,
-            right: R.appRatio.appPadding15,
+            left: R.appRatio.appSpacing15,
+            right: R.appRatio.appSpacing15,
           ),
           child: Container(
             child: Column(
