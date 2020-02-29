@@ -100,7 +100,7 @@ class _AppPageState extends State<AppPage> {
           ),
           child: Stack(
             children: <Widget>[
-              Image.asset(R.images.drawer_bg,
+              Image.asset(R.images.drawerBackground,
                   height: R.appRatio.deviceHeight + 20),
               Center(
                 child: Column(

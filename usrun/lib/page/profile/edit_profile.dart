@@ -111,7 +111,7 @@ class EditProfilePage extends StatelessWidget {
                     color: R.colors.majorOrange,
                     width: 2,
                   ),
-                  supportImageURL: R.images.drawer_bg,
+                  supportImageURL: R.images.drawerBackground,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

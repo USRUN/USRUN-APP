@@ -70,6 +70,12 @@ flutter:
     - assets/images/drawer_background_darker.jpg
     - assets/images/avatar.png
 
+    - assets/images/avatar_huyta.png
+    - assets/images/avatar_quoctk.png
+    - assets/images/avatar_ngocvtt.png
+    - assets/images/avatar_phuctt.png
+    - assets/images/avatar_khatm.png
+
     - assets/myicons/icon-white-back.png
     - assets/myicons/icon-orange-close.png
     - assets/myicons/icon-orange-search.png

@@ -39,12 +39,12 @@ class AboutDevelopers extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(
-                  height: R.appRatio.appSpacing25,
+                  height: R.appRatio.appSpacing30,
                 ),
                 // -----
                 // DEVELOPER 1
                 AvatarView(
-                  avatarImageURL: null, // TODO: Put team images here
+                  avatarImageURL: R.images.avatarQuocTK, 
                   avatarImageSize: R.appRatio.appAvatarSize150,
                 ),
                 SizedBox(
@@ -72,11 +72,11 @@ class AboutDevelopers extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 2
                 AvatarView(
-                  avatarImageURL: null, // TODO: Put team images here
+                  avatarImageURL: R.images.avatarPhucTT,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                 ),
                 SizedBox(
@@ -104,11 +104,11 @@ class AboutDevelopers extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 3
                 AvatarView(
-                  avatarImageURL: null, // TODO: Put team images here
+                  avatarImageURL: R.images.avatarNgocVTT,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                 ),
                 SizedBox(
@@ -136,11 +136,11 @@ class AboutDevelopers extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 4
                 AvatarView(
-                  avatarImageURL: null, // TODO: Put team images here
+                  avatarImageURL: R.images.avatarKhaTM,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                 ),
                 SizedBox(
@@ -168,11 +168,11 @@ class AboutDevelopers extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 5
                 AvatarView(
-                  avatarImageURL: null, // TODO: Put team images here
+                  avatarImageURL: R.images.avatarHuyTA,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                 ),
                 SizedBox(
@@ -201,7 +201,7 @@ class AboutDevelopers extends StatelessWidget {
                 ),
                 // -----
                 SizedBox(
-                  height: R.appRatio.appSpacing25,
+                  height: R.appRatio.appSpacing30,
                 ),
               ],
             ),

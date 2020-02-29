@@ -402,10 +402,15 @@ class _Images {
   final String loginEmail = 'assets/images/login_email.png';
   final String orLine = 'assets/images/or_line.png';
 
-  final String drawer_bg = 'assets/images/drawer_background.png';
-  final String drawer_bg_darker = 'assets/images/drawer_background_darker.jpg';
+  final String drawerBackground = 'assets/images/drawer_background.png';
+  final String drawerBackgroundDarker = 'assets/images/drawer_background_darker.jpg';
 
   final String avatar = 'assets/images/avatar.png';
+  final String avatarQuocTK = 'assets/images/avatar_quoctk.png';
+  final String avatarNgocVTT = 'assets/images/avatar_ngocvtt.png';
+  final String avatarHuyTA = 'assets/images/avatar_huyta.png';
+  final String avatarPhucTT = 'assets/images/avatar_phuctt.png';
+  final String avatarKhaTM = 'assets/images/avatar_khatm.png';
 }
 
 @reflector
