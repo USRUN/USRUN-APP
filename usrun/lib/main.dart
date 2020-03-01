@@ -90,7 +90,7 @@ class _SplashPageState extends State<StatefulWidget> {
     super.didChangeDependencies();
 
     if (_needInit){
-      Future.delayed(Duration(milliseconds: 100), ()=> _initApp());
+      Future.delayed(Duration(milliseconds: 2000), ()=> _initApp());
     }
   }
 

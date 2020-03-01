@@ -7,6 +7,7 @@ class R {
   static Strings strings = Strings();
   static final _Images images = _Images();
   static final Styles styles = Styles();
+  static final _Icon icon = _Icon();
 
   static void initLocalized(String jsonContent){
     R.strings = MapperObject.create<Strings>(jsonContent);
@@ -54,6 +55,13 @@ class _Images{
   final String icTeam = 'assets/images/ic_team.png';
   final String icSettings = 'assets/images/ic_settings.png';
 
+}
+
+class _Icon {
+   final String icStartRecord = 'assets/icons/icon-record-start.png';
+   final String icStopRecord = 'assets/icons/icon-record-stop.png';
+   final String icResumeRecord = 'assets/icons/icon-record-restart.png';
+   final String icPauseRecord = 'assets/icons/icon-record-pause.png';
 }
 
 

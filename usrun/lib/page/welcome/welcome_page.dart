@@ -20,7 +20,7 @@ class WelcomePage extends StatelessWidget{
               child: Column(
                 children: <Widget>[
                   Image.asset(R.images.logoUsRun, width: 205,),
-                  SizedBox(height: windowWidth/2 + 150),
+                  SizedBox(height: windowWidth/2),
                   Padding(
                     padding: EdgeInsets.only(left: 20, right: 20),
                     child: Container(

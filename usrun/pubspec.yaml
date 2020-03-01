@@ -20,6 +20,15 @@ dependencies:
   flutter:
     sdk: flutter
   
+  flutter_map: ^0.8.2
+  latlong: ^0.6.1
+  geolocator: ^5.0.0
+  location: ^2.5.0
+  sensors: ^0.4.1+8
+
+
+  google_maps_flutter: ^0.5.24+1
+  
   reflectable: any
   
   image_picker: ^0.6.1+8
@@ -73,6 +82,17 @@ flutter:
     - assets/images/ic_profile.jpg
     - assets/images/ic_team.png
     - assets/images/ic_settings.png
+
+
+    - assets/icons/icon-color-record-events.png
+    - assets/icons/icon-color-record-statistics.png
+    - assets/icons/icon-record-pause.png
+    - assets/icons/icon-record-restart.png
+    - assets/icons/icon-record-start.png
+    - assets/icons/icon-record-stop.png
+    - assets/icons/icon-white-record-events.png
+    - assets/icons/icon-white-record-statistics.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

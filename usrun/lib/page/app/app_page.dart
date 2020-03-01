@@ -36,28 +36,17 @@ class AppPage extends StatefulWidget {
   _AppPageState createState() => _AppPageState();
 }
 
+
 class _AppPageState extends State<AppPage> {
    int _selectedDrawerIndex = 0;
 
+    final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),ProfilePage(),SettingPage()];
   _getDrawerItemWidget(int pos) {
-    switch (pos) {
-      case 0:
-        return new RecordPage();
-      case 1:
-        return new FeedPage();
-      case 2:
-        return new EventPage();
-      case 3:
-        return new TeamPage();
-      case 4:
-        return new ProfilePage();
-      case 5:
-        return new SettingPage();
-
-      default:
-        return new Text("Error");
+    if (pos==0)
+        return SafeArea(child: pages[pos]);
+    return pages[pos];
     }
-  }
+  
   
   _onSelectItem(int index) {
     setState(() {_selectedDrawerIndex = index;});
