@@ -83,6 +83,8 @@ class LineButton extends StatelessWidget {
         }
       },
       child: Container(
+        width: R.appRatio.deviceWidth,
+        color: R.colors.appBackground,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,

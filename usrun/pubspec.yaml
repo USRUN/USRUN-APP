@@ -89,14 +89,20 @@ flutter:
     - assets/myicons/icon-color-update-version.png
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
-    - 'assets/myicons/icon-white-edit.png'
+    - assets/myicons/icon-white-edit.png
 
     - assets/myicons/icon-white-light-record.png
+    - assets/myicons/icon-yellow-light-record.png
     - assets/myicons/icon-white-events-02.png
+    - assets/myicons/icon-yellow-events-02.png
     - assets/myicons/icon-white-news-feed-02.png
-    - assets/myicons/icon-white-profile.png
+    - assets/myicons/icon-yellow-news-feed-02.png
+    - assets/myicons/icon-white-profile-02.png
+    - assets/myicons/icon-yellow-profile-02.png
     - assets/myicons/icon-white-teams.png
+    - assets/myicons/icon-yellow-teams.png
     - assets/myicons/icon-white-settings.png
+    - assets/myicons/icon-yellow-settings.png
     
     - assets/usrunlogo/app-icon.png
     - assets/usrunlogo/logo-text.png

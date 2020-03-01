@@ -16,17 +16,18 @@ import 'package:usrun/widget/avatar_view.dart';
 class DrawerItem {
   String title;
   String icon;
-  DrawerItem(this.title, this.icon);
+  String activeIcon;
+  DrawerItem(this.title, this.icon, this.activeIcon);
 }
 
 class AppPage extends StatefulWidget {
   final drawerItems = [
-    DrawerItem(R.strings.record, R.myIcons.drawerRecord),
-    DrawerItem(R.strings.uFeed, R.myIcons.drawerUfeed),
-    DrawerItem(R.strings.events, R.myIcons.drawerEvents),
-    DrawerItem(R.strings.teams, R.myIcons.drawerTeams),
-    DrawerItem(R.strings.profile, R.myIcons.drawerProfile),
-    DrawerItem(R.strings.settings, R.myIcons.drawerSettings),
+    DrawerItem(R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
+    DrawerItem(R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
+    DrawerItem(R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
+    DrawerItem(R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
+    DrawerItem(R.strings.profile, R.myIcons.drawerProfile, R.myIcons.drawerActiveProfile),
+    DrawerItem(R.strings.settings, R.myIcons.drawerSettings, R.myIcons.drawerActiveSettings),
   ];
 
   @override
@@ -88,7 +89,7 @@ class _AppPageState extends State<AppPage> {
                   right: R.appRatio.appSpacing25,
                 ),
                 child: Image.asset(
-                  item.icon,
+                  (i == _selectedDrawerIndex ? item.activeIcon : item.icon),
                   width: R.appRatio.appIconSize25,
                   height: R.appRatio.appIconSize25,
                 ),

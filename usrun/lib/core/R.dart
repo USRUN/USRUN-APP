@@ -366,9 +366,15 @@ class _MyIcons {
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
   final String drawerEvents = 'assets/myicons/icon-white-events-02.png';
   final String drawerUfeed = 'assets/myicons/icon-white-news-feed-02.png';
-  final String drawerProfile = 'assets/myicons/icon-white-profile.png';
+  final String drawerProfile = 'assets/myicons/icon-white-profile-02.png';
   final String drawerTeams = 'assets/myicons/icon-white-teams.png';
   final String drawerSettings = 'assets/myicons/icon-white-settings.png';
+  final String drawerActiveRecord = 'assets/myicons/icon-yellow-light-record.png';
+  final String drawerActiveEvents = 'assets/myicons/icon-yellow-events-02.png';
+  final String drawerActiveUfeed = 'assets/myicons/icon-yellow-news-feed-02.png';
+  final String drawerActiveProfile = 'assets/myicons/icon-yellow-profile-02.png';
+  final String drawerActiveTeams = 'assets/myicons/icon-yellow-teams.png';
+  final String drawerActiveSettings = 'assets/myicons/icon-yellow-settings.png';
   final String aboutUsUSRUN = 'assets/myicons/icon-color-letter.png';
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
