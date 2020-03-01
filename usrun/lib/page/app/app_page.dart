@@ -166,6 +166,7 @@ class _AppPageState extends State<AppPage> {
                     ),
                     Text(
                       _fullName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
