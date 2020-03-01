@@ -46,7 +46,7 @@ class ImageCacheManager {
   }) {
     if (url == null) {
       return Image.asset(
-        R.images.icImageDefault,
+        R.myIcons.defaultIcon,
         semanticLabel: semanticLabel,
         excludeFromSemantics: excludeFromSemantics,
         width: width,
@@ -102,7 +102,7 @@ class ImageCacheManager {
 
       if (image == null) {
         return Image.asset(
-          R.images.icImageDefault,
+          R.myIcons.defaultIcon,
           semanticLabel: semanticLabel,
           excludeFromSemantics: excludeFromSemantics,
           width: width,
@@ -151,7 +151,7 @@ class ImageCacheManager {
 //      }
 //    }
 //
-//    CustomImageProvider image = CustomImageProvider(R.images.icImageDefault, scale: scale, cache: _persistentDiskCache);
+//    CustomImageProvider image = CustomImageProvider(R.images.icdefaultIcon, scale: scale, cache: _persistentDiskCache);
 //
 //    return Image(
 //      image: image,
@@ -173,7 +173,7 @@ class ImageCacheManager {
 
   static CustomImageProvider getImageData({@required String url}) {
     if (url == null) {
-      return CustomImageProvider(R.images.icImageDefault, cache: _persistentDiskCache);
+      return CustomImageProvider(R.myIcons.defaultIcon, cache: _persistentDiskCache);
     }
 
     CustomImageProvider data = CustomImageProvider(url, cache: isAssetImage(url) ? _persistentDiskCache : _customDiskCache);
@@ -181,7 +181,7 @@ class ImageCacheManager {
       return data;
     }
 
-    return CustomImageProvider(R.images.icImageDefault, cache: _persistentDiskCache);
+    return CustomImageProvider(R.myIcons.defaultIcon, cache: _persistentDiskCache);
   }
 
   static void clear() {
@@ -210,7 +210,7 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
     return SynchronousFuture<CustomImageProvider>(this);
   }
 
-  
+
   Future<ui.Codec> _loadAsync(CustomImageProvider key) async {
     assert(key == this);
 
@@ -240,7 +240,7 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
         await cache.save(uId, imageData);
         return imageData;
       } else {
-        ByteData bytes = await rootBundle.load(R.images.icImageDefault);
+        ByteData bytes = await rootBundle.load(R.myIcons.defaultIcon);
         Uint8List rawPath = bytes.buffer.asUint8List();
         return rawPath;
       }

@@ -1,7 +1,5 @@
 import 'package:usrun/util/reflector.dart';
 
-import 'package:usrun/core/R.dart';
-
 const String STRAVA_CLIENT_ID = "26496";
 const String STRAVA_CLIENT_SECRET = "06db3de6b974347549b2d27e3c4794dd05e3f811";
 const String STRAVA_SCOPE = "profile:read_all,activity:read_all";
@@ -46,9 +44,7 @@ const USER_EMAIL_NOT_FOUND = 2023;
 const USER_EMAIL_IS_SOCIAL = 2024;
 
 
-
 const TEAM_NOT_FOUND        = 3000;
-
 
 
 const EVENT_NOT_FOUND       = 4000;
@@ -60,7 +56,9 @@ const EVENT_CAN_NOT_CREATE  = 4003;
 const ACTIVITY_NOT_FOUND    = 5000;
 const ACTIVITY_ADD_FAIL     = 5001;
 
+
 const FUND_NOT_FOUND        = 6000;
+
 
 const LEADER_BOARD_NOT_FOUND    = 7000;
 const LEADER_BOARD_CREATE_FAIL  = 7001;
@@ -74,7 +72,6 @@ enum StatType {
   month,
   year,
 }
-
 
 
 @reflector
