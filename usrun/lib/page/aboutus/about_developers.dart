@@ -45,7 +45,7 @@ class AboutDevelopers extends StatelessWidget {
                 // DEVELOPER 1
                 AvatarView(
                   avatarImageURL: R.images.avatarQuocTK, 
-                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -77,7 +77,7 @@ class AboutDevelopers extends StatelessWidget {
                 // DEVELOPER 2
                 AvatarView(
                   avatarImageURL: R.images.avatarPhucTT,
-                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -109,7 +109,7 @@ class AboutDevelopers extends StatelessWidget {
                 // DEVELOPER 3
                 AvatarView(
                   avatarImageURL: R.images.avatarNgocVTT,
-                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -141,7 +141,7 @@ class AboutDevelopers extends StatelessWidget {
                 // DEVELOPER 4
                 AvatarView(
                   avatarImageURL: R.images.avatarKhaTM,
-                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -173,7 +173,7 @@ class AboutDevelopers extends StatelessWidget {
                 // DEVELOPER 5
                 AvatarView(
                   avatarImageURL: R.images.avatarHuyTA,
-                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,

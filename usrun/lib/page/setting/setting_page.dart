@@ -4,6 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/page/setting/about_us.dart';
+import 'package:usrun/page/setting/change_password.dart';
+import 'package:usrun/page/setting/inapp_notifications.dart';
+import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/widget/line_button.dart';
 
 class SettingPage extends StatelessWidget {
@@ -12,22 +16,6 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.settings,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -73,8 +61,7 @@ class SettingPage extends StatelessWidget {
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                  pushPage(context, ChangePasswordPage());
                 },
               ),
               SizedBox(
@@ -86,8 +73,7 @@ class SettingPage extends StatelessWidget {
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                  pushPage(context, PrivacyProfile());
                 },
               ),
               SizedBox(
@@ -227,8 +213,7 @@ class SettingPage extends StatelessWidget {
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                  pushPage(context, InAppNotifications());
                 },
               ),
               SizedBox(
@@ -314,8 +299,7 @@ class SettingPage extends StatelessWidget {
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                  pushPage(context, AboutUs());
                 },
               ),
               SizedBox(

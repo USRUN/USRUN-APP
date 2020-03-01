@@ -89,8 +89,9 @@ flutter:
     - assets/myicons/icon-color-update-version.png
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
+    - 'assets/myicons/icon-white-edit.png'
 
-    - assets/myicons/icon-white-record.png
+    - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-white-events-02.png
     - assets/myicons/icon-white-news-feed-02.png
     - assets/myicons/icon-white-profile.png

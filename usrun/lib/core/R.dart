@@ -50,8 +50,10 @@ class AppRatio {
 
   final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
+  final double _figmaWidth150                    = 150;
   final double _figmaWidth181                   = 181;
   final double _figmaWidth200                   = 200;
+  final double _figmaWidth250                   = 250;
   final double _figmaWidth300                   = 300;
   final double _figmaWidth381                   = 381;
 
@@ -72,6 +74,8 @@ class AppRatio {
   final double _figmaSpacing30                  = 30;
   final double _figmaSpacing35                  = 35;
   final double _figmaSpacing40                  = 40;
+  final double _figmaSpacing45                  = 45;
+  final double _figmaSpacing50                  = 50;
 
   final double _figmaIconSize15                 = 15;
   final double _figmaIconSize18                 = 18;
@@ -86,6 +90,7 @@ class AppRatio {
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
 
+  final double _figmaAvatarSize130              = 130;
   final double _figmaAvatarSize150              = 150;
 
   /* 
@@ -113,8 +118,10 @@ class AppRatio {
 
   double appWidth70;
   double appWidth80;
+  double appWidth150;
   double appWidth181;
   double appWidth200;
+  double appWidth250;
   double appWidth300;
   double appWidth381;
 
@@ -135,6 +142,8 @@ class AppRatio {
   double appSpacing30;
   double appSpacing35;
   double appSpacing40;
+  double appSpacing45;
+  double appSpacing50;
 
   double appIconSize15;
   double appIconSize18;
@@ -149,6 +158,7 @@ class AppRatio {
   double appDropDownImageSquareSize;
   double appDropDownArrowIconSize;
 
+  double appAvatarSize130;
   double appAvatarSize150;
 
   /*
@@ -208,8 +218,10 @@ class AppRatio {
     // Find width & height of objects
     appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
+    appWidth150 = _computeWidth(this._figmaWidth150);
     appWidth181 = _computeWidth(this._figmaWidth181);
     appWidth200 = _computeWidth(this._figmaWidth200);
+    appWidth250 = _computeWidth(this._figmaWidth250);
     appWidth300 = _computeWidth(this._figmaWidth300);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
@@ -231,6 +243,8 @@ class AppRatio {
     appSpacing30 = _computeWidth(this._figmaSpacing30);
     appSpacing35 = _computeWidth(this._figmaSpacing35);
     appSpacing40 = _computeWidth(this._figmaSpacing40);
+    appSpacing45 = _computeWidth(this._figmaSpacing45);
+    appSpacing50 = _computeWidth(this._figmaSpacing50);
 
     // Find icon size
     appIconSize15 = _computeWidth(this._figmaIconSize15);
@@ -248,6 +262,7 @@ class AppRatio {
     appDropDownArrowIconSize = _computeWidth(this._figmaDropDownArrowIconSize);
 
     // Find size of avatars
+    appAvatarSize130 = _computeWidth(this._figmaAvatarSize130);
     appAvatarSize150 = _computeWidth(this._figmaAvatarSize150);
 
     /*
@@ -284,6 +299,7 @@ class _Color {
   Color majorOrange                   = Color(0xFFFD632C);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
+  Color oldYellow                     = Color(0xFFF9C86A);
 
   // Default is Light theme
   // #FD632C = RGB(253, 99, 44)
@@ -347,7 +363,7 @@ class _MyIcons {
   final String appBarCheckBtn = 'assets/myicons/icon-big-white-check.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
-  final String drawerRecord = 'assets/myicons/icon-white-record.png';
+  final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
   final String drawerEvents = 'assets/myicons/icon-white-events-02.png';
   final String drawerUfeed = 'assets/myicons/icon-white-news-feed-02.png';
   final String drawerProfile = 'assets/myicons/icon-white-profile.png';
@@ -357,6 +373,7 @@ class _MyIcons {
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
+  final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
 
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';

@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/page/aboutus/about_developers.dart';
+import 'package:usrun/page/aboutus/about_usrun.dart';
 import 'package:usrun/widget/aboutus_box.dart';
 
 class AboutUs extends StatelessWidget {
@@ -47,7 +49,9 @@ class AboutUs extends StatelessWidget {
                   subtitle: R.strings.aboutUsUSRUNSubtitle,
                   title: R.strings.aboutUsUSRUNTitle,
                   iconSize: R.appRatio.appIconSize40,
-                  pressBox: null, // TODO: Implement this function here
+                  pressBox: () {
+                    pushPage(context, AboutUSRUN());
+                  },
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing30,
@@ -58,7 +62,9 @@ class AboutUs extends StatelessWidget {
                   subtitle: R.strings.aboutUsDevelopersSubtitle,
                   title: R.strings.aboutUsDevelopersTitle,
                   iconSize: R.appRatio.appIconSize40,
-                  pressBox: null, // TODO: Implement this function here
+                  pressBox: () {
+                    pushPage(context, AboutDevelopers());
+                  },
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing30,

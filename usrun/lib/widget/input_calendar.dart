@@ -79,11 +79,12 @@ class _InputCalendarState extends State<InputCalendar> {
                   ),
                 ),
                 onTap: () async {
+                  final DateTime today = new DateTime.now();
                   final datePick = await showDatePicker(
                       context: context,
-                      initialDate: new DateTime.now(),
+                      initialDate: today,
                       firstDate: new DateTime(1900),
-                      lastDate: new DateTime(2100));
+                      lastDate: today);
 
                   if (datePick != null && datePick != _dateTime) {
                     String temp =

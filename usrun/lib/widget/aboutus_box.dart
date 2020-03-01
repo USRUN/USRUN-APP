@@ -18,25 +18,25 @@ class AboutUsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: R.appRatio.appWidth300,
-      height: R.appRatio.appHeight80,
-      decoration: BoxDecoration(
-        color: R.colors.boxBackground,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4.0,
-            offset: Offset(4.0, 4.0),
-            color: R.colors.textShadow,
-          ),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          if (this.pressBox != null) {
-            this.pressBox();
-          }
-        },
+    return GestureDetector(
+      onTap: () {
+        if (this.pressBox != null) {
+          this.pressBox();
+        }
+      },
+      child: Container(
+        width: R.appRatio.appWidth300,
+        height: R.appRatio.appHeight80,
+        decoration: BoxDecoration(
+          color: R.colors.boxBackground,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4.0,
+              offset: Offset(4.0, 4.0),
+              color: R.colors.textShadow,
+            ),
+          ],
+        ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
