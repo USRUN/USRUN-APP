@@ -23,8 +23,7 @@ class EditProfilePage extends StatelessWidget {
   final String _userCode = "STU1653072";
   final _dropDownMenuItemList = [
     {'value': '0', 'text': 'Male'},
-    {'value': '1', 'text': 'Female'},
-    {'value': '2', 'text': 'Others'}
+    {'value': '1', 'text': 'Female'}
   ];
 
   void _getDOBFunction(DateTime picker) {
@@ -99,7 +98,7 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 AvatarView(
-                  avatarImageURL: R.images.avatar,
+                  avatarImageURL: R.images.avatarQuocTK,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                   enableSquareAvatarImage: false,
                   pressAvatarImage: () {
@@ -111,7 +110,7 @@ class EditProfilePage extends StatelessWidget {
                     color: R.colors.majorOrange,
                     width: 2,
                   ),
-                  supportImageURL: R.images.drawerBackground,
+                  supportImageURL: R.images.avatar,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -238,7 +237,6 @@ class EditProfilePage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: R.appRatio.appWidth181,
                       child: DropDownMenu(
                         errorEmptyData: "Nothing to show",
                         enableFullWidth: false,

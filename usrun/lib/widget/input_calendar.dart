@@ -34,11 +34,9 @@ class _InputCalendarState extends State<InputCalendar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        bottom: R.appRatio.appSpacing10,
-      ),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               child: (widget.labelTitle.length == 0
@@ -50,18 +48,13 @@ class _InputCalendarState extends State<InputCalendar> {
                           : R.styles.labelStyle),
                     )),
             ),
-            SizedBox(
-              height: R.appRatio.appSpacing10,
-            ),
             GestureDetector(
                 child: Container(
+                  height: 50,
+                  alignment: Alignment.centerLeft,
                   width: (widget.enableFullWidth
                       ? R.appRatio.appWidth381
                       : R.appRatio.appWidth181),
-                  padding: EdgeInsets.only(
-                    top: R.appRatio.appSpacing5,
-                    bottom: R.appRatio.appSpacing10,
-                  ),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(

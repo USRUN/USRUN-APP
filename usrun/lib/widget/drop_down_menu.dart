@@ -98,22 +98,23 @@ class _DropDownMenuState extends State<DropDownMenu> {
                               : R.styles.labelStyle),
                         )),
                 ),
-                SizedBox(
-                  width: (widget.labelTitle.length == 0
-                      ? 0
-                      : R.appRatio.appSpacing15),
-                ),
-                Text(
-                  widget.errorEmptyData,
-                  style: TextStyle(
-                    fontSize: R.appRatio.appFontSize18,
-                    color: R.colors.normalNoteText,
+                Container(
+                  height: 25,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: (widget.labelTitle.length == 0 ? 0 : R.appRatio.appSpacing15)),
+                  child: Text(
+                    widget.errorEmptyData,
+                    style: TextStyle(
+                      fontSize: R.appRatio.appFontSize18,
+                      color: R.colors.normalNoteText,
+                    ),
                   ),
-                )
+                ),
               ],
             )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(
                   child: (widget.labelTitle.length == 0
@@ -125,16 +126,15 @@ class _DropDownMenuState extends State<DropDownMenu> {
                               : R.styles.labelStyle),
                         )),
                 ),
-                SizedBox(
-                  height: (widget.labelTitle.length == 0
-                      ? 0
-                      : R.appRatio.appSpacing20),
-                ),
-                Text(
-                  widget.errorEmptyData,
-                  style: TextStyle(
-                    fontSize: R.appRatio.appFontSize18,
-                    color: R.colors.normalNoteText,
+                Container(
+                  height: 50,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    widget.errorEmptyData,
+                    style: TextStyle(
+                      fontSize: R.appRatio.appFontSize18,
+                      color: R.colors.normalNoteText,
+                    ),
                   ),
                 )
               ],
@@ -157,6 +157,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
+                padding: EdgeInsets.only(right: (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0)),
                 child: (this._itemsHasImageURL
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -169,9 +170,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
                           fit: BoxFit.cover,
                         ))
                     : null),
-              ),
-              SizedBox(
-                width: (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0),
               ),
               Text(
                 element['text'],
@@ -200,9 +198,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
                       ? R.styles.shadowLabelStyle
                       : R.styles.labelStyle),
                 )),
-        ),
-        SizedBox(
-          height: (this._itemsHasImageURL ? R.appRatio.appSpacing15 : 0),
         ),
         custom_DropDown.DropdownButton<String>(
           icon: Icon(Icons.arrow_drop_down),
@@ -248,6 +243,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
+          padding: EdgeInsets.only(right: (widget.labelTitle.length == 0 ? 0 : R.appRatio.appSpacing15)),
           child: (widget.labelTitle.length == 0
               ? null
               : Text(
@@ -256,9 +252,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
                       ? R.styles.shadowLabelStyle
                       : R.styles.labelStyle),
                 )),
-        ),
-        SizedBox(
-          width: (this._itemsHasImageURL ? R.appRatio.appSpacing15 : 0),
         ),
         Expanded(
           child: custom_DropDown.DropdownButton<String>(
@@ -294,7 +287,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
             maxHeightBox: (widget.maxHeightBox > R.appRatio.deviceHeight / 2
                 ? R.appRatio.deviceHeight / 2 - R.appRatio.appSpacing40
                 : widget.maxHeightBox),
-            elevation: 4,
           ),
         ),
       ],
