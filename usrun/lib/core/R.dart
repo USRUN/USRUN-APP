@@ -27,6 +27,7 @@ class R {
     }
 
     myIcons.changeTheme(appTheme);
+    colors.changeTheme(appTheme);
   }
 }
 
@@ -50,7 +51,8 @@ class AppRatio {
 
   final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
-  final double _figmaWidth150                    = 150;
+  final double _figmaWidth120                   = 120;
+  final double _figmaWidth150                   = 150;
   final double _figmaWidth181                   = 181;
   final double _figmaWidth200                   = 200;
   final double _figmaWidth250                   = 250;
@@ -64,6 +66,11 @@ class AppRatio {
   final double _figmaHeight60                   = 60;
   final double _figmaHeight70                   = 70;
   final double _figmaHeight80                   = 80;
+  final double _figmaHeight90                   = 90;
+  final double _figmaHeight100                  = 100;
+  final double _figmaHeight120                  = 120;
+  final double _figmaHeight150                  = 150;
+  final double _figmaHeight190                  = 190;
   final double _figmaHeight320                  = 320;
 
   final double _figmaSpacing5                   = 5;
@@ -89,7 +96,10 @@ class AppRatio {
   final double _figmaWelcomPageLogoTextSize     = 160;
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
+  final double _figmaEventBadgeSize             = 60;
+  final double _figmaThumbnailSize              = 80;
 
+  final double _figmaAvatarSize80               = 80;
   final double _figmaAvatarSize130              = 130;
   final double _figmaAvatarSize150              = 150;
 
@@ -118,6 +128,7 @@ class AppRatio {
 
   double appWidth70;
   double appWidth80;
+  double appWidth120;
   double appWidth150;
   double appWidth181;
   double appWidth200;
@@ -132,6 +143,11 @@ class AppRatio {
   double appHeight60;
   double appHeight70;
   double appHeight80;
+  double appHeight90;
+  double appHeight100;
+  double appHeight120;
+  double appHeight150;
+  double appHeight190;
   double appHeight320;
 
   double appSpacing5;
@@ -157,7 +173,10 @@ class AppRatio {
   double appWelcomPageLogoTextSize;
   double appDropDownImageSquareSize;
   double appDropDownArrowIconSize;
+  double appEventBadgeSize;
+  double appThumbnailSize;
 
+  double appAvatarSize80;
   double appAvatarSize130;
   double appAvatarSize150;
 
@@ -218,6 +237,7 @@ class AppRatio {
     // Find width & height of objects
     appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
+    appWidth120 = _computeWidth(this._figmaWidth120);
     appWidth150 = _computeWidth(this._figmaWidth150);
     appWidth181 = _computeWidth(this._figmaWidth181);
     appWidth200 = _computeWidth(this._figmaWidth200);
@@ -232,6 +252,11 @@ class AppRatio {
     appHeight60 = _computeHeight(this._figmaHeight60);
     appHeight70 = _computeHeight(this._figmaHeight70);
     appHeight80 = _computeHeight(this._figmaHeight80);
+    appHeight90 = _computeHeight(this._figmaHeight90);
+    appHeight100 = _computeHeight(this._figmaHeight100);
+    appHeight120 = _computeHeight(this._figmaHeight120);
+    appHeight150 = _computeHeight(this._figmaHeight150);
+    appHeight190 = _computeHeight(this._figmaHeight190);
     appHeight320 = _computeHeight(this._figmaHeight320);
 
     // Find spacing
@@ -260,8 +285,11 @@ class AppRatio {
     appWelcomPageLogoTextSize = _computeWidth(this._figmaWelcomPageLogoTextSize);
     appDropDownImageSquareSize = _computeWidth(this._figmaDropDownImageSquareSize);
     appDropDownArrowIconSize = _computeWidth(this._figmaDropDownArrowIconSize);
+    appEventBadgeSize = _computeWidth(this._figmaEventBadgeSize);
+    appThumbnailSize = _computeWidth(this._figmaThumbnailSize);
 
     // Find size of avatars
+    appAvatarSize80 = _computeWidth(this._figmaAvatarSize80);
     appAvatarSize130 = _computeWidth(this._figmaAvatarSize130);
     appAvatarSize150 = _computeWidth(this._figmaAvatarSize150);
 
@@ -300,18 +328,19 @@ class _Color {
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
   Color oldYellow                     = Color(0xFFF9C86A);
+  Color labelText                     = Color(0xFFFD632C);
 
   // Default is Light theme
   // #FD632C = RGB(253, 99, 44)
   // #FFEBDE = RGB(255, 235, 222)
   // #000000 = RGB(0, 0, 0)
-  Color labelText                     = Color(0xFFFD632C);
   Color contentText                   = Color(0xFF000000);
   Color orangeNoteText                = Color(0xFFFD632C);
   Color normalNoteText                = Color(0xFF808080);
   Color lighterNormalNoteText         = Color(0xFFABABAB);
   Color appBackground                 = Color(0xFFFFFFFF);
   Color boxBackground                 = Color(0xFFFFFFFF);
+  Color unfollowButtonColor           = Color(0xFF515151);
   Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
   Color btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
   Color textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
@@ -322,13 +351,13 @@ class _Color {
   // User need to change theme
   void changeTheme(String theme) {
     if (theme.compareTo('Light') == 0) {
-      labelText                     = Color(0xFFFD632C);
       contentText                   = Color(0xFF000000);
       orangeNoteText                = Color(0xFFFD632C);
       normalNoteText                = Color(0xFF808080);
       lighterNormalNoteText         = Color(0xFFABABAB);
       appBackground                 = Color(0xFFFFFFFF);
       boxBackground                 = Color(0xFFFFFFFF);
+      unfollowButtonColor           = Color(0xFF515151);
       sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
       btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
       textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
@@ -340,15 +369,15 @@ class _Color {
       // #212121 = RGB(33, 33, 33)
       // #FFFFFF = RGB(255, 255, 255)
       // #ABABAB = RGB(171, 171, 171)
-      labelText                     = Color(0xFFFD632C);
       contentText                   = Color(0xFFFFFFFF);
       orangeNoteText                = Color(0xFFFD632C);
       normalNoteText                = Color(0xFFABABAB);
       lighterNormalNoteText         = Color(0xFFABABAB);
       appBackground                 = Color(0xFF121212);
       boxBackground                 = Color(0xFF212121);
+      unfollowButtonColor           = Color(0xFFABABAB);
       sectionBackgroundLayer        = Color.fromRGBO(33, 33, 33, 0.5);
-      btnShadow                     =  Color.fromRGBO(255, 255, 255, 0.5);
+      btnShadow                     = Color.fromRGBO(255, 255, 255, 0.5);
       textShadow                    = Color.fromRGBO(255, 255, 255, 0.25);
       tabLayer                      = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer               = Color.fromRGBO(171, 171, 171, 0.2);
@@ -417,7 +446,8 @@ class _Images {
   final String orLine = 'assets/images/or_line.png';
 
   final String drawerBackground = 'assets/images/drawer_background.png';
-  final String drawerBackgroundDarker = 'assets/images/drawer_background_darker.jpg';
+  final String drawerBackgroundDarker = 'assets/images/drawer_background_darker.png';
+  final String smallDefaultImage = 'assets/images/small_default_image.png';
 
   final String avatar = 'assets/images/avatar.png';
   final String avatarQuocTK = 'assets/images/avatar_quoctk.png';
@@ -618,6 +648,23 @@ class Styles {
       fontWeight: FontWeight.bold,
       fontSize: R.appRatio.appFontSize18,
       color: R.colors.labelText,
+      shadows: <Shadow>[
+        Shadow(
+          offset: Offset(2.0, 2.0),
+          blurRadius: 4.0,
+          color: R.colors.textShadow,
+        ),
+      ]);
+
+  final TextStyle subTitleStyle = TextStyle(
+      fontWeight: FontWeight.normal,
+      fontSize: R.appRatio.appFontSize12,
+      color: R.colors.contentText);
+
+  final TextStyle shadowSubTitleStyle = TextStyle(
+      fontWeight: FontWeight.normal,
+      fontSize: R.appRatio.appFontSize12,
+      color: R.colors.contentText,
       shadows: <Shadow>[
         Shadow(
           offset: Offset(2.0, 2.0),

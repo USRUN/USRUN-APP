@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/core/R.dart';
 
 class AvatarView extends StatelessWidget {
   final String avatarImageURL;
@@ -53,11 +53,13 @@ class AvatarView extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(this.avatarImageSize / 2),
                 ),
-                child: ImageCacheManager.getImage(
-                  url: this.avatarImageURL,
-                  width: this.avatarImageSize,
+                child: FadeInImage.assetNetwork(
+                  placeholder: R.images.smallDefaultImage,
+                  image: this.avatarImageURL,
                   height: this.avatarImageSize,
+                  width: this.avatarImageSize,
                   fit: BoxFit.cover,
+                  fadeInDuration: new Duration(milliseconds: 100),
                 ),
               ),
               Align(
@@ -68,11 +70,13 @@ class AvatarView extends StatelessWidget {
                         borderRadius: BorderRadius.all(
                           Radius.circular((this.avatarImageSize / 4) / 2),
                         ),
-                        child: ImageCacheManager.getImage(
-                          url: this.supportImageURL,
-                          fit: BoxFit.cover,
-                          width: this.avatarImageSize / 4,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: R.images.smallDefaultImage,
+                          image: this.supportImageURL,
                           height: this.avatarImageSize / 4,
+                          width: this.avatarImageSize / 4,
+                          fit: BoxFit.cover,
+                          fadeInDuration: new Duration(milliseconds: 100),
                         ),
                       )),
               ),
