@@ -3,14 +3,22 @@ import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:usrun/core/R.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class PhotoList extends StatelessWidget {
-  final thumbnailSize = R.appRatio.appThumbnailSize.roundToDouble();
-
   final String labelTitle;
   final bool enableLabelShadow;
   final List items;
   final bool enableScrollBackgroundColor;
+
+  final double _thumbnailSize =
+      R.appRatio.appPhotoThumbnailSize.roundToDouble();
+
+  // Define configurations for splitting item list
+  static List _newItemList = [];
+  static bool _enableListWithTwoRows = false;
+  static int _numberToSplit = R.constants.numberToSplitPhotoList;
+  static int _endPositionOfFirstList = 0;
 
   /*
     Structure of the "items" variable: 
@@ -30,8 +38,24 @@ class PhotoList extends StatelessWidget {
     this.enableScrollBackgroundColor = true,
   });
 
+  void _splitItemList() {
+    if (this.items.length > _numberToSplit) {
+      _enableListWithTwoRows = true;
+      _endPositionOfFirstList = (this.items.length / 2).round();
+      _newItemList.add(this.items.sublist(0, _endPositionOfFirstList));
+      _newItemList
+          .add(this.items.sublist(_endPositionOfFirstList, this.items.length));
+    } else {
+      _newItemList.add(this.items);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Split item list
+    this._splitItemList();
+
+    // Render everything
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -56,42 +80,101 @@ class PhotoList extends StatelessWidget {
                 ? R.colors.sectionBackgroundLayer
                 : R.colors.appBackground),
             width: R.appRatio.deviceWidth,
-            height: R.appRatio.appHeight120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: this.items.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                String thumbnailURL = this.items[index]['thumbnailURL'];
-
-                return Container(
-                  padding: EdgeInsets.only(
-                    left: R.appRatio.appSpacing15,
-                    right: (index == this.items.length - 1
-                        ? R.appRatio.appSpacing15
-                        : 0),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      this._expandPhoto(context, index);
-                    },
-                    child: Center(
-                      child: FadeInImage.assetNetwork(
-                        placeholder: R.images.smallDefaultImage,
-                        image: thumbnailURL,
-                        height: this.thumbnailSize,
-                        width: this.thumbnailSize,
-                        fit: BoxFit.cover,
-                        fadeInDuration: new Duration(milliseconds: 100),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            height: (this._isEmptyList()
+                ? R.appRatio.appHeight100
+                : (_enableListWithTwoRows
+                    ? R.appRatio.appHeight120 + R.appRatio.appHeight120
+                    : R.appRatio.appHeight120)),
+            padding: (_enableListWithTwoRows
+                ? EdgeInsets.only(
+                    top: R.appRatio.appSpacing10,
+                    bottom: R.appRatio.appSpacing10,
+                  )
+                : null),
+            child: (this._isEmptyList()
+                ? this._buildEmptyList()
+                : (_enableListWithTwoRows
+                    ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: this
+                                  ._buildPhotoList(context, _newItemList[0], 0),
+                            ),
+                            Expanded(
+                              child: this._buildPhotoList(context,
+                                  _newItemList[1], _endPositionOfFirstList),
+                            ),
+                          ],
+                        ),
+                      )
+                    : this._buildPhotoList(context, _newItemList[0], 0))),
           ),
         ],
       ),
+    );
+  }
+
+  bool _isEmptyList() {
+    return ((this.items == null || this.items.length == 0) ? true : false);
+  }
+
+  Widget _buildEmptyList() {
+    String systemNoti =
+        "USRUN: Record and upload activity with photos to build your own gallery.";
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize14,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhotoList(
+      BuildContext context, List element, int firstIndexOfPhoto) {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      itemCount: element.length,
+      itemBuilder: (BuildContext ctxt, int index) {
+        String thumbnailURL = element[index]['thumbnailURL'];
+
+        return Container(
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing15,
+            right: (index == element.length - 1 ? R.appRatio.appSpacing15 : 0),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              this._expandPhoto(context, index + firstIndexOfPhoto);
+            },
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: ImageCacheManager.getImage(
+                  url: thumbnailURL,
+                  fit: BoxFit.cover,
+                  height: this._thumbnailSize,
+                  width: this._thumbnailSize,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

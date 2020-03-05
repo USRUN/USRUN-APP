@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class AvatarView extends StatelessWidget {
   final String avatarImageURL;
@@ -24,6 +25,8 @@ class AvatarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _supportImageSize = this.avatarImageSize / 4;
+
     return Center(
       child: Container(
         width: this.avatarImageSize,
@@ -50,33 +53,31 @@ class AvatarView extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(this.avatarImageSize / 2),
-                ),
-                child: FadeInImage.assetNetwork(
-                  placeholder: R.images.smallDefaultImage,
-                  image: this.avatarImageURL,
+                borderRadius: (this.enableSquareAvatarImage
+                    ? BorderRadius.all(Radius.circular(this.radiusSquareBorder))
+                    : BorderRadius.all(
+                        Radius.circular(this.avatarImageSize / 2))),
+                child: ImageCacheManager.getImage(
+                  url: this.avatarImageURL,
                   height: this.avatarImageSize,
                   width: this.avatarImageSize,
                   fit: BoxFit.cover,
-                  fadeInDuration: new Duration(milliseconds: 100),
                 ),
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: (this.supportImageURL == null
+                child: (this.supportImageURL == null ||
+                        this.supportImageURL.length == 0
                     ? null
                     : ClipRRect(
                         borderRadius: BorderRadius.all(
-                          Radius.circular((this.avatarImageSize / 4) / 2),
+                          Radius.circular(_supportImageSize / 2),
                         ),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: R.images.smallDefaultImage,
-                          image: this.supportImageURL,
-                          height: this.avatarImageSize / 4,
-                          width: this.avatarImageSize / 4,
+                        child: ImageCacheManager.getImage(
+                          url: this.supportImageURL,
+                          height: _supportImageSize,
+                          width: _supportImageSize,
                           fit: BoxFit.cover,
-                          fadeInDuration: new Duration(milliseconds: 100),
                         ),
                       )),
               ),

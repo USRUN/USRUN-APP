@@ -3,11 +3,12 @@ import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
 class R {
-  static final _Color colors = _Color();
   static Strings strings = Strings();
+  static final _Color colors = _Color();
   static final _Images images = _Images();
-  static final Styles styles = Styles();
-  static AppRatio appRatio = AppRatio();
+  static final _Styles styles = _Styles();
+  static final _Constants constants = _Constants();
+  static _AppRatio appRatio = _AppRatio();
   static _MyIcons myIcons = _MyIcons();
 
   static void initLocalized(String jsonContent) {
@@ -31,7 +32,12 @@ class R {
   }
 }
 
-class AppRatio {
+class _Constants {
+  final int numberToSplitFFList = 60;
+  final int numberToSplitPhotoList = 60;
+}
+
+class _AppRatio {
   /* 
     + This is private variables.
     + Figma design information.
@@ -49,28 +55,56 @@ class AppRatio {
   final double _figmaFontSize26                 = 26;
   final double _figmaFontSize28                 = 28;  
 
+  final double _figmaWidth40                    = 40;
   final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
+  final double _figmaWidth100                   = 100;
+  final double _figmaWidth110                   = 110;
   final double _figmaWidth120                   = 120;
   final double _figmaWidth150                   = 150;
+  final double _figmaWidth160                   = 160;
+  final double _figmaWidth170                   = 170;
   final double _figmaWidth181                   = 181;
   final double _figmaWidth200                   = 200;
+  final double _figmaWidth210                   = 210;
+  final double _figmaWidth220                   = 220;
+  final double _figmaWidth230                   = 230;
+  final double _figmaWidth240                   = 240;
   final double _figmaWidth250                   = 250;
   final double _figmaWidth300                   = 300;
   final double _figmaWidth381                   = 381;
 
+  final double _figmaHeight20                   = 20;
   final double _figmaHeight25                   = 25;
   final double _figmaHeight30                   = 30;
   final double _figmaHeight40                   = 40;
+  final double _figmaHeight45                   = 45;
   final double _figmaHeight50                   = 50;
   final double _figmaHeight60                   = 60;
   final double _figmaHeight70                   = 70;
   final double _figmaHeight80                   = 80;
   final double _figmaHeight90                   = 90;
   final double _figmaHeight100                  = 100;
+  final double _figmaHeight110                  = 110;
   final double _figmaHeight120                  = 120;
+  final double _figmaHeight130                  = 130;
+  final double _figmaHeight140                  = 140;
   final double _figmaHeight150                  = 150;
+  final double _figmaHeight160                  = 160;
+  final double _figmaHeight170                  = 170;
+  final double _figmaHeight180                  = 180;
   final double _figmaHeight190                  = 190;
+  final double _figmaHeight200                  = 200;
+  final double _figmaHeight210                  = 210;
+  final double _figmaHeight220                  = 220;
+  final double _figmaHeight230                  = 230;
+  final double _figmaHeight240                  = 240;
+  final double _figmaHeight250                  = 250;
+  final double _figmaHeight260                  = 260;
+  final double _figmaHeight270                  = 270;
+  final double _figmaHeight280                  = 280;
+  final double _figmaHeight290                  = 290;
+  final double _figmaHeight300                  = 300;
   final double _figmaHeight320                  = 320;
 
   final double _figmaSpacing5                   = 5;
@@ -96,8 +130,8 @@ class AppRatio {
   final double _figmaWelcomPageLogoTextSize     = 160;
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
-  final double _figmaEventBadgeSize             = 60;
-  final double _figmaThumbnailSize              = 80;
+  final double _figmaEventBadgeSize             = 80;
+  final double _figmaPhotoThumbnailSize         = 80;
 
   final double _figmaAvatarSize80               = 80;
   final double _figmaAvatarSize130              = 130;
@@ -126,28 +160,56 @@ class AppRatio {
   double appFontSize26;
   double appFontSize28;
 
+  double appWidth40;
   double appWidth70;
   double appWidth80;
+  double appWidth100;
+  double appWidth110;
   double appWidth120;
   double appWidth150;
+  double appWidth160;
+  double appWidth170;
   double appWidth181;
   double appWidth200;
+  double appWidth210;
+  double appWidth220;
+  double appWidth230;
+  double appWidth240;
   double appWidth250;
   double appWidth300;
   double appWidth381;
 
+  double appHeight20;
   double appHeight25;
   double appHeight30;
   double appHeight40;
+  double appHeight45;
   double appHeight50;
   double appHeight60;
   double appHeight70;
   double appHeight80;
   double appHeight90;
   double appHeight100;
+  double appHeight110;
   double appHeight120;
+  double appHeight130;
+  double appHeight140;
   double appHeight150;
+  double appHeight160;
+  double appHeight170;
+  double appHeight180;
   double appHeight190;
+  double appHeight200;
+  double appHeight210;
+  double appHeight220;
+  double appHeight230;
+  double appHeight240;
+  double appHeight250;
+  double appHeight260;
+  double appHeight270;
+  double appHeight280;
+  double appHeight290;
+  double appHeight300;
   double appHeight320;
 
   double appSpacing5;
@@ -174,7 +236,7 @@ class AppRatio {
   double appDropDownImageSquareSize;
   double appDropDownArrowIconSize;
   double appEventBadgeSize;
-  double appThumbnailSize;
+  double appPhotoThumbnailSize;
 
   double appAvatarSize80;
   double appAvatarSize130;
@@ -235,28 +297,56 @@ class AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+    appWidth40 = _computeWidth(this._figmaWidth40);
     appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
+    appWidth100 = _computeWidth(this._figmaWidth100);
+    appWidth110 = _computeWidth(this._figmaWidth110);
     appWidth120 = _computeWidth(this._figmaWidth120);
     appWidth150 = _computeWidth(this._figmaWidth150);
+    appWidth160 = _computeWidth(this._figmaWidth160);
+    appWidth170 = _computeWidth(this._figmaWidth170);
     appWidth181 = _computeWidth(this._figmaWidth181);
     appWidth200 = _computeWidth(this._figmaWidth200);
+    appWidth210 = _computeWidth(this._figmaWidth210);
+    appWidth220 = _computeWidth(this._figmaWidth220);
+    appWidth230 = _computeWidth(this._figmaWidth230);
+    appWidth240 = _computeWidth(this._figmaWidth240);
     appWidth250 = _computeWidth(this._figmaWidth250);
     appWidth300 = _computeWidth(this._figmaWidth300);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
+    appHeight20 = _computeHeight(this._figmaHeight20);
     appHeight25 = _computeHeight(this._figmaHeight25);
     appHeight30 = _computeHeight(this._figmaHeight30);
     appHeight40 = _computeHeight(this._figmaHeight40);
+    appHeight45 = _computeHeight(this._figmaHeight45);
     appHeight50 = _computeHeight(this._figmaHeight50);
     appHeight60 = _computeHeight(this._figmaHeight60);
     appHeight70 = _computeHeight(this._figmaHeight70);
     appHeight80 = _computeHeight(this._figmaHeight80);
     appHeight90 = _computeHeight(this._figmaHeight90);
     appHeight100 = _computeHeight(this._figmaHeight100);
+    appHeight110 = _computeHeight(this._figmaHeight110);
     appHeight120 = _computeHeight(this._figmaHeight120);
+    appHeight130 = _computeHeight(this._figmaHeight130);
+    appHeight140 = _computeHeight(this._figmaHeight140);
     appHeight150 = _computeHeight(this._figmaHeight150);
+    appHeight160 = _computeHeight(this._figmaHeight160);
+    appHeight170 = _computeHeight(this._figmaHeight170);
+    appHeight180 = _computeHeight(this._figmaHeight180);
     appHeight190 = _computeHeight(this._figmaHeight190);
+    appHeight200 = _computeHeight(this._figmaHeight200);
+    appHeight210 = _computeHeight(this._figmaHeight210);
+    appHeight220 = _computeHeight(this._figmaHeight220);
+    appHeight230 = _computeHeight(this._figmaHeight230);
+    appHeight240 = _computeHeight(this._figmaHeight240);
+    appHeight250 = _computeHeight(this._figmaHeight250);
+    appHeight260 = _computeHeight(this._figmaHeight260);
+    appHeight270 = _computeHeight(this._figmaHeight270);
+    appHeight280 = _computeHeight(this._figmaHeight280);
+    appHeight290 = _computeHeight(this._figmaHeight290);
+    appHeight300 = _computeHeight(this._figmaHeight300);
     appHeight320 = _computeHeight(this._figmaHeight320);
 
     // Find spacing
@@ -286,7 +376,7 @@ class AppRatio {
     appDropDownImageSquareSize = _computeWidth(this._figmaDropDownImageSquareSize);
     appDropDownArrowIconSize = _computeWidth(this._figmaDropDownArrowIconSize);
     appEventBadgeSize = _computeWidth(this._figmaEventBadgeSize);
-    appThumbnailSize = _computeWidth(this._figmaThumbnailSize);
+    appPhotoThumbnailSize = _computeWidth(this._figmaPhotoThumbnailSize);
 
     // Find size of avatars
     appAvatarSize80 = _computeWidth(this._figmaAvatarSize80);
@@ -409,22 +499,26 @@ class _MyIcons {
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
+  final String finishIcon = 'assets/myicons/icon-color-finish.png';
 
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   String nextIcon = 'assets/myicons/icon-black-next.png';
+  String peopleIcon = 'assets/myicons/icon-black-people.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
     if (theme.compareTo('Light') == 0) {
       defaultIcon = 'assets/myicons/icon-black-image-default.png';
       nextIcon = 'assets/myicons/icon-black-next.png';
+      peopleIcon = 'assets/myicons/icon-black-people.png';
 
       // TODO: "Light" icons
     }
     else {
       defaultIcon = 'assets/myicons/icon-white-image-default.png';
       nextIcon = 'assets/myicons/icon-white-next.png';
+      peopleIcon = 'assets/myicons/icon-white-people.png';
 
       // TODO: "Black" icons
     }
@@ -638,7 +732,7 @@ class Strings {
   String requestTimeOut;
 }
 
-class Styles {
+class _Styles {
   final TextStyle labelStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: R.appRatio.appFontSize18,

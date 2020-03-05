@@ -162,9 +162,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         child: ImageCacheManager.getImage(
-                          url: (element.containsKey('imageURL')
-                              ? element['imageURL']
-                              : (R.myIcons.defaultIcon)),
+                          url: element['imageURL'],
                           width: R.appRatio.appDropDownImageSquareSize,
                           height: R.appRatio.appDropDownImageSquareSize,
                           fit: BoxFit.cover,

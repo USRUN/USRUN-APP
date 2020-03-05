@@ -30,7 +30,7 @@ class SignUpPage extends StatelessWidget {
       _emailController.text = email;
     }
 
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -161,6 +161,12 @@ class SignUpPage extends StatelessWidget {
         ),
       ]),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 
   void _signUp(BuildContext context, LoginChannel channel,

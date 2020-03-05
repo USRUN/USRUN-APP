@@ -31,6 +31,7 @@ dependencies:
   lite_rolling_switch: ^0.1.1
   photo_view: ^0.9.2
   nuts_activity_indicator: ^0.1.1
+  intl: ^0.16.1
   
   path_provider: ^1.2.0
 
@@ -93,6 +94,9 @@ flutter:
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
     - assets/myicons/icon-white-edit.png
+    - assets/myicons/icon-color-finish.png
+    - assets/myicons/icon-black-people.png
+    - assets/myicons/icon-white-people.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png

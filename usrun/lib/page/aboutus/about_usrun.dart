@@ -8,7 +8,7 @@ import 'package:usrun/core/helper.dart';
 class AboutUSRUN extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -125,5 +125,11 @@ class AboutUSRUN extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }

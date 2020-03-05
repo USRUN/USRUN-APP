@@ -22,12 +22,18 @@ class DrawerItem {
 
 class AppPage extends StatefulWidget {
   final drawerItems = [
-    DrawerItem(R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
-    DrawerItem(R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
-    DrawerItem(R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
-    DrawerItem(R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
-    DrawerItem(R.strings.profile, R.myIcons.drawerProfile, R.myIcons.drawerActiveProfile),
-    DrawerItem(R.strings.settings, R.myIcons.drawerSettings, R.myIcons.drawerActiveSettings),
+    DrawerItem(
+        R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
+    DrawerItem(
+        R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
+    DrawerItem(
+        R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
+    DrawerItem(
+        R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
+    DrawerItem(R.strings.profile, R.myIcons.drawerProfile,
+        R.myIcons.drawerActiveProfile),
+    DrawerItem(R.strings.settings, R.myIcons.drawerSettings,
+        R.myIcons.drawerActiveSettings),
   ];
 
   @override
@@ -201,23 +207,22 @@ class _AppPageState extends State<AppPage> {
                       height: R.appRatio.appSpacing25,
                     ),
                     Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: drawerWidgets,
-                                ),
-                              ),
-                              onNotification: (overscroll) {
-                                overscroll.disallowGlow();
-                              }),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: drawerWidgets,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               )
             ],
           )),
-      body: _getDrawerItemWidget(_selectedDrawerIndex),
+      body: NotificationListener<OverscrollIndicatorNotification>(
+          child: _getDrawerItemWidget(_selectedDrawerIndex),
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+          }),
     );
   }
 }

@@ -10,7 +10,7 @@ class InAppNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -369,5 +369,11 @@ class InAppNotifications extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }
