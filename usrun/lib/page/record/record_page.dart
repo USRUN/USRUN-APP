@@ -6,7 +6,7 @@ import 'package:usrun/core/helper.dart';
 
 class RecordPage extends StatelessWidget{
 
-   @override 
+  @override 
   Widget build(BuildContext context){
     return Scaffold(
       body: Center(child: Text(R.strings.record),),

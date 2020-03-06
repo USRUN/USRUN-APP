@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/widget/complex_info_box.dart';
 import 'package:usrun/widget/event_badge_list.dart';
 import 'package:usrun/widget/event_list.dart';
 import 'package:usrun/widget/follower_following_list.dart';
+import 'package:usrun/widget/normal_info_box.dart';
 import 'package:usrun/widget/photo_list.dart';
+import 'package:usrun/widget/simple_info_box.dart';
+import 'package:usrun/widget/stats_section.dart';
 import 'package:usrun/widget/team_list.dart';
 import 'package:usrun/widget/team_plan_list.dart';
 
@@ -334,6 +338,99 @@ class ProfilePage extends StatelessWidget {
     },
   ];
 
+  final _statsListStyle01 = [
+    {
+      "title": "Activities",
+      "data": "104",
+      "unit": "",
+      "iconURL": R.myIcons.activitiesStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": true,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Total Dist",
+      "data": "1251.78",
+      "unit": "km",
+      "iconURL": R.myIcons.roadStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": true,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Total Steps",
+      "data": "257462",
+      "unit": "",
+      "iconURL": R.myIcons.footStepStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": true,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Total Time",
+      "data": "37188",
+      "unit": "min",
+      "iconURL": R.myIcons.timeStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": true,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Avg Time",
+      "data": "131",
+      "unit": "min",
+      "iconURL": R.myIcons.timeStatsIconByTheme,
+      "enableBottomBorder": false,
+      "isSuffixIcon": true,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Avg Pace",
+      "data": "10:51",
+      "unit": "/km",
+      "iconURL": R.myIcons.paceStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": false,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Avg Heart",
+      "data": "138",
+      "unit": "bpm",
+      "iconURL": R.myIcons.heartBeatStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": false,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Total Cal",
+      "data": "15818",
+      "unit": "/kcal",
+      "iconURL": R.myIcons.caloriesStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": false,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Avg Elev",
+      "data": "382",
+      "unit": "m",
+      "iconURL": R.myIcons.elevationStatsIconByTheme,
+      "enableBottomBorder": true,
+      "isSuffixIcon": false,
+      "enableMarginBottom": true,
+    },
+    {
+      "title": "Max Elev",
+      "data": "224",
+      "unit": "m",
+      "iconURL": R.myIcons.elevationStatsIconByTheme,
+      "enableBottomBorder": false,
+      "isSuffixIcon": false,
+      "enableMarginBottom": true,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -341,15 +438,12 @@ class ProfilePage extends StatelessWidget {
       body: Center(
         child: Container(
           height: 400,
-          child: TeamPlanList(
-            items: _teamPlanList,
-            enableLabelShadow: true,
-            labelTitle: "Your Team Plans",
-            enableScrollBackgroundColor: true,
-            pressItemFuction: (planid) {
-              print("This is team plan with id $planid");
-            },
+          color: Colors.lightGreen,
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing15,
+            right: R.appRatio.appSpacing15,
           ),
+          child: null,
         ),
       ),
     );

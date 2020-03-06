@@ -14,7 +14,7 @@ description: HCMUS Run
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -45,9 +45,11 @@ dev_dependencies:
   build_runner: ^1.0.0
 
 flutter_icons:
-  image_path: "assets/usrunlogo/app-icon.png" 
   android: true
   ios: true
+  image_path: "assets/usrunlogo/app-icon.png" 
+  adaptive_icon_background: "assets/usrunlogo/background.png"
+  adaptive_icon_foreground: "assets/usrunlogo/foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,6 +76,9 @@ flutter:
     - assets/images/drawer_background_darker.png
     - assets/images/avatar.png
     - assets/images/small_default_image.png
+    - assets/images/static_stats_chart_01.png
+    - assets/images/static_stats_chart_02.png
+    - assets/images/static_stats_chart_03.png
 
     - assets/images/avatar_huyta.png
     - assets/images/avatar_quoctk.png
@@ -97,6 +102,22 @@ flutter:
     - assets/myicons/icon-color-finish.png
     - assets/myicons/icon-black-people.png
     - assets/myicons/icon-white-people.png
+    - assets/myicons/icon-black-heart-beat.png
+    - assets/myicons/icon-black-footstep.png
+    - assets/myicons/icon-black-elevation.png
+    - assets/myicons/icon-black-calories.png
+    - assets/myicons/icon-black-time.png
+    - assets/myicons/icon-black-speed-ometer.png
+    - assets/myicons/icon-black-road.png
+    - assets/myicons/icon-black-runner-02.png
+    - assets/myicons/icon-white-heart-beat.png
+    - assets/myicons/icon-white-footstep.png
+    - assets/myicons/icon-white-elevation.png
+    - assets/myicons/icon-white-calories.png
+    - assets/myicons/icon-white-time.png
+    - assets/myicons/icon-white-speed-ometer.png
+    - assets/myicons/icon-white-road.png
+    - assets/myicons/icon-white-runner-02.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png
@@ -112,6 +133,8 @@ flutter:
     - assets/myicons/icon-yellow-settings.png
     
     - assets/usrunlogo/app-icon.png
+    - assets/usrunlogo/background.png
+    - assets/usrunlogo/foreground.png
     - assets/usrunlogo/logo-text.png
     - assets/usrunlogo/logo.png
 

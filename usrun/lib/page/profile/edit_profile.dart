@@ -23,7 +23,9 @@ class EditProfilePage extends StatelessWidget {
   final String _userCode = "STU1653072";
   final _dropDownMenuItemList = [
     {'value': '0', 'text': 'Male'},
-    {'value': '1', 'text': 'Female'}
+    {'value': '1', 'text': 'Female'},
+    {'value': '2', 'text': 'Prefer not to say'},
+    {'value': '3', 'text': 'Other'},
   ];
 
   void _getDOBFunction(DateTime picker) {

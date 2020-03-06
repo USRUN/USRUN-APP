@@ -56,11 +56,15 @@ class _AppRatio {
   final double _figmaFontSize28                 = 28;  
 
   final double _figmaWidth40                    = 40;
+  final double _figmaWidth50                    = 50;
+  final double _figmaWidth60                    = 60;
   final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
   final double _figmaWidth100                   = 100;
   final double _figmaWidth110                   = 110;
   final double _figmaWidth120                   = 120;
+  final double _figmaWidth130                   = 130;
+  final double _figmaWidth140                   = 140;
   final double _figmaWidth150                   = 150;
   final double _figmaWidth160                   = 160;
   final double _figmaWidth170                   = 170;
@@ -74,6 +78,8 @@ class _AppRatio {
   final double _figmaWidth300                   = 300;
   final double _figmaWidth381                   = 381;
 
+  final double _figmaHeight10                   = 10;
+  final double _figmaHeight15                   = 15;
   final double _figmaHeight20                   = 20;
   final double _figmaHeight25                   = 25;
   final double _figmaHeight30                   = 30;
@@ -161,11 +167,15 @@ class _AppRatio {
   double appFontSize28;
 
   double appWidth40;
+  double appWidth50;
+  double appWidth60;
   double appWidth70;
   double appWidth80;
   double appWidth100;
   double appWidth110;
   double appWidth120;
+  double appWidth130;
+  double appWidth140;
   double appWidth150;
   double appWidth160;
   double appWidth170;
@@ -179,6 +189,8 @@ class _AppRatio {
   double appWidth300;
   double appWidth381;
 
+  double appHeight10;
+  double appHeight15;
   double appHeight20;
   double appHeight25;
   double appHeight30;
@@ -298,11 +310,15 @@ class _AppRatio {
 
     // Find width & height of objects
     appWidth40 = _computeWidth(this._figmaWidth40);
+    appWidth50 = _computeWidth(this._figmaWidth50);
+    appWidth60 = _computeWidth(this._figmaWidth60);
     appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
     appWidth100 = _computeWidth(this._figmaWidth100);
     appWidth110 = _computeWidth(this._figmaWidth110);
     appWidth120 = _computeWidth(this._figmaWidth120);
+    appWidth130 = _computeWidth(this._figmaWidth130);
+    appWidth140 = _computeWidth(this._figmaWidth140);
     appWidth150 = _computeWidth(this._figmaWidth150);
     appWidth160 = _computeWidth(this._figmaWidth160);
     appWidth170 = _computeWidth(this._figmaWidth170);
@@ -316,6 +332,8 @@ class _AppRatio {
     appWidth300 = _computeWidth(this._figmaWidth300);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
+    appHeight10 = _computeHeight(this._figmaHeight10);
+    appHeight15 = _computeHeight(this._figmaHeight15);
     appHeight20 = _computeHeight(this._figmaHeight20);
     appHeight25 = _computeHeight(this._figmaHeight25);
     appHeight30 = _computeHeight(this._figmaHeight30);
@@ -500,11 +518,27 @@ class _MyIcons {
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
+  final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
+  final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
+  final String elevationStatsIcon = 'assets/myicons/icon-black-elevation.png';
+  final String caloriesStatsIcon = 'assets/myicons/icon-black-calories.png';
+  final String timeStatsIcon = 'assets/myicons/icon-black-time.png';
+  final String paceStatsIcon = 'assets/myicons/icon-black-speed-ometer.png';
+  final String roadStatsIcon = 'assets/myicons/icon-black-road.png';
+  final String activitiesStatsIcon = 'assets/myicons/icon-black-runner-02.png';
 
-  // Default is Light theme 
+  // Default is Light theme (Black color)
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   String nextIcon = 'assets/myicons/icon-black-next.png';
   String peopleIcon = 'assets/myicons/icon-black-people.png';
+  String heartBeatStatsIconByTheme = 'assets/myicons/icon-black-heart-beat.png';
+  String footStepStatsIconByTheme = 'assets/myicons/icon-black-footstep.png';
+  String elevationStatsIconByTheme = 'assets/myicons/icon-black-elevation.png';
+  String caloriesStatsIconByTheme = 'assets/myicons/icon-black-calories.png';
+  String timeStatsIconByTheme = 'assets/myicons/icon-black-time.png';
+  String paceStatsIconByTheme = 'assets/myicons/icon-black-speed-ometer.png';
+  String roadStatsIconByTheme = 'assets/myicons/icon-black-road.png';
+  String activitiesStatsIconByTheme = 'assets/myicons/icon-black-runner-02.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
@@ -512,15 +546,31 @@ class _MyIcons {
       defaultIcon = 'assets/myicons/icon-black-image-default.png';
       nextIcon = 'assets/myicons/icon-black-next.png';
       peopleIcon = 'assets/myicons/icon-black-people.png';
+      heartBeatStatsIconByTheme = 'assets/myicons/icon-black-heart-beat.png';
+      footStepStatsIconByTheme = 'assets/myicons/icon-black-footstep.png';
+      elevationStatsIconByTheme = 'assets/myicons/icon-black-elevation.png';
+      caloriesStatsIconByTheme = 'assets/myicons/icon-black-calories.png';
+      timeStatsIconByTheme = 'assets/myicons/icon-black-time.png';
+      paceStatsIconByTheme = 'assets/myicons/icon-black-speed-ometer.png';
+      roadStatsIconByTheme = 'assets/myicons/icon-black-road.png';
+      activitiesStatsIconByTheme = 'assets/myicons/icon-black-runner-02.png';
 
-      // TODO: "Light" icons
+      // TODO: Light theme (Black color)
     }
     else {
       defaultIcon = 'assets/myicons/icon-white-image-default.png';
       nextIcon = 'assets/myicons/icon-white-next.png';
       peopleIcon = 'assets/myicons/icon-white-people.png';
+      heartBeatStatsIconByTheme = 'assets/myicons/icon-white-heart-beat.png';
+      footStepStatsIconByTheme = 'assets/myicons/icon-white-footstep.png';
+      elevationStatsIconByTheme = 'assets/myicons/icon-white-elevation.png';
+      caloriesStatsIconByTheme = 'assets/myicons/icon-white-calories.png';
+      timeStatsIconByTheme = 'assets/myicons/icon-white-time.png';
+      paceStatsIconByTheme = 'assets/myicons/icon-white-speed-ometer.png';
+      roadStatsIconByTheme = 'assets/myicons/icon-white-road.png';
+      activitiesStatsIconByTheme = 'assets/myicons/icon-white-runner-02.png';
 
-      // TODO: "Black" icons
+      // TODO: Black theme (Light color)
     }
   }
 }
@@ -542,6 +592,9 @@ class _Images {
   final String drawerBackground = 'assets/images/drawer_background.png';
   final String drawerBackgroundDarker = 'assets/images/drawer_background_darker.png';
   final String smallDefaultImage = 'assets/images/small_default_image.png';
+  final String staticStatsChart01 = 'assets/images/static_stats_chart_01.png';
+  final String staticStatsChart02 = 'assets/images/static_stats_chart_02.png';
+  final String staticStatsChart03 = 'assets/images/static_stats_chart_03.png';
 
   final String avatar = 'assets/images/avatar.png';
   final String avatarQuocTK = 'assets/images/avatar_quoctk.png';
