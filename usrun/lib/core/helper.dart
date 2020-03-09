@@ -1,12 +1,26 @@
 
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
-import 'package:usrun/widget/gradient_navigation_bar.dart';
+import 'package:usrun/main.dart';
+
+// === MAIN === //
+Future<void> initialize(BuildContext context) async {
+  await setLanguage("en");
+  R.initAppRatio(context);
+}
+
+enum RouteType {
+  push,
+  present,
+  show,
+}
 
 Future setLanguage(String lang) async{
   String jsonContent = await rootBundle.loadString("assets/localization/$lang.json");
@@ -87,6 +101,11 @@ void setErrorCode(int code) {
   _errorCode = code;
 }
 
+void restartApp(int errorCode) {
+  _errorCode = errorCode;
+  UsRunApp.restartApp(errorCode);
+}
+
 
 
 void showSystemMessage(BuildContext context) {
@@ -100,7 +119,7 @@ void showSystemMessage(BuildContext context) {
 
         case ACCESS_DENY:
           _errorCode = 0;
-          message = R.strings.errorMessages + "$ACCESS_DENY";
+          message = R.strings.error + "$ACCESS_DENY";
           break;
 
         default:
@@ -117,6 +136,7 @@ void showSystemMessage(BuildContext context) {
     });
   }
 }
+
 
 
 
@@ -171,6 +191,37 @@ Future<T> replacePage<T>(BuildContext context, Widget page, {dynamic result}) {
 void pop(BuildContext context, [dynamic object]) {
   Navigator.of(context).pop(object);
 }
+
+
+
+// === VALIDATE === //
+int getPlatform() {
+  return Platform.isIOS ? PlatformType.iOS.index : PlatformType.Android.index;
+}
+
+String validateEmail(String email) {
+  String p = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+  RegExp regExp = new RegExp(p);
+
+  return regExp.hasMatch(email) ? null : R.strings.errorEmailInvalid;
+}
+
+String validatePassword(String pass) {
+  int length = pass.length;
+  if (length < 8) {
+    return R.strings.errorPasswordShort;
+  }
+
+  if (pass.trim().isEmpty) {
+    return R.strings.errorInvalidPassword;
+  }
+
+  // TODO: add more validate password logic
+
+  return null;
+}
+
 
 
 // === LOADING === //
