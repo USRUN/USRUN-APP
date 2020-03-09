@@ -32,6 +32,7 @@ dependencies:
   photo_view: ^0.9.2
   nuts_activity_indicator: ^0.1.1
   intl: ^0.16.1
+  flutter_widgets: ^0.1.11
   
   path_provider: ^1.2.0
 
@@ -118,6 +119,22 @@ flutter:
     - assets/myicons/icon-white-speed-ometer.png
     - assets/myicons/icon-white-road.png
     - assets/myicons/icon-white-runner-02.png
+    - assets/myicons/icon-black-path.png
+    - assets/myicons/icon-black-love.png
+    - assets/myicons/icon-black-bold-love.png
+    - assets/myicons/icon-orange-bold-love.png
+    - assets/myicons/icon-orange-love.png
+    - assets/myicons/icon-white-love.png
+    - assets/myicons/icon-black-comment.png
+    - assets/myicons/icon-white-comment.png
+    - assets/myicons/icon-black-share.png
+    - assets/myicons/icon-white-share.png
+    - assets/myicons/icon-white-bold-share.png
+    - assets/myicons/icon-black-runner.png
+    - assets/myicons/icon-white-runner.png
+    - assets/myicons/icon-white-info.png
+    - assets/myicons/icon-white-shoe.png
+    - assets/myicons/icon-white-statistics.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png

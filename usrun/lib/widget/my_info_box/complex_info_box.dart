@@ -3,6 +3,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 class ComplexInfoBox extends StatelessWidget {
+  final String id;
   final String boxTitle;
   final String dataTitle;
   final String unitTitle;
@@ -25,10 +26,11 @@ class ComplexInfoBox extends StatelessWidget {
   */
 
   ComplexInfoBox({
+    @required this.id,
     @required this.boxTitle,
     this.dataTitle = "",
     this.unitTitle = "",
-    this.pressBox,
+    this.pressBox(id),
     this.boxRadius = 20,
     this.boxIconURL,
     this.boxIconSize = 16,
@@ -43,7 +45,7 @@ class ComplexInfoBox extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (this.pressBox != null) {
-          this.pressBox();
+          this.pressBox(this.id);
         }
       },
       child: Center(
@@ -70,20 +72,18 @@ class ComplexInfoBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  (boxTitle.length != 0
-                      ? Container(
-                          width: R.appRatio.appWidth60,
-                          child: Text(
-                            boxTitle,
-                            maxLines: 2,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: R.appRatio.appFontSize14,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      : Container()),
+                  Container(
+                    width: R.appRatio.appWidth60,
+                    child: Text(
+                      boxTitle,
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: R.appRatio.appFontSize14,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                   ImageCacheManager.getImage(
                     url: this.boxIconURL,
                     width: this.boxIconSize,
@@ -129,13 +129,15 @@ class ComplexInfoBox extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Text(
-                              this.unitTitle,
-                              style: TextStyle(
-                                color: R.colors.grayABABAB,
-                                fontSize: R.appRatio.appFontSize12,
-                              ),
-                            ),
+                            (this.unitTitle.length != 0
+                                ? Text(
+                                    this.unitTitle,
+                                    style: TextStyle(
+                                      color: R.colors.grayABABAB,
+                                      fontSize: R.appRatio.appFontSize12,
+                                    ),
+                                  )
+                                : Container()),
                           ],
                         ),
                       )
@@ -175,13 +177,15 @@ class ComplexInfoBox extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Text(
-                            this.unitTitle,
-                            style: TextStyle(
-                              color: R.colors.grayABABAB,
-                              fontSize: R.appRatio.appFontSize12,
-                            ),
-                          ),
+                          (this.unitTitle.length != 0
+                              ? Text(
+                                  this.unitTitle,
+                                  style: TextStyle(
+                                    color: R.colors.grayABABAB,
+                                    fontSize: R.appRatio.appFontSize12,
+                                  ),
+                                )
+                              : Container()),
                         ],
                       ),
                     )

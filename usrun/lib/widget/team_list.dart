@@ -150,7 +150,7 @@ class TeamList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image.asset(
-                          R.myIcons.peopleIcon,
+                          R.myIcons.peopleIconByTheme,
                           fit: BoxFit.cover,
                           width: R.appRatio.appIconSize15,
                           height: R.appRatio.appIconSize15,

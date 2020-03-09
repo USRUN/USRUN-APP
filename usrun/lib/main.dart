@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
@@ -105,7 +104,7 @@ class _SplashPageState extends State<StatefulWidget> {
 
   Future<void> _initApp() {
     return Future.delayed(
-            Duration(milliseconds: 100), () => initialize(context)) // Raw: 2000ms
-        .then((_) => showPage(context, ProfilePage())); // Raw: WelcomePage()
+            Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
+        .then((_) => showPage(context, WelcomePage())); // Raw: WelcomePage()
   }
 }

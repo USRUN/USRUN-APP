@@ -1,9 +1,38 @@
 {
     "usrun":"USRUN",
 
+    "yearPicker": "YEAR PICKER",
+    "monthPicker": "MONTH PICKER",
+    "weekPicker": "WEEK PICKER",
+    "datePicker": "DATE PICKER",
+    "timePicker": "TIME PICKER",
+    "dateTimePicker": "DATE TIME PICKER",
+
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+
     "error": "error",
     "notice": "Notice",
     "ok": "OK",
+    "cancel": "Cancel",
     "alreadyAMember": "Already a member?",
     "signIn": "Sign In",
     "signUp": "Sign Up",
@@ -11,6 +40,7 @@
 
     "profile": "Profile",
     "editProfile": "Edit Profile",
+    "athleteProfile": "Athlete Profile",
 
     "uFeed": "U-Feed",
 

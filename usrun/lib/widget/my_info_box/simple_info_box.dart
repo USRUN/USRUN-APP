@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 
 class SimpleInfoBox extends StatelessWidget {
+  final String id;
   final String dataTitle;
   final String unitTitle;
   final String subTitle;
@@ -11,10 +12,11 @@ class SimpleInfoBox extends StatelessWidget {
   final double boxRadius;
 
   SimpleInfoBox({
+    @required this.id,
     this.dataTitle = "",
     this.unitTitle = "",
     this.subTitle = "",
-    this.pressBox,
+    this.pressBox(id),
     this.boxWidth = 120,
     this.boxHeight = 80,
     this.boxRadius = 5,
@@ -25,7 +27,7 @@ class SimpleInfoBox extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (this.pressBox != null) {
-          this.pressBox();
+          this.pressBox(this.id);
         }
       },
       child: Center(

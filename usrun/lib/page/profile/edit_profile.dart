@@ -5,7 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/drop_down_menu.dart';
+import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/avatar_view.dart';
 

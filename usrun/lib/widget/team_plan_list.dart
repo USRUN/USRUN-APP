@@ -67,7 +67,7 @@ class _TeamPlanItem extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(this._borderRadius)),
           boxShadow: [
             BoxShadow(
-              blurRadius: 4.0,
+              blurRadius: 2.0,
               offset: Offset(1.0, 1.0),
               color: R.colors.btnShadow,
             ),

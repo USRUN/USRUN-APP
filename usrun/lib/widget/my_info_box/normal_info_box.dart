@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 
 class NormalInfoBox extends StatelessWidget {
+  final String id;
   final String firstTitleLine;
   final String dataLine;
   final String secondTitleLine;
@@ -13,10 +14,11 @@ class NormalInfoBox extends StatelessWidget {
   static double _gradientLineHeight = R.appRatio.appHeight10;
 
   NormalInfoBox({
+    @required this.id,
     this.firstTitleLine = "",
     this.dataLine = "",
     this.secondTitleLine = "",
-    this.pressBox,
+    this.pressBox(id),
     this.boxSize = 100,
     this.boxRadius = 10,
     this.beAlwaysBlackShadow = false,
@@ -27,7 +29,7 @@ class NormalInfoBox extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (this.pressBox != null) {
-          this.pressBox();
+          this.pressBox(this.id);
         }
       },
       child: Center(

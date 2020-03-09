@@ -4,7 +4,7 @@ import 'package:usrun/model/mapper_object.dart';
 
 class R {
   static Strings strings = Strings();
-  static final _Color colors = _Color();
+  static final _Colors colors = _Colors();
   static final _Images images = _Images();
   static final _Styles styles = _Styles();
   static final _Constants constants = _Constants();
@@ -35,6 +35,9 @@ class R {
 class _Constants {
   final int numberToSplitFFList = 60;
   final int numberToSplitPhotoList = 60;
+  final int maxProfileTabBarNumber = 5;
+  // DateTime(year, month, day, hour, minute, second, milisecond, microsecond)
+  final DateTime releasedAppDate = DateTime(2019, 03, 12);
 }
 
 class _AppRatio {
@@ -54,12 +57,19 @@ class _AppRatio {
   final double _figmaFontSize24                 = 24;
   final double _figmaFontSize26                 = 26;
   final double _figmaFontSize28                 = 28;  
+  final double _figmaFontSize32                 = 32; 
+  final double _figmaFontSize34                 = 34;
+  final double _figmaFontSize36                 = 36;
+  final double _figmaFontSize38                 = 38;  
+  final double _figmaFontSize40                 = 40;
+  final double _figmaFontSize42                 = 42;  
 
   final double _figmaWidth40                    = 40;
   final double _figmaWidth50                    = 50;
   final double _figmaWidth60                    = 60;
   final double _figmaWidth70                    = 70;
   final double _figmaWidth80                    = 80;
+  final double _figmaWidth90                    = 90;
   final double _figmaWidth100                   = 100;
   final double _figmaWidth110                   = 110;
   final double _figmaWidth120                   = 120;
@@ -69,13 +79,25 @@ class _AppRatio {
   final double _figmaWidth160                   = 160;
   final double _figmaWidth170                   = 170;
   final double _figmaWidth181                   = 181;
+  final double _figmaWidth190                   = 190;
   final double _figmaWidth200                   = 200;
   final double _figmaWidth210                   = 210;
   final double _figmaWidth220                   = 220;
   final double _figmaWidth230                   = 230;
   final double _figmaWidth240                   = 240;
   final double _figmaWidth250                   = 250;
+  final double _figmaWidth260                   = 260;
+  final double _figmaWidth270                   = 270;
+  final double _figmaWidth280                   = 280;
+  final double _figmaWidth290                   = 290;
   final double _figmaWidth300                   = 300;
+  final double _figmaWidth310                   = 310;
+  final double _figmaWidth320                   = 320;
+  final double _figmaWidth330                   = 330;
+  final double _figmaWidth340                   = 340;
+  final double _figmaWidth350                   = 350;
+  final double _figmaWidth360                   = 360;
+  final double _figmaWidth370                   = 370;
   final double _figmaWidth381                   = 381;
 
   final double _figmaHeight10                   = 10;
@@ -124,6 +146,8 @@ class _AppRatio {
   final double _figmaSpacing45                  = 45;
   final double _figmaSpacing50                  = 50;
 
+  final double _figmaIconSize5                  = 5;
+  final double _figmaIconSize10                 = 10;
   final double _figmaIconSize15                 = 15;
   final double _figmaIconSize18                 = 18;
   final double _figmaIconSize20                 = 20;
@@ -165,12 +189,19 @@ class _AppRatio {
   double appFontSize24;
   double appFontSize26;
   double appFontSize28;
+  double appFontSize32;
+  double appFontSize34;
+  double appFontSize36;
+  double appFontSize38;
+  double appFontSize40;
+  double appFontSize42;
 
   double appWidth40;
   double appWidth50;
   double appWidth60;
   double appWidth70;
   double appWidth80;
+  double appWidth90;
   double appWidth100;
   double appWidth110;
   double appWidth120;
@@ -180,13 +211,25 @@ class _AppRatio {
   double appWidth160;
   double appWidth170;
   double appWidth181;
+  double appWidth190;
   double appWidth200;
   double appWidth210;
   double appWidth220;
   double appWidth230;
   double appWidth240;
   double appWidth250;
+  double appWidth260;
+  double appWidth270;
+  double appWidth280;
+  double appWidth290;
   double appWidth300;
+  double appWidth310;
+  double appWidth320;
+  double appWidth330;
+  double appWidth340;
+  double appWidth350;
+  double appWidth360;
+  double appWidth370;
   double appWidth381;
 
   double appHeight10;
@@ -235,6 +278,8 @@ class _AppRatio {
   double appSpacing45;
   double appSpacing50;
 
+  double appIconSize5;
+  double appIconSize10;
   double appIconSize15;
   double appIconSize18;
   double appIconSize20;
@@ -306,6 +351,12 @@ class _AppRatio {
     appFontSize24 = _computeFontSize(this._figmaFontSize24);
     appFontSize26 = _computeFontSize(this._figmaFontSize26);
     appFontSize28 = _computeFontSize(this._figmaFontSize28);
+    appFontSize32 = _computeFontSize(this._figmaFontSize32);
+    appFontSize34 = _computeFontSize(this._figmaFontSize34);
+    appFontSize36 = _computeFontSize(this._figmaFontSize36);
+    appFontSize38 = _computeFontSize(this._figmaFontSize38);
+    appFontSize40 = _computeFontSize(this._figmaFontSize40);
+    appFontSize42 = _computeFontSize(this._figmaFontSize42);
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
@@ -314,6 +365,7 @@ class _AppRatio {
     appWidth60 = _computeWidth(this._figmaWidth60);
     appWidth70 = _computeWidth(this._figmaWidth70);
     appWidth80 = _computeWidth(this._figmaWidth80);
+    appWidth90 = _computeWidth(this._figmaWidth90);
     appWidth100 = _computeWidth(this._figmaWidth100);
     appWidth110 = _computeWidth(this._figmaWidth110);
     appWidth120 = _computeWidth(this._figmaWidth120);
@@ -323,13 +375,25 @@ class _AppRatio {
     appWidth160 = _computeWidth(this._figmaWidth160);
     appWidth170 = _computeWidth(this._figmaWidth170);
     appWidth181 = _computeWidth(this._figmaWidth181);
+    appWidth190 = _computeWidth(this._figmaWidth190);
     appWidth200 = _computeWidth(this._figmaWidth200);
     appWidth210 = _computeWidth(this._figmaWidth210);
     appWidth220 = _computeWidth(this._figmaWidth220);
     appWidth230 = _computeWidth(this._figmaWidth230);
     appWidth240 = _computeWidth(this._figmaWidth240);
     appWidth250 = _computeWidth(this._figmaWidth250);
+    appWidth260 = _computeWidth(this._figmaWidth260);
+    appWidth270 = _computeWidth(this._figmaWidth270);
+    appWidth280 = _computeWidth(this._figmaWidth280);
+    appWidth290 = _computeWidth(this._figmaWidth290);
     appWidth300 = _computeWidth(this._figmaWidth300);
+    appWidth310 = _computeWidth(this._figmaWidth310);
+    appWidth320 = _computeWidth(this._figmaWidth320);
+    appWidth330 = _computeWidth(this._figmaWidth330);
+    appWidth340 = _computeWidth(this._figmaWidth340);
+    appWidth350 = _computeWidth(this._figmaWidth350);
+    appWidth360 = _computeWidth(this._figmaWidth360);
+    appWidth370 = _computeWidth(this._figmaWidth370);
     appWidth381 = _computeWidth(this._figmaWidth381);
 
     appHeight10 = _computeHeight(this._figmaHeight10);
@@ -380,6 +444,8 @@ class _AppRatio {
     appSpacing50 = _computeWidth(this._figmaSpacing50);
 
     // Find icon size
+    appIconSize5 = _computeWidth(this._figmaIconSize5);
+    appIconSize10 = _computeWidth(this._figmaIconSize10);
     appIconSize15 = _computeWidth(this._figmaIconSize15);
     appIconSize18 = _computeWidth(this._figmaIconSize18);
     appIconSize20 = _computeWidth(this._figmaIconSize20);
@@ -409,19 +475,36 @@ class _AppRatio {
   }
 }
 
-class _Color {
+class _Colors {
   // Gradient color
-  final Gradient uiGradient = LinearGradient(colors: [
-    Color(0xFFFC8800),
-    Color(0xFFF26B30),
-    Color(0xFFEE4C3E),
-    Color(0xFFDA2A16)
-  ], stops: [
-    0.0,
-    0.25,
-    0.5,
-    1.0
-  ]);
+  final Gradient uiGradient = LinearGradient(
+    colors: [
+      Color(0xFFFC8800),
+      Color(0xFFF26B30),
+      Color(0xFFEE4C3E),
+      Color(0xFFDA2A16)
+    ], 
+    stops: [
+      0.0,
+      0.25,
+      0.5,
+      1.0
+    ]);
+
+  final Gradient verticalUiGradient = LinearGradient(
+    begin: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFC8800),
+      Color(0xFFF26B30),
+      Color(0xFFEE4C3E),
+      Color(0xFFDA2A16)
+    ], 
+    stops: [
+      0.0,
+      0.25,
+      0.5,
+      1.0
+    ]);
 
   /*
     + [NgocVo] Unused colors
@@ -433,8 +516,10 @@ class _Color {
   
   // Official/Main/Common color of app
   Color majorOrange                   = Color(0xFFFD632C);
+  Color lightBlurMajorOrange          = Color.fromRGBO(253, 99, 44, 0.1);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
+  Color redPink                       = Color(0xFFFF5C4E);
   Color oldYellow                     = Color(0xFFF9C86A);
   Color labelText                     = Color(0xFFFD632C);
 
@@ -498,6 +583,7 @@ class _MyIcons {
   // Default icons (These are never change by Light/Black theme)
   final String appBarBackBtn = 'assets/myicons/icon-white-back.png';
   final String appBarCheckBtn = 'assets/myicons/icon-big-white-check.png';
+  final String appBarShareBtn = 'assets/myicons/icon-white-bold-share.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
@@ -526,11 +612,22 @@ class _MyIcons {
   final String paceStatsIcon = 'assets/myicons/icon-black-speed-ometer.png';
   final String roadStatsIcon = 'assets/myicons/icon-black-road.png';
   final String activitiesStatsIcon = 'assets/myicons/icon-black-runner-02.png';
+  final String pathIcon = 'assets/myicons/icon-black-path.png';
+  final String blackLoveIcon = 'assets/myicons/icon-black-love.png';
+  final String blackBoldLoveIcon = 'assets/myicons/icon-black-bold-love.png';
+  final String orangeLoveIcon = 'assets/myicons/icon-orange-love.png';
+  final String orangeBolLoveIcon = 'assets/myicons/icon-orange-bold-love.png';
+  final String blackCommentIcon = 'assets/myicons/icon-black-comment.png';
+  final String blackShareIcon = 'assets/myicons/icon-black-share.png';
+  final String blackRunnerIcon = 'assets/myicons/icon-black-runner.png';
+  final String whiteInfoIcon = 'assets/myicons/icon-white-info.png';
+  final String whiteShoeIcon = 'assets/myicons/icon-white-shoe.png';
+  final String whiteStatisticsIcon = 'assets/myicons/icon-white-statistics.png';
 
   // Default is Light theme (Black color)
-  String defaultIcon = 'assets/myicons/icon-black-image-default.png';
-  String nextIcon = 'assets/myicons/icon-black-next.png';
-  String peopleIcon = 'assets/myicons/icon-black-people.png';
+  String defaultIconByTheme = 'assets/myicons/icon-black-image-default.png';
+  String nextIconByTheme = 'assets/myicons/icon-black-next.png';
+  String peopleIconByTheme = 'assets/myicons/icon-black-people.png';
   String heartBeatStatsIconByTheme = 'assets/myicons/icon-black-heart-beat.png';
   String footStepStatsIconByTheme = 'assets/myicons/icon-black-footstep.png';
   String elevationStatsIconByTheme = 'assets/myicons/icon-black-elevation.png';
@@ -539,13 +636,17 @@ class _MyIcons {
   String paceStatsIconByTheme = 'assets/myicons/icon-black-speed-ometer.png';
   String roadStatsIconByTheme = 'assets/myicons/icon-black-road.png';
   String activitiesStatsIconByTheme = 'assets/myicons/icon-black-runner-02.png';
+  String loveIconByTheme = 'assets/myicons/icon-black-love.png';
+  String commentIconByTheme = 'assets/myicons/icon-black-comment.png';
+  String shareIconByTheme = 'assets/myicons/icon-black-share.png';
+  String runnerIconByTheme = 'assets/myicons/icon-black-runner.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
     if (theme.compareTo('Light') == 0) {
-      defaultIcon = 'assets/myicons/icon-black-image-default.png';
-      nextIcon = 'assets/myicons/icon-black-next.png';
-      peopleIcon = 'assets/myicons/icon-black-people.png';
+      defaultIconByTheme = 'assets/myicons/icon-black-image-default.png';
+      nextIconByTheme = 'assets/myicons/icon-black-next.png';
+      peopleIconByTheme = 'assets/myicons/icon-black-people.png';
       heartBeatStatsIconByTheme = 'assets/myicons/icon-black-heart-beat.png';
       footStepStatsIconByTheme = 'assets/myicons/icon-black-footstep.png';
       elevationStatsIconByTheme = 'assets/myicons/icon-black-elevation.png';
@@ -554,13 +655,18 @@ class _MyIcons {
       paceStatsIconByTheme = 'assets/myicons/icon-black-speed-ometer.png';
       roadStatsIconByTheme = 'assets/myicons/icon-black-road.png';
       activitiesStatsIconByTheme = 'assets/myicons/icon-black-runner-02.png';
+      loveIconByTheme = 'assets/myicons/icon-black-love.png';
+      commentIconByTheme = 'assets/myicons/icon-black-comment.png';
+      shareIconByTheme = 'assets/myicons/icon-black-share.png';
+      runnerIconByTheme = 'assets/myicons/icon-black-runner.png';
+      
 
       // TODO: Light theme (Black color)
     }
     else {
-      defaultIcon = 'assets/myicons/icon-white-image-default.png';
-      nextIcon = 'assets/myicons/icon-white-next.png';
-      peopleIcon = 'assets/myicons/icon-white-people.png';
+      defaultIconByTheme = 'assets/myicons/icon-white-image-default.png';
+      nextIconByTheme = 'assets/myicons/icon-white-next.png';
+      peopleIconByTheme = 'assets/myicons/icon-white-people.png';
       heartBeatStatsIconByTheme = 'assets/myicons/icon-white-heart-beat.png';
       footStepStatsIconByTheme = 'assets/myicons/icon-white-footstep.png';
       elevationStatsIconByTheme = 'assets/myicons/icon-white-elevation.png';
@@ -569,6 +675,11 @@ class _MyIcons {
       paceStatsIconByTheme = 'assets/myicons/icon-white-speed-ometer.png';
       roadStatsIconByTheme = 'assets/myicons/icon-white-road.png';
       activitiesStatsIconByTheme = 'assets/myicons/icon-white-runner-02.png';
+      loveIconByTheme = 'assets/myicons/icon-white-love.png';
+      commentIconByTheme = 'assets/myicons/icon-white-comment.png';
+      shareIconByTheme = 'assets/myicons/icon-white-share.png';
+      runnerIconByTheme = 'assets/myicons/icon-white-runner.png';
+
 
       // TODO: Black theme (Light color)
     }
@@ -608,7 +719,36 @@ class _Images {
 class Strings {
   String usrun;
 
+  String yearPicker;
+  String monthPicker;
+  String weekPicker;
+  String datePicker;
+  String timePicker;
+  String dateTimePicker;
+
+  String january;
+  String february;
+  String march;
+  String april;
+  String may;
+  String june;
+  String july;
+  String august;
+  String september;
+  String october;
+  String november;
+  String december;
+
+  String monday;
+  String tuesday;
+  String wednesday;
+  String thursday;
+  String friday;
+  String saturday;
+  String sunday;
+
   String ok;
+  String cancel;
   String error;
   String notice;
 
@@ -619,6 +759,7 @@ class Strings {
 
   String profile;
   String editProfile;
+  String athleteProfile;
 
   String record;
 

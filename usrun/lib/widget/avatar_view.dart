@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 class AvatarView extends StatelessWidget {

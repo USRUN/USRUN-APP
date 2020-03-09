@@ -101,7 +101,10 @@ class _DropDownMenuState extends State<DropDownMenu> {
                 Container(
                   height: 25,
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: (widget.labelTitle.length == 0 ? 0 : R.appRatio.appSpacing15)),
+                  padding: EdgeInsets.only(
+                      left: (widget.labelTitle.length == 0
+                          ? 0
+                          : R.appRatio.appSpacing15)),
                   child: Text(
                     widget.errorEmptyData,
                     style: TextStyle(
@@ -157,7 +160,9 @@ class _DropDownMenuState extends State<DropDownMenu> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(right: (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0)),
+                padding: EdgeInsets.only(
+                    right:
+                        (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0)),
                 child: (this._itemsHasImageURL
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -241,7 +246,10 @@ class _DropDownMenuState extends State<DropDownMenu> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(right: (widget.labelTitle.length == 0 ? 0 : R.appRatio.appSpacing15)),
+          padding: EdgeInsets.only(
+              right: (widget.labelTitle.length == 0
+                  ? 0
+                  : R.appRatio.appSpacing15)),
           child: (widget.labelTitle.length == 0
               ? null
               : Text(

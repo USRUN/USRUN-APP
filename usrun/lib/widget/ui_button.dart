@@ -15,6 +15,7 @@ class UIButton extends StatelessWidget {
   final Border border;
   final FontWeight fontWeight;
   final bool enableShadow;
+  final BoxShadow boxShadow;
 
   UIButton({
     this.width = double.maxFinite,
@@ -30,6 +31,7 @@ class UIButton extends StatelessWidget {
     this.border,
     this.fontWeight = FontWeight.w500,
     this.enableShadow = true,
+    this.boxShadow,
   });
 
   @override
@@ -56,15 +58,19 @@ class UIButton extends StatelessWidget {
           color: cl,
           boxShadow: (this.enableShadow
               ? [
-                  BoxShadow(
-                    blurRadius: 4.0,
-                    offset: Offset(1.0, 1.0),
-                    color: R.colors.btnShadow,
-                  ),
+                  (this.boxShadow == null
+                      ? BoxShadow(
+                          blurRadius: 4.0,
+                          offset: Offset(1.0, 1.0),
+                          color: R.colors.btnShadow,
+                        )
+                      : this.boxShadow),
                 ]
               : null),
         ),
         child: Text(text,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: this.textSize,
                 color: this.textColor,

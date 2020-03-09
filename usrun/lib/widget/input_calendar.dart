@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:date_format/date_format.dart';
+import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 
 class InputCalendar extends StatefulWidget {
   final String labelTitle;
@@ -73,7 +74,7 @@ class _InputCalendarState extends State<InputCalendar> {
                 ),
                 onTap: () async {
                   final DateTime today = new DateTime.now();
-                  final datePick = await showDatePicker(
+                  final datePick = await showMyDatePicker(
                       context: context,
                       initialDate: today,
                       firstDate: new DateTime(1900),

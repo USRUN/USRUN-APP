@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-/*
-  -> ----------------------------
-  -> This is StatsSectionStyle01
-  -> ----------------------------
-*/
-class _StatsBoxStyle01 extends StatelessWidget {
+class _StatsSectionBox extends StatelessWidget {
   final String title;
   final String data;
   final String unit;
@@ -16,7 +11,7 @@ class _StatsBoxStyle01 extends StatelessWidget {
   final bool enableBottomBorder;
   final bool enableMarginBottom;
 
-  _StatsBoxStyle01({
+  _StatsSectionBox({
     this.title = "N/A",
     this.data = "N/A",
     this.unit = "",
@@ -132,7 +127,7 @@ class _StatsBoxStyle01 extends StatelessWidget {
   }
 }
 
-class StatsSectionStyle01 extends StatelessWidget {
+class StatsSection extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
   final List items;
@@ -155,7 +150,7 @@ class StatsSectionStyle01 extends StatelessWidget {
     ]
   */
 
-  StatsSectionStyle01({
+  StatsSection({
     this.labelTitle = "",
     this.enableLabelShadow = false,
     @required this.items,
@@ -208,8 +203,8 @@ class StatsSectionStyle01 extends StatelessWidget {
     );
   }
 
-  Widget _renderStatsBoxStyle01(dynamic item, bool isLastItem) {
-    return _StatsBoxStyle01(
+  Widget _renderStatsSectionBox(dynamic item, bool isLastItem) {
+    return _StatsSectionBox(
       data: (item.containsKey('data') ? item['data'] : "N/A"),
       title: (item.containsKey('title') ? item['title'] : "N/A"),
       unit: (item.containsKey('unit') ? item['unit'] : ""),
@@ -227,12 +222,24 @@ class StatsSectionStyle01 extends StatelessWidget {
     );
   }
 
+  List<Widget> _renderAllItem(int start, int end) {
+    List<Widget> element = [];
+    for (int i = start; i < end; ++i) {
+      element.add(_renderStatsSectionBox(this.items[i], i == (end - 1)));
+    }
+    return element;
+  }
+
   Widget _buildList() {
     // Compute some data
     int _seperatedPoint = (this.items.length / 2).round();
     _verticalDividerHeight = R.appRatio.appHeight60 * _seperatedPoint +
         R.appRatio.appSpacing15 * (_seperatedPoint - 1);
     _verticalDividerHeight = _verticalDividerHeight.roundToDouble();
+
+    List<Widget> _firstColumn = _renderAllItem(0, _seperatedPoint);
+    List<Widget> _secondColumn =
+        _renderAllItem(_seperatedPoint, this.items.length);
 
     // Render result
     return Column(
@@ -261,11 +268,7 @@ class StatsSectionStyle01 extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                for (int i = 0; i < _seperatedPoint; ++i)
-                  _renderStatsBoxStyle01(
-                      this.items[i], (i == _seperatedPoint - 1))
-              ],
+              children: _firstColumn,
             ),
             SizedBox(
               width: R.appRatio.appSpacing15,
@@ -284,11 +287,7 @@ class StatsSectionStyle01 extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                for (int i = _seperatedPoint; i < this.items.length; ++i)
-                  _renderStatsBoxStyle01(
-                      this.items[i], (i == this.items.length - 1))
-              ],
+              children: _secondColumn,
             ),
           ],
         ),
@@ -296,9 +295,3 @@ class StatsSectionStyle01 extends StatelessWidget {
     );
   }
 }
-
-/*
-  -> ----------------------------
-  -> This is StatsSectionStyle02
-  -> ----------------------------
-*/
