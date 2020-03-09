@@ -14,7 +14,7 @@ class ChangePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -105,5 +105,11 @@ class ChangePasswordPage extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }

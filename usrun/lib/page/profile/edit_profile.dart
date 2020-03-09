@@ -5,7 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/drop_down_menu.dart';
+import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/avatar_view.dart';
 
@@ -24,7 +24,8 @@ class EditProfilePage extends StatelessWidget {
   final _dropDownMenuItemList = [
     {'value': '0', 'text': 'Male'},
     {'value': '1', 'text': 'Female'},
-    {'value': '2', 'text': 'Others'}
+    {'value': '2', 'text': 'Prefer not to say'},
+    {'value': '3', 'text': 'Other'},
   ];
 
   void _getDOBFunction(DateTime picker) {
@@ -57,7 +58,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -99,7 +100,7 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 AvatarView(
-                  avatarImageURL: R.images.avatar,
+                  avatarImageURL: R.images.avatarQuocTK,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                   enableSquareAvatarImage: false,
                   pressAvatarImage: () {
@@ -111,7 +112,7 @@ class EditProfilePage extends StatelessWidget {
                     color: R.colors.majorOrange,
                     width: 2,
                   ),
-                  supportImageURL: R.images.drawerBackground,
+                  supportImageURL: R.images.avatar,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -238,7 +239,6 @@ class EditProfilePage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: R.appRatio.appWidth181,
                       child: DropDownMenu(
                         errorEmptyData: "Nothing to show",
                         enableFullWidth: false,
@@ -301,5 +301,11 @@ class EditProfilePage extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }

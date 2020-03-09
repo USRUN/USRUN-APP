@@ -61,7 +61,7 @@ class LineButton extends StatelessWidget {
     this.switchButtonOnTitle = "",
     this.switchButtonOffTitle = "",
     this.switchStatus = false,
-    this.switchFunction,
+    this.switchFunction(state),
     this.enableBoxButton = false,
     this.boxButtonTitle = "",
     this.boxButtonFuction,

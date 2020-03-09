@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 
 const Duration _kDropdownMenuDuration = Duration(milliseconds: 300);
-const double _kMenuItemHeight = 48.0;
+const double _kMenuItemHeight = 50.0; // QuocTK: (Raw) 48.0
 const double _kDenseButtonHeight = 24.0;
 const EdgeInsets _kMenuItemPadding = EdgeInsets.symmetric(horizontal: 16.0);
 const EdgeInsetsGeometry _kAlignedButtonPadding =
@@ -228,7 +228,7 @@ class _DropdownMenuRouteLayout<T> extends SingleChildLayoutDelegate {
   final TextDirection textDirection;
   final double maxHeightBox; // QuocTK
   final Rect itemRect; // QuocTK
-  final double moreSpacing = R.appRatio.appHeight50; // QuocTK
+  final double moreSpacing = R.appRatio.appHeight60; // QuocTK
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -239,7 +239,13 @@ class _DropdownMenuRouteLayout<T> extends SingleChildLayoutDelegate {
 
     // QuocTK
     // Unused anymore: math.max(0.0, constraints.maxHeight - 2 * _kMenuItemHeight);
-    final double maxHeight = maxHeightBox;
+    double maxHeight;
+    if (maxHeightBox + itemRect.top >= R.appRatio.deviceHeight) {
+      maxHeight = R.appRatio.deviceHeight - itemRect.top - 50;
+    }
+    else {
+      maxHeight = maxHeightBox;
+    }
 
     // The width of a menu should be at most the view width. This ensures that
     // the menu does not extend past the left and right edges of the screen.
@@ -320,7 +326,7 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
     this.padding,
     this.buttonRect,
     this.selectedIndex,
-    this.elevation = 8,
+    this.elevation = 2,
     this.theme,
     this.maxHeightBox, // QuocTK
     this.itemRect, // QuocTK
@@ -387,7 +393,7 @@ class _DropdownRoutePage<T> extends StatelessWidget {
     this.padding,
     this.buttonRect,
     this.selectedIndex,
-    this.elevation = 8,
+    this.elevation = 2,
     this.theme,
     this.style,
     this.maxHeightBox, // QuocTK
@@ -639,7 +645,7 @@ class DropdownButton<T> extends StatefulWidget {
     this.hint,
     this.disabledHint,
     @required this.onChanged,
-    this.elevation = 8,
+    this.elevation = 2,
     this.style,
     this.underline,
     this.icon,
@@ -942,7 +948,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
       child: Container(
         // Unused anymore: padding.resolve(Directionality.of(context)),
         // QuocTK
-        padding: EdgeInsets.only(bottom: R.appRatio.appSpacing5),
+        // Unused: padding: EdgeInsets.only(bottom: R.appRatio.appSpacing10),
         height: widget.isDense ? _denseButtonHeight : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -964,7 +970,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
     );
 
     if (!DropdownButtonHideUnderline.at(context)) {
-      final double bottom = widget.isDense ? 0.0 : 8.0;
+      final double bottom = widget.isDense ? 0.0 : 0.0; // QuocTK: (Raw) ? 0.0 : 8.0
       result = Stack(
         children: <Widget>[
           result,

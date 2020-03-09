@@ -9,7 +9,7 @@ import 'package:usrun/widget/avatar_view.dart';
 class AboutDevelopers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -44,7 +44,7 @@ class AboutDevelopers extends StatelessWidget {
                 // -----
                 // DEVELOPER 1
                 AvatarView(
-                  avatarImageURL: R.images.avatarQuocTK, 
+                  avatarImageURL: R.images.avatarQuocTK,
                   avatarImageSize: R.appRatio.appAvatarSize130,
                 ),
                 SizedBox(
@@ -209,5 +209,11 @@ class AboutDevelopers extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }

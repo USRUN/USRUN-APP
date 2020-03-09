@@ -104,7 +104,7 @@ class _SplashPageState extends State<StatefulWidget> {
 
   Future<void> _initApp() {
     return Future.delayed(
-            Duration(milliseconds: 2000), () => initialize(context))
-        .then((_) => showPage(context, WelcomePage()));
+            Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
+        .then((_) => showPage(context, WelcomePage())); // Raw: WelcomePage()
   }
 }
