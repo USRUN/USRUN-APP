@@ -39,15 +39,15 @@ class UserManager {
   }
 
   static Future<Response<User>> create(Map<String, dynamic> params) async {
-    params['language'] = DataManager.loadLanguage();
-    params['os'] = getPlatform().toString();
+   // params['language'] = DataManager.loadLanguage();
+   // params['os'] = getPlatform().toString();
 
     // send device token
-    String deviceToken = DataManager.getDeviceToken();
-    if (deviceToken != null) {
-      params['deviceToken'] = deviceToken;
-    }
-    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/create', params);
+    // String deviceToken = DataManager.getDeviceToken();
+    // if (deviceToken != null) {
+    //   params['deviceToken'] = deviceToken;
+    // }
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/signup', params);
 
     Response<User> result = Response();
 
@@ -59,15 +59,43 @@ class UserManager {
       DataManager.setLoginChannel(int.parse(params["type"]));
       sendDeviceToken();
       DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
 
-      //appsflyer
-      // Map<String, dynamic> afParams = {
-      //   "type": int.parse(params["type"]) ?? "",
-      //   "userId": result.object.userId ?? "",
-      //   "openId": result.object.openId ?? "",
-      //   "email": result.object.email ?? "",
-      // };
-      // AppsflyerTrack.sendEvent("signUp", afParams);
+      if (response.object != null) {
+        // if fail update error message
+        result.errorMessage = emailIsUserMessage(params['email']);
+      } else {
+        result.errorMessage = response.errorMessage;
+      }
+      await logout();
+    }
+
+    return result;
+  }
+
+  static Future<Response<User>> signIn(Map<String, dynamic> params) async {
+   // params['language'] = DataManager.loadLanguage();
+   // params['os'] = getPlatform().toString();
+
+    // send device token
+    // String deviceToken = DataManager.getDeviceToken();
+    // if (deviceToken != null) {
+    //   params['deviceToken'] = deviceToken;
+    // }
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
+
+    Response<User> result = Response();
+
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
     } else {
       result.success = false;
       result.errorCode = response.errorCode;

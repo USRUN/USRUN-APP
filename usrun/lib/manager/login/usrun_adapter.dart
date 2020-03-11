@@ -4,7 +4,7 @@ import 'package:usrun/core/define.dart';
 
 class UsRunLoginAdapter extends LoginAdapter {
   Future<Map<String, dynamic>> login(Map params) async {
-    return _generateLoginParams(params['email'], params['password']);
+    return _generateLoginParams(params['name']="", params['email'], params['password']);
   }
 
   logout() async {
@@ -12,9 +12,10 @@ class UsRunLoginAdapter extends LoginAdapter {
 //    strava.deAuthorize();
   }
 
-  Map<String, String> _generateLoginParams(String email, String password) {
+  Map<String, String> _generateLoginParams(String name, String email, String password) {
     Map<String, String> res = {
       "type": LoginChannel.UsRun.index.toString(),
+      "name": name,
       "email": email,
       "password": password
     };

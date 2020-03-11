@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/edit_profile.dart';
@@ -171,7 +172,7 @@ class _AppPageState extends State<AppPage> {
                       height: R.appRatio.appSpacing20,
                     ),
                     Text(
-                      _fullName,
+                      UserManager.currentUser.name==""?_fullName:UserManager.currentUser.name,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -183,7 +184,7 @@ class _AppPageState extends State<AppPage> {
                       height: R.appRatio.appSpacing5,
                     ),
                     Text(
-                      _userCode,
+                      UserManager.currentUser.code==null||UserManager.currentUser.code==""?_userCode:UserManager.currentUser.code,
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: R.colors.oldYellow,

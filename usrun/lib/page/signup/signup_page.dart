@@ -230,13 +230,22 @@ class SignUpPage extends StatelessWidget {
     // validate password
     String password = _passwordController.text.trim();
     message = validatePassword(password);
+    String retypePassword = _retypePasswordController.text.trim();
+    if (password!=retypePassword)
+    {
+      message = "Incorrect Password";
+    }
+
     if (message != null) {
       showAlert(context, R.strings.errorTitle, message, null);
       return;
     }
 
+    String name = _firstNameController.text + " " + _lastNameController.text;
+
     Map<String, String> params = {
       'type': LoginChannel.UsRun.index.toString(),
+      'name': name,
       'email': email,
       'password': password
     };
@@ -245,7 +254,7 @@ class SignUpPage extends StatelessWidget {
   }
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
-      BuildContext context) async {
+    BuildContext context) async {
     showLoading(context);
     Map loginParams = await UserManager.adapterLogin(channel, params);
     hideLoading(context);

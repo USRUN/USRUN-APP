@@ -19,10 +19,7 @@ import 'package:usrun/util/network_detector.dart';
 const String API_VERSION = "1.1.3";
 
 class Client {
-//  static String _domain = 'http://localhost:8000';
-//  static String _domain = 'http://uprace.rongcondihoc.com';
-//  static String _domain = 'http://uprace_dev.123go.vn';
-  static String _domain = 'http://usrun.herokuapp.com';
+  static String _domain = 'http://128.199.159.72:8080';
 
   static String imageUrl(String endpoint) {
     if (endpoint == null || endpoint.isEmpty) {
@@ -131,25 +128,38 @@ class Client {
   }
 
   static Future<Response> post<T, E>(String endpoint, params) async {
+
+    String url = _domain + endpoint;
+    String query = "";
+    params.forEach((key, value) {
+      if (value is List) {
+        List<String> l = value as List<String>;
+        query = query + "&" + key + "=" + l.join(',');
+      } else {
+        query = query + "&" + key + "=" + value;
+      }
+    });
+
+    if (query != "") {
+      query = query.substring(1);
+      url = url + '?' + query;
+    }
+
     try {
       HttpClient client = new HttpClient();
       client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
-      String url = _domain + "/api/$API_VERSION" + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
       request.headers.set('accept', 'application/json');
-      request.headers.set('Accept-Encoding', 'gzip');
-
-      request.add(utf8.encode(json.encode(params)));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
       String reply = await response.transform(utf8.decoder).join();
 
-//      print("post url: $url");
-//      print(params);
-//      print(reply);
+     print("post url: $url");
+     print(params);
+     print(reply);
 
       return _handleResponse<T, E>(response, reply);
     }
@@ -165,7 +175,7 @@ class Client {
   }
 
   static Future<Response> get<T, E>(String endpoint, Map<String, String> params) async {
-    String url = _domain + "/api/$API_VERSION" + endpoint;
+    String url = _domain + endpoint;
     String query = "";
     params.forEach((key, value) {
       if (value is List) {
@@ -197,7 +207,6 @@ class Client {
       print("get url: $url");
       print(params);
       print(reply);
-      //104385113951232765836 - quangthequyen@gmail.com
 
       return _handleResponse<T, E>(response, reply);
     }
@@ -217,7 +226,7 @@ class Client {
 
     Map<String, dynamic> body = json.decode(reply);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       try {
         int code = body['code'];
         if (code == 0) {
