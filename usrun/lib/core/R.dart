@@ -381,10 +381,15 @@ class _MyIcons {
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
-  final String icStartRecord = 'assets/icons/icon-record-start.png';
-  final String icStopRecord = 'assets/icons/icon-record-stop.png';
-  final String icResumeRecord = 'assets/icons/icon-record-restart.png';
-  final String icPauseRecord = 'assets/icons/icon-record-pause.png'; 
+  final String icStartRecord = 'assets/myicons/icon-record-start.png';
+  final String icStopRecord = 'assets/myicons/icon-record-stop.png';
+  final String icResumeRecord = 'assets/myicons/icon-record-restart.png';
+  final String icPauseRecord = 'assets/myicons/icon-record-pause.png'; 
+  final String icStatisticWhite = 'assets/myicons/icon-white-record-statistics.png';
+  final String icStatisticColor = 'assets/myicons/icon-color-record-statistics.png'; 
+  final String icRecordEventWhite = 'assets/myicons/icon-white-record-events.png';
+  final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png'; 
+
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   String nextIcon = 'assets/myicons/icon-black-next.png';

@@ -118,14 +118,14 @@ flutter:
     - assets/usrunlogo/logo.png
 
 
-    - assets/icons/icon-color-record-events.png
-    - assets/icons/icon-color-record-statistics.png
-    - assets/icons/icon-record-pause.png
-    - assets/icons/icon-record-restart.png
-    - assets/icons/icon-record-start.png
-    - assets/icons/icon-record-stop.png
-    - assets/icons/icon-white-record-events.png
-    - assets/icons/icon-white-record-statistics.png
+    - assets/myicons/icon-color-record-events.png
+    - assets/myicons/icon-color-record-statistics.png
+    - assets/myicons/icon-record-pause.png
+    - assets/myicons/icon-record-restart.png
+    - assets/myicons/icon-record-start.png
+    - assets/myicons/icon-record-stop.png
+    - assets/myicons/icon-white-record-events.png
+    - assets/myicons/icon-white-record-statistics.png
 
 
   # To add assets to your application, add an assets section, like this:
