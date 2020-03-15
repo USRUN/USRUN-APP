@@ -9,7 +9,7 @@ class EventBadgeList extends StatelessWidget {
   final bool enableScrollBackgroundColor;
   final Function pressItemFuction;
 
-  final _badgeImageSize = R.appRatio.appEventBadgeSize.roundToDouble();
+  final _badgeImageSize = R.appRatio.appEventBadgeSize;
 
   /*
     Structure of the "items" variable: 

@@ -26,7 +26,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   bool _yearPickerState;
 
   static double _heightPickerBox =
-      (R.appRatio.deviceHeight - (R.appRatio.deviceHeight / 2.35))
+      (R.appRatio.deviceHeight - (R.appRatio.deviceHeight / 2.36))
           .roundToDouble();
 
   @override
@@ -49,6 +49,18 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _updateYearPickerState() {
+    if (_yearPickerState) {
+      // Change "YearBox" to "WeekBox" => Change height of "YearBox" to "WeekBox"
+      _heightPickerBox =
+          (R.appRatio.deviceHeight - (R.appRatio.deviceHeight / 2.36))
+              .roundToDouble();
+    } else {
+      // Change "WeekBox" to "YearBox" => Change height of "WeekBox" to "YearBox"
+      _heightPickerBox =
+          (R.appRatio.deviceHeight - (R.appRatio.deviceHeight / 2.8))
+              .roundToDouble();
+    }
+
     setState(() {
       _yearPickerState = !_yearPickerState;
     });
@@ -67,11 +79,8 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _updateSelectedWeek(DateTime fromDateValue) {
-    List<WeekDateTime> _weekDTList =
-        WeekDateTime.getWeekListOfMonth(fromDateValue);
-    int _posWeekInList = (WeekDateTime.getWeekOrder(fromDateValue)) - 1;
     setState(() {
-      _selectedWeek = _weekDTList[_posWeekInList];
+      _selectedWeek = WeekDateTime.getCurrentWeek(fromDateValue);
     });
   }
 
@@ -195,7 +204,8 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
                     lastDate: widget.lastDate)
                 : MyWeekList(
                     selectedWeek: _selectedWeek,
-                    weekList: _selectedWeek.generateWeekListOfMonth(),
+                    weekList: WeekDateTime.getWeekListOfMonth(
+                        _selectedWeek.getFromDateValue()),
                     onChanged: _onWeekChanged,
                     firstDate: widget.firstDate,
                     lastDate: widget.lastDate,

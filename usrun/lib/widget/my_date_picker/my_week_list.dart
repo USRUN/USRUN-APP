@@ -34,7 +34,7 @@ class _MyWeekListState extends State<MyWeekList> {
 
   @override
   void initState() {
-    _posWeekInList = widget.selectedWeek.getCurrentWeekOrder() - 1;
+    _posWeekInList = WeekDateTime.getWeekOrder(widget.selectedWeek.getFromDateValue());
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _scrollToActiveItemInList());
