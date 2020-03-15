@@ -73,24 +73,23 @@ class _ActivityContent extends StatelessWidget {
   final Function pressShareFunction;
   final Function pressInteractionFunction;
 
-  static double _boxHeight = R.appRatio.appHeight210.roundToDouble();
+  static double _boxHeight = R.appRatio.appHeight210;
   static Color _boxColor = Color(0xFFFFE4CF);
   static Color _pathIconColor = Color(0xFFE6CDBB);
   static double _boxRadius = 10;
   static double _bigBoxWidth = (R.appRatio.deviceWidth >= 360
-      ? R.appRatio.appWidth350.roundToDouble()
-      : R.appRatio.appWidth290.roundToDouble());
+      ? R.appRatio.appWidth350
+      : R.appRatio.appWidth290);
   static double _smallLeftBoxWidth = (R.appRatio.deviceWidth >= 360
-      ? R.appRatio.appWidth110.roundToDouble()
-      : R.appRatio.appWidth90.roundToDouble());
+      ? R.appRatio.appWidth110
+      : R.appRatio.appWidth90);
   static double _smallRightBoxWidth = _bigBoxWidth - _smallLeftBoxWidth;
-  static double _bottomHeightSmallRightBox =
-      R.appRatio.appHeight40.roundToDouble();
+  static double _bottomHeightSmallRightBox = R.appRatio.appHeight40;
   static double _topHeightSmallRightBox =
       _boxHeight - _bottomHeightSmallRightBox;
   static double _statsInfoWidth = (R.appRatio.deviceWidth >= 360
-      ? R.appRatio.appWidth100.roundToDouble()
-      : R.appRatio.appWidth80.roundToDouble());
+      ? R.appRatio.appWidth100
+      : R.appRatio.appWidth80);
 
   _ActivityContent({
     @required this.activityID,

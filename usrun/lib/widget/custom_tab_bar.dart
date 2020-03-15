@@ -13,7 +13,7 @@ class CustomTabBarStyle01 extends StatelessWidget {
   final Function pressTab;
 
   static double _tabIconSize = R.appRatio.appIconSize30;
-  static double _tabBarWidth = R.appRatio.deviceWidth.roundToDouble();
+  static double _tabBarWidth = R.appRatio.deviceWidth;
   static double _tabWidth = 0;
   static double _lastTabWidth = 0;
 
@@ -106,7 +106,7 @@ class CustomTabBarStyle02 extends StatelessWidget {
   final Function pressTab;
 
   static double _tabFontSize = R.appRatio.appFontSize16;
-  static double _tabBarWidth = R.appRatio.deviceWidth.roundToDouble();
+  static double _tabBarWidth = R.appRatio.deviceWidth;
   static double _tabWidth = 0;
   static double _lastTabWidth = 0;
 

@@ -62,12 +62,7 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   void _initSelectedWeek() {
     DateTime current = DateTime.now();
-
-    List<WeekDateTime> list = WeekDateTime.getWeekListOfMonth(current);
-    int weekOrder = WeekDateTime.getWeekOrder(current);
-    int posWeekInList = weekOrder - 1;
-
-    _selectedWeek = list[posWeekInList];
+    _selectedWeek = WeekDateTime.getCurrentWeek(current);
   }
 
   _onSelectItem(int tabIndex) {
