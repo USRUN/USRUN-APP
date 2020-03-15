@@ -12,7 +12,7 @@ class PhotoList extends StatelessWidget {
   final bool enableScrollBackgroundColor;
 
   final double _thumbnailSize =
-      R.appRatio.appPhotoThumbnailSize.roundToDouble();
+      R.appRatio.appPhotoThumbnailSize;
 
   // Define configurations for splitting item list
   static List _newItemList = [];

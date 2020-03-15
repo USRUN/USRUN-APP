@@ -304,11 +304,11 @@ class _AppRatio {
     + Formula for finding suitable size of object
   */
   double _computeWidth(num figmaObjSize) {
-    return (this.deviceWidth / this._figmaDeviceWidth) * figmaObjSize;
+    return ((this.deviceWidth / this._figmaDeviceWidth) * figmaObjSize).roundToDouble();
   }
 
   double _computeHeight(num figmaObjSize) {
-    double result = (this.deviceHeight / this._figmaDeviceHeight) * figmaObjSize;  
+    double result = ((this.deviceHeight / this._figmaDeviceHeight) * figmaObjSize).roundToDouble();  
     return (result <= figmaObjSize)
             ? result : 
             (
@@ -335,10 +335,10 @@ class _AppRatio {
   */
   void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor) {
     // Store device width and height
-    this.deviceWidth = deviceWidth;
-    this.deviceHeight = deviceHeight;
-    this.devicePixelRatio = devicePixelRatio;
-    this.textScaleFactor = textScaleFactor;
+    this.deviceWidth = deviceWidth.roundToDouble();
+    this.deviceHeight = deviceHeight.roundToDouble();
+    this.devicePixelRatio = devicePixelRatio.roundToDouble();
+    this.textScaleFactor = textScaleFactor.roundToDouble();
     // print("Width x Height x DPR x TSF: $deviceWidth, $deviceHeight, $devicePixelRatio, $textScaleFactor");
 
     // Find font size

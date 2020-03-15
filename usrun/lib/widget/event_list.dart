@@ -10,7 +10,7 @@ class EventList extends StatelessWidget {
   final bool enableScrollBackgroundColor;
   final Function pressItemFuction;
 
-  final double _eventItemWidth = R.appRatio.appWidth160.roundToDouble();
+  final double _eventItemWidth = R.appRatio.appWidth160;
 
   /*
     Structure of the "items" variable: 

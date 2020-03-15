@@ -12,7 +12,7 @@ class _TeamPlanItem extends StatelessWidget {
   final String mapImageURL;
   final Function pressItemFuction;
 
-  final double _teamPlanItemWidth = R.appRatio.appWidth220.roundToDouble();
+  final double _teamPlanItemWidth = R.appRatio.appWidth220;
   final Color _pinkRedColor = Color(0xFFFF5C4E);
   final double _borderRadius = 5;
   final double _halfBorderRadius = 5 / 2;
@@ -113,7 +113,7 @@ class _TeamPlanItem extends StatelessWidget {
                 ImageCacheManager.getImage(
                   url: this.mapImageURL,
                   width: this._teamPlanItemWidth,
-                  height: R.appRatio.appHeight140.roundToDouble(),
+                  height: R.appRatio.appHeight140,
                   fit: BoxFit.cover,
                 ),
                 (this.isFinished
@@ -131,7 +131,7 @@ class _TeamPlanItem extends StatelessWidget {
             // Day - Month - Year - Time - Plan name
             Container(
               width: this._teamPlanItemWidth,
-              height: R.appRatio.appHeight60.roundToDouble(),
+              height: R.appRatio.appHeight60,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(

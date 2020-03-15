@@ -2,7 +2,6 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/model/week_date_time.dart';
-import 'package:usrun/widget/my_info_box/complex_info_box.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 // Demo data
@@ -332,8 +331,8 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
               dataTitle: dataTitle,
               subTitle: subTitle,
               unitTitle: unitTitle,
-              boxHeight: R.appRatio.appHeight90,
-              boxWidth: R.appRatio.appHeight140,
+              boxHeight: R.appRatio.appHeight80,
+              boxWidth: R.appRatio.appHeight120,
               pressBox: _pressBox,
             ),
           );

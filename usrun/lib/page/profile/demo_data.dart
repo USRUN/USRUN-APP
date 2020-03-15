@@ -579,7 +579,7 @@ class DemoData {
     {
       "id": "2",
       "subTitle": "Total Steps",
-      "dataTitle": "311257462",
+      "dataTitle": "31257462",
       "unitTitle": "",
     },
     {

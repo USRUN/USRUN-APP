@@ -10,7 +10,7 @@ class TeamList extends StatelessWidget {
   final bool enableScrollBackgroundColor;
   final Function pressItemFuction;
 
-  final double _avatarSize = R.appRatio.appAvatarSize80.roundToDouble();
+  final double _avatarSize = R.appRatio.appAvatarSize80;
 
   /*
     Structure of the "items" variable: 
