@@ -390,6 +390,8 @@ class _MyIcons {
   final String icRecordEventWhite = 'assets/myicons/icon-white-record-events.png';
   final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png'; 
 
+  final String icCurrentSpot = 'assets/myicons/spot.gif';
+
   // Default is Light theme 
   String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   String nextIcon = 'assets/myicons/icon-black-next.png';

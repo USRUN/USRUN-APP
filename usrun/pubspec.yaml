@@ -23,7 +23,9 @@ dependencies:
   flutter_map: ^0.8.2
   latlong: ^0.6.1
   geolocator: ^5.0.0
-  location: ^2.5.0
+  path: 1.6.4
+  location:
+    path: ./myLibs/location_plugin
   sensors: ^0.4.1+8
 
 
@@ -126,6 +128,9 @@ flutter:
     - assets/myicons/icon-record-stop.png
     - assets/myicons/icon-white-record-events.png
     - assets/myicons/icon-white-record-statistics.png
+
+    
+    - assets/myicons/spot.gif
 
 
   # To add assets to your application, add an assets section, like this:

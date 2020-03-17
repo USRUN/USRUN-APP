@@ -1,14 +1,22 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:sensors/sensors.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
+import 'package:usrun/page/record/kalman_filter.dart';
 import 'package:usrun/page/record/location_background.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/timer.dart';
+
+import 'package:location/location.dart';
+
+import 'dart:ui' as ui;
 
 class RecordBloc extends BlocBase {
   GoogleMapController mapController;
@@ -23,14 +31,14 @@ class RecordBloc extends BlocBase {
   LocationData beginPoint;
   StreamSubscription<LocationData> _locationSubscription;
   LocationBackground _locationBackground;
-
   TimerService _timeService;
 
 
   //test
   List<LatLng> polylineCoordinates = List<LatLng>();
   List<Polyline> lData = List<Polyline>();
-
+  List<Marker> mData = List<Marker>();
+  Uint8List markerIcon;
   //end test
 
   RecordBloc() {
@@ -49,6 +57,10 @@ class RecordBloc extends BlocBase {
     // this.recordData = RecordData();
      _initTimeService(0);
      initListeners();
+     
+    setCustomMapPin();
+    
+    kalmanFilter = new KalmanLatLong(3);
   }
 
   Stream<LocationData> get streamLocation => _streamLocationController.stream;
@@ -63,6 +75,8 @@ class RecordBloc extends BlocBase {
 
    GPSSignalStatus get gpsStatus => this._streamGPSSignal.value;
 
+
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -70,6 +84,77 @@ class RecordBloc extends BlocBase {
       this._locationSubscription.cancel();
     }
   }
+
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+}
+
+   void setCustomMapPin() async {
+     markerIcon = await getBytesFromAsset(R.myIcons.icCurrentSpot, 100);
+   }
+
+void drawMaker(LatLng curLocation) {
+    // if (this.bloc.currentRecordState != RecordState.StatusStart && this.bloc.currentRecordState != RecordState.StatusStop) {
+    //   return markers;
+    // }
+
+   
+    // LocationData firstPoint = beginPoint;
+    // if (firstPoint != null) {
+    //   curLocation = LatLng(firstPoint.latitude,firstPoint.longitude);
+    //   // if (bloc.recordData.polylineList.isNotEmpty) {
+    //   //   Polyline polyline = bloc.recordData.polylineList.first;
+    //   //   if (polyline != null && polyline.points.isNotEmpty) {
+    //   //     LatLng latLng = polyline.points.first;
+    //   //     if (latLng != null) {
+    //   //       defaultBegin = latLng;
+    //   //     }
+    //   //   }
+    //   // }
+    //   if (curLocation != null) {
+    //     markers.addAll([
+    //       Marker(
+    //           markerId: MarkerId('tracking'),
+    //           icon: pinLocationIcon,
+    //           position: defaultBegin),
+    //     ]);
+    //   }
+        // }
+    mData.removeWhere(
+          (m) => m.markerId.value == 'tracking');
+    if (curLocation != null) {
+        mData.addAll([
+          Marker(
+              markerId: MarkerId('tracking'),
+              icon: BitmapDescriptor.fromBytes(markerIcon),
+              position: curLocation,
+              flat: true,
+              anchor: Offset(0.5,0.5),
+              consumeTapEvents: true
+              ),      
+        ]);
+      }
+  }
+  
+  static double calculateDistance(lat1, lon1, lat2, lon2){
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p))/2;
+    return 12742000 * asin(sqrt(a));
+  }
+  
+  int invalidCount = 0;
+
+    double currentSpeed = 0; 
+
+    KalmanLatLong kalmanFilter;
+
+    LocationData lastLoc;
 
   void onTotalTimeChange(int duration) async{
     print("tick + " + duration.toString());
@@ -85,12 +170,77 @@ class RecordBloc extends BlocBase {
       //      print(event.toString());
       //   });
        LocationData myLocation = await getCurrentLocation();
+
+     
+
+
+
+
+///GPS CHECKING
+       if(myLocation.accuracy <= 0){
+            print( "Latitidue and longitude values are invalid.");
+            invalidCount++;
+            return;
+        }
+
+
+        //setAccuracy(newLocation.getAccuracy());
+        double horizontalAccuracy = myLocation.accuracy;
+        if(horizontalAccuracy > 25){ //10meter filter
+           print("Accuracy is too low. " + horizontalAccuracy.toString());
+            invalidCount++;
+            return;
+        }
+
+
+        /* Kalman Filter */
+        double Qvalue;
+
        
-       geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
+        int elapsedTimeInMillis = 5000;
+
+        if(currentSpeed == 0){
+            Qvalue = 3; //3 meters per second
+        }else{
+            Qvalue = currentSpeed; // meters per second
+        }
+
+        kalmanFilter.Process(myLocation.latitude, myLocation.longitude, myLocation.accuracy, elapsedTimeInMillis, Qvalue);
+        double predictedLat = kalmanFilter.get_lat();
+        double predictedLng = kalmanFilter.get_lng();
+
+        
+        double predictedDeltaInMeters =  calculateDistance(predictedLat, predictedLng, myLocation.latitude, myLocation.longitude).abs();
+        
+        print( "Kalman Filter: " + predictedDeltaInMeters.toString());
+
+        if(predictedDeltaInMeters > 15 ){
+            print( "Kalman Filter detects mal GPS, we should probably remove this from track: " + predictedDeltaInMeters.toString());
+            kalmanFilter.consecutiveRejectCount += 1;
+
+            if(kalmanFilter.consecutiveRejectCount > 3){
+                kalmanFilter = new KalmanLatLong(3); //reset Kalman Filter if it rejects more than 3 times in raw.
+            }
+            invalidCount++;
+            return;
+        }else{
+            kalmanFilter.consecutiveRejectCount = 0;
+        }
        
-       print("1 min + lat: " + pos.latitude.toString() + " long: " + pos.longitude.toString() + "acc: " + pos.accuracy.toString() + "speed: "+ pos.speed.toString()) ;
+       currentSpeed = myLocation.speed;
+       print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
+       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<3)
+        {
+          print("Invalid dist!");
+            invalidCount++;
+          return;
+        }
+       lastLoc = myLocation;
+      //geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
+       
+       print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
        this._streamLocationController.add(myLocation);
-       polylineCoordinates.add(LatLng(pos.latitude,pos.longitude));
+       polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
        Polyline polyline = Polyline(
          polylineId: PolylineId("poly"),
          color: R.colors.majorOrange,
@@ -98,7 +248,9 @@ class RecordBloc extends BlocBase {
          points: polylineCoordinates
       );
 
+      invalidCount = 0;
        lData.add(polyline);
+       drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
      }
 //    if (this.recordData.isNotCorrectTotalTime) {
 //      _initTimeService(this.recordData.totalTime);
@@ -140,6 +292,7 @@ class RecordBloc extends BlocBase {
       this._updatePositionCamera(
           LatLng(beginPoint.latitude, beginPoint.longitude));
       this._streamGPSSignal.add(GPSSignalStatus.READY);
+      drawMaker(LatLng(beginPoint.latitude, beginPoint.longitude));
       return true;
     } else {
       this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
@@ -209,6 +362,16 @@ class RecordBloc extends BlocBase {
       //   this.recordData.startDate = DateTime.now();
       // }
       // this.recordData.beginNewLine();
+      lastLoc = await getCurrentLocation();
+       polylineCoordinates.add(LatLng(lastLoc.latitude,lastLoc.longitude));
+       Polyline polyline = Polyline(
+         polylineId: PolylineId("poly"),
+         color: R.colors.majorOrange,
+         width: 5,
+         points: polylineCoordinates
+      );
+
+       lData.add(polyline);
       this._timeService.start();
       // if (this._locationSubscription != null) {
       //   this._locationSubscription.cancel();

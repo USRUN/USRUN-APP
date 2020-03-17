@@ -37,8 +37,16 @@ class _RecordWidget extends StatelessWidget {
   BuildContext context;
   LocationData test;
 
+  BitmapDescriptor pinLocationIcon;
+
+   void setCustomMapPin() async {
+      pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      R.myIcons.icCurrentSpot);
+   }
 
 Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
+    setCustomMapPin();
     Set<Marker> markers = Set();
     // if (this.bloc.currentRecordState != RecordState.StatusStart && this.bloc.currentRecordState != RecordState.StatusStop) {
     //   return markers;
@@ -61,8 +69,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
         markers.addAll([
           Marker(
               markerId: MarkerId('begin'),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed),
+              icon: pinLocationIcon,
               position: defaultBegin),
         ]);
       }
@@ -143,10 +150,11 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                   target: defaultBegin,
                   zoom: 13//bloc.recordData.currentZoomValue,
                 ),
-                //markers: markers,
+                markers: Set.of(bloc.mData),
+                
                 //onTap: this.onTapMap,
                 onMapCreated: (controller) => bloc.onMapCreated(controller),
-                myLocationEnabled: true,
+                myLocationEnabled: false,
                 scrollGesturesEnabled: true,
                 myLocationButtonEnabled: false,
                 polylines: Set.of(bloc.lData),
@@ -179,7 +187,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                         GestureDetector(child: Icon(Icons.location_on),onTap: ()async{
                           LocationData myLocation = await this.bloc.getCurrentLocation();
                           Scaffold.of(context).showSnackBar(SnackBar(
-                             content: Text("lat: " + myLocation.latitude.toString() + " long: "+ myLocation.longitude.toString()),
+                             content: Text("acc: " + myLocation.accuracy.toString() + " speed: " + myLocation.speed.toString()),
                         ));},)
                     ])
                     )
