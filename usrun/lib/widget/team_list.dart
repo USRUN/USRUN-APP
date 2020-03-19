@@ -8,9 +8,13 @@ class TeamList extends StatelessWidget {
   final bool enableLabelShadow;
   final List items;
   final bool enableScrollBackgroundColor;
+  final bool enableSplitListToTwo;
   final Function pressItemFuction;
 
+  // Define configurations
   final double _avatarSize = R.appRatio.appAvatarSize80;
+  static List _newItemList = [];
+  static int _endPositionOfFirstList = 0;
 
   /*
     Structure of the "items" variable: 
@@ -29,13 +33,27 @@ class TeamList extends StatelessWidget {
   TeamList({
     this.labelTitle = "",
     this.enableLabelShadow = true,
+    this.enableSplitListToTwo = false,
     @required this.items,
     this.enableScrollBackgroundColor = true,
     this.pressItemFuction(teamid),
   });
 
+  void _splitItemList() {
+    if (this.enableSplitListToTwo && this.items.length > 1) {
+      _endPositionOfFirstList = (this.items.length / 2).round();
+      _newItemList.add(this.items.sublist(0, _endPositionOfFirstList));
+      _newItemList
+          .add(this.items.sublist(_endPositionOfFirstList, this.items.length));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Split item list
+    this._splitItemList();
+
+    // Render everything
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -62,10 +80,33 @@ class TeamList extends StatelessWidget {
             width: R.appRatio.deviceWidth,
             height: (this._isEmptyList()
                 ? R.appRatio.appHeight100
-                : R.appRatio.appHeight200),
+                : (this.enableSplitListToTwo
+                    ? R.appRatio.appHeight210 + R.appRatio.appHeight200
+                    : R.appRatio.appHeight210)),
+            padding: (this.enableSplitListToTwo
+                ? EdgeInsets.only(
+                    top: R.appRatio.appSpacing10,
+                    bottom: R.appRatio.appSpacing10,
+                  )
+                : null),
             child: (this._isEmptyList()
                 ? this._buildEmptyList()
-                : this._buildTeamList()),
+                : (this.enableSplitListToTwo
+                    ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: this._buildTeamList(_newItemList[0]),
+                            ),
+                            Expanded(
+                              child: this._buildTeamList(_newItemList[1]),
+                            ),
+                          ],
+                        ),
+                      )
+                    : this._buildTeamList(this.items))),
           ),
         ],
       ),
@@ -98,18 +139,18 @@ class TeamList extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamList() {
+  Widget _buildTeamList(List element) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      itemCount: this.items.length,
+      itemCount: element.length,
       itemBuilder: (BuildContext ctxt, int index) {
-        String id = this.items[index]['id'];
-        String name = this.items[index]['name'];
+        String id = element[index]['id'];
+        String name = element[index]['name'];
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-            .format(this.items[index]['athleteQuantity']);
-        String avatarImageURL = this.items[index]['avatarImageURL'];
-        String supportImageURL = this.items[index]['supportImageURL'];
+            .format(element[index]['athleteQuantity']);
+        String avatarImageURL = element[index]['avatarImageURL'];
+        String supportImageURL = element[index]['supportImageURL'];
 
         return Container(
           padding: EdgeInsets.only(
@@ -181,7 +222,7 @@ class TeamList extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      height: R.appRatio.appHeight60,
+                      height: R.appRatio.appHeight60 + 4.0,
                       child: Text(
                         name,
                         maxLines: null,

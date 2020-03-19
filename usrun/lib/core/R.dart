@@ -768,6 +768,9 @@ class Strings {
   String events;
 
   String teams;
+  String viewAllTeams;
+  String yourTeams;
+  String weSuggestYou;
 
   String settings;
   String changePassword;

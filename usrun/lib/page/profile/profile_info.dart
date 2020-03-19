@@ -7,7 +7,7 @@ import 'package:usrun/widget/team_list.dart';
 import 'package:usrun/widget/team_plan_list.dart';
 
 // Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/demo_data.dart';
 
 class ProfileInfo extends StatefulWidget {
   @override

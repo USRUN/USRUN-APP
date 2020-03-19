@@ -625,4 +625,22 @@ class DemoData {
       "unitTitle": "m",
     },
   ];
+
+  final bannerList = [
+    {
+      'imageURL': 'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+    },
+    {
+      'imageURL': 'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
+    },
+    {
+      'imageURL': 'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+    },
+    {
+      'imageURL': 'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+    },
+    {
+      'imageURL': 'https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg',
+    },
+  ];
 }

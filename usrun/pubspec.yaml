@@ -33,6 +33,7 @@ dependencies:
   nuts_activity_indicator: ^0.1.1
   intl: ^0.16.1
   flutter_widgets: ^0.1.11
+  carousel_pro: ^1.0.0
   
   path_provider: ^1.2.0
 

@@ -47,6 +47,9 @@
     "events": "Events",
 
     "teams": "Teams",
+    "viewAllTeams": "View All Teams",
+    "yourTeams": "Your Teams",
+    "weSuggestYou": "We Suggest You",
 
     "settings": "Settings",
     "changePassword": "Change Password",
