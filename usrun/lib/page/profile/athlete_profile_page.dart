@@ -15,7 +15,7 @@ import 'package:usrun/widget/team_plan_list.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 // Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/demo_data.dart';
 
 class AthleteProfilePage extends StatefulWidget {
   @override
