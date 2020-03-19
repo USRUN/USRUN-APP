@@ -4,7 +4,7 @@ import 'package:usrun/widget/my_info_box/complex_info_box.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 // Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/demo_data.dart';
 
 class ProfileStatsDay extends StatefulWidget {
   final DateTime day;

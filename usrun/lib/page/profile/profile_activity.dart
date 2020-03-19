@@ -6,7 +6,7 @@ import 'package:usrun/widget/event_badge_list.dart';
 import 'package:usrun/widget/photo_list.dart';
 
 // Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/demo_data.dart';
 
 class ProfileActivity extends StatefulWidget {
   @override
