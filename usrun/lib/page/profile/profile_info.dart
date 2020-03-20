@@ -29,8 +29,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
   }
 
   void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
     });
   }
 

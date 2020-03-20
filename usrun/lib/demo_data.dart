@@ -628,19 +628,141 @@ class DemoData {
 
   final bannerList = [
     {
-      'imageURL': 'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+      'imageURL':
+          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
     },
     {
-      'imageURL': 'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
+      'imageURL':
+          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
     },
     {
-      'imageURL': 'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+      'imageURL':
+          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
     },
     {
-      'imageURL': 'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+      'imageURL':
+          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
     },
     {
-      'imageURL': 'https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg',
+      'imageURL':
+          'https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg',
+    },
+  ];
+
+  final popupMenuList01 = [
+    {
+      "iconURL": R.myIcons.blackAttachmentIcon02,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Pin (Unpin) post",
+    },
+    {
+      "iconURL": R.myIcons.blackNewsFeedIcon,
+      "iconSize": R.appRatio.appIconSize18,
+      "title": "Report post",
+    },
+    {
+      "iconURL": R.myIcons.blackPostIcon,
+      "iconSize": R.appRatio.appIconSize18,
+      "title": "Turn off comment",
+    },
+    {
+      "iconURL": R.myIcons.blackEditIcon,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Edit post",
+    },
+    {
+      "iconURL": R.myIcons.blackBlockIcon,
+      "iconSize": R.appRatio.appIconSize18,
+      "title": "Hide post",
+    },
+    {
+      "iconURL": R.myIcons.blackCloseIcon,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Delete post",
+    }
+  ];
+
+  final suggestedTeamList = [
+    {
+      "avatarImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "supportImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "teamName": "Trường Đại học Khoa học Tự nhiên TP. HCM",
+      "athleteQuantity": 67842,
+      "location": "Ho Chi Minh City, Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Trường Đại học Bách Khoa Hà Nội",
+      "athleteQuantity": 58192,
+      "location": "Ha Noi City, Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Viện John Von Neumann Institute",
+      "athleteQuantity": 18592,
+      "location": "Ho Chi Minh City, Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Trường Đại học Khoa học Tự nhiên Thành phố Đà Nẵng",
+      "athleteQuantity": 67842,
+      "location": "Đa Nang City, Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Câu lạc bộ chạy bộ đông đảo quốc gia Việt Nam",
+      "athleteQuantity": 1829572,
+      "location": "Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Học Viện Bưu Chính Viễn Thông Việt Nam",
+      "athleteQuantity": 9938,
+      "location": "Viet Nam",
+    },
+    {
+      "avatarImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      "supportImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+      "teamName": "Công ty Trách nhiệm Hữu hạn Minh Âu",
+      "athleteQuantity": 671982,
+      "location": "Hai Phong City, Viet Nam",
+    },
+    {
+      'avatarImageURL':
+          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
+      'supportImageURL':
+          'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
+      "teamName": "Run Club Quận 7",
+      "athleteQuantity": 6571,
+      "location": "Ho Chi Minh City, Viet Nam",
+    },
+    {
+      'avatarImageURL':
+          'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
+      'supportImageURL':
+          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
+      "teamName": "DECKIA RUNNING SPORT CLUB",
+      "athleteQuantity": 18592,
+      "location": "Ho Chi Minh City, Viet Nam",
     },
   ];
 }

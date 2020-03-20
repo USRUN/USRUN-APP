@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.16.1
   flutter_widgets: ^0.1.11
   carousel_pro: ^1.0.0
+  flutter_staggered_animations: ^0.1.2
   
   path_provider: ^1.2.0
 
@@ -91,6 +92,7 @@ flutter:
     - assets/myicons/icon-white-back.png
     - assets/myicons/icon-orange-close.png
     - assets/myicons/icon-orange-search.png
+    - assets/myicons/icon-white-search.png
     - assets/myicons/icon-big-white-check.png
     - assets/myicons/icon-white-image-default.png
     - assets/myicons/icon-black-image-default.png
@@ -101,6 +103,7 @@ flutter:
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
     - assets/myicons/icon-white-edit.png
+    - assets/myicons/icon-black-edit.png
     - assets/myicons/icon-color-finish.png
     - assets/myicons/icon-black-people.png
     - assets/myicons/icon-white-people.png
@@ -136,6 +139,23 @@ flutter:
     - assets/myicons/icon-white-info.png
     - assets/myicons/icon-white-shoe.png
     - assets/myicons/icon-white-statistics.png
+    - assets/myicons/icon-black-attachments-02.png
+    - assets/myicons/icon-white-attachments-02.png
+    - assets/myicons/icon-black-block.png
+    - assets/myicons/icon-white-block.png
+    - assets/myicons/icon-black-add-02.png
+    - assets/myicons/icon-white-add-02.png
+    - assets/myicons/icon-black-close.png
+    - assets/myicons/icon-white-close.png
+    - assets/myicons/icon-black-news-feed.png
+    - assets/myicons/icon-black-post.png
+    - assets/myicons/icon-white-post.png
+    - assets/myicons/icon-black-3-dots.png
+    - assets/myicons/icon-white-3-dots.png
+    - assets/myicons/icon-black-gps.png
+    - assets/myicons/icon-white-gps.png
+    - assets/myicons/icon-black-key.png
+    - assets/myicons/icon-white-key.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png

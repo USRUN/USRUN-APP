@@ -37,6 +37,9 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
+    
+    "follow": "Follow",
+    "unFollow": "Unfollow",
 
     "profile": "Profile",
     "editProfile": "Edit Profile",

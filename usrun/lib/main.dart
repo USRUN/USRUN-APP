@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
