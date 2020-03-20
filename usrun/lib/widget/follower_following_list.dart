@@ -57,8 +57,6 @@ class FollowerFollowingList extends StatelessWidget {
       _newItemList.add(this.items.sublist(0, _endPositionOfFirstList));
       _newItemList
           .add(this.items.sublist(_endPositionOfFirstList, this.items.length));
-    } else {
-      _newItemList.add(this.items);
     }
   }
 
@@ -140,7 +138,7 @@ class FollowerFollowingList extends StatelessWidget {
                           ],
                         ),
                       )
-                    : this._buildFFList(_newItemList[0]))),
+                    : this._buildFFList(this.items))),
           ),
         ],
       ),

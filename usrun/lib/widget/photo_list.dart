@@ -45,8 +45,6 @@ class PhotoList extends StatelessWidget {
       _newItemList.add(this.items.sublist(0, _endPositionOfFirstList));
       _newItemList
           .add(this.items.sublist(_endPositionOfFirstList, this.items.length));
-    } else {
-      _newItemList.add(this.items);
     }
   }
 
@@ -110,7 +108,7 @@ class PhotoList extends StatelessWidget {
                           ],
                         ),
                       )
-                    : this._buildPhotoList(context, _newItemList[0], 0))),
+                    : this._buildPhotoList(context, this.items, 0))),
           ),
         ],
       ),
