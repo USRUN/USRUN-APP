@@ -59,8 +59,10 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   }
 
   void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
     });
   }
 
@@ -305,9 +307,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                         ? Center(
                             child: UIButton(
                               text:
-                                  (_isFollowingButton ? "Unfollow" : "Follow"),
+                                  (_isFollowingButton ?  R.strings.unFollow :  R.strings.follow),
                               textColor: (_isFollowingButton
-                                  ? R.colors.unfollowButtonColor
+                                  ? R.colors.grayButtonColor
                                   : R.colors.majorOrange),
                               textSize: R.appRatio.appFontSize12,
                               radius: 0,
@@ -317,7 +319,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                               border: Border.all(
                                 width: 1,
                                 color: (_isFollowingButton
-                                    ? R.colors.unfollowButtonColor
+                                    ? R.colors.grayButtonColor
                                     : R.colors.majorOrange),
                               ),
                               onTap: () {

@@ -264,8 +264,8 @@ class FollowerFollowingList extends StatelessWidget {
                   (this.enableFFButton
                       ? (this.isFollowingList
                           ? UIButton(
-                              text: "Unfollow",
-                              textColor: R.colors.unfollowButtonColor,
+                              text: R.strings.unFollow,
+                              textColor: R.colors.grayButtonColor,
                               textSize: R.appRatio.appFontSize12,
                               radius: 0,
                               width: R.appRatio.appWidth80,
@@ -273,7 +273,7 @@ class FollowerFollowingList extends StatelessWidget {
                               enableShadow: false,
                               border: Border.all(
                                 width: 1,
-                                color: R.colors.unfollowButtonColor,
+                                color: R.colors.grayButtonColor,
                               ),
                               onTap: () {
                                 if (this.pressUnfollowFuction != null) {
@@ -282,7 +282,7 @@ class FollowerFollowingList extends StatelessWidget {
                               },
                             )
                           : UIButton(
-                              text: "Follow",
+                              text: R.strings.follow,
                               textColor: R.colors.majorOrange,
                               textSize: R.appRatio.appFontSize12,
                               radius: 0,

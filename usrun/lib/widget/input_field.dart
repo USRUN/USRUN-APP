@@ -6,11 +6,20 @@ class InputField extends StatefulWidget {
   final bool enableLabelShadow;
   final bool enableFullWidth;
   final bool enableMaxLines;
+  final bool enableBottomUnderline;
+  final Color bottomUnderlineColor;
   final TextEditingController controller;
+  final TextStyle contentStyle;
+  final bool isDense;
   final String hintText;
+  final TextStyle hintStyle;
   final bool obscureText;
   final String errorText;
+  final bool autoFocus;
   final TextInputType textInputType;
+  final TextInputAction textInputAction;
+  final Function onSubmittedFunction;
+  final Function onChangedFunction;
   final bool enableSearchFeature;
   final Function searchFunction;
   final Function clearTextFunction;
@@ -21,11 +30,20 @@ class InputField extends StatefulWidget {
     this.enableLabelShadow = false,
     this.enableFullWidth = true,
     this.enableMaxLines = false,
+    this.enableBottomUnderline = true,
+    this.bottomUnderlineColor,
     @required this.controller,
+    this.contentStyle,
+    this.isDense = false,
     this.hintText,
+    this.hintStyle,
     this.obscureText = false,
+    this.autoFocus = false,
     this.textInputType = TextInputType.text,
+    this.textInputAction,
     this.errorText = "",
+    this.onSubmittedFunction(data),
+    this.onChangedFunction(data),
     this.enableSearchFeature = false,
     this.searchFunction,
     this.clearTextFunction,
@@ -49,6 +67,7 @@ class _InputFieldState extends State<InputField> {
           : R.appRatio.appWidth181),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
             child: (widget.labelTitle.length == 0
@@ -64,12 +83,24 @@ class _InputFieldState extends State<InputField> {
             controller: widget.controller,
             obscureText: widget.obscureText,
             keyboardType: widget.textInputType,
-            textInputAction:
+            autofocus: widget.autoFocus,
+            onSubmitted: (data) {
+              if (widget.onSubmittedFunction != null) {
+                widget.onSubmittedFunction(data);
+              }
+            },
+            onChanged: (data) {
+              if (widget.onChangedFunction != null) {
+                widget.onChangedFunction(data);
+              }
+            },
+            textInputAction: widget.textInputAction ??
                 (widget.enableMaxLines ? TextInputAction.none : null),
             maxLines: (widget.enableMaxLines ? null : 1),
-            style: TextStyle(
-                color: R.colors.contentText,
-                fontSize: R.appRatio.appFontSize18),
+            style: widget.contentStyle ??
+                TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18),
             decoration: InputDecoration(
               suffixIcon: (widget.enableSearchFeature
                   ? Container(
@@ -130,13 +161,32 @@ class _InputFieldState extends State<InputField> {
                           ),
                         )
                       : null)),
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: R.colors.majorOrange)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: R.colors.majorOrange)),
-              border: UnderlineInputBorder(),
+              isDense: widget.isDense,
+              enabledBorder: (widget.enableBottomUnderline
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (widget.bottomUnderlineColor ??
+                            R.colors.majorOrange),
+                      ),
+                    )
+                  : InputBorder.none),
+              focusedBorder: (widget.enableBottomUnderline
+                  ? UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (widget.bottomUnderlineColor ??
+                            R.colors.majorOrange),
+                      ),
+                    )
+                  : InputBorder.none),
+              border: (widget.enableBottomUnderline
+                  ? UnderlineInputBorder()
+                  : InputBorder.none),
               hintText: widget.hintText,
-              hintStyle: TextStyle(fontSize: R.appRatio.appFontSize18),
+              hintStyle: (widget.hintStyle ??
+                  TextStyle(
+                    fontSize: R.appRatio.appFontSize18,
+                    color: R.colors.grayABABAB,
+                  )),
               errorText: (widget.errorText.length == 0
                   ? null
                   : this._capitalizeTheFirstLetter(widget.errorText)),

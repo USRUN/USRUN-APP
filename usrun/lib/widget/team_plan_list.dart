@@ -47,7 +47,9 @@ class _TeamPlanItem extends StatelessWidget {
     _day = splitted.day.toString();
     _month = this._monthName[splitted.month - 1];
     _year = splitted.year.toString();
-    _time = splitted.hour.toString() + ":" + splitted.minute.toString();
+    _time = (splitted.hour == 0 ? "00" : splitted.hour.toString()) +
+        ":" +
+        (splitted.minute == 0 ? "00" : splitted.minute.toString());
   }
 
   @override

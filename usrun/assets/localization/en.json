@@ -37,6 +37,9 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
+    
+    "follow": "Follow",
+    "unFollow": "Unfollow",
 
     "profile": "Profile",
     "editProfile": "Edit Profile",
@@ -47,6 +50,9 @@
     "events": "Events",
 
     "teams": "Teams",
+    "viewAllTeams": "View All Teams",
+    "yourTeams": "Your Teams",
+    "weSuggestYou": "We Suggest You",
 
     "settings": "Settings",
     "changePassword": "Change Password",

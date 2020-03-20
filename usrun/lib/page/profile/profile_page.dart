@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
         widget = ProfileStats();
         break;
     }
-    
+
     return widget;
   }
 

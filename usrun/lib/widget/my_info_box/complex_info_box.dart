@@ -56,9 +56,9 @@ class ComplexInfoBox extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
             boxShadow: [
               BoxShadow(
-                blurRadius: 4.0,
-                offset: Offset(2.0, 2.0),
-                color: Color.fromRGBO(0, 0, 0, 0.25),
+                blurRadius: 2.0,
+                offset: Offset(1.0, 1.0),
+                color: R.colors.btnShadow,
               ),
             ],
           ),

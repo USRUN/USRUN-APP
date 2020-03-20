@@ -10,6 +10,7 @@ class PrivacyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
+    
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -124,7 +125,7 @@ class PrivacyProfile extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');

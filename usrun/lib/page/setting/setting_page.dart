@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/setting/about_us.dart';
@@ -10,7 +9,12 @@ import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/widget/line_button.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
+  @override
+  _SettingPageState createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +152,7 @@ class SettingPage extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "M",
                 switchButtonOffTitle: "Km",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -165,10 +169,14 @@ class SettingPage extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
+                initSwitchStatus: (R.currentAppTheme == "Light" ? false : true),
                 switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
+                  if (state) {
+                    R.changeAppTheme("Black");
+                  } else {
+                    R.changeAppTheme("Light");
+                  }
+                  setState(() {});
                 },
               ),
               SizedBox(
@@ -182,7 +190,7 @@ class SettingPage extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "En",
                 switchButtonOffTitle: "Vi",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -229,7 +237,7 @@ class SettingPage extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
+                initSwitchStatus: false,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
