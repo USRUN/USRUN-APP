@@ -22,8 +22,9 @@ class _WelcomePageState extends State<WelcomePage>
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1))
-          ..reverse(from: 1.0);
-    _offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0)).animate(
+          ..forward();
+    _offset =
+        Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeIn,
