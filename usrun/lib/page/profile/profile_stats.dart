@@ -5,7 +5,6 @@ import 'package:usrun/model/week_date_time.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
-import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_month_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_week_picker.dart';
