@@ -132,7 +132,7 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayDefaultTabTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: "News Feed",
+                resultText: R.strings.uFeed,
                 resultTextFontSize: R.appRatio.appFontSize14,
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,

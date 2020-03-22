@@ -5,6 +5,8 @@
     "lastName": "Last Name",
     "password": "Password",
     "passwordHint": "Type your password here",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
     "retypePassword": "Re-type Password",
     "retypePasswordHint": "Type your password again",
     "forgotPassword": "Forgot Password",

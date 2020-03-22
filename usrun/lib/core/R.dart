@@ -768,6 +768,8 @@ class Strings {
   String lastName;
   String password;
   String passwordHint;
+  String currentPassword;
+  String newPassword;
   String retypePassword;
   String retypePasswordHint;
   String forgotPassword;
