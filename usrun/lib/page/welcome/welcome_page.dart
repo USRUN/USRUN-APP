@@ -75,45 +75,13 @@ class _WelcomePageState extends State<WelcomePage>
                         child: Column(
                           children: <Widget>[
                             UIImageButton(
-                              image: Image.asset(
-                                R.images.loginFacebook,
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: R.appRatio.appSpacing25,
-                      right: R.appRatio.appSpacing25,
-                      bottom: R.appRatio.appSpacing25,
-                    ),
-                    child: Container(
-                      color: Colors.white.withOpacity(0.5),
-                      child: Column(
-                        children: <Widget>[
-                          UIImageButton(
-                            image: Image.asset(
-                              (R.currentAppLanguage == "en"
-                                  ? R.images.loginFacebookEnglish
-                                  : R.images.loginFacebookVietnam),
-                              fit: BoxFit.contain,
-                            ),
-                            width: R.appRatio.appWidth381,
-                          ),
-                          SizedBox(
-                            height: R.appRatio.appSpacing15,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: R.colors.majorOrange,
-                                width: 2,
-                              ),
-                            ),
-                            child: UIImageButton(
+                              width: R.appRatio.appWidth381,
                               image: Image.asset(
                                 (R.currentAppLanguage == "en"
-                                  ? R.images.loginGoogleEnglish
-                                  : R.images.loginGoogleVietnam),
+                                    ? R.images.loginFacebookEnglish
+                                    : R.images.loginFacebookVietnam),
                                 fit: BoxFit.contain,
                               ),
-                              width: R.appRatio.appWidth381,
                             ),
                             SizedBox(
                               height: R.appRatio.appSpacing15,
@@ -124,19 +92,15 @@ class _WelcomePageState extends State<WelcomePage>
                                   color: R.colors.majorOrange,
                                   width: 2,
                                 ),
-                            child: UIImageButton(
-                              image: Image.asset(
-                                (R.currentAppLanguage == "en"
-                                  ? R.images.loginEmailEnglish
-                                  : R.images.loginEmailVietnam),
-                                fit: BoxFit.contain,
                               ),
                               child: UIImageButton(
+                                width: R.appRatio.appWidth381,
                                 image: Image.asset(
-                                  R.images.loginGoogle,
+                                  (R.currentAppLanguage == "en"
+                                      ? R.images.loginGoogleEnglish
+                                      : R.images.loginGoogleVietnam),
                                   fit: BoxFit.contain,
                                 ),
-                                width: R.appRatio.appWidth381,
                               ),
                             ),
                             SizedBox(
@@ -156,12 +120,14 @@ class _WelcomePageState extends State<WelcomePage>
                                     color: R.colors.majorOrange, width: 2),
                               ),
                               child: UIImageButton(
-                                image: Image.asset(
-                                  R.images.loginEmail,
-                                  fit: BoxFit.contain,
-                                ),
                                 width: R.appRatio.appWidth381,
                                 onTap: () => pushPage(context, SignUpPage()),
+                                image: Image.asset(
+                                  (R.currentAppLanguage == "en"
+                                      ? R.images.loginEmailEnglish
+                                      : R.images.loginEmailVietnam),
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                             SizedBox(

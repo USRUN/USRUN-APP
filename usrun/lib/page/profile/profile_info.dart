@@ -95,7 +95,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 enableFFButton: true,
                 labelTitle: R.strings.personalFollowers,
                 enableLabelShadow: true,
-                subTitle: "$_followerNumber " + R.strings.personalFollowers,
+                subTitle: "$_followerNumber " + R.strings.personalFollowersNotice,
                 enableSubtitleShadow: true,
                 enableScrollBackgroundColor: true,
                 isFollowingList: false,
