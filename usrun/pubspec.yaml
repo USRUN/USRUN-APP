@@ -70,10 +70,13 @@ flutter:
     - assets/localization/vi.json
 
     - assets/images/welcome.png
-    - assets/images/login_fb.png
-    - assets/images/login_gg.png
+    - assets/images/login_fb_en.png
+    - assets/images/login_fb_vi.png
+    - assets/images/login_email_en.png
+    - assets/images/login_email_vi.png
+    - assets/images/login_gg_en.png
+    - assets/images/login_gg_vi.png
     - assets/images/or_line.png
-    - assets/images/login_email.png
 
     - assets/images/drawer_background.png
     - assets/images/drawer_background_darker.png

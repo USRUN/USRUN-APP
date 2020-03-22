@@ -24,7 +24,7 @@ enum RouteType {
 
 Future setLanguage(String lang) async{
   String jsonContent = await rootBundle.loadString("assets/localization/$lang.json");
-  R.initLocalized(jsonContent);
+  R.initLocalized(lang, jsonContent);
 }
 
 // === ALERT === //

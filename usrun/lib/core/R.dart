@@ -11,8 +11,10 @@ class R {
   static _AppRatio appRatio = _AppRatio();
   static _MyIcons myIcons = _MyIcons();
   static String currentAppTheme = "Light";
+  static String currentAppLanguage = "en";
 
-  static void initLocalized(String jsonContent) {
+  static void initLocalized(String lang, String jsonContent) {
+    currentAppLanguage = lang;
     R.strings = MapperObject.create<Strings>(jsonContent);
   }
 
@@ -735,9 +737,12 @@ class _Images {
   // Common images
   final String welcomeBanner = 'assets/images/welcome.png';
 
-  final String loginFacebook = 'assets/images/login_fb.png';
-  final String loginGoogle = 'assets/images/login_gg.png';
-  final String loginEmail = 'assets/images/login_email.png';
+  final String loginFacebookEnglish = 'assets/images/login_fb_en.png';
+  final String loginFacebookVietnam = 'assets/images/login_fb_vi.png';
+  final String loginGoogleEnglish = 'assets/images/login_gg_en.png';
+  final String loginGoogleVietnam = 'assets/images/login_gg_vi.png';
+  final String loginEmailEnglish = 'assets/images/login_email_en.png';
+  final String loginEmailVietnam = 'assets/images/login_email_vi.png';
   final String orLine = 'assets/images/or_line.png';
 
   final String drawerBackground = 'assets/images/drawer_background.png';
@@ -759,12 +764,47 @@ class _Images {
 class Strings {
   String usrun;
 
+  String firstName;
+  String lastName;
+  String password;
+  String passwordHint;
+  String currentPassword;
+  String newPassword;
+  String retypePassword;
+  String retypePasswordHint;
+  String forgotPassword;
+  String passwordNotice;
+  String reset;
+  String resetPasswordNotice;
+  String email;
+  String emailHint;
+  String country;
+  String city;
+  String district;
+  String whatYourJob;
+  String whatYourJobHint;
+  String birthday;
+  String gender;
+  String height;
+  String weight;
+  String biography;
+  String biographyHint;
+  String follow;
+  String unFollow;
+  
   String yearPicker;
   String monthPicker;
   String weekPicker;
   String datePicker;
   String timePicker;
   String dateTimePicker;
+
+  String selectedDay;
+  String selectedWeek;
+  String selectedMonth;
+  String currentWeek;
+  String currentMonth;
+  String currentYear;
 
   String january;
   String february;
@@ -778,7 +818,7 @@ class Strings {
   String october;
   String november;
   String december;
-
+  
   String monday;
   String tuesday;
   String wednesday;
@@ -797,12 +837,32 @@ class Strings {
   String signUp;
   String resetPassword;
 
-  String follow;
-  String unFollow;
-
   String profile;
   String editProfile;
+
   String athleteProfile;
+  String athleteBadges;
+  String athletePhotos;
+  String athleteFollowing;
+  String athleteFollowingNotice;
+  String athleteFollowers;
+  String athleteFollowersNotice;
+  String athleteEvents;
+  String athleteTeams;
+  String athleteTeamPlans;
+  String athleteActivities;
+  String athleteStatsInCurrentYear;
+
+  String personalFollowing;
+  String personalFollowingNotice;
+  String personalFollowers;
+  String personalFollowersNotice;
+  String personalEvents;
+  String personalTeams;
+  String personalTeamPlans;
+  String personalEventBadges;
+  String personalPhotos;
+  String personalActivities;
 
   String record;
 
@@ -944,6 +1004,7 @@ class Strings {
 
   Map<String, dynamic> errorMessages;
 
+  String nothingToShow;
   String errorTitle;
   String errorLoginFail;
   String errorLogoutFail;

@@ -44,7 +44,7 @@ class ResetPasswordPage extends StatelessWidget {
               height: R.appRatio.appSpacing20,
             ),
             Text(
-              'Enter your email address which was used for registering account, and we will send you a reset password to this email.',
+              R.strings.resetPasswordNotice,
               style: TextStyle(
                 color: R.colors.majorOrange,
                 fontSize: R.appRatio.appFontSize18,
@@ -58,7 +58,7 @@ class ResetPasswordPage extends StatelessWidget {
             InputField(
               controller: _emailController,
               enableFullWidth: true,
-              hintText: "Email",
+              hintText: R.strings.email,
             ),
             SizedBox(
               height: R.appRatio.appSpacing40,
@@ -67,7 +67,7 @@ class ResetPasswordPage extends StatelessWidget {
                 width: R.appRatio.appWidth381,
                 height: R.appRatio.appHeight60,
                 gradient: R.colors.uiGradient,
-                text: 'Reset',
+                text: R.strings.reset,
                 textSize: R.appRatio.appFontSize22,
                 // TODO: Function for resetting password
                 onTap: () {

@@ -77,6 +77,40 @@ class _WelcomePageState extends State<WelcomePage>
                             UIImageButton(
                               image: Image.asset(
                                 R.images.loginFacebook,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: R.appRatio.appSpacing25,
+                      right: R.appRatio.appSpacing25,
+                      bottom: R.appRatio.appSpacing25,
+                    ),
+                    child: Container(
+                      color: Colors.white.withOpacity(0.5),
+                      child: Column(
+                        children: <Widget>[
+                          UIImageButton(
+                            image: Image.asset(
+                              (R.currentAppLanguage == "en"
+                                  ? R.images.loginFacebookEnglish
+                                  : R.images.loginFacebookVietnam),
+                              fit: BoxFit.contain,
+                            ),
+                            width: R.appRatio.appWidth381,
+                          ),
+                          SizedBox(
+                            height: R.appRatio.appSpacing15,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: R.colors.majorOrange,
+                                width: 2,
+                              ),
+                            ),
+                            child: UIImageButton(
+                              image: Image.asset(
+                                (R.currentAppLanguage == "en"
+                                  ? R.images.loginGoogleEnglish
+                                  : R.images.loginGoogleVietnam),
                                 fit: BoxFit.contain,
                               ),
                               width: R.appRatio.appWidth381,
@@ -90,6 +124,12 @@ class _WelcomePageState extends State<WelcomePage>
                                   color: R.colors.majorOrange,
                                   width: 2,
                                 ),
+                            child: UIImageButton(
+                              image: Image.asset(
+                                (R.currentAppLanguage == "en"
+                                  ? R.images.loginEmailEnglish
+                                  : R.images.loginEmailVietnam),
+                                fit: BoxFit.contain,
                               ),
                               child: UIImageButton(
                                 image: Image.asset(
