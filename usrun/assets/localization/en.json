@@ -1,12 +1,46 @@
 {
     "usrun":"USRUN",
 
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "password": "Password",
+    "passwordHint": "Type your password here",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "retypePassword": "Re-type Password",
+    "retypePasswordHint": "Type your password again",
+    "forgotPassword": "Forgot Password",
+    "passwordNotice": "Password must contain at least 8 characters with one number and one uppercase letter.",
+    "reset": "Reset",
+    "resetPasswordNotice": "Enter your email address which was used for registering account, and we will send you a reset password to this email.",
+    "email": "Email",
+    "emailHint": "Type your email here",
+    "country": "Country",
+    "city": "City",
+    "district": "District",
+    "whatYourJob": "What's Your Job",
+    "birthday": "Birthday",
+    "gender": "Gender",
+    "height": "Height",
+    "weight": "Weight",
+    "biography": "Biography",
+    "biographyHint": "Share something about yourself...",
+    "follow": "Follow",
+    "unFollow": "Unfollow",
+
     "yearPicker": "YEAR PICKER",
     "monthPicker": "MONTH PICKER",
     "weekPicker": "WEEK PICKER",
     "datePicker": "DATE PICKER",
     "timePicker": "TIME PICKER",
     "dateTimePicker": "DATE TIME PICKER",
+
+    "selectedDay": "Selected Day",
+    "selectedWeek": "Selected Week",
+    "selectedMonth": "Selected Month",
+    "currentWeek": "Current Week",
+    "currentMonth": "Current Month",
+    "currentYear": "Current Year",
 
     "january": "January",
     "february": "February",
@@ -40,13 +74,39 @@
 
     "profile": "Profile",
     "editProfile": "Edit Profile",
+
     "athleteProfile": "Athlete Profile",
+    "athleteBadges": "Athlete's Badges",
+    "athletePhotos": "Athlete's Photos",
+    "athleteFollowing": "Athlete's Following",
+    "athleteFollowingNotice": "ATHLETE IS BEING FOLLOWED",
+    "athleteFollowers": "Athlete's Followers",
+    "athleteFollowersNotice": "FOLLOWERS OF THIS ATHLETE",
+    "athleteEvents": "Athlete's Events",
+    "athleteTeams": "Athlete's Teams",
+    "athleteTeamPlans": "Athlete's Team Plans",
+    "athleteActivities": "Athlete's Activities",
+    "athleteStatsInCurrentYear": "Athlete's Stats In Current Year",
+
+    "personalFollowing": "Following",
+    "personalFollowingNotice": "ATHLETE YOU FOLLOW",
+    "personalFollowers": "Followers",
+    "personalFollowersNotice": "ATHLETE FOLLOWING YOU",
+    "personalEvents": "Your Events",
+    "personalTeams": "Your Teams",
+    "personalTeamPlans": "Your Team Plans",
+    "personalEventBadges": "Event Badges",
+    "personalPhotos": "Photos",
+    "personalActivities": "Activities",
 
     "uFeed": "U-Feed",
 
     "events": "Events",
 
     "teams": "Teams",
+    "viewAllTeams": "View All Teams",
+    "yourTeams": "Your Teams",
+    "weSuggestYou": "We Suggest You",
 
     "settings": "Settings",
     "changePassword": "Change Password",
@@ -177,6 +237,7 @@
 
     "search": "Search",
 
+    "nothingToShow": "Nothing to show",
     "errorTitle": "Error",
     "errorTitleIsRequired": "Title is required",
     "errorLoginFail": "Login failed",
@@ -201,7 +262,6 @@
     "errorWeightIsRequired": "Weight is required",
     "errorUserNotFound": "User not found",
     "errorEmailPassword": "Email and password incorrect",
-
 
     "requestTimeOut": "Request time out",
 

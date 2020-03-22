@@ -63,8 +63,8 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _currentPWController,
                   enableFullWidth: true,
                   obscureText: true,
-                  labelTitle: "Current password",
-                  hintText: "Current password",
+                  labelTitle: R.strings.currentPassword,
+                  hintText: R.strings.currentPassword,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -73,8 +73,8 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _newPWController,
                   enableFullWidth: true,
                   obscureText: true,
-                  labelTitle: "New password",
-                  hintText: "New password",
+                  labelTitle: R.strings.newPassword,
+                  hintText: R.strings.newPassword,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -83,14 +83,14 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _retypePWController,
                   enableFullWidth: true,
                   obscureText: true,
-                  labelTitle: "Re-type password",
-                  hintText: "Re-type password",
+                  labelTitle: R.strings.retypePassword,
+                  hintText: R.strings.retypePassword,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
                 Text(
-                  "Password must contain at least 8 characters with one number and one uppercase letter",
+                  R.strings.passwordNotice,
                   style: TextStyle(
                       color: R.colors.orangeNoteText,
                       fontStyle: FontStyle.italic,

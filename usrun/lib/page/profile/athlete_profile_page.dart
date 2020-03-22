@@ -59,8 +59,10 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   }
 
   void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
     });
   }
 
@@ -305,9 +307,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                         ? Center(
                             child: UIButton(
                               text:
-                                  (_isFollowingButton ? "Unfollow" : "Follow"),
+                                  (_isFollowingButton ?  R.strings.unFollow :  R.strings.follow),
                               textColor: (_isFollowingButton
-                                  ? R.colors.unfollowButtonColor
+                                  ? R.colors.grayButtonColor
                                   : R.colors.majorOrange),
                               textSize: R.appRatio.appFontSize12,
                               radius: 0,
@@ -317,7 +319,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                               border: Border.all(
                                 width: 1,
                                 color: (_isFollowingButton
-                                    ? R.colors.unfollowButtonColor
+                                    ? R.colors.grayButtonColor
                                     : R.colors.majorOrange),
                               ),
                               onTap: () {
@@ -334,7 +336,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Event Badges
                     EventBadgeList(
                       items: DemoData().eventBadgeList,
-                      labelTitle: "Event Badges",
+                      labelTitle: R.strings.athleteBadges,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: _pressEventBadge,
@@ -345,7 +347,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Photo
                     PhotoList(
                       items: DemoData().photoItemList,
-                      labelTitle: "Photos",
+                      labelTitle: R.strings.athletePhotos,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                     ),
@@ -356,9 +358,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     FollowerFollowingList(
                       items: DemoData().ffItemList,
                       enableFFButton: false,
-                      labelTitle: "Athlete's Following",
+                      labelTitle: R.strings.athleteFollowing,
                       enableLabelShadow: true,
-                      subTitle: "$_followingNumber ATHLETE IS BEING FOLLOWED",
+                      subTitle: "$_followingNumber " + R.strings.athleteFollowingNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: true,
@@ -371,9 +373,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     FollowerFollowingList(
                       items: DemoData().ffItemList,
                       enableFFButton: false,
-                      labelTitle: "Athlete's Followers",
+                      labelTitle: R.strings.athleteFollowers,
                       enableLabelShadow: true,
-                      subTitle: "$_followerNumber FOLLOWERS OF THIS ATHLETE",
+                      subTitle: "$_followerNumber " + R.strings.athleteFollowersNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: false,
@@ -385,7 +387,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Events
                     EventList(
                       items: DemoData().eventList,
-                      labelTitle: "Athlete's Events",
+                      labelTitle: R.strings.athleteEvents,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: _pressEventItemFunction,
@@ -396,7 +398,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Teams
                     TeamList(
                       items: DemoData().teamList,
-                      labelTitle: "Athlete's Teams",
+                      labelTitle: R.strings.athleteTeams,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: _pressTeamItemFunction,
@@ -407,7 +409,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Team plans
                     TeamPlanList(
                       items: DemoData().teamPlanList,
-                      labelTitle: "Athlete's Team Plans",
+                      labelTitle: R.strings.athleteTeamPlans,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: _pressTeamPlanItemFunction,
@@ -422,7 +424,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       ),
                       child: StatsSection(
                         items: DemoData().statsListStyle01,
-                        labelTitle: "Athlete's Stats In This Year",
+                        labelTitle: R.strings.athleteStatsInCurrentYear,
                         enableLabelShadow: true,
                       ),
                     ),
@@ -437,7 +439,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       ),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Athlete's Activities: $_activityNumber",
+                        R.strings.athleteActivities + ": $_activityNumber",
                         style: R.styles.shadowLabelStyle,
                       ),
                     ),

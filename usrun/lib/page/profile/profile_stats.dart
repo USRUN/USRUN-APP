@@ -1,11 +1,10 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart'; 
+import 'package:usrun/model/week_date_time.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
-import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_month_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_week_picker.dart';
@@ -33,7 +32,6 @@ class ProfileStats extends StatefulWidget {
 }
 
 class _ProfileStatsState extends State<ProfileStats> {
-  bool _isLoading;
   int _selectedTabIndex;
   DateTime _selectedDay;
   WeekDateTime _selectedWeek;
@@ -43,7 +41,6 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   @override
   void initState() {
-    _isLoading = true;
     _selectedTabIndex = 0;
     _selectedDay = DateTime.now();
     _initSelectedWeek();
@@ -51,13 +48,6 @@ class _ProfileStatsState extends State<ProfileStats> {
     _selectedYear = _selectedDay;
     _stringSelectedDate = formatDate(_selectedDay, [dd, '/', mm, '/', yyyy]);
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
   }
 
   void _initSelectedWeek() {
@@ -192,40 +182,38 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   @override
   Widget build(BuildContext context) {
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : Column(
-            children: <Widget>[
-              CustomTabBarStyle02(
-                selectedTabIndex: _selectedTabIndex,
-                items: widget.tabBarItems,
-                pressTab: _onSelectItem,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              UIButton(
-                color: R.colors.redPink,
-                text: _stringSelectedDate,
-                textSize: R.appRatio.appFontSize16,
-                textColor: Colors.white,
-                fontWeight: FontWeight.bold,
-                enableShadow: true,
-                width: R.appRatio.appWidth200,
-                height: R.appRatio.appHeight30,
-                radius: 0,
-                boxShadow: BoxShadow(
-                  blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
-                  color: R.colors.btnShadow,
-                ),
-                onTap: _pressDateButton,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              _getContentItemWidget(_selectedTabIndex),
-            ],
-          ));
+    return Column(
+      children: <Widget>[
+        CustomTabBarStyle02(
+          selectedTabIndex: _selectedTabIndex,
+          items: widget.tabBarItems,
+          pressTab: _onSelectItem,
+        ),
+        SizedBox(
+          height: R.appRatio.appSpacing25,
+        ),
+        UIButton(
+          color: R.colors.redPink,
+          text: _stringSelectedDate,
+          textSize: R.appRatio.appFontSize16,
+          textColor: Colors.white,
+          fontWeight: FontWeight.bold,
+          enableShadow: true,
+          width: R.appRatio.appWidth200,
+          height: R.appRatio.appHeight30,
+          radius: 0,
+          boxShadow: BoxShadow(
+            blurRadius: 2.0,
+            offset: Offset(1.0, 1.0),
+            color: R.colors.btnShadow,
+          ),
+          onTap: _pressDateButton,
+        ),
+        SizedBox(
+          height: R.appRatio.appSpacing25,
+        ),
+        _getContentItemWidget(_selectedTabIndex),
+      ],
+    );
   }
 }

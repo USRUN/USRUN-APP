@@ -6,12 +6,15 @@ class R {
   static Strings strings = Strings();
   static final _Colors colors = _Colors();
   static final _Images images = _Images();
-  static final _Styles styles = _Styles();
   static final _Constants constants = _Constants();
+  static _Styles styles = _Styles();
   static _AppRatio appRatio = _AppRatio();
   static _MyIcons myIcons = _MyIcons();
+  static String currentAppTheme = "Light";
+  static String currentAppLanguage = "en";
 
-  static void initLocalized(String jsonContent) {
+  static void initLocalized(String lang, String jsonContent) {
+    currentAppLanguage = lang;
     R.strings = MapperObject.create<Strings>(jsonContent);
   }
 
@@ -27,8 +30,10 @@ class R {
       appTheme = 'Light';
     }
 
+    currentAppTheme = appTheme;
     myIcons.changeTheme(appTheme);
     colors.changeTheme(appTheme);
+    styles = _Styles();
   }
 }
 
@@ -533,13 +538,13 @@ class _Colors {
   Color lighterNormalNoteText         = Color(0xFFABABAB);
   Color appBackground                 = Color(0xFFFFFFFF);
   Color boxBackground                 = Color(0xFFFFFFFF);
-  Color unfollowButtonColor           = Color(0xFF515151);
+  Color grayButtonColor               = Color(0xFF515151);
   Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
   Color btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
   Color textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
-  Color notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+  Color notificationLayer             = Color.fromRGBO(253, 99, 44, 0.2);
 
   // User need to change theme
   void changeTheme(String theme) {
@@ -550,13 +555,13 @@ class _Colors {
       lighterNormalNoteText         = Color(0xFFABABAB);
       appBackground                 = Color(0xFFFFFFFF);
       boxBackground                 = Color(0xFFFFFFFF);
-      unfollowButtonColor           = Color(0xFF515151);
+      grayButtonColor               = Color(0xFF515151);
       sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
       btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
       textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer               = Color.fromRGBO(253, 99, 44, 0.2);
-      notiLayer                     = Color.fromRGBO(253, 99, 44, 0.2);
+      notificationLayer             = Color.fromRGBO(253, 99, 44, 0.2);
     }
     else {
       // #212121 = RGB(33, 33, 33)
@@ -568,13 +573,13 @@ class _Colors {
       lighterNormalNoteText         = Color(0xFFABABAB);
       appBackground                 = Color(0xFF121212);
       boxBackground                 = Color(0xFF212121);
-      unfollowButtonColor           = Color(0xFFABABAB);
+      grayButtonColor               = Color(0xFFABABAB);
       sectionBackgroundLayer        = Color.fromRGBO(33, 33, 33, 0.5);
       btnShadow                     = Color.fromRGBO(255, 255, 255, 0.5);
       textShadow                    = Color.fromRGBO(255, 255, 255, 0.25);
       tabLayer                      = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer               = Color.fromRGBO(171, 171, 171, 0.2);
-      notiLayer                     = Color.fromRGBO(171, 171, 171, 0.2);
+      notificationLayer             = Color.fromRGBO(171, 171, 171, 0.2);
     }
   }
 }
@@ -584,6 +589,8 @@ class _MyIcons {
   final String appBarBackBtn = 'assets/myicons/icon-white-back.png';
   final String appBarCheckBtn = 'assets/myicons/icon-big-white-check.png';
   final String appBarShareBtn = 'assets/myicons/icon-white-bold-share.png';
+  final String appBarSearchBtn = 'assets/myicons/icon-white-search.png';
+  final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
@@ -602,7 +609,6 @@ class _MyIcons {
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
-  final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
   final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
   final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
@@ -623,6 +629,15 @@ class _MyIcons {
   final String whiteInfoIcon = 'assets/myicons/icon-white-info.png';
   final String whiteShoeIcon = 'assets/myicons/icon-white-shoe.png';
   final String whiteStatisticsIcon = 'assets/myicons/icon-white-statistics.png';
+  final String blackAttachmentIcon02 = 'assets/myicons/icon-black-attachments-02.png';
+  final String blackBlockIcon = 'assets/myicons/icon-black-block.png';
+  final String blackAddIcon02 = 'assets/myicons/icon-black-add-02.png';
+  final String blackCloseIcon = 'assets/myicons/icon-black-close.png';
+  final String whiteCloseIcon = 'assets/myicons/icon-white-close.png';
+  final String blackNewsFeedIcon = 'assets/myicons/icon-black-news-feed.png';
+  final String blackEditIcon = 'assets/myicons/icon-black-edit.png';
+  final String blackPostIcon = 'assets/myicons/icon-black-post.png';
+  final String blackPopupMenuIcon = 'assets/myicons/icon-black-3-dots.png';
 
   // Default is Light theme (Black color)
   String defaultIconByTheme = 'assets/myicons/icon-black-image-default.png';
@@ -640,6 +655,15 @@ class _MyIcons {
   String commentIconByTheme = 'assets/myicons/icon-black-comment.png';
   String shareIconByTheme = 'assets/myicons/icon-black-share.png';
   String runnerIconByTheme = 'assets/myicons/icon-black-runner.png';
+  String attachmentIcon02ByTheme = 'assets/myicons/icon-black-attachments-02.png';
+  String blockIconByTheme = 'assets/myicons/icon-black-block.png';
+  String addIcon02ByTheme = 'assets/myicons/icon-black-add-02.png';
+  String closeIconByTheme = 'assets/myicons/icon-black-close.png';
+  String editIconByTheme = 'assets/myicons/icon-black-edit.png'; 
+  String postIconByTheme = 'assets/myicons/icon-black-post.png';
+  String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
+  String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
+  String keyIconByTheme = 'assets/myicons/icon-black-key.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
@@ -659,6 +683,15 @@ class _MyIcons {
       commentIconByTheme = 'assets/myicons/icon-black-comment.png';
       shareIconByTheme = 'assets/myicons/icon-black-share.png';
       runnerIconByTheme = 'assets/myicons/icon-black-runner.png';
+      attachmentIcon02ByTheme = 'assets/myicons/icon-black-attachments-02.png';
+      blockIconByTheme = 'assets/myicons/icon-black-block.png';
+      addIcon02ByTheme = 'assets/myicons/icon-black-add-02.png';
+      closeIconByTheme = 'assets/myicons/icon-black-close.png';
+      editIconByTheme = 'assets/myicons/icon-black-edit.png';
+      postIconByTheme = 'assets/myicons/icon-black-post.png';
+      popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
+      gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
+      keyIconByTheme = 'assets/myicons/icon-black-key.png';
       
 
       // TODO: Light theme (Black color)
@@ -679,6 +712,15 @@ class _MyIcons {
       commentIconByTheme = 'assets/myicons/icon-white-comment.png';
       shareIconByTheme = 'assets/myicons/icon-white-share.png';
       runnerIconByTheme = 'assets/myicons/icon-white-runner.png';
+      attachmentIcon02ByTheme = 'assets/myicons/icon-white-attachments-02.png';
+      blockIconByTheme = 'assets/myicons/icon-white-block.png';
+      addIcon02ByTheme = 'assets/myicons/icon-white-add-02.png';
+      closeIconByTheme = 'assets/myicons/icon-white-close.png';
+      editIconByTheme = 'assets/myicons/icon-white-edit.png';
+      postIconByTheme = 'assets/myicons/icon-white-post.png';
+      popupMenuIconByTheme = 'assets/myicons/icon-white-3-dots.png';
+      gpsIconByTheme = 'assets/myicons/icon-white-gps.png';
+      keyIconByTheme = 'assets/myicons/icon-white-key.png';
 
 
       // TODO: Black theme (Light color)
@@ -695,9 +737,12 @@ class _Images {
   // Common images
   final String welcomeBanner = 'assets/images/welcome.png';
 
-  final String loginFacebook = 'assets/images/login_fb.png';
-  final String loginGoogle = 'assets/images/login_gg.png';
-  final String loginEmail = 'assets/images/login_email.png';
+  final String loginFacebookEnglish = 'assets/images/login_fb_en.png';
+  final String loginFacebookVietnam = 'assets/images/login_fb_vi.png';
+  final String loginGoogleEnglish = 'assets/images/login_gg_en.png';
+  final String loginGoogleVietnam = 'assets/images/login_gg_vi.png';
+  final String loginEmailEnglish = 'assets/images/login_email_en.png';
+  final String loginEmailVietnam = 'assets/images/login_email_vi.png';
   final String orLine = 'assets/images/or_line.png';
 
   final String drawerBackground = 'assets/images/drawer_background.png';
@@ -719,12 +764,47 @@ class _Images {
 class Strings {
   String usrun;
 
+  String firstName;
+  String lastName;
+  String password;
+  String passwordHint;
+  String currentPassword;
+  String newPassword;
+  String retypePassword;
+  String retypePasswordHint;
+  String forgotPassword;
+  String passwordNotice;
+  String reset;
+  String resetPasswordNotice;
+  String email;
+  String emailHint;
+  String country;
+  String city;
+  String district;
+  String whatYourJob;
+  String whatYourJobHint;
+  String birthday;
+  String gender;
+  String height;
+  String weight;
+  String biography;
+  String biographyHint;
+  String follow;
+  String unFollow;
+  
   String yearPicker;
   String monthPicker;
   String weekPicker;
   String datePicker;
   String timePicker;
   String dateTimePicker;
+
+  String selectedDay;
+  String selectedWeek;
+  String selectedMonth;
+  String currentWeek;
+  String currentMonth;
+  String currentYear;
 
   String january;
   String february;
@@ -738,7 +818,7 @@ class Strings {
   String october;
   String november;
   String december;
-
+  
   String monday;
   String tuesday;
   String wednesday;
@@ -759,7 +839,30 @@ class Strings {
 
   String profile;
   String editProfile;
+
   String athleteProfile;
+  String athleteBadges;
+  String athletePhotos;
+  String athleteFollowing;
+  String athleteFollowingNotice;
+  String athleteFollowers;
+  String athleteFollowersNotice;
+  String athleteEvents;
+  String athleteTeams;
+  String athleteTeamPlans;
+  String athleteActivities;
+  String athleteStatsInCurrentYear;
+
+  String personalFollowing;
+  String personalFollowingNotice;
+  String personalFollowers;
+  String personalFollowersNotice;
+  String personalEvents;
+  String personalTeams;
+  String personalTeamPlans;
+  String personalEventBadges;
+  String personalPhotos;
+  String personalActivities;
 
   String record;
 
@@ -768,6 +871,9 @@ class Strings {
   String events;
 
   String teams;
+  String viewAllTeams;
+  String yourTeams;
+  String weSuggestYou;
 
   String settings;
   String changePassword;
@@ -898,6 +1004,7 @@ class Strings {
 
   Map<String, dynamic> errorMessages;
 
+  String nothingToShow;
   String errorTitle;
   String errorLoginFail;
   String errorLogoutFail;

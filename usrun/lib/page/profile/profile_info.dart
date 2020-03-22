@@ -29,8 +29,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
   }
 
   void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
     });
   }
 
@@ -74,9 +76,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
               FollowerFollowingList(
                 items: DemoData().ffItemList,
                 enableFFButton: true,
-                labelTitle: "Following",
+                labelTitle: R.strings.personalFollowing,
                 enableLabelShadow: true,
-                subTitle: "$_followingNumber ATHLETE YOU FOLLOW",
+                subTitle: "$_followingNumber " + R.strings.personalFollowingNotice,
                 enableSubtitleShadow: true,
                 enableScrollBackgroundColor: true,
                 isFollowingList: true,
@@ -91,9 +93,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
               FollowerFollowingList(
                 items: DemoData().ffItemList,
                 enableFFButton: true,
-                labelTitle: "Followers",
+                labelTitle: R.strings.personalFollowers,
                 enableLabelShadow: true,
-                subTitle: "$_followerNumber ATHLETE FOLLOWING YOU",
+                subTitle: "$_followerNumber " + R.strings.personalFollowersNotice,
                 enableSubtitleShadow: true,
                 enableScrollBackgroundColor: true,
                 isFollowingList: false,
@@ -107,7 +109,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
               // Events
               EventList(
                 items: DemoData().eventList,
-                labelTitle: "Your Events",
+                labelTitle: R.strings.personalEvents,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressEventItemFunction,
@@ -118,7 +120,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
               // Teams
               TeamList(
                 items: DemoData().teamList,
-                labelTitle: "Your Teams",
+                labelTitle: R.strings.personalTeams,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressTeamItemFunction,
@@ -129,7 +131,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
               // Team plans
               TeamPlanList(
                 items: DemoData().teamPlanList,
-                labelTitle: "Your Team Plans",
+                labelTitle: R.strings.personalTeamPlans,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressTeamPlanItemFunction,
