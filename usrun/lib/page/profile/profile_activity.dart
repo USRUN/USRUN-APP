@@ -119,7 +119,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
               // Event Badges
               EventBadgeList(
                 items: DemoData().eventBadgeList,
-                labelTitle: "Event Badges",
+                labelTitle: R.strings.personalEventBadges,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressEventBadge,
@@ -130,7 +130,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
               // Photo
               PhotoList(
                 items: DemoData().photoItemList,
-                labelTitle: "Photos",
+                labelTitle: R.strings.personalPhotos,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
               ),
@@ -145,7 +145,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Activities: $_activityNumber",
+                  R.strings.personalActivities + ": $_activityNumber",
                   style: R.styles.shadowLabelStyle,
                 ),
               ),

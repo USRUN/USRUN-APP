@@ -248,22 +248,22 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   Widget _renderChartLabel() {
     switch (widget.bodyType) {
       case 0: // WEEK
-        _chartLabelTitle = "Selected Day";
+        _chartLabelTitle = R.strings.selectedDay;
         _updateSubTitle(formatDate(
             widget.dateTime.getFromDateValue(), [dd, '/', mm, '/', yyyy]));
-        _statsSectionLabelTitle = "Current Week";
+        _statsSectionLabelTitle = R.strings.currentWeek;
         break;
       case 1: // MONTH
-        _chartLabelTitle = "Selected Week";
+        _chartLabelTitle = R.strings.selectedWeek;
         List<WeekDateTime> list =
             WeekDateTime.getWeekListOfMonth(widget.dateTime);
         _updateSubTitle(list[0].getWeekString());
-        _statsSectionLabelTitle = "Current Month";
+        _statsSectionLabelTitle = R.strings.currentMonth;
         break;
       case 2: // YEAR
-        _chartLabelTitle = "Selected Month";
+        _chartLabelTitle = R.strings.selectedMonth;
         _updateSubTitle(formatDate(widget.dateTime, [mm, '/', yyyy]));
-        _statsSectionLabelTitle = "Current Year";
+        _statsSectionLabelTitle = R.strings.currentYear;
         break;
     }
 

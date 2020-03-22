@@ -44,7 +44,9 @@ class WelcomePage extends StatelessWidget {
                         children: <Widget>[
                           UIImageButton(
                             image: Image.asset(
-                              R.images.loginFacebook,
+                              (R.currentAppLanguage == "en"
+                                  ? R.images.loginFacebookEnglish
+                                  : R.images.loginFacebookVietnam),
                               fit: BoxFit.contain,
                             ),
                             width: R.appRatio.appWidth381,
@@ -61,7 +63,9 @@ class WelcomePage extends StatelessWidget {
                             ),
                             child: UIImageButton(
                               image: Image.asset(
-                                R.images.loginGoogle,
+                                (R.currentAppLanguage == "en"
+                                  ? R.images.loginGoogleEnglish
+                                  : R.images.loginGoogleVietnam),
                                 fit: BoxFit.contain,
                               ),
                               width: R.appRatio.appWidth381,
@@ -85,7 +89,9 @@ class WelcomePage extends StatelessWidget {
                             ),
                             child: UIImageButton(
                               image: Image.asset(
-                                R.images.loginEmail,
+                                (R.currentAppLanguage == "en"
+                                  ? R.images.loginEmailEnglish
+                                  : R.images.loginEmailVietnam),
                                 fit: BoxFit.contain,
                               ),
                               width: R.appRatio.appWidth381,

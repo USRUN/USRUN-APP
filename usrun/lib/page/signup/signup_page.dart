@@ -75,8 +75,8 @@ class SignUpPage extends StatelessWidget {
                               child: InputField(
                                 controller: _firstNameController,
                                 enableFullWidth: false,
-                                labelTitle: "First Name",
-                                hintText: "First Name",
+                                labelTitle: R.strings.firstName,
+                                hintText: R.strings.firstName,
                               ),
                             ),
                             Container(
@@ -84,8 +84,8 @@ class SignUpPage extends StatelessWidget {
                               child: InputField(
                                 controller: _lastNameController,
                                 enableFullWidth: false,
-                                labelTitle: "Last Name",
-                                hintText: "Last Name",
+                                labelTitle: R.strings.lastName,
+                                hintText: R.strings.lastName,
                               ),
                             )
                           ],
@@ -96,8 +96,8 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _emailController,
                           enableFullWidth: true,
-                          labelTitle: "Email",
-                          hintText: "Type your email here",
+                          labelTitle: R.strings.email,
+                          hintText: R.strings.email,
                           textInputType: TextInputType.emailAddress,
                         ),
                         SizedBox(
@@ -106,8 +106,8 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _passwordController,
                           enableFullWidth: true,
-                          labelTitle: "Password",
-                          hintText: "Type your password here",
+                          labelTitle: R.strings.password,
+                          hintText: R.strings.passwordHint,
                           obscureText: true,
                         ),
                         SizedBox(
@@ -116,15 +116,15 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _retypePasswordController,
                           enableFullWidth: true,
-                          labelTitle: "Re-type Password",
-                          hintText: "Enter your password again",
+                          labelTitle: R.strings.retypePassword,
+                          hintText: R.strings.retypePasswordHint,
                           obscureText: true,
                         ),
                         SizedBox(
                           height: R.appRatio.appSpacing25,
                         ),
                         Text(
-                          "Password must contain at least 8 characters with one number and one uppercase letter",
+                          R.strings.passwordNotice,
                           style: TextStyle(
                               color: R.colors.orangeNoteText,
                               fontStyle: FontStyle.italic,
