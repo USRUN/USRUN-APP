@@ -164,7 +164,7 @@ void drawMaker(LatLng curLocation) {
     // this.onMapUpdate();
     // // update activity every 15 seconds;
     
-     if (duration % 5 == 0) {
+     if (duration % 2 == 0) {
       //  accelerometerEvents.listen((AccelerometerEvent event) {
       //     if (event.z.abs() >3 && event.x.abs() >3 && event.y.abs() >3)
       //      print(event.toString());
@@ -214,7 +214,7 @@ void drawMaker(LatLng curLocation) {
         
         print( "Kalman Filter: " + predictedDeltaInMeters.toString());
 
-        if(predictedDeltaInMeters > 15 ){
+        if(predictedDeltaInMeters > 6 ){
             print( "Kalman Filter detects mal GPS, we should probably remove this from track: " + predictedDeltaInMeters.toString());
             kalmanFilter.consecutiveRejectCount += 1;
 
@@ -229,7 +229,7 @@ void drawMaker(LatLng curLocation) {
        
        currentSpeed = myLocation.speed;
        print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
-       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<3)
+       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<2)
         {
           print("Invalid dist!");
             invalidCount++;
@@ -239,7 +239,6 @@ void drawMaker(LatLng curLocation) {
       //geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
        
        print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
-       this._streamLocationController.add(myLocation);
        polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
        Polyline polyline = Polyline(
          polylineId: PolylineId("poly"),
@@ -251,6 +250,9 @@ void drawMaker(LatLng curLocation) {
       invalidCount = 0;
        lData.add(polyline);
        drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
+      print("Add Location to stream!");
+      this._streamLocationController.add(myLocation);
+
      }
 //    if (this.recordData.isNotCorrectTotalTime) {
 //      _initTimeService(this.recordData.totalTime);
@@ -343,16 +345,17 @@ void drawMaker(LatLng curLocation) {
     this._streamRecordStateController.add(recordState);
   }
 
-  void _updatePositionCamera(LatLng latlng) {
+  void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       bearing: 0.0,
       target: latlng,
       tilt: 0.0,
-      zoom: 13//this.recordData.currentZoomValue,
+      zoom: zoom//this.recordData.currentZoomValue,
     )));
   }
 
   void onRecordStageChange(RecordState newState) async{
+    print("State: " + newState.toString());
     if (newState == RecordState.StatusStart) {
       //this._locationBackground.startBackgroundLocation();
       // if (this.recordData.startDate == null) {
@@ -373,6 +376,7 @@ void drawMaker(LatLng curLocation) {
 
        lData.add(polyline);
       this._timeService.start();
+      _updatePositionCamera(LatLng(lastLoc.latitude,lastLoc.longitude),zoom:25 );
       // if (this._locationSubscription != null) {
       //   this._locationSubscription.cancel();
       // }
