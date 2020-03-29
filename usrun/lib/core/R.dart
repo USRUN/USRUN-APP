@@ -161,7 +161,7 @@ class _AppRatio {
   final double _figmaIconSize35                 = 35;
   final double _figmaIconSize40                 = 40;
 
-  final double _figmaAppBarIconSize             = 22;
+  final double _figmaAppBarIconSize             = 20;
   final double _figmaWelcomPageLogoTextSize     = 160;
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
@@ -539,7 +539,7 @@ class _Colors {
   Color appBackground                 = Color(0xFFFFFFFF);
   Color boxBackground                 = Color(0xFFFFFFFF);
   Color grayButtonColor               = Color(0xFF515151);
-  Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
+  Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.75);
   Color btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
   Color textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
@@ -556,7 +556,7 @@ class _Colors {
       appBackground                 = Color(0xFFFFFFFF);
       boxBackground                 = Color(0xFFFFFFFF);
       grayButtonColor               = Color(0xFF515151);
-      sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
+      sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.75);
       btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
       textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
@@ -591,6 +591,7 @@ class _MyIcons {
   final String appBarShareBtn = 'assets/myicons/icon-white-bold-share.png';
   final String appBarSearchBtn = 'assets/myicons/icon-white-search.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
+  final String appBarPopupMenuIcon = 'assets/myicons/icon-white-3-dots.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
@@ -791,6 +792,11 @@ class Strings {
   String biographyHint;
   String follow;
   String unFollow;
+
+  String day;
+  String week;
+  String month;
+  String year;
   
   String yearPicker;
   String monthPicker;
@@ -874,6 +880,18 @@ class Strings {
   String viewAllTeams;
   String yourTeams;
   String weSuggestYou;
+  String teamLeaderboard;
+  String teamRank;
+  String numberOrder;
+  String name;
+  String distanceKm;
+  String distanceM;
+  String teamMember;
+  String all;
+  String hiding;
+  String requesting;
+  String blocking;
+  String reporting;
 
   String settings;
   String changePassword;

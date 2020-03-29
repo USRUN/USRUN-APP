@@ -14,16 +14,16 @@ import 'package:usrun/widget/ui_button.dart';
 class ProfileStats extends StatefulWidget {
   final tabBarItems = [
     {
-      "tabName": "DAY",
+      "tabName": R.strings.day,
     },
     {
-      "tabName": "WEEK",
+      "tabName": R.strings.week,
     },
     {
-      "tabName": "MONTH",
+      "tabName": R.strings.month,
     },
     {
-      "tabName": "YEAR",
+      "tabName": R.strings.year,
     }
   ];
 
