@@ -69,6 +69,7 @@ class _AppRatio {
   final double _figmaFontSize40                 = 40;
   final double _figmaFontSize42                 = 42;  
 
+  final double _figmaWidth30                    = 30;
   final double _figmaWidth40                    = 40;
   final double _figmaWidth50                    = 50;
   final double _figmaWidth60                    = 60;
@@ -201,6 +202,7 @@ class _AppRatio {
   double appFontSize40;
   double appFontSize42;
 
+  double appWidth30;
   double appWidth40;
   double appWidth50;
   double appWidth60;
@@ -365,6 +367,7 @@ class _AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+    appWidth30 = _computeWidth(this._figmaWidth30);
     appWidth40 = _computeWidth(this._figmaWidth40);
     appWidth50 = _computeWidth(this._figmaWidth50);
     appWidth60 = _computeWidth(this._figmaWidth60);
@@ -524,6 +527,7 @@ class _Colors {
   Color lightBlurMajorOrange          = Color.fromRGBO(253, 99, 44, 0.1);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
+  Color gray515151                    = Color(0xFF515151);
   Color redPink                       = Color(0xFFFF5C4E);
   Color oldYellow                     = Color(0xFFF9C86A);
   Color labelText                     = Color(0xFFFD632C);
@@ -792,6 +796,16 @@ class Strings {
   String biographyHint;
   String follow;
   String unFollow;
+
+  String inviteNewMember;
+  String inviteNewMemberContent;
+  String invite;
+  String kickAMember;
+  String kickAMemberContent;
+  String kick;
+  String blockAPerson;
+  String blockAPersonContent;
+  String block;
 
   String day;
   String week;

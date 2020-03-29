@@ -8,8 +8,10 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
+import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamMember extends StatefulWidget {
@@ -25,6 +27,24 @@ class TeamMember extends StatefulWidget {
     }
   ];
 
+  final popUpMenu = [
+    {
+      "iconURL": R.myIcons.blackAddIcon02,
+      "iconSize": R.appRatio.appIconSize15 + 1,
+      "title": R.strings.inviteNewMember,
+    },
+    {
+      "iconURL": R.myIcons.blackCloseIcon,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": R.strings.kickAMember,
+    },
+    {
+      "iconURL": R.myIcons.blackBlockIcon,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": R.strings.blockAPerson,
+    },
+  ];
+
   @override
   _TeamMemberState createState() => _TeamMemberState();
 }
@@ -33,6 +53,9 @@ class _TeamMemberState extends State<TeamMember> {
   bool _isLoading = false;
   int _selectedTabIndex;
   List items = List();
+
+  final TextEditingController _nameController = TextEditingController();
+  final String _nameLabel = R.strings.name;
 
   /*
     + Structure of the "items" variable: 
@@ -130,6 +153,36 @@ class _TeamMemberState extends State<TeamMember> {
     });
   }
 
+  _pressAvatar(index) {
+    // TODO: Implement function here
+    print("Pressing avatar image");
+  }
+
+  _pressUserInfo(index) {
+    // TODO: Implement function here
+    print("Pressing info");
+  }
+
+  _pressFollowBtn(index) {
+    // TODO: Implement function here
+    print("Pressing FOLLOWING button on this person");
+  }
+
+  _pressUnFollowBtn(index) {
+    // TODO: Implement function here
+    print("Pressing UNFOLLOW button on this person");
+  }
+
+  _pressCloseBtn(index) {
+    // TODO: Implement function here
+    print("Pressing CLOSE button on this person");
+  }
+
+  _pressCheckBtn(index) {
+    // TODO: Implement function here
+    print("Pressing CHECK button on this person");
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget _buildElement = Scaffold(
@@ -156,10 +209,9 @@ class _TeamMemberState extends State<TeamMember> {
               right: R.appRatio.appSpacing15 - 2,
             ),
             child: CustomPopupMenu(
-              items: DemoData().popupMenuList02,
+              items: widget.popUpMenu,
               onSelected: (index) {
-                // TODO: Implement function here
-                print("Index $index is selected");
+                _showCustomDialog(index);
               },
               popupImage: Image.asset(
                 R.myIcons.appBarPopupMenuIcon,
@@ -257,10 +309,7 @@ class _TeamMemberState extends State<TeamMember> {
               color: R.colors.majorOrange,
             ),
             supportImageURL: supportImageURL,
-            pressAvatarImage: () {
-              // TODO: Implement function here
-              print("Pressing avatar image");
-            },
+            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content
           title: name,
@@ -275,22 +324,13 @@ class _TeamMemberState extends State<TeamMember> {
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
           ),
-          pressInfo: () {
-            // TODO: Implement function here
-            print("Pressing info");
-          },
+          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableFFButton: true,
           isFollowButton: (isFollowing ? false : true),
           pressFFButton: (isFollowing
-              ? () {
-                  // TODO: Implement function here
-                  print("Pressing UNFOLLOW button on this person");
-                }
-              : () {
-                  // TODO: Implement function here
-                  print("Pressing FOLLOWING button on this person");
-                }),
+              ? () => _pressUnFollowBtn(index)
+              : () => _pressFollowBtn(index)),
         );
       case 1: // Requesting
         return CustomCell(
@@ -302,10 +342,7 @@ class _TeamMemberState extends State<TeamMember> {
               color: R.colors.majorOrange,
             ),
             supportImageURL: supportImageURL,
-            pressAvatarImage: () {
-              // TODO: Implement function here
-              print("Pressing avatar image");
-            },
+            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content
           title: name,
@@ -320,21 +357,12 @@ class _TeamMemberState extends State<TeamMember> {
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
           ),
-          pressInfo: () {
-            // TODO: Implement function here
-            print("Pressing info");
-          },
+          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableCloseButton: true,
-          pressCloseButton: () {
-            // TODO: Implement function here
-            print("Pressing CLOSE button on this person");
-          },
+          pressCloseButton: () => _pressCloseBtn(index),
           enableCheckButton: true,
-          pressCheckButton: () {
-            // TODO: Implement function here
-            print("Pressing CHECK button on this person");
-          },
+          pressCheckButton: () => _pressCheckBtn(index),
         );
       case 2: // Blocking
         return CustomCell(
@@ -346,10 +374,7 @@ class _TeamMemberState extends State<TeamMember> {
               color: R.colors.majorOrange,
             ),
             supportImageURL: supportImageURL,
-            pressAvatarImage: () {
-              // TODO: Implement function here
-              print("Pressing avatar image");
-            },
+            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content
           title: name,
@@ -364,19 +389,80 @@ class _TeamMemberState extends State<TeamMember> {
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
           ),
-          pressInfo: () {
-            // TODO: Implement function here
-            print("Pressing info");
-          },
+          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableCloseButton: true,
-          pressCloseButton: () {
-            // TODO: Implement function here
-            print("Pressing CLOSE button on this person");
-          },
+          pressCloseButton: () => _pressCloseBtn(index),
         );
       default:
         return Container();
+    }
+  }
+
+  void _showCustomDialog(index) async {
+    switch (index) {
+      case 0: // Invite
+        await showMyCustomDialog(
+          context: context,
+          headerContent: R.strings.inviteNewMember,
+          descriptionContent: R.strings.inviteNewMemberContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          submitBtnContent: R.strings.invite,
+          submitBtnFuction: () {
+            // TODO: Implement function here
+            print("Invite new member");
+          },
+        );
+        break;
+      case 1: // Kick
+        await showMyCustomDialog(
+          context: context,
+          headerContent: R.strings.kickAMember,
+          descriptionContent: R.strings.kickAMemberContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          submitBtnContent: R.strings.kick,
+          submitBtnFuction: () {
+            // TODO: Implement function here
+            print("Kick a member");
+          },
+        );
+        break;
+      case 2: // Block
+        await showMyCustomDialog(
+          context: context,
+          headerContent: R.strings.blockAPerson,
+          descriptionContent: R.strings.blockAPersonContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          submitBtnContent: R.strings.block,
+          submitBtnFuction: () {
+            // TODO: Implement function here
+            print("Block a person");
+          },
+        );
+        break;
+      default:
+        break;
     }
   }
 }
