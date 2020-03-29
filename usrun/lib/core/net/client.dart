@@ -14,15 +14,11 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/util/json_paser.dart';
 import 'package:usrun/util/network_detector.dart';
 
-//const String API_VERSION = "1.0.2";
-//const String API_VERSION = "1.1.2";
-const String API_VERSION = "1.1.3";
+const String API_VERSION = "1.0.0";
 
 class Client {
-//  static String _domain = 'http://localhost:8000';
-//  static String _domain = 'http://uprace.rongcondihoc.com';
-//  static String _domain = 'http://uprace_dev.123go.vn';
-  static String _domain = 'http://usrun.herokuapp.com';
+
+  static String _domain = 'http://128.199.159.72:8080';
 
   static String imageUrl(String endpoint) {
     if (endpoint == null || endpoint.isEmpty) {
@@ -135,21 +131,18 @@ class Client {
       HttpClient client = new HttpClient();
       client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
-      String url = _domain + "/api/$API_VERSION" + endpoint;
+      String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
-      request.headers.set('accept', 'application/json');
-      request.headers.set('Accept-Encoding', 'gzip');
-
       request.add(utf8.encode(json.encode(params)));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
       String reply = await response.transform(utf8.decoder).join();
 
-//      print("post url: $url");
-//      print(params);
-//      print(reply);
+     print("post url: $url");
+     print(params);
+     print(reply);
 
       return _handleResponse<T, E>(response, reply);
     }

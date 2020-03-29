@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/net/client.dart';
+import 'package:usrun/core/net/client.dart';
 
 const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
 const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
