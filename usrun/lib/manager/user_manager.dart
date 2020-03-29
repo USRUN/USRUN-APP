@@ -47,7 +47,7 @@ class UserManager {
     if (deviceToken != null) {
       params['deviceToken'] = deviceToken;
     }
-    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/create', params);
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/signup', params);
 
     Response<User> result = Response();
 
