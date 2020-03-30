@@ -210,7 +210,7 @@ class Client {
 
     Map<String, dynamic> body = json.decode(reply);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200||response.statusCode == 201) {
       try {
         int code = body['code'];
         if (code == 0) {
