@@ -8,10 +8,15 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 
+import '../manager/data_manager.dart';
+import '../manager/data_manager.dart';
+
 // === MAIN === //
 Future<void> initialize(BuildContext context) async {
   await setLanguage("en");
   R.initAppRatio(context);
+  DataManager.initialize();
+
 }
 
 enum RouteType {
