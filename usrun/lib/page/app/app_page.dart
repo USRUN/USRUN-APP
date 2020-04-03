@@ -68,6 +68,8 @@ class _AppPageState extends State<AppPage> {
   }
 
   _onSelectItem(int index) {
+    if (_selectedDrawerIndex == index) return;
+
     setState(() {
       _selectedDrawerIndex = index;
     });

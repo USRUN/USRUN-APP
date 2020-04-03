@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/user_manager.dart';
 
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
@@ -135,14 +136,17 @@ class Client {
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
+      if (UserManager.currentUser != null) {
+        request.headers.set('authorization', UserManager.currentUser.accessToken);
+      }
       request.add(utf8.encode(json.encode(params)));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
       String reply = await response.transform(utf8.decoder).join();
 
-     print("post url: $url");
-     print(params);
-     print(reply);
+    //  print("post url: $url");
+    //  print(params);
+    //  print(reply);
 
       return _handleResponse<T, E>(response, reply);
     }
@@ -187,9 +191,9 @@ class Client {
 
       String reply = await response.transform(utf8.decoder).join();
 
-      print("get url: $url");
-      print(params);
-      print(reply);
+      // print("get url: $url");
+      // print(params);
+      // print(reply);
       //104385113951232765836 - quangthequyen@gmail.com
 
       return _handleResponse<T, E>(response, reply);
