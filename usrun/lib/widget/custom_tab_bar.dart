@@ -259,7 +259,7 @@ class CustomTabBarStyle03 extends StatelessWidget {
                       height: _tabHeight,
                       alignment: Alignment.center,
                       color: (this.selectedTabIndex == i
-                          ? R.colors.sectionBackgroundLayer
+                          ? R.colors.tabLayer
                           : null),
                       child: Text(
                         (this.items[i].containsKey('tabName')

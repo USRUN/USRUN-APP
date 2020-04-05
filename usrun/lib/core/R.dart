@@ -543,7 +543,7 @@ class _Colors {
   Color appBackground                 = Color(0xFFFFFFFF);
   Color boxBackground                 = Color(0xFFFFFFFF);
   Color grayButtonColor               = Color(0xFF515151);
-  Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.75);
+  Color sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
   Color btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
   Color textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
@@ -640,7 +640,10 @@ class _MyIcons {
   final String blackCloseIcon = 'assets/myicons/icon-black-close.png';
   final String whiteCloseIcon = 'assets/myicons/icon-white-close.png';
   final String blackNewsFeedIcon = 'assets/myicons/icon-black-news-feed.png';
+  final String colorEditIcon = 'assets/myicons/icon-color-edit.png';
+  final String colorEditIconOrangeBg = 'assets/myicons/icon-color-edit-orange-background.png';
   final String blackEditIcon = 'assets/myicons/icon-black-edit.png';
+  final String whiteEditIcon = 'assets/myicons/icon-white-edit.png';
   final String blackPostIcon = 'assets/myicons/icon-black-post.png';
   final String blackPopupMenuIcon = 'assets/myicons/icon-black-3-dots.png';
 
@@ -669,6 +672,7 @@ class _MyIcons {
   String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
   String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
+  String starIconByTheme = 'assets/myicons/icon-black-star.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
@@ -697,6 +701,7 @@ class _MyIcons {
       popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
       gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
       keyIconByTheme = 'assets/myicons/icon-black-key.png';
+      starIconByTheme = 'assets/myicons/icon-black-star.png';
       
 
       // TODO: Light theme (Black color)
@@ -726,6 +731,7 @@ class _MyIcons {
       popupMenuIconByTheme = 'assets/myicons/icon-white-3-dots.png';
       gpsIconByTheme = 'assets/myicons/icon-white-gps.png';
       keyIconByTheme = 'assets/myicons/icon-white-key.png';
+      starIconByTheme = 'assets/myicons/icon-white-star.png';
 
 
       // TODO: Black theme (Light color)
@@ -891,6 +897,39 @@ class Strings {
   String events;
 
   String teams;
+  String team;
+
+  String public;
+  String private;
+  String join;
+  String symbol;
+  String verifiedByUsrun;
+  String teamStats;
+  String leaderboard;
+  String rank;
+  String activities;
+  String members;
+  String leadingTime;
+  String leadingDist;
+  String newMemThisWeek;
+  String toolZone;
+  String makeTeamPublicTitle;
+  String makeTeamPublicSubtitle;
+  String moderateNewPostsTitle;
+  String moderateNewPostsSubtitle;
+  String create;
+  String createNewTeamPlanTitle;
+  String createNewTeamPlanSubtitle;
+  String grant;
+  String grantRoleToMemberTitle;
+  String grantRoleToMemberSubtitle;
+  String transfer;
+  String transferOwnershipTitle;
+  String transferOwnershipSubtitle;
+  String delete;
+  String deleteTeamTitle;
+  String deleteTeamSubtitle;
+
   String viewAllTeams;
   String yourTeams;
   String weSuggestYou;

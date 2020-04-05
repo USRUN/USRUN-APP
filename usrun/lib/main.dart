@@ -4,6 +4,7 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
+import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/welcome/choose_language_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
@@ -109,6 +110,6 @@ class _SplashPageState extends State<StatefulWidget> {
   Future<void> _initApp() {
     return Future.delayed(
             Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
-        .then((_) => showPage(context, TeamMember())); // Raw: WelcomePage()
+        .then((_) => showPage(context, TeamPage())); // Raw: WelcomePage()
   }
 }

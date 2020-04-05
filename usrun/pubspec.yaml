@@ -105,6 +105,8 @@ flutter:
     - assets/myicons/icon-color-update-version.png
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
+    - assets/myicons/icon-color-edit-orange-background.png
+    - assets/myicons/icon-color-edit.png
     - assets/myicons/icon-white-edit.png
     - assets/myicons/icon-black-edit.png
     - assets/myicons/icon-color-finish.png
@@ -159,6 +161,8 @@ flutter:
     - assets/myicons/icon-white-gps.png
     - assets/myicons/icon-black-key.png
     - assets/myicons/icon-white-key.png
+    - assets/myicons/icon-black-star.png
+    - assets/myicons/icon-white-star.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png
