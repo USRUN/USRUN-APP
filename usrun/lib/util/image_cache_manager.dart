@@ -14,8 +14,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/core/net/client.dart';
-
 const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
 const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
 
@@ -103,7 +101,6 @@ class ImageCacheManager {
         );
       }
 
-      url = Client.imageUrl(url); // correct image
       Widget image = FadeInImage.assetNetwork(
         placeholder: R.images.smallDefaultImage,
         image: url,
