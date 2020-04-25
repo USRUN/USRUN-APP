@@ -247,7 +247,7 @@ class CustomCell extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(
                           left: R.appRatio.appSpacing5,
-                          right: R.appRatio.appSpacing5,
+                          right: R.appRatio.appSpacing10,
                         ),
                         constraints: BoxConstraints(maxWidth: R.appRatio.appWidth120),
                         child: Text(
