@@ -249,7 +249,7 @@ class CustomCell extends StatelessWidget {
                           left: R.appRatio.appSpacing5,
                           right: R.appRatio.appSpacing5,
                         ),
-                        width: R.appRatio.appWidth70,
+                        constraints: BoxConstraints(maxWidth: R.appRatio.appWidth120),
                         child: Text(
                           this.firstAddedTitle,
                           overflow: TextOverflow.ellipsis,
