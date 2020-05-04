@@ -29,21 +29,20 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
 
     private FlutterPluginBinding pluginBinding;
     private ActivityPluginBinding activityBinding;
-    private Activity activity;
 
-    public static void registerWith(Registrar registrar) {
-        FlutterLocation flutterLocation = new FlutterLocation(registrar.context(), registrar.activity());
+    public static void registerWith(final Registrar registrar) {
+        final FlutterLocation flutterLocation = new FlutterLocation(registrar);
         flutterLocation.setActivity(registrar.activity());
 
-        MethodCallHandlerImpl handler = new MethodCallHandlerImpl(flutterLocation);
+        final MethodCallHandlerImpl handler = new MethodCallHandlerImpl(flutterLocation);
         handler.startListening(registrar.messenger());
 
-        StreamHandlerImpl streamHandlerImpl = new StreamHandlerImpl(flutterLocation);
+        final StreamHandlerImpl streamHandlerImpl = new StreamHandlerImpl(flutterLocation);
         streamHandlerImpl.startListening(registrar.messenger());
     }
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
         pluginBinding = binding;
 
         location = new FlutterLocation(binding.getApplicationContext(), /* activity= */ null);
@@ -55,7 +54,7 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    public void onDetachedFromEngine(@NonNull final FlutterPluginBinding binding) {
         pluginBinding = null;
 
         if (methodCallHandler != null) {
@@ -72,7 +71,7 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    public void onAttachedToActivity(@NonNull final ActivityPluginBinding binding) {
         location.setActivity(binding.getActivity());
 
         activityBinding = binding;
@@ -90,13 +89,12 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+    public void onReattachedToActivityForConfigChanges(@NonNull final ActivityPluginBinding binding) {
         onAttachedToActivity(binding);
     }
 
     private void setup(final BinaryMessenger messenger, final Activity activity,
             final PluginRegistry.Registrar registrar) {
-        this.activity = activity;
         if (registrar != null) {
             // V1 embedding setup for activity listeners.
             registrar.addActivityResultListener(location);
@@ -111,7 +109,6 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     private void tearDown() {
         activityBinding.removeActivityResultListener(location);
         activityBinding.removeRequestPermissionsResultListener(location);
-        location = null;
     }
 
 }

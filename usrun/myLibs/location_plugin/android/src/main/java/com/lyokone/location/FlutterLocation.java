@@ -3,12 +3,10 @@ package com.lyokone.location;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.OnNmeaMessageListener;
@@ -16,6 +14,7 @@ import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -37,9 +36,6 @@ import androidx.core.app.ActivityCompat;
 import io.flutter.plugin.common.EventChannel.EventSink;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
-
-
 
 class FlutterLocation
         implements PluginRegistry.RequestPermissionsResultListener, PluginRegistry.ActivityResultListener {
@@ -48,7 +44,7 @@ class FlutterLocation
     private final Context applicationContext;
 
     @Nullable
-    private Activity activity;
+    public Activity activity;
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -100,6 +96,11 @@ class FlutterLocation
         this.activity = activity;
     }
 
+    FlutterLocation(PluginRegistry.Registrar registrar) {
+        this(registrar.context(), registrar.activity());
+        registrar.addRequestPermissionsResultListener(this);
+    }
+
     void setActivity(@Nullable Activity activity) {
         this.activity = activity;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
@@ -113,6 +114,10 @@ class FlutterLocation
 
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        return onRequestPermissionsResultHandler(requestCode, permissions, grantResults);
+    }
+
+    public boolean onRequestPermissionsResultHandler(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE && permissions.length == 1
                 && permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -126,35 +131,18 @@ class FlutterLocation
                 }
             } else {
                 if (!shouldShowRequestPermissionRationale()) {
-                    if (getLocationResult != null) {
-                        getLocationResult.error("PERMISSION_DENIED_NEVER_ASK",
-                                "Location permission denied forever- please open app settings", null);
-                        getLocationResult = null;
-                    }
-                    if (events != null) {
-                        events.error("PERMISSION_DENIED_NEVER_ASK",
-                                "Location permission denied forever - please open app settings", null);
-                        events = null;
-                    }
+                    sendError("PERMISSION_DENIED_NEVER_ASK",
+                            "Location permission denied forever - please open app settings", null);
                     if (result != null) {
                         result.success(2);
                         result = null;
                     }
-
                 } else {
-                    if (getLocationResult != null) {
-                        getLocationResult.error("PERMISSION_DENIED", "Location permission denied", null);
-                        getLocationResult = null;
-                    }
-                    if (events != null) {
-                        events.error("PERMISSION_DENIED", "Location permission denied", null);
-                        events = null;
-                    }
+                    sendError("PERMISSION_DENIED", "Location permission denied", null);
                     if (result != null) {
                         result.success(0);
                         result = null;
                     }
-
                 }
             }
             return true;
@@ -202,10 +190,17 @@ class FlutterLocation
         buildLocationSettingsRequest();
     }
 
-    
-    float currentSpeed = 0.0f; 
+    private void sendError(String errorCode, String errorMessage, Object errorDetails) {
+        if (getLocationResult != null) {
+            getLocationResult.error(errorCode, errorMessage, errorDetails);
+            getLocationResult = null;
+        }
+        if (events != null) {
+            events.error(errorCode, errorMessage, errorDetails);
+            events = null;
+        }
+    }
 
-    KalmanLatLong kalmanFilter;
     /**
      * Creates a callback for receiving location events.
      */
@@ -216,46 +211,9 @@ class FlutterLocation
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
                 HashMap<String, Double> loc = new HashMap<>();
-                // loc.put("latitude", 10.763106);
-                // loc.put("longitude", 106.682214);
                 loc.put("latitude", location.getLatitude());
                 loc.put("longitude", location.getLongitude());
                 loc.put("accuracy", (double) location.getAccuracy());
-
-                //NgocVTT - 1653057 Modified
-                // if (location.getAccuracy()>10)
-                // {
-                //     //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-                //     //return;
-                // }
-
-                // /* Kalman Filter */
-                // float Qvalue;
-
-                // //long locationTimeInMillis = (long)(location.getElapsedRealtimeNanos() / 1000000);
-                // long elapsedTimeInMillis = 5000;
-
-                // if(currentSpeed == 0.0f){
-                //     Qvalue = 3.0f; //3 meters per second
-                // }else{
-                //     Qvalue = currentSpeed; // meters per second
-                // }
-
-                // kalmanFilter.Process(location.getLatitude(), location.getLongitude(), location.getAccuracy(), elapsedTimeInMillis, Qvalue);
-                // double predictedLat = kalmanFilter.get_lat();
-                // double predictedLng = kalmanFilter.get_lng();
-
-                // Location predictedLocation = new Location("");//provider name is unecessary
-                // predictedLocation.setLatitude(predictedLat);//your coords of course
-                // predictedLocation.setLongitude(predictedLng);
-                // float predictedDeltaInMeters =  predictedLocation.distanceTo(location);
-
-                // if(predictedDeltaInMeters > 5){
-                //    // mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-                //     //return;
-                // }
-                
-
 
                 // Using NMEA Data to get MSL level altitude
                 if (mLastMslAltitude == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -265,7 +223,6 @@ class FlutterLocation
                 }
 
                 loc.put("speed", (double) location.getSpeed());
-                currentSpeed = location.getSpeed();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     loc.put("speed_accuracy", (double) location.getSpeedAccuracyMetersPerSecond());
                 }
@@ -441,15 +398,25 @@ class FlutterLocation
                                         Log.i(TAG, "PendingIntent unable to execute request.");
                                     }
                                     break;
-                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                    String errorMessage = "Location settings are inadequate, and cannot be "
-                                            + "fixed here. Fix in Settings.";
-                                    Log.e(TAG, errorMessage);
                             }
                         } else {
-                            // This should not happen according to Android documentation but it has been
-                            // observed on some phones.
-                            Log.e(TAG, "Unexpected error type received");
+                            ApiException ae = (ApiException) e;
+                            int statusCode = ae.getStatusCode();
+                            switch (statusCode) {
+                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                    // This error code happens during AirPlane mode.
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        locationManager.addNmeaListener(mMessageListener);
+                                    }
+                                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,
+                                            Looper.myLooper());
+                                    break;
+                                default:
+                                    // This should not happen according to Android documentation but it has been
+                                    // observed on some phones.
+                                    sendError("UNEXPECTED_ERROR", e.getMessage(), null);
+                                    break;
+                            }
                         }
                     }
                 });

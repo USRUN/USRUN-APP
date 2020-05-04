@@ -73,7 +73,7 @@ class RecordBloc extends BlocBase {
 
   RecordState get currentRecordState =>  this._streamRecordStateController.value;
 
-   GPSSignalStatus get gpsStatus => this._streamGPSSignal.value;
+  GPSSignalStatus get gpsStatus => this._streamGPSSignal.value;
 
 
 
@@ -138,14 +138,32 @@ void drawMaker(LatLng curLocation) {
         ]);
       }
   }
-  
+  static  double deg2rad(double deg) {
+      return (deg * pi / 180.0);
+  }
+
+  static double rad2deg(double rad) {
+    return (rad * 180.0 / pi);
+  }
   static double calculateDistance(lat1, lon1, lat2, lon2){
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-        c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-    return 12742000 * asin(sqrt(a));
+    // var p = 0.017453292519943295;
+    // var c = cos;
+    // var a = 0.5 - c((lat2 - lat1) * p)/2 +
+    //     c(lat1 * p) * c(lat2 * p) *
+    //         (1 - c((lon2 - lon1) * p))/2;
+    // return 12742000 * asin(sqrt(a));
+
+    double theta = lon1 - lon2;
+    double dist = sin(deg2rad(lat1)) 
+                    *sin(deg2rad(lat2))
+                    + cos(deg2rad(lat1))
+                    * cos(deg2rad(lat2))
+                    * cos(deg2rad(theta));
+    dist = acos(dist);
+    dist = rad2deg(dist);
+    dist = dist * 60 * 1.1515;
+    return (dist*1000);
+
   }
   
   int invalidCount = 0;
@@ -164,11 +182,13 @@ void drawMaker(LatLng curLocation) {
     // this.onMapUpdate();
     // // update activity every 15 seconds;
     
-     if (duration % 5 == 0) {
+     if (duration % 1 == 0) {
       //  accelerometerEvents.listen((AccelerometerEvent event) {
       //     if (event.z.abs() >3 && event.x.abs() >3 && event.y.abs() >3)
       //      print(event.toString());
       //   });
+      
+      print( "get location");
        LocationData myLocation = await getCurrentLocation();
 
      
@@ -197,7 +217,7 @@ void drawMaker(LatLng curLocation) {
         double Qvalue;
 
        
-        int elapsedTimeInMillis = 5000;
+        int elapsedTimeInMillis = 1000;
 
         if(currentSpeed == 0){
             Qvalue = 3; //3 meters per second
@@ -214,7 +234,7 @@ void drawMaker(LatLng curLocation) {
         
         print( "Kalman Filter: " + predictedDeltaInMeters.toString());
 
-        if(predictedDeltaInMeters > 15 ){
+        if(predictedDeltaInMeters > 3 ){
             print( "Kalman Filter detects mal GPS, we should probably remove this from track: " + predictedDeltaInMeters.toString());
             kalmanFilter.consecutiveRejectCount += 1;
 
@@ -228,8 +248,9 @@ void drawMaker(LatLng curLocation) {
         }
        
        currentSpeed = myLocation.speed;
-       print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
-       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<3)
+      print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
+       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<1||
+          calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
         {
           print("Invalid dist!");
             invalidCount++;
@@ -280,8 +301,9 @@ void drawMaker(LatLng curLocation) {
     }
     bool hasPermission = await this.hasApprovedGPSPermission();
     if (!hasPermission) {
-      hasPermission = await this.requestGPSPermission();
+       hasPermission = await this.requestGPSPermission();
     }
+    hasPermission = await this.hasApprovedGPSPermission();
     if (!hasPermission) {
       this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
       return false;
@@ -322,11 +344,13 @@ void drawMaker(LatLng curLocation) {
   }
 
   Future<bool> requestGPSPermission() async {
-    return await this._locationListener.requestPermission()==PermissionStatus.GRANTED;
+   
+    
+    return await this._locationListener.requestPermission() == PermissionStatus.granted;
   }
 
   Future<bool> hasApprovedGPSPermission() async {
-    return await this._locationListener.hasPermission()==PermissionStatus.GRANTED;
+    return await this._locationListener.hasPermission()==PermissionStatus.granted;
   }
 
   Future<bool> hasServiceEnabled() async {
