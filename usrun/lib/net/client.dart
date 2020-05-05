@@ -14,14 +14,8 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/util/json_paser.dart';
 import 'package:usrun/util/network_detector.dart';
 
-//const String API_VERSION = "1.0.2";
-//const String API_VERSION = "1.1.2";
-const String API_VERSION = "1.1.3";
 
 class Client {
-//  static String _domain = 'http://localhost:8000';
-//  static String _domain = 'http://uprace.rongcondihoc.com';
-//  static String _domain = 'http://uprace_dev.123go.vn';
   static String _domain = 'http://usrun.herokuapp.com';
 
   static String imageUrl(String endpoint) {
@@ -37,7 +31,7 @@ class Client {
   }
 
   static String certificateUrl(int userId, String accessToken, int eventId) {
-    return "$_domain/api/$API_VERSION/certificate?userId=$userId&accessToken=$accessToken&eventId=$eventId";
+    return "$_domain/certificate?userId=$userId&accessToken=$accessToken&eventId=$eventId";
   }
 
   static Future<Response> nPost<T, E>(String endpoint, Map<String, dynamic> params) async {
@@ -45,7 +39,7 @@ class Client {
       HttpClient client = new HttpClient();
       client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
-      String url = _domain + "/api/$API_VERSION" + endpoint;
+      String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
@@ -135,7 +129,7 @@ class Client {
       HttpClient client = new HttpClient();
       client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
-      String url = _domain + "/api/$API_VERSION" + endpoint;
+      String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
@@ -165,7 +159,7 @@ class Client {
   }
 
   static Future<Response> get<T, E>(String endpoint, Map<String, String> params) async {
-    String url = _domain + "/api/$API_VERSION" + endpoint;
+    String url = _domain + endpoint;
     String query = "";
     params.forEach((key, value) {
       if (value is List) {

@@ -151,10 +151,10 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                   zoom: 13//bloc.recordData.currentZoomValue,
                 ),
                 markers: Set.of(bloc.mData),
-                
+        
                 //onTap: this.onTapMap,
                 onMapCreated: (controller) => bloc.onMapCreated(controller),
-                myLocationEnabled: false,
+                myLocationEnabled: true,
                 scrollGesturesEnabled: true,
                 myLocationButtonEnabled: false,
                 polylines: Set.of(bloc.lData),

@@ -23,9 +23,12 @@ class RecordBloc extends BlocBase {
 
   MyStreamController<LocationData> _streamLocationController;
 
+  MyStreamController<ReportVisibility> _streamSplitStateController;
+
   MyStreamController<RecordState> _streamRecordStateController;
 
   MyStreamController<GPSSignalStatus> _streamGPSSignal;
+  MyStreamController<ReportVisibility> _streamReportVisibilityController;
 
   Location _locationListener;
   LocationData beginPoint;
@@ -42,13 +45,13 @@ class RecordBloc extends BlocBase {
   //end test
 
   RecordBloc() {
-    // this._streamSplitStateController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
+    this._streamSplitStateController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
     // this._streamDuration = MyStreamController<int>(defaultValue: 0, activeBroadcast: true);
     this._streamLocationController = MyStreamController<LocationData>(
         defaultValue: null, activeBroadcast: true);
     this._streamRecordStateController = MyStreamController<RecordState>(
         defaultValue: RecordState.StatusNone, activeBroadcast: true);
-    // this._streamReportVisibilityController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Visible, activeBroadcast: true);
+    this._streamReportVisibilityController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Visible, activeBroadcast: true);
     this._streamGPSSignal = MyStreamController<GPSSignalStatus>(
         defaultValue: GPSSignalStatus.CHECKING, activeBroadcast: true);
     // this._streamSportType =  MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
@@ -65,6 +68,11 @@ class RecordBloc extends BlocBase {
 
   Stream<LocationData> get streamLocation => _streamLocationController.stream;
 
+
+  Stream<ReportVisibility> get streamSplit => _streamSplitStateController.stream;
+  ReportVisibility get currentSplitState =>  this._streamSplitStateController.value;
+  ReportVisibility get getReportVisibilityValue => this._streamReportVisibilityController.value;
+  Stream<ReportVisibility> get streamReportVisibility => _streamReportVisibilityController.stream;
 
   Stream<RecordState> get streamRecordState =>
       _streamRecordStateController.stream;
@@ -138,24 +146,11 @@ void drawMaker(LatLng curLocation) {
         ]);
       }
   }
-  static  double deg2rad(double deg) {
-      return (deg * pi / 180.0);
-  }
 
-  static double rad2deg(double rad) {
-    return (rad * 180.0 / pi);
-  }
-  static double calculateDistance(lat1, lon1, lat2, lon2){
-    // var p = 0.017453292519943295;
-    // var c = cos;
-    // var a = 0.5 - c((lat2 - lat1) * p)/2 +
-    //     c(lat1 * p) * c(lat2 * p) *
-    //         (1 - c((lon2 - lon1) * p))/2;
-    // return 12742000 * asin(sqrt(a));
-
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     double theta = lon1 - lon2;
     double dist = sin(deg2rad(lat1)) 
-                    *sin(deg2rad(lat2))
+                    * sin(deg2rad(lat2))
                     + cos(deg2rad(lat1))
                     * cos(deg2rad(lat2))
                     * cos(deg2rad(theta));
@@ -163,8 +158,24 @@ void drawMaker(LatLng curLocation) {
     dist = rad2deg(dist);
     dist = dist * 60 * 1.1515;
     return (dist*1000);
+}
 
-  }
+ double deg2rad(double deg) {
+    return (deg * pi / 180.0);
+}
+
+ double rad2deg(double rad) {
+    return (rad * 180.0 / pi);
+}
+  
+  // static double calculateDistance(lat1, lon1, lat2, lon2){
+  //   var p = 0.017453292519943295;
+  //   var c = cos;
+  //   var a = 0.5 - c((lat2 - lat1) * p)/2 +
+  //       c(lat1 * p) * c(lat2 * p) *
+  //           (1 - c((lon2 - lon1) * p))/2;
+  //   return 12742000 * asin(sqrt(a));
+  // }
   
   int invalidCount = 0;
 
@@ -187,91 +198,13 @@ void drawMaker(LatLng curLocation) {
       //     if (event.z.abs() >3 && event.x.abs() >3 && event.y.abs() >3)
       //      print(event.toString());
       //   });
-      
-      print( "get location");
-       LocationData myLocation = await getCurrentLocation();
+       //LocationData myLocation = await getCurrentLocation();
 
      
 
 
 
 
-///GPS CHECKING
-       if(myLocation.accuracy <= 0){
-            print( "Latitidue and longitude values are invalid.");
-            invalidCount++;
-            return;
-        }
-
-
-        //setAccuracy(newLocation.getAccuracy());
-        double horizontalAccuracy = myLocation.accuracy;
-        if(horizontalAccuracy > 25){ //10meter filter
-           print("Accuracy is too low. " + horizontalAccuracy.toString());
-            invalidCount++;
-            return;
-        }
-
-
-        /* Kalman Filter */
-        double Qvalue;
-
-       
-        int elapsedTimeInMillis = 1000;
-
-        if(currentSpeed == 0){
-            Qvalue = 3; //3 meters per second
-        }else{
-            Qvalue = currentSpeed; // meters per second
-        }
-
-        kalmanFilter.Process(myLocation.latitude, myLocation.longitude, myLocation.accuracy, elapsedTimeInMillis, Qvalue);
-        double predictedLat = kalmanFilter.get_lat();
-        double predictedLng = kalmanFilter.get_lng();
-
-        
-        double predictedDeltaInMeters =  calculateDistance(predictedLat, predictedLng, myLocation.latitude, myLocation.longitude).abs();
-        
-        print( "Kalman Filter: " + predictedDeltaInMeters.toString());
-
-        if(predictedDeltaInMeters > 3 ){
-            print( "Kalman Filter detects mal GPS, we should probably remove this from track: " + predictedDeltaInMeters.toString());
-            kalmanFilter.consecutiveRejectCount += 1;
-
-            if(kalmanFilter.consecutiveRejectCount > 3){
-                kalmanFilter = new KalmanLatLong(3); //reset Kalman Filter if it rejects more than 3 times in raw.
-            }
-            invalidCount++;
-            return;
-        }else{
-            kalmanFilter.consecutiveRejectCount = 0;
-        }
-       
-       currentSpeed = myLocation.speed;
-      print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
-       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<1||
-          calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
-        {
-          print("Invalid dist!");
-            invalidCount++;
-          return;
-        }
-       lastLoc = myLocation;
-      //geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
-       
-       print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
-       this._streamLocationController.add(myLocation);
-       polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
-       Polyline polyline = Polyline(
-         polylineId: PolylineId("poly"),
-         color: R.colors.majorOrange,
-         width: 5,
-         points: polylineCoordinates
-      );
-
-      invalidCount = 0;
-       lData.add(polyline);
-       drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
      }
 //    if (this.recordData.isNotCorrectTotalTime) {
 //      _initTimeService(this.recordData.totalTime);
@@ -301,9 +234,8 @@ void drawMaker(LatLng curLocation) {
     }
     bool hasPermission = await this.hasApprovedGPSPermission();
     if (!hasPermission) {
-       hasPermission = await this.requestGPSPermission();
+      hasPermission = await this.requestGPSPermission();
     }
-    hasPermission = await this.hasApprovedGPSPermission();
     if (!hasPermission) {
       this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
       return false;
@@ -344,9 +276,7 @@ void drawMaker(LatLng curLocation) {
   }
 
   Future<bool> requestGPSPermission() async {
-   
-    
-    return await this._locationListener.requestPermission() == PermissionStatus.granted;
+    return await this._locationListener.requestPermission()==PermissionStatus.granted;
   }
 
   Future<bool> hasApprovedGPSPermission() async {
@@ -367,16 +297,17 @@ void drawMaker(LatLng curLocation) {
     this._streamRecordStateController.add(recordState);
   }
 
-  void _updatePositionCamera(LatLng latlng) {
+  void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       bearing: 0.0,
       target: latlng,
       tilt: 0.0,
-      zoom: 13//this.recordData.currentZoomValue,
+      zoom: zoom//this.recordData.currentZoomValue,
     )));
   }
 
   void onRecordStageChange(RecordState newState) async{
+    print("State: " + newState.toString());
     if (newState == RecordState.StatusStart) {
       //this._locationBackground.startBackgroundLocation();
       // if (this.recordData.startDate == null) {
@@ -397,21 +328,23 @@ void drawMaker(LatLng curLocation) {
 
        lData.add(polyline);
       this._timeService.start();
-      // if (this._locationSubscription != null) {
-      //   this._locationSubscription.cancel();
-      // }
 
-      //this._locationSubscription = this._locationListener.onLocationChanged().listen(this.onLocationChanged);
+      _updatePositionCamera(LatLng(lastLoc.latitude,lastLoc.longitude),zoom:25 );
+      if (this._locationSubscription != null) {
+        this._locationSubscription.cancel();
+      }
+
+      this._locationSubscription = this._locationListener.onLocationChanged.listen(this.onLocationChanged);
     }
     if (newState == RecordState.StatusStop) {
       // this.recordData.endDate = DateTime.now();
-      // this._timeService.stop();
+      this._timeService.stop();
       // this.recordData.clearLatestTime();
       // this._locationBackground.stopBackgroundLocation();
-      // if (this._locationSubscription != null) {
-      //   this._locationSubscription.cancel();
-      //   this._locationSubscription = null;
-      // }
+      if (this._locationSubscription != null) {
+        this._locationSubscription.cancel();
+        this._locationSubscription = null;
+      }
       // this.onUpdateActivity();
       // try {
       //   this.onResumeFromBackground();
@@ -422,10 +355,10 @@ void drawMaker(LatLng curLocation) {
     }
     if (newState == RecordState.StatusResume) {
       // this.recordData.beginNewLine();
-      // this._timeService.start();
+      this._timeService.start();
     }
     if (newState == RecordState.StatusNone) {
-      // this._timeService.reset();
+      this._timeService.reset();
     }
   }
 
@@ -435,23 +368,23 @@ void drawMaker(LatLng curLocation) {
     // this._locationBackground.setRawRecordPath(await RecordCache.rawRecordPath());
 
     this._streamRecordStateController.listenValueChange();
-    // this._streamReportVisibilityController.listenValueChange();
+    this._streamReportVisibilityController.listenValueChange();
     // this._streamDuration.listenValueChange();
     this._streamGPSSignal.listenValueChange();
-    // this._streamSplitStateController.listenValueChange();
+    this._streamSplitStateController.listenValueChange();
     this.streamRecordState.listen(this.onRecordStageChange);
-    // this.streamReportVisibility.listen((data) {
-    //   if (data == ReportVisibility.Gone) {
-    //     this._streamSplitStateController.add(ReportVisibility.Gone);
-    //   }
-    //   if (data == ReportVisibility.Visible) {
-    //     this._streamSplitStateController.add(ReportVisibility.Gone);
-    //   }
-    //   onMapUpdate(forceUpdate: true);
-    // });
-    // this.streamSplit.listen((data) {
-    //   onMapUpdate(forceUpdate: true);
-    // });
+    this.streamReportVisibility.listen((data) {
+      if (data == ReportVisibility.Gone) {
+        this._streamSplitStateController.add(ReportVisibility.Gone);
+      }
+      if (data == ReportVisibility.Visible) {
+        this._streamSplitStateController.add(ReportVisibility.Gone);
+      }
+      //onMapUpdate(forceUpdate: true);
+    });
+    this.streamSplit.listen((data) {
+      //onMapUpdate(forceUpdate: true);
+    });
     await this.onGpsStatusChecking();
     // await this.onLoadActivity();
     // await this.onResumeFromBackground();
@@ -474,5 +407,106 @@ void drawMaker(LatLng curLocation) {
 //        print("${p.longitude}, ${p.latitude},");
 //      }
 //    }
+  }
+
+   void updateSplitState(ReportVisibility newValue) {
+    this._streamSplitStateController.add(newValue);
+  }
+
+
+
+  var time=DateTime.now().millisecondsSinceEpoch;
+  var totalTimeElapsed = 0;
+
+   onLocationChanged(LocationData myLocation) {
+    if (this.currentRecordState != RecordState.StatusStart) {
+      return;
+    }
+    var timePassed = (DateTime.now().millisecondsSinceEpoch - time);
+    totalTimeElapsed+=timePassed;
+    print("Location change in " + timePassed.toString());
+    time = DateTime.now().millisecondsSinceEpoch;
+    ///GPS CHECKING
+       if(myLocation.accuracy <= 0){
+            print( "Latitidue and longitude values are invalid.");
+            invalidCount++;
+            return;
+        }
+
+
+        //setAccuracy(newLocation.getAccuracy());
+        double horizontalAccuracy = myLocation.accuracy;
+        if(horizontalAccuracy > 25){ //10meter filter
+           print("Accuracy is too low. " + horizontalAccuracy.toString());
+            invalidCount++;
+            return;
+        }
+
+
+        /* Kalman Filter */
+        double Qvalue;
+
+       
+        int elapsedTimeInMillis = timePassed;
+
+        if(currentSpeed == 0){
+            Qvalue = 3; //3 meters per second
+        }else{
+            Qvalue = currentSpeed; // meters per second
+        }
+
+        kalmanFilter.Process(myLocation.latitude, myLocation.longitude, myLocation.accuracy, elapsedTimeInMillis, Qvalue);
+        double predictedLat = kalmanFilter.get_lat();
+        double predictedLng = kalmanFilter.get_lng();
+
+        
+        double predictedDeltaInMeters =  calculateDistance(predictedLat, predictedLng, myLocation.latitude, myLocation.longitude).abs();
+        
+        print( "Kalman Filter: " + predictedDeltaInMeters.toString());
+
+        if(predictedDeltaInMeters > 6 ){
+            print( "Kalman Filter detects mal GPS, we should probably remove this from track: " + predictedDeltaInMeters.toString());
+            kalmanFilter.consecutiveRejectCount += 1;
+
+            if(kalmanFilter.consecutiveRejectCount > 3){
+                kalmanFilter = new KalmanLatLong(3); //reset Kalman Filter if it rejects more than 3 times in raw.
+            }
+            invalidCount++;
+            return;
+        }else{
+            kalmanFilter.consecutiveRejectCount = 0;
+        }
+       
+       currentSpeed = myLocation.speed;
+       print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
+       //min speed 1m/s
+       print("total meters have to pass: " + (totalTimeElapsed/1000).toString());
+       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<1*timePassed/1000)
+        //||calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
+        {
+          print("Distance is less than required (1m/s) after: " + timePassed.toString());
+            invalidCount++;
+          return;
+        }
+       lastLoc = myLocation;
+      //geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
+       
+       totalTimeElapsed = 0;
+       print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
+       polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
+       Polyline polyline = Polyline(
+         polylineId: PolylineId("poly"),
+         color: R.colors.majorOrange,
+         width: 5,
+         points: polylineCoordinates
+      );
+
+      invalidCount = 0;
+       lData.add(polyline);
+       drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
+      print("Add Location to stream!");
+      this._streamLocationController.add(myLocation);
+
+     
   }
 }
