@@ -1,5 +1,9 @@
+
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
@@ -91,6 +95,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
+
+    UsrunCrypto.buildTrackSig(1234, 456789);
     _initApp();
     return Scaffold(
       body: Center(
