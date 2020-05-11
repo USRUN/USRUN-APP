@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -10,10 +8,15 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 
+import '../manager/data_manager.dart';
+import '../manager/data_manager.dart';
+
 // === MAIN === //
 Future<void> initialize(BuildContext context) async {
   await setLanguage("en");
   R.initAppRatio(context);
+  DataManager.initialize();
+
 }
 
 enum RouteType {
@@ -22,13 +25,15 @@ enum RouteType {
   show,
 }
 
-Future setLanguage(String lang) async{
-  String jsonContent = await rootBundle.loadString("assets/localization/$lang.json");
-  R.initLocalized(jsonContent);
+Future setLanguage(String lang) async {
+  String jsonContent =
+      await rootBundle.loadString("assets/localization/$lang.json");
+  R.initLocalized(lang, jsonContent);
 }
 
 // === ALERT === //
-Future<T> showAlert<T>(BuildContext context, String title, String message, List<Widget> actions) {
+Future<T> showAlert<T>(
+    BuildContext context, String title, String message, List<Widget> actions) {
   if (actions == null) {
     actions = [
       CupertinoButton(
@@ -50,7 +55,9 @@ Future<T> showAlert<T>(BuildContext context, String title, String message, List<
       });
 }
 
-Future<T> showActionSheet<T>(BuildContext context, Widget builderItem, double height, List<Widget> actions, [EdgeInsets padding = const EdgeInsets.all(20)]) {
+Future<T> showActionSheet<T>(BuildContext context, Widget builderItem,
+    double height, List<Widget> actions,
+    [EdgeInsets padding = const EdgeInsets.all(20)]) {
   Widget buttonContent;
   if (actions.length == 2) {
     Widget left = actions[0];
@@ -64,8 +71,7 @@ Future<T> showActionSheet<T>(BuildContext context, Widget builderItem, double he
         right,
       ],
     );
-  }
-  else {
+  } else {
     buttonContent = Column(
       children: actions,
     );
@@ -80,8 +86,8 @@ Future<T> showActionSheet<T>(BuildContext context, Widget builderItem, double he
           height: height,
           decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(14), topRight: Radius.circular(14))
-          ),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14), topRight: Radius.circular(14))),
           child: Column(
             children: <Widget>[
               builderItem,
@@ -95,7 +101,6 @@ Future<T> showActionSheet<T>(BuildContext context, Widget builderItem, double he
   );
 }
 
-
 int _errorCode = 0;
 void setErrorCode(int code) {
   _errorCode = code;
@@ -105,8 +110,6 @@ void restartApp(int errorCode) {
   _errorCode = errorCode;
   UsRunApp.restartApp(errorCode);
 }
-
-
 
 void showSystemMessage(BuildContext context) {
   if (_errorCode != 0) {
@@ -137,10 +140,6 @@ void showSystemMessage(BuildContext context) {
   }
 }
 
-
-
-
-
 // === NAVIGATOR === //
 void showPage<T>(BuildContext context, Widget page) {
   hideLoading(context);
@@ -148,8 +147,20 @@ void showPage<T>(BuildContext context, Widget page) {
   // TODO: pop all route
   //Navigator.of(context).popUntil((route) => route.isFirst);
 
-  Route route = _NoAnimateRoute(fullscreenDialog: true, builder: (context) => page);
+  Route route =
+      _NoAnimateRoute(fullscreenDialog: true, builder: (context) => page);
   Navigator.of(context).pushReplacement(route);
+}
+
+Future<T> pushPageWithRoute<T>(BuildContext context, Route<T> route) {
+  if (_errorCode == MAINTENANCE) {
+    showSystemMessage(context);
+    return null;
+  }
+
+  hideLoading(context);
+
+  return Navigator.of(context).push(route);
 }
 
 Future<T> pushPage<T>(BuildContext context, Widget page) {
@@ -160,7 +171,8 @@ Future<T> pushPage<T>(BuildContext context, Widget page) {
 
   hideLoading(context);
 
-  Route<T> route = _FullPageRoute<T>(animationType: RouteType.push, builder: (context) => page);
+  Route<T> route = _FullPageRoute<T>(
+      animationType: RouteType.push, builder: (context) => page);
   return Navigator.of(context).push(route);
 }
 
@@ -172,7 +184,8 @@ Future<T> presentPage<T>(BuildContext context, Widget page) {
 
   hideLoading(context);
 
-  Route<T> route = _FullPageRoute<T>(animationType: RouteType.present, builder: (context) => page);
+  Route<T> route = _FullPageRoute<T>(
+      animationType: RouteType.present, builder: (context) => page);
   return Navigator.of(context).push(route);
 }
 
@@ -184,7 +197,8 @@ Future<T> replacePage<T>(BuildContext context, Widget page, {dynamic result}) {
 
   hideLoading(context);
 
-  CupertinoPageRoute<T> route = CupertinoPageRoute<T>(fullscreenDialog: true, builder: (context) => page);
+  CupertinoPageRoute<T> route =
+      CupertinoPageRoute<T>(fullscreenDialog: true, builder: (context) => page);
   return Navigator.of(context).pushReplacement(route, result: result);
 }
 
@@ -192,15 +206,14 @@ void pop(BuildContext context, [dynamic object]) {
   Navigator.of(context).pop(object);
 }
 
-
-
 // === VALIDATE === //
 int getPlatform() {
   return Platform.isIOS ? PlatformType.iOS.index : PlatformType.Android.index;
 }
 
 String validateEmail(String email) {
-  String p = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  String p =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   RegExp regExp = new RegExp(p);
 
@@ -222,8 +235,6 @@ String validatePassword(String pass) {
   return null;
 }
 
-
-
 // === LOADING === //
 _IndicatorRoute _indicator;
 
@@ -244,7 +255,11 @@ void hideLoading(BuildContext context) {
 }
 
 class _IndicatorRoute<T> extends ModalRoute {
-  _IndicatorRoute({bool barrierDismissible = true, String barrierLabel, Color barrierColor = const Color(0x80000000), RouteSettings settings})
+  _IndicatorRoute(
+      {bool barrierDismissible = true,
+      String barrierLabel,
+      Color barrierColor = const Color(0x80000000),
+      RouteSettings settings})
       : assert(barrierDismissible != null),
         _barrierDismissible = barrierDismissible,
         _barrierLabel = barrierLabel,
@@ -286,7 +301,8 @@ class _IndicatorRoute<T> extends ModalRoute {
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     return GestureDetector(
       onTap: () {
         if (isClosable) hideLoading(context);
@@ -303,7 +319,6 @@ class _IndicatorRoute<T> extends ModalRoute {
   }
 }
 
-
 class _NoAnimateRoute<T> extends CupertinoPageRoute<T> {
   _NoAnimateRoute({
     WidgetBuilder builder,
@@ -316,7 +331,8 @@ class _NoAnimateRoute<T> extends CupertinoPageRoute<T> {
         );
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     return child;
   }
 }
@@ -352,7 +368,8 @@ class _FullPageRoute<T> extends PageRoute<T> {
 
   @override
   void didChangePrevious(Route<dynamic> previousRoute) {
-    final String previousTitleString = previousRoute is CupertinoPageRoute ? previousRoute.title : null;
+    final String previousTitleString =
+        previousRoute is CupertinoPageRoute ? previousRoute.title : null;
     if (_previousTitle == null) {
       _previousTitle = ValueNotifier<String>(previousTitleString);
     } else {
@@ -410,7 +427,8 @@ class _FullPageRoute<T> extends PageRoute<T> {
     // If we're being popped into, we also cannot be swiped until the pop above
     // it completes. This translates to our secondary animation being
     // dismissed.
-    if (route.secondaryAnimation.status != AnimationStatus.dismissed) return false;
+    if (route.secondaryAnimation.status != AnimationStatus.dismissed)
+      return false;
     // If we're in a gesture already, we cannot start another.
     if (isPopGestureInProgress(route)) return false;
 
@@ -419,7 +437,8 @@ class _FullPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final Widget result = Semantics(
       scopesRoute: true,
       explicitChildNodes: true,
@@ -427,7 +446,8 @@ class _FullPageRoute<T> extends PageRoute<T> {
     );
     assert(() {
       if (result == null) {
-        throw FlutterError('The builder for route "${settings.name}" returned null.\n'
+        throw FlutterError(
+            'The builder for route "${settings.name}" returned null.\n'
             'Route builders must never return null.');
       }
       return true;
@@ -459,13 +479,12 @@ class _FullPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-    return buildPageTransitions<T>(this, context, animation, secondaryAnimation, animationType, child);
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return buildPageTransitions<T>(
+        this, context, animation, secondaryAnimation, animationType, child);
   }
 
   @override
   String get debugLabel => '${super.debugLabel}(${settings.name})';
 }
-
-
-

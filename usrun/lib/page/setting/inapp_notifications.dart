@@ -10,7 +10,8 @@ class InAppNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -63,7 +64,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -82,7 +83,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -101,7 +102,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -120,7 +121,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
+                initSwitchStatus: false,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -155,7 +156,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -174,7 +175,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -193,7 +194,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -212,7 +213,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -231,7 +232,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -266,7 +267,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -285,7 +286,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -320,7 +321,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -339,7 +340,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -358,7 +359,7 @@ class InAppNotifications extends StatelessWidget {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -369,5 +370,11 @@ class InAppNotifications extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }

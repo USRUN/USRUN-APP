@@ -52,8 +52,8 @@ class SignInPage extends StatelessWidget {
                     InputField(
                       controller: _emailController,
                       enableFullWidth: true,
-                      labelTitle: "Email",
-                      hintText: "Type your email here",
+                      labelTitle: R.strings.email,
+                      hintText: R.strings.emailHint,
                       textInputType: TextInputType.emailAddress,
                     ),
                     SizedBox(
@@ -62,8 +62,8 @@ class SignInPage extends StatelessWidget {
                     InputField(
                       controller: _passwordController,
                       enableFullWidth: true,
-                      labelTitle: "Password",
-                      hintText: "Type your password here",
+                      labelTitle: R.strings.password,
+                      hintText: R.strings.passwordHint,
                       obscureText: true,
                     ),
                     SizedBox(
@@ -73,7 +73,7 @@ class SignInPage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => pushPage(context, ResetPasswordPage()),
                         child: Text(
-                          "Forget Password",
+                          R.strings.forgotPassword,
                           style: R.styles.shadowLabelStyle,
                         ),
                       ),

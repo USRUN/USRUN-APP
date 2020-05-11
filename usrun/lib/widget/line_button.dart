@@ -23,12 +23,14 @@ class LineButton extends StatelessWidget {
   final bool enableSwitchButton;
   final String switchButtonOnTitle;
   final String switchButtonOffTitle;
-  final bool switchStatus;
+  final bool initSwitchStatus;
   final Function switchFunction;
 
   final bool enableBoxButton;
   final String boxButtonTitle;
   final Function boxButtonFuction;
+
+  static bool _privateSwitchStatus = false;
 
   /*
     + The priority of enabling suffix things (Highest to Lowest)
@@ -60,8 +62,8 @@ class LineButton extends StatelessWidget {
     this.enableSwitchButton = false,
     this.switchButtonOnTitle = "",
     this.switchButtonOffTitle = "",
-    this.switchStatus = false,
-    this.switchFunction,
+    this.initSwitchStatus = false,
+    this.switchFunction(state),
     this.enableBoxButton = false,
     this.boxButtonTitle = "",
     this.boxButtonFuction,
@@ -191,7 +193,7 @@ class LineButton extends StatelessWidget {
                                 left: R.appRatio.appSpacing15,
                               ),
                               child: LiteRollingSwitch(
-                                value: this.switchStatus,
+                                value: this.initSwitchStatus,
                                 textOn: this.switchButtonOnTitle,
                                 textOff: this.switchButtonOffTitle,
                                 colorOn: R.colors.majorOrange,
@@ -199,10 +201,13 @@ class LineButton extends StatelessWidget {
                                 iconOn: Icons.check_circle_outline,
                                 iconOff: Icons.remove_circle_outline,
                                 textSize: R.appRatio.appFontSize14,
-                                onChanged: (bool state) {
+                                onTap: () {
                                   if (this.switchFunction != null) {
-                                    this.switchFunction(state);
+                                    this.switchFunction(_privateSwitchStatus);
                                   }
+                                },
+                                onChanged: (bool state) {
+                                  _privateSwitchStatus = state;
                                 },
                               ))
                           : (this.enableBoxButton

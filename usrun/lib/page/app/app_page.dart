@@ -9,6 +9,7 @@ import 'package:usrun/page/profile/edit_profile.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/page/record/record_page.dart';
+import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -22,12 +23,18 @@ class DrawerItem {
 
 class AppPage extends StatefulWidget {
   final drawerItems = [
-    DrawerItem(R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
-    DrawerItem(R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
-    DrawerItem(R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
-    DrawerItem(R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
-    DrawerItem(R.strings.profile, R.myIcons.drawerProfile, R.myIcons.drawerActiveProfile),
-    DrawerItem(R.strings.settings, R.myIcons.drawerSettings, R.myIcons.drawerActiveSettings),
+    DrawerItem(
+        R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
+    DrawerItem(
+        R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
+    DrawerItem(
+        R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
+    DrawerItem(
+        R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
+    DrawerItem(R.strings.profile, R.myIcons.drawerProfile,
+        R.myIcons.drawerActiveProfile),
+    DrawerItem(R.strings.settings, R.myIcons.drawerSettings,
+        R.myIcons.drawerActiveSettings),
   ];
 
   @override
@@ -73,6 +80,52 @@ class _AppPageState extends State<AppPage> {
 
     // Close the drawer
     Navigator.of(context).pop();
+  }
+
+  List<Widget> _appBarActionList() {
+    List<Widget> list = List<Widget>();
+    switch (_selectedDrawerIndex) {
+      case 0: // Record page
+        list.add(Container());
+        break;
+      case 1: // Feed page
+        list.add(Container());
+        break;
+      case 2: // Event page
+        list.add(Container());
+        break;
+      case 3: // Team page
+        list.add(IconButton(
+          icon: Image.asset(
+            R.myIcons.appBarSearchBtn,
+            width: R.appRatio.appAppBarIconSize,
+          ),
+          onPressed: () {
+            pushPage(
+              context,
+              TeamSearchPage(autoFocusInput: true),
+            );
+          },
+        ));
+        break;
+      case 4: // Profile page
+        list.add(IconButton(
+          icon: Image.asset(
+            R.myIcons.appBarEditBtn,
+            width: R.appRatio.appAppBarIconSize,
+          ),
+          onPressed: () {
+            pushPage(context, EditProfilePage());
+          },
+        ));
+        break;
+      case 5: // Setting page
+        list.add(Container());
+        break;
+      default: // None of above
+        list.add(Container());
+    }
+    return list;
   }
 
   @override
@@ -124,20 +177,9 @@ class _AppPageState extends State<AppPage> {
           style: TextStyle(
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
-        actions: <Widget>[
-          (_selectedDrawerIndex == 4
-              ? IconButton(
-                  icon: Image.asset(
-                    R.myIcons.appBarEditBtn,
-                    width: R.appRatio.appAppBarIconSize,
-                  ),
-                  onPressed: () {
-                    pushPage(context, EditProfilePage());
-                  },
-                )
-              : Container()),
-        ],
+        actions: _appBarActionList(),
       ),
+      backgroundColor: R.colors.appBackground,
       drawer: Container(
           constraints: new BoxConstraints.expand(
             width: R.appRatio.appWidth250,
@@ -172,6 +214,7 @@ class _AppPageState extends State<AppPage> {
                     ),
                     Text(
                       _fullName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -206,23 +249,22 @@ class _AppPageState extends State<AppPage> {
                       height: R.appRatio.appSpacing25,
                     ),
                     Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: drawerWidgets,
-                                ),
-                              ),
-                              onNotification: (overscroll) {
-                                overscroll.disallowGlow();
-                              }),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: drawerWidgets,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               )
             ],
           )),
-      body: _getDrawerItemWidget(_selectedDrawerIndex),
+      body: NotificationListener<OverscrollIndicatorNotification>(
+          child: _getDrawerItemWidget(_selectedDrawerIndex),
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+          }),
     );
   }
 }

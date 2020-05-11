@@ -11,7 +11,7 @@ import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/net/client.dart';
+import 'package:usrun/core/net/client.dart';
 
 class UserManager {
   static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
@@ -47,7 +47,7 @@ class UserManager {
     if (deviceToken != null) {
       params['deviceToken'] = deviceToken;
     }
-    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/create', params);
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/signup', params);
 
     Response<User> result = Response();
 

@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/net/client.dart';
+import 'package:usrun/core/net/client.dart';
 
 const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
 const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
@@ -24,9 +24,11 @@ const int IMAGE_CACHE_MAX_NUMBER = 100;
 
 class ImageCacheManager {
   static final DiskCache _customDiskCache = DiskCache();
-  static final DiskCache _persistentDiskCache = DiskCache(isPersistent: true, maxAge: Duration(days: IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY));
+  static final DiskCache _persistentDiskCache = DiskCache(
+      isPersistent: true,
+      maxAge: Duration(days: IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY));
 
-  static Image getImage({
+  static Widget getImage({
     @required String url,
     Key key,
     double scale = 1.0,
@@ -43,10 +45,11 @@ class ImageCacheManager {
     bool matchTextDirection = false,
     bool gaplessPlayback = false,
     FilterQuality filterQuality = FilterQuality.low,
+    fadeInDuration,
   }) {
     if (url == null) {
       return Image.asset(
-        R.myIcons.defaultIcon,
+        R.images.smallDefaultImage,
         semanticLabel: semanticLabel,
         excludeFromSemantics: excludeFromSemantics,
         width: width,
@@ -80,29 +83,46 @@ class ImageCacheManager {
         gaplessPlayback: gaplessPlayback,
         filterQuality: filterQuality,
       );
-    }
-    else {
+    } else {
+      if (url.length == 0) {
+        return Image.asset(
+          R.images.smallDefaultImage,
+          semanticLabel: semanticLabel,
+          excludeFromSemantics: excludeFromSemantics,
+          width: width,
+          height: height,
+          color: color,
+          colorBlendMode: colorBlendMode,
+          fit: fit,
+          alignment: alignment,
+          repeat: repeat,
+          centerSlice: centerSlice,
+          matchTextDirection: matchTextDirection,
+          gaplessPlayback: gaplessPlayback,
+          filterQuality: filterQuality,
+        );
+      }
+
       url = Client.imageUrl(url); // correct image
-      Image image = Image.network(
-        url,
-        semanticLabel: semanticLabel,
-        excludeFromSemantics: excludeFromSemantics,
-        width: width,
-        height: height,
-        color: color,
-        colorBlendMode: colorBlendMode,
+      Widget image = FadeInImage.assetNetwork(
+        placeholder: R.images.smallDefaultImage,
+        image: url,
         fit: fit,
+        fadeInDuration: (fadeInDuration == null
+            ? new Duration(milliseconds: 100)
+            : fadeInDuration),
+        height: height,
+        width: width,
         alignment: alignment,
-        repeat: repeat,
-        centerSlice: centerSlice,
+        excludeFromSemantics: excludeFromSemantics,
         matchTextDirection: matchTextDirection,
-        gaplessPlayback: gaplessPlayback,
-        filterQuality: filterQuality,
+        repeat: repeat,
+        imageSemanticLabel: semanticLabel,
       );
 
       if (image == null) {
         return Image.asset(
-          R.myIcons.defaultIcon,
+          R.images.smallDefaultImage,
           semanticLabel: semanticLabel,
           excludeFromSemantics: excludeFromSemantics,
           width: width,
@@ -151,7 +171,7 @@ class ImageCacheManager {
 //      }
 //    }
 //
-//    CustomImageProvider image = CustomImageProvider(R.images.icdefaultIcon, scale: scale, cache: _persistentDiskCache);
+//    CustomImageProvider image = CustomImageProvider(R.images.smallDefaultImage, scale: scale, cache: _persistentDiskCache);
 //
 //    return Image(
 //      image: image,
@@ -173,15 +193,18 @@ class ImageCacheManager {
 
   static CustomImageProvider getImageData({@required String url}) {
     if (url == null) {
-      return CustomImageProvider(R.myIcons.defaultIcon, cache: _persistentDiskCache);
+      return CustomImageProvider(R.images.smallDefaultImage,
+          cache: _persistentDiskCache);
     }
 
-    CustomImageProvider data = CustomImageProvider(url, cache: isAssetImage(url) ? _persistentDiskCache : _customDiskCache);
+    CustomImageProvider data = CustomImageProvider(url,
+        cache: isAssetImage(url) ? _persistentDiskCache : _customDiskCache);
     if (data != null) {
       return data;
     }
 
-    return CustomImageProvider(R.myIcons.defaultIcon, cache: _persistentDiskCache);
+    return CustomImageProvider(R.images.smallDefaultImage,
+        cache: _persistentDiskCache);
   }
 
   static void clear() {
@@ -224,7 +247,8 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
     return null;
   }
 
-  Future<Uint8List> _loadFromDiskCache(CustomImageProvider key, String uId) async {
+  Future<Uint8List> _loadFromDiskCache(
+      CustomImageProvider key, String uId) async {
     Uint8List data = await cache.load(uId);
     if (data != null) {
       return data;
@@ -240,7 +264,7 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
         await cache.save(uId, imageData);
         return imageData;
       } else {
-        ByteData bytes = await rootBundle.load(R.myIcons.defaultIcon);
+        ByteData bytes = await rootBundle.load(R.images.smallDefaultImage);
         Uint8List rawPath = bytes.buffer.asUint8List();
         return rawPath;
       }
@@ -251,7 +275,8 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
     assert(url != null);
 
     http.Response _response = await http.get(url);
-    if (_response != null && _response.statusCode == 200) return _response.bodyBytes;
+    if (_response != null && _response.statusCode == 200)
+      return _response.bodyBytes;
 
     return null;
   }
@@ -298,7 +323,8 @@ class DiskCache {
   }
 
   Future<void> _commitMetaData() async {
-    File path = File(join((await getApplicationDocumentsDirectory()).path, _metaDataFileName()));
+    File path = File(join(
+        (await getApplicationDocumentsDirectory()).path, _metaDataFileName()));
     await path.writeAsString(json.encode(_metadata));
   }
 
@@ -312,7 +338,9 @@ class DiskCache {
         return null;
       }
 
-      if (DateTime.fromMillisecondsSinceEpoch(_metadata[uid]['createdTime'] + _metadata[uid]['maxAge']).isBefore(DateTime.now())) {
+      if (DateTime.fromMillisecondsSinceEpoch(
+              _metadata[uid]['createdTime'] + _metadata[uid]['maxAge'])
+          .isBefore(DateTime.now())) {
         await File(_metadata[uid]['path']).delete();
         _metadata.remove(uid);
         await _commitMetaData();
@@ -328,7 +356,9 @@ class DiskCache {
 
   Future<void> save(String uid, Uint8List data) async {
     if (_metadata == null) await _initMetaData();
-    Directory dir = Directory(join((await getApplicationDocumentsDirectory()).path, 'imagecache${isPersistent ? '_persistent' : ''}'));
+    Directory dir = Directory(join(
+        (await getApplicationDocumentsDirectory()).path,
+        'imagecache${isPersistent ? '_persistent' : ''}'));
 
     if (!dir.existsSync()) dir.createSync(recursive: true);
     await File(join(dir.path, uid)).writeAsBytes(data);
@@ -356,8 +386,11 @@ class DiskCache {
   }
 
   void clear() async {
-    Directory appDir = Directory(join((await getApplicationDocumentsDirectory()).path, 'imagecache${isPersistent ? '_persistent' : ''}'));
-    File metadataFile = File(join((await getApplicationDocumentsDirectory()).path, _metaDataFileName()));
+    Directory appDir = Directory(join(
+        (await getApplicationDocumentsDirectory()).path,
+        'imagecache${isPersistent ? '_persistent' : ''}'));
+    File metadataFile = File(join(
+        (await getApplicationDocumentsDirectory()).path, _metaDataFileName()));
     if (appDir.existsSync()) {
       await appDir.delete(recursive: true);
       if (metadataFile.existsSync()) {

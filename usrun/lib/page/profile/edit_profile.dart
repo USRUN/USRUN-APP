@@ -5,7 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/drop_down_menu.dart';
+import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/avatar_view.dart';
 
@@ -24,7 +24,8 @@ class EditProfilePage extends StatelessWidget {
   final _dropDownMenuItemList = [
     {'value': '0', 'text': 'Male'},
     {'value': '1', 'text': 'Female'},
-    {'value': '2', 'text': 'Others'}
+    {'value': '2', 'text': 'Prefer not to say'},
+    {'value': '3', 'text': 'Other'},
   ];
 
   void _getDOBFunction(DateTime picker) {
@@ -57,7 +58,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -99,19 +100,19 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 AvatarView(
-                  avatarImageURL: R.images.avatar,
+                  avatarImageURL: R.images.avatarQuocTK,
                   avatarImageSize: R.appRatio.appAvatarSize150,
                   enableSquareAvatarImage: false,
                   pressAvatarImage: () {
                     // TODO: A function for doing something
                     // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                    print("Nothing to show");
+                    print(R.strings.nothingToShow);
                   },
                   avatarBoxBorder: Border.all(
                     color: R.colors.majorOrange,
                     width: 2,
                   ),
-                  supportImageURL: R.images.drawerBackground,
+                  supportImageURL: R.images.avatar,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -146,8 +147,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _firstNameController,
                         enableFullWidth: false,
-                        labelTitle: "First Name",
-                        hintText: "First Name",
+                        labelTitle: R.strings.firstName,
+                        hintText: R.strings.firstName,
                       ),
                     ),
                     Container(
@@ -155,8 +156,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _lastNameController,
                         enableFullWidth: false,
-                        labelTitle: "Last Name",
-                        hintText: "Last Name",
+                        labelTitle: R.strings.lastName,
+                        hintText: R.strings.lastName,
                       ),
                     )
                   ],
@@ -167,8 +168,8 @@ class EditProfilePage extends StatelessWidget {
                 InputField(
                   controller: _emailController,
                   enableFullWidth: true,
-                  labelTitle: "Email",
-                  hintText: "Type your email here",
+                  labelTitle: R.strings.email,
+                  hintText: R.strings.emailHint,
                   textInputType: TextInputType.emailAddress,
                 ),
                 SizedBox(
@@ -182,8 +183,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _countryController,
                         enableFullWidth: false,
-                        labelTitle: "Country",
-                        hintText: "Country",
+                        labelTitle: R.strings.country,
+                        hintText: R.strings.country,
                       ),
                     ),
                     Container(
@@ -191,8 +192,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _cityController,
                         enableFullWidth: false,
-                        labelTitle: "City",
-                        hintText: "City",
+                        labelTitle: R.strings.city,
+                        hintText: R.strings.city,
                       ),
                     )
                   ],
@@ -208,8 +209,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _districtController,
                         enableFullWidth: false,
-                        labelTitle: "District",
-                        hintText: "District",
+                        labelTitle: R.strings.district,
+                        hintText: R.strings.district,
                       ),
                     ),
                     Container(
@@ -217,8 +218,7 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _jobController,
                         enableFullWidth: false,
-                        labelTitle: "What's Your Job?",
-                        hintText: "Your Job",
+                        labelTitle: R.strings.whatYourJob,
                       ),
                     )
                   ],
@@ -232,19 +232,18 @@ class EditProfilePage extends StatelessWidget {
                     Container(
                       width: R.appRatio.appWidth181,
                       child: InputCalendar(
-                        labelTitle: "Birthday",
+                        labelTitle: R.strings.birthday,
                         enableFullWidth: false,
                         getDOBFunc: this._getDOBFunction,
                       ),
                     ),
                     Container(
-                      width: R.appRatio.appWidth181,
                       child: DropDownMenu(
-                        errorEmptyData: "Nothing to show",
+                        errorEmptyData: R.strings.nothingToShow,
                         enableFullWidth: false,
                         maxHeightBox: R.appRatio.appHeight320,
-                        labelTitle: "Gender",
-                        hintText: "Gender",
+                        labelTitle: R.strings.gender,
+                        hintText: R.strings.gender,
                         enableHorizontalLabelTitle: false,
                         onChanged: this._getSelectedDropDownMenuItem,
                         items: this._dropDownMenuItemList,
@@ -263,7 +262,7 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _heightController,
                         enableFullWidth: false,
-                        labelTitle: "Height",
+                        labelTitle: R.strings.height,
                         hintText: "170",
                         suffixText: "cm",
                         textInputType: TextInputType.number,
@@ -274,7 +273,7 @@ class EditProfilePage extends StatelessWidget {
                       child: InputField(
                         controller: _weightController,
                         enableFullWidth: false,
-                        labelTitle: "Weight",
+                        labelTitle: R.strings.weight,
                         hintText: "50",
                         suffixText: "kg",
                         textInputType: TextInputType.number,
@@ -288,8 +287,8 @@ class EditProfilePage extends StatelessWidget {
                 InputField(
                   controller: _biographyController,
                   enableFullWidth: true,
-                  labelTitle: "Biography",
-                  hintText: "Share something about yourself...",
+                  labelTitle: R.strings.biography,
+                  hintText: R.strings.biographyHint,
                   enableMaxLines: true,
                 ),
                 SizedBox(
@@ -301,5 +300,11 @@ class EditProfilePage extends StatelessWidget {
         ),
       ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        });
   }
 }
