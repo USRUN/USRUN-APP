@@ -32,11 +32,12 @@ dependencies:
   google_sign_in:
     path: ./myLibs/google_sign_in
 
-  google_maps_flutter: ^0.5.24+1
-  
+  google_maps_flutter: ^0.5.25+1
+  pedometer: ^1.2.0
   reflectable: any
   
   image_picker: ^0.6.1+8
+  image_cropper: ^1.2.2
   shared_preferences: ^0.5.0
   sprintf: ^4.0.2
   gradient_app_bar: ^0.1.3

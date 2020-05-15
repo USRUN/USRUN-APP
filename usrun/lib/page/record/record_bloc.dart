@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pedometer/pedometer.dart';
 import 'package:sensors/sensors.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/kalman_filter.dart';
 import 'package:usrun/page/record/location_background.dart';
 import 'package:usrun/page/record/record_const.dart';
+import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/timer.dart';
 
 import 'package:location/location.dart';
@@ -19,6 +22,8 @@ import 'package:location/location.dart';
 import 'dart:ui' as ui;
 
 class RecordBloc extends BlocBase {
+  RecordData recordData;
+  
   GoogleMapController mapController;
 
   MyStreamController<LocationData> _streamLocationController;
@@ -26,6 +31,9 @@ class RecordBloc extends BlocBase {
   MyStreamController<ReportVisibility> _streamSplitStateController;
 
   MyStreamController<RecordState> _streamRecordStateController;
+
+  MyStreamController<int> _streamDuration;
+  MyStreamController<RecordData> _streamRecorData;
 
   MyStreamController<GPSSignalStatus> _streamGPSSignal;
   MyStreamController<ReportVisibility> _streamReportVisibilityController;
@@ -36,6 +44,8 @@ class RecordBloc extends BlocBase {
   LocationBackground _locationBackground;
   TimerService _timeService;
 
+  Pedometer _pedometer;
+  StreamSubscription<int> _subscription;
 
   //test
   List<LatLng> polylineCoordinates = List<LatLng>();
@@ -45,8 +55,10 @@ class RecordBloc extends BlocBase {
   //end test
 
   RecordBloc() {
+    this.recordData = RecordData();
     this._streamSplitStateController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
-    // this._streamDuration = MyStreamController<int>(defaultValue: 0, activeBroadcast: true);
+    this._streamDuration = MyStreamController<int>(defaultValue: 0, activeBroadcast: true);
+    this._streamRecorData = MyStreamController<RecordData>(defaultValue: recordData, activeBroadcast: true);
     this._streamLocationController = MyStreamController<LocationData>(
         defaultValue: null, activeBroadcast: true);
     this._streamRecordStateController = MyStreamController<RecordState>(
@@ -56,8 +68,9 @@ class RecordBloc extends BlocBase {
         defaultValue: GPSSignalStatus.CHECKING, activeBroadcast: true);
     // this._streamSportType =  MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
     this._locationListener = Location();
-     this._locationBackground = LocationBackground();
-    // this.recordData = RecordData();
+    
+     this._pedometer =  Pedometer();
+    this._locationBackground = LocationBackground();
      _initTimeService(0);
      initListeners();
      
@@ -82,7 +95,8 @@ class RecordBloc extends BlocBase {
   RecordState get currentRecordState =>  this._streamRecordStateController.value;
 
   GPSSignalStatus get gpsStatus => this._streamGPSSignal.value;
-
+  Stream<int> get streamDuration => _streamDuration.stream;
+  Stream<RecordData> get streamRecordData => _streamRecorData.stream;
 
 
   @override
@@ -91,6 +105,34 @@ class RecordBloc extends BlocBase {
     if (this._locationSubscription != null) {
       this._locationSubscription.cancel();
     }
+  }
+
+  Future<void> initPlatformState() async {
+    startListening();
+  }
+
+  void startListening() {
+    _pedometer = new Pedometer();
+    _subscription = _pedometer.pedometerStream.listen(_onData,
+        onError: _onError, onDone: _onDone, cancelOnError: true);
+  }
+
+  int deviceStep = 0;
+
+  void _onData(int stepCountValue) async {
+      if (deviceStep==0)
+        deviceStep = stepCountValue;
+      recordData.totalStep = stepCountValue - deviceStep;
+      print("step: " + stepCountValue.toString());
+  }
+
+  void _onDone() => print("Finished pedometer tracking");
+
+  void _onError(error) => print("Flutter Pedometer Error: $error");
+
+
+  void stopListening() {
+      _subscription.cancel();
   }
 
 Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -147,17 +189,29 @@ void drawMaker(LatLng curLocation) {
       }
   }
 
-  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-    double theta = lon1 - lon2;
-    double dist = sin(deg2rad(lat1)) 
-                    * sin(deg2rad(lat2))
-                    + cos(deg2rad(lat1))
-                    * cos(deg2rad(lat2))
-                    * cos(deg2rad(theta));
-    dist = acos(dist);
-    dist = rad2deg(dist);
-    dist = dist * 60 * 1.1515;
-    return (dist*1000);
+//   double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+//     double theta = lon1 - lon2;
+//     double dist = sin(deg2rad(lat1)) 
+//                     * sin(deg2rad(lat2))
+//                     + cos(deg2rad(lat1))
+//                     * cos(deg2rad(lat2))
+//                     * cos(deg2rad(theta));
+//     dist = acos(dist);
+//     dist = rad2deg(dist);
+//     dist = dist * 60 * 1.1515;
+//     return (dist*1000);
+// }
+double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+     double earthRadius = 6371000; //meters
+    double dLat = deg2rad(lat2-lat1);
+    double dLng = deg2rad(lon2-lon1);
+    double a = sin(dLat/2) * sin(dLat/2) +
+               cos(deg2rad(lat1)) *cos(deg2rad(lat2)) *
+               sin(dLng/2) * sin(dLng/2);
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double dist = (earthRadius * c);
+
+    return dist;
 }
 
  double deg2rad(double deg) {
@@ -187,30 +241,14 @@ void drawMaker(LatLng curLocation) {
 
   void onTotalTimeChange(int duration) async{
     print("tick + " + duration.toString());
-    // this.recordData.totalTime = duration;
-    // this.recordData.endDate = DateTime.now();
-    // this._streamDuration.add(duration);
-    // this.onMapUpdate();
+    
+    this.recordData.totalTime = duration;
+    this.recordData.endTime = DateTime.now().millisecondsSinceEpoch;
+    this._streamDuration.add(duration);
+    this._streamRecorData.add(recordData);
+    this.onMapUpdate();
     // // update activity every 15 seconds;
     
-     if (duration % 1 == 0) {
-      //  accelerometerEvents.listen((AccelerometerEvent event) {
-      //     if (event.z.abs() >3 && event.x.abs() >3 && event.y.abs() >3)
-      //      print(event.toString());
-      //   });
-       //LocationData myLocation = await getCurrentLocation();
-
-     
-
-
-
-
-     }
-//    if (this.recordData.isNotCorrectTotalTime) {
-//      _initTimeService(this.recordData.totalTime);
-//      this._streamDuration.add(this.recordData.totalTime);
-//      this._timeService.start();
-//    }
   }
 
   void _initTimeService(int totalTime) {
@@ -223,6 +261,18 @@ void drawMaker(LatLng curLocation) {
 
   Future<bool> isGPSEnable() {
     return this._locationListener.serviceEnabled();
+  }
+
+  onMapUpdate({ forceUpdate: false }) {
+    try {
+      LocationData locationData = this.recordData.lastLocation;
+      if ((this.recordData.totalTime % MAX_TIME_MAP_UPDATE == 0 && locationData != null) || forceUpdate) {
+        this._streamLocationController.add(locationData);
+        this._updatePositionCamera(LatLng(locationData.latitude, locationData.longitude),zoom:18);
+      }
+    } catch (error) {
+      print('[RecordBloc][onMapUpdate] ${error}');
+    }
   }
 
   Future<bool> onGpsStatusChecking() async {
@@ -258,8 +308,6 @@ void drawMaker(LatLng curLocation) {
     this.mapController = controller;
   }
 
-  // onCameraMove(double zoomValue) =>
-  //     this.recordData.currentZoomValue = zoomValue;
 
   Future<LocationData> getCurrentLocation() async {
     LocationData myLocation;
@@ -297,6 +345,22 @@ void drawMaker(LatLng curLocation) {
     this._streamRecordStateController.add(recordState);
   }
 
+  void showTrackingReport() {
+    if (this._streamReportVisibilityController.value != ReportVisibility.Visible) {
+      this.updateReportVisibility(ReportVisibility.Visible);
+    }
+  }
+
+  void hideTrackingReport() {
+    if (this._streamReportVisibilityController.value != ReportVisibility.Gone) {
+      this.updateReportVisibility(ReportVisibility.Gone);
+    }
+  }
+
+  void updateReportVisibility(ReportVisibility value) {
+    this._streamReportVisibilityController.add(value);
+  }
+
   void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       bearing: 0.0,
@@ -316,8 +380,9 @@ void drawMaker(LatLng curLocation) {
       //   this.onMapUpdate(forceUpdate: true);
       //   this.recordData.startDate = DateTime.now();
       // }
-      // this.recordData.beginNewLine();
+      this.recordData.beginNewRoute();
       lastLoc = await getCurrentLocation();
+      recordData.addLocation(lastLoc,0);
        polylineCoordinates.add(LatLng(lastLoc.latitude,lastLoc.longitude));
        Polyline polyline = Polyline(
          polylineId: PolylineId("poly"),
@@ -329,18 +394,20 @@ void drawMaker(LatLng curLocation) {
        lData.add(polyline);
       this._timeService.start();
 
-      _updatePositionCamera(LatLng(lastLoc.latitude,lastLoc.longitude),zoom:25 );
+      _updatePositionCamera(LatLng(lastLoc.latitude,lastLoc.longitude),zoom:18 );
       if (this._locationSubscription != null) {
         this._locationSubscription.cancel();
       }
 
       this._locationSubscription = this._locationListener.onLocationChanged.listen(this.onLocationChanged);
+     
     }
     if (newState == RecordState.StatusStop) {
-      // this.recordData.endDate = DateTime.now();
+      this.recordData.endTime = DateTime.now().millisecondsSinceEpoch;
       this._timeService.stop();
+      this.stopListening();
       // this.recordData.clearLatestTime();
-      // this._locationBackground.stopBackgroundLocation();
+      //this._locationBackground.stopBackgroundLocation();
       if (this._locationSubscription != null) {
         this._locationSubscription.cancel();
         this._locationSubscription = null;
@@ -366,10 +433,11 @@ void drawMaker(LatLng curLocation) {
   void initListeners() async{
     // setup rawRecordPath
     // this._locationBackground.setRawRecordPath(await RecordCache.rawRecordPath());
-
+    this.initPlatformState();
     this._streamRecordStateController.listenValueChange();
     this._streamReportVisibilityController.listenValueChange();
-    // this._streamDuration.listenValueChange();
+    this._streamDuration.listenValueChange();
+    this._streamRecorData.listenValueChange();
     this._streamGPSSignal.listenValueChange();
     this._streamSplitStateController.listenValueChange();
     this.streamRecordState.listen(this.onRecordStageChange);
@@ -476,22 +544,34 @@ void drawMaker(LatLng curLocation) {
         }else{
             kalmanFilter.consecutiveRejectCount = 0;
         }
-       
        currentSpeed = myLocation.speed;
-       print("Dist: " + calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs().toString());
+       var distance = calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs();
+       print("Dist: " + distance.toString());
        //min speed 1m/s
-       print("total meters have to pass: " + (totalTimeElapsed/1000).toString());
-       if (calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()<1*timePassed/1000)
+       
+       
+        //Check acceleration (max avg aclr is 3.5)
+      var v1 = recordData.latestPace;
+      var v2 = distance/(totalTimeElapsed/1000);
+      var a = (v2-v1)/(totalTimeElapsed/1000);
+      print ("acceleration: " + a.toString());
+
+
+       print("total meters have to pass: " + (timePassed/1000).toString());
+       if (distance<1*timePassed~/1000)
         //||calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
         {
           print("Distance is less than required (1m/s) after: " + timePassed.toString());
             invalidCount++;
           return;
         }
+
+     
+
+
        lastLoc = myLocation;
       //geolocator.Position pos = await geolocator.Geolocator().getCurrentPosition(desiredAccuracy: geolocator.LocationAccuracy.bestForNavigation);
        
-       totalTimeElapsed = 0;
        print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
        polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
        Polyline polyline = Polyline(
@@ -504,9 +584,16 @@ void drawMaker(LatLng curLocation) {
       invalidCount = 0;
        lData.add(polyline);
        drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
-      print("Add Location to stream!");
       this._streamLocationController.add(myLocation);
+      recordData.totalDistance += distance.toInt();
+      recordData.acceleration = a;
+      recordData.latestPace = v2;
+      recordData.addLocation(myLocation,timePassed~/1000);
+      
+      print("Add Location: " + recordData.lastLocation.toString());
 
+      totalTimeElapsed = 0;
      
   }
+  
 }

@@ -11,6 +11,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_button.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/widget/button_circle.dart';
+import 'package:usrun/page/record/record_report.dart';
 
 class RecordPage extends StatefulWidget {
   @override
@@ -81,14 +82,14 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
     return StreamBuilder<GPSSignalStatus>(
       stream: this.bloc.streamGPSStatus,
       builder: (context, snapshot) {
-        var textGPSStatus = "R.strings.gpsAcquiring";
+        var textGPSStatus = R.strings.gpsAcquiring;
         var colorBackground = R.colors.majorOrange;
         if (snapshot.hasData) {
           if (snapshot.data == GPSSignalStatus.READY) {
-            textGPSStatus = "R.strings.gpsReady";
+            textGPSStatus = R.strings.gpsReady;
             colorBackground = R.colors.majorOrange;
           } else  if (snapshot.data == GPSSignalStatus.CHECKING) {
-            textGPSStatus = "R.strings.gpsAcquiring";
+            textGPSStatus = R.strings.gpsAcquiring;
             colorBackground = Color(0xff8d1f17);
           } else {
             textGPSStatus =  "R.strings.noGpsSignal";
@@ -134,6 +135,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
         }
     );
   }
+  
 
   Widget buildMap(BuildContext context) {
     this.context = context;
@@ -144,27 +146,41 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
           var defaultBegin = LatLng(10.763106, 106.682214);
           var markers = this.getDefaultBeginMaker(defaultBegin);
           return GestureDetector(
-            //onHorizontalDragEnd: this.bloc.getReportVisibilityValue != ReportVisibility.Visible ? null: this.onOpenSplitView,
             child: GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: defaultBegin,
-                  zoom: 13//bloc.recordData.currentZoomValue,
+                  zoom: 13
                 ),
                 markers: Set.of(bloc.mData),
-        
-                //onTap: this.onTapMap,
                 onMapCreated: (controller) => bloc.onMapCreated(controller),
                 myLocationEnabled: true,
                 scrollGesturesEnabled: true,
                 myLocationButtonEnabled: false,
                 polylines: Set.of(bloc.lData),
-                // onCameraMove: (value) {
-                //   bloc.onCameraMove(value.zoom);
-                // }
                 ),
           );
         });
   }
+
+   Widget buildSplitView() {
+    return  Container (
+      height: MediaQuery.of(context).size.height,
+      alignment: Alignment.bottomLeft,
+      padding: EdgeInsets.only(left: 20, bottom: 120),
+      child: StreamBuilder<ReportVisibility>(
+        stream: this.bloc.streamReportVisibility,
+        initialData: ReportVisibility.Gone,
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          return Offstage(
+            offstage: snapshot.data == ReportVisibility.Gone,
+            child: RecordReport(),
+                 
+            );
+            } 
+          ),
+    );
+    }
 
 
   @override
@@ -182,6 +198,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                     child: Stack(
                       children: <Widget>[
                         buildMap(context),
+                        buildSplitView(),
                         buildGPSInfoSignal(),
                         RecordButton(),
                         GestureDetector(child: Icon(Icons.location_on),onTap: ()async{

@@ -30,19 +30,19 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     private FlutterPluginBinding pluginBinding;
     private ActivityPluginBinding activityBinding;
 
-    public static void registerWith(final Registrar registrar) {
-        final FlutterLocation flutterLocation = new FlutterLocation(registrar);
+    public static void registerWith(Registrar registrar) {
+        FlutterLocation flutterLocation = new FlutterLocation(registrar);
         flutterLocation.setActivity(registrar.activity());
 
-        final MethodCallHandlerImpl handler = new MethodCallHandlerImpl(flutterLocation);
+        MethodCallHandlerImpl handler = new MethodCallHandlerImpl(flutterLocation);
         handler.startListening(registrar.messenger());
 
-        final StreamHandlerImpl streamHandlerImpl = new StreamHandlerImpl(flutterLocation);
+        StreamHandlerImpl streamHandlerImpl = new StreamHandlerImpl(flutterLocation);
         streamHandlerImpl.startListening(registrar.messenger());
     }
 
     @Override
-    public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         pluginBinding = binding;
 
         location = new FlutterLocation(binding.getApplicationContext(), /* activity= */ null);
@@ -54,7 +54,7 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onDetachedFromEngine(@NonNull final FlutterPluginBinding binding) {
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         pluginBinding = null;
 
         if (methodCallHandler != null) {
@@ -71,7 +71,7 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onAttachedToActivity(@NonNull final ActivityPluginBinding binding) {
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         location.setActivity(binding.getActivity());
 
         activityBinding = binding;
@@ -89,7 +89,7 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
     }
 
     @Override
-    public void onReattachedToActivityForConfigChanges(@NonNull final ActivityPluginBinding binding) {
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
         onAttachedToActivity(binding);
     }
 
@@ -110,5 +110,4 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
         activityBinding.removeActivityResultListener(location);
         activityBinding.removeRequestPermissionsResultListener(location);
     }
-
 }

@@ -6,6 +6,7 @@ import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_components.dart';
+import 'package:usrun/page/record/record_upload_page.dart';
 
 class RecordButton extends StatelessWidget{
   RecordBloc bloc;
@@ -37,8 +38,9 @@ void showNoGPS(BuildContext context) {
     this.bloc.updateRecordStatus(RecordState.StatusStop);
   }
 
-  void onFinishButtonTap(){
+  void onFinishButtonTap(context){
     this.bloc.updateRecordStatus(RecordState.StatusFinish);
+    pushPage(context, RecordUploadPage(this.bloc));
   }
 
   void onResumeButtonTap(){
@@ -57,13 +59,13 @@ void showNoGPS(BuildContext context) {
           children: <Widget>[
           StateButton(disabled: false, icon: R.myIcons.icResumeRecord, size: R.appRatio.deviceWidth/5, onPress: () {onResumeButtonTap();} ),
           SizedBox(width: R.appRatio.appSpacing15,),
-          StateButton(disabled: false, icon: R.myIcons.icStopRecord, size: R.appRatio.deviceWidth/5, onPress: () {onFinishButtonTap();} ),
+          StateButton(disabled: false, icon: R.myIcons.icStopRecord, size: R.appRatio.deviceWidth/5, onPress: () {onFinishButtonTap(context);} ),
           SizedBox(width: R.appRatio.appSpacing15,),
           Container(
             alignment: Alignment.centerLeft,
             width: R.appRatio.deviceWidth/5,
             height: R.appRatio.deviceWidth/5,
-            child: Stack(children: <Widget>[StatisticButton((){})]),
+            child: Stack(children: <Widget>[_buildStatisticButton()]),
           )                   
         ],),
         ),
@@ -88,12 +90,30 @@ void showNoGPS(BuildContext context) {
             alignment: Alignment.centerLeft,
             width: R.appRatio.deviceWidth/5,
             height: R.appRatio.deviceWidth/5,
-            child: Stack(children: <Widget>[StatisticButton((){})]),
+            child: Stack(children: <Widget>[_buildStatisticButton()]),
           )                   
         ],),
         ),
       ],
     );   
+  }
+
+  _buildStatisticButton(){
+    return StreamBuilder<ReportVisibility>(
+        stream: this.bloc.streamReportVisibility,
+        initialData: ReportVisibility.Gone,
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          if (snapshot.data == ReportVisibility.Gone)
+            return StateButton(disabled: false, icon: R.myIcons.icStatisticWhite, size: R.appRatio.deviceWidth/7, 
+              onPress: () => this.bloc.updateReportVisibility(ReportVisibility.Visible),
+            );
+          else{
+            return StateButton(disabled: false, icon: R.myIcons.icStatisticColor, size: R.appRatio.deviceWidth/7, 
+              onPress: () => this.bloc.updateReportVisibility(ReportVisibility.Gone),
+            );
+          }
+        });
   }
 
 
@@ -168,33 +188,6 @@ void showNoGPS(BuildContext context) {
     ));
   }
 
-}
-
-class StatisticButton extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => _StatisticButtonState();
-  final Function onPress;
-  StatisticButton(this.onPress);
-}
-
-class _StatisticButtonState extends State<StatisticButton> {
-  var isPressed = false;
-  var icon = R.myIcons.icStatisticWhite;
-
-  @override
-  Widget build(BuildContext context) {
-    return StateButton(disabled: false, icon: icon, size: R.appRatio.deviceWidth/7, 
-      onPress: (){
-        setState(() {
-          if (isPressed)
-            icon = R.myIcons.icStatisticWhite;
-          else
-            icon = R.myIcons.icStatisticColor;
-            isPressed=!isPressed;
-        });
-        widget.onPress();
-      });
-  }
 }
 
 class ChooseEventButton extends StatefulWidget{

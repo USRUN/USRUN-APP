@@ -69,6 +69,7 @@ class _AppRatio {
   final double _figmaFontSize40                 = 40;
   final double _figmaFontSize42                 = 42;  
 
+  final double _figmaWidth1                     = 1;
   final double _figmaWidth40                    = 40;
   final double _figmaWidth50                    = 50;
   final double _figmaWidth60                    = 60;
@@ -201,6 +202,7 @@ class _AppRatio {
   double appFontSize40;
   double appFontSize42;
 
+  double appWidth1;
   double appWidth40;
   double appWidth50;
   double appWidth60;
@@ -365,6 +367,7 @@ class _AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+    appWidth1 = _computeWidth(this._figmaWidth1);
     appWidth40 = _computeWidth(this._figmaWidth40);
     appWidth50 = _computeWidth(this._figmaWidth50);
     appWidth60 = _computeWidth(this._figmaWidth60);
@@ -881,6 +884,38 @@ class Strings {
   String personalActivities;
 
   String record;
+  String gpsAcquiring;
+  String gpsReady;
+  String gpsNotFound;
+  String time;
+  String distance;
+  String avgPace;
+  String avgHeart;
+  String movingTime;
+  String calories;
+  String total;
+  String timeUnit;
+  String distanceUnit;
+  String avgPaceUnit;
+  String avgHeartUnit;
+  String movingTimeUnit;
+  String caloriesUnit;
+  String totalUnit;
+  String stats;
+  String title;
+  String description;
+  String photos;
+  String maps;
+  String viewMapDescription;
+  String uploadActivity;
+  String morningRun;
+  String afternoonRun;
+  String eveningRun;
+  String nightRun;
+
+  String chooseImage;
+  String gallery;
+  String camera;
 
   String uFeed;
 

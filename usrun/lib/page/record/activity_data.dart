@@ -1,33 +1,63 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:usrun/core/R.dart';
+import 'package:usrun/core/crypto.dart';
+import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 
 class ActivityData{
   String title;
   String description;
-  List<String> photos;
+  List<File> photos;
   int totalLike;
   int totalComment;
   int totalShare;
   bool processed;
-  int privacy;
+  ActivityPrivacyMode privacy;
   int deleted;
+  bool showMap;
   RecordData recordData;
   String sig;
 
-  ActivityData()
+  ActivityData(int trackID)
   {
-     String base64Key = 'activityusrun1620';
-    String message = '1234';
+    this.title = _generateTitle();
+    this.description = "";
+    this.totalLike = 0;
+    this.totalComment = 0;
+    this.totalComment = 0;
+    this.deleted = 0;
+    this.showMap = true;
+    this.privacy = ActivityPrivacyMode.Public;
+    this.sig = UsrunCrypto.buildActivitySig(13);
+    this.photos = [];
+  }
 
-    List<int> messageBytes = utf8.encode(message);
-    List<int> key = base64.decode(base64Key);
-    Hmac hmac = new Hmac(sha256, key);
-    Digest digest = hmac.convert(messageBytes);
+  _generateTitle(){
+     var date = DateTime.now();
+     print(date);
+    if (date.hour >= 5 && date.hour < 12) {
+      return R.strings.morningRun;
+    }
+    if (date.hour >= 12 && date.hour < 17) {
+      return  R.strings.afternoonRun;
+    }
+    if (date.hour >= 17 && date.hour < 20) {
+      return  R.strings.eveningRun;
+    }
+    return R.strings.nightRun;
+  }
 
-    String base64Mac = base64.encode(digest.bytes);
-    this.sig = base64Mac;
-    print(sig);
+   void addPhotoFile(File newFile, int indexFile) {
+    if (indexFile >= photos.length && indexFile >= MAX_PHOTO_UPLOAD) {
+      photos.removeAt(0);
+      photos.add(newFile);
+    } else if(photos.length >= MAX_PHOTO_UPLOAD && indexFile < photos.length) {
+      photos[indexFile] = newFile;
+    } else {
+      photos.add(newFile);
+    }
   }
 }

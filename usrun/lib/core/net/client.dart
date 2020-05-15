@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/user_manager.dart';
 
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
@@ -134,7 +135,10 @@ class Client {
       String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
-      request.headers.set('content-type', 'application/json');
+      request.headers.set('Content-Type', 'application/json');
+      if (UserManager.currentUser.accessToken!=null || UserManager.currentUser.accessToken!="")
+        request.headers.set('Authorization', 'Bearer ${UserManager.currentUser.accessToken}');
+        
       request.add(utf8.encode(json.encode(params)));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
