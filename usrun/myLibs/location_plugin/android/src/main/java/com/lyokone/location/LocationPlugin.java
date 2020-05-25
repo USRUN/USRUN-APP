@@ -39,6 +39,9 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
 
         StreamHandlerImpl streamHandlerImpl = new StreamHandlerImpl(flutterLocation);
         streamHandlerImpl.startListening(registrar.messenger());
+
+        
+        LocationServicePlugin.registerWith(registrar);
     }
 
     @Override
@@ -110,4 +113,5 @@ public class LocationPlugin implements FlutterPlugin, ActivityAware {
         activityBinding.removeActivityResultListener(location);
         activityBinding.removeRequestPermissionsResultListener(location);
     }
+    
 }

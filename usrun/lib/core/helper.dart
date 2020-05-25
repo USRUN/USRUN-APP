@@ -531,7 +531,7 @@ class _FullPageRoute<T> extends PageRoute<T> {
   ) {
     if (routeType == RouteType.present) {
       return CupertinoFullscreenDialogTransition(
-        animation: animation,
+        primaryRouteAnimation: animation,
         child: child,
       );
     } else {

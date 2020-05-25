@@ -138,13 +138,16 @@ class Client {
       request.headers.set('Content-Type', 'application/json');
       if (UserManager.currentUser.accessToken!=null || UserManager.currentUser.accessToken!="")
         request.headers.set('Authorization', 'Bearer ${UserManager.currentUser.accessToken}');
-        
-      request.add(utf8.encode(json.encode(params)));
+      if (params!=null)
+       request.add(utf8.encode(json.encode(params)));
+      else
+        request.add(utf8.encode(""));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
       String reply = await response.transform(utf8.decoder).join();
 
      print("post url: $url");
+     print("token: Bearer ${UserManager.currentUser.accessToken}");
      print(params);
      print(reply);
 

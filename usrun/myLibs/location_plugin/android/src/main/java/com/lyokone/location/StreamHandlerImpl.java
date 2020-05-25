@@ -5,6 +5,13 @@ import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.EventChannel.StreamHandler;
 import io.flutter.plugin.common.EventChannel.EventSink;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import android.location.Location;
+import java.util.HashMap;
+import com.lyokone.location.services.LocationRequestHelper;
+import com.lyokone.location.services.LocationResultHelper;
 
 class StreamHandlerImpl implements StreamHandler {
     private static final String TAG = "StreamHandlerImpl";
@@ -48,6 +55,7 @@ class StreamHandlerImpl implements StreamHandler {
     @Override
     public void onListen(Object arguments, final EventSink eventsSink) {
         location.events = eventsSink;
+        EventBus.getDefault().register(this);
         if (location.activity == null) {
             eventsSink.error("NO_ACTIVITY", null, null);
             return;
@@ -64,6 +72,17 @@ class StreamHandlerImpl implements StreamHandler {
     public void onCancel(Object arguments) {
         location.mFusedLocationClient.removeLocationUpdates(location.mLocationCallback);
         location.events = null;
+        EventBus.getDefault().unregister(this);
     }
+
+        
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Location event) {
+        if (location.events != null) {
+            HashMap loc = LocationRequestHelper.createLocationData(event);
+            location.events.success(loc);
+        }
+    }
+
 
 }

@@ -6,9 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/data_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
 import 'package:usrun/page/record/record_bloc.dart';
+import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
+import 'package:usrun/page/record/record_helper.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
@@ -27,7 +32,8 @@ class RecordUploadPage extends StatefulWidget {
 
   RecordUploadPage(RecordBloc recordBloc) {
     bloc = recordBloc;
-    activity = new ActivityData(123);
+    recordBloc.recordData.createTrack();
+    activity = new ActivityData(recordBloc.recordData.trackId);
     streamFile = MyStreamController(defaultValue: null, activeBroadcast: true);
   }
 
@@ -40,7 +46,7 @@ class _RecordUploadPage extends State<RecordUploadPage>{
 
   _buildStatsBox(String title, String value, String unit){
     return NormalInfoBox( 
-      boxSize: 120,
+      boxSize: MediaQuery.of(context).size.width*0.3,
       id: title,
       firstTitleLine: title,
       secondTitleLine: unit,
@@ -53,6 +59,7 @@ class _RecordUploadPage extends State<RecordUploadPage>{
 
   _buildStats(){
     RecordData data = widget.bloc.recordData;
+    double deviceWidth = MediaQuery.of(context).size.width;
     return (
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -71,12 +78,12 @@ class _RecordUploadPage extends State<RecordUploadPage>{
         SizedBox(height: R.appRatio.appWidth1*15,),
         Center(
           child: Container( 
-          height: R.appRatio.appWidth1*242,
-          width: R.appRatio.appWidth1*363,
+          height: deviceWidth*0.6+2,
+          width: deviceWidth*0.9+3,
           child: Stack(children: <Widget>[
             Center(child: Container( 
-            height: R.appRatio.appWidth1*240,
-            width: R.appRatio.appWidth1*360,
+            height: deviceWidth*0.6,
+            width: deviceWidth*0.9,
             color: R.colors.majorOrange,),),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -86,14 +93,14 @@ class _RecordUploadPage extends State<RecordUploadPage>{
                 children: <Widget>[
                   _buildStatsBox(R.strings.distance, data.totalDistance.toString(), R.strings.distanceUnit),
                   _buildStatsBox(R.strings.time, (Duration(seconds: data.totalTime).toString()).substring(0,7), R.strings.timeUnit), 
-                  _buildStatsBox(R.strings.avgPace, data.avgPace.toString(), R.strings.avgPaceUnit)
+                  _buildStatsBox(R.strings.avgPace, data.avgPace==-1?R.strings.na:(Duration(seconds: data.avgPace.toInt()).toString()).substring(0,7), R.strings.avgPaceUnit)
               ],),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _buildStatsBox(R.strings.avgHeart, data.avgHeart==-1?"N/A":data.avgHeart.toString(), R.strings.avgHeartUnit),
-                  _buildStatsBox(R.strings.calories, data.calories==-1?"N/A":data.calories.toString(), R.strings.caloriesUnit), 
-                  _buildStatsBox(R.strings.total, data.totalStep==-1?"N/A":data.totalStep.toString(), R.strings.totalUnit)
+                  _buildStatsBox(R.strings.avgHeart, data.avgHeart==-1?R.strings.na:data.avgHeart.toString(), R.strings.avgHeartUnit),
+                  _buildStatsBox(R.strings.calories, data.calories==-1?R.strings.na:data.calories.toString(), R.strings.caloriesUnit), 
+                  _buildStatsBox(R.strings.total, data.totalStep==-1?R.strings.na:data.totalStep.toString(), R.strings.totalUnit)
               ],)
             ],)
           ],),
@@ -132,6 +139,8 @@ class _RecordUploadPage extends State<RecordUploadPage>{
   }
 
   Widget buildPhotoPreview(context, index) {
+    
+      double deviceWidth = MediaQuery.of(context).size.width;
       File file = this.widget.activity.photos.length >= index + 1
           ?  this.widget.activity.photos[index]
           : null;
@@ -145,8 +154,8 @@ class _RecordUploadPage extends State<RecordUploadPage>{
             border: Border.all(color: R.colors.blurMajorOrange),
             borderRadius: BorderRadius.circular(5),
             ),
-          height: R.appRatio.appWidth1*80,
-          width: R.appRatio.appWidth1*80,
+          height: deviceWidth*0.2,
+          width: deviceWidth*0.2,
           child: file != null ? Image.file(file, height: R.appRatio.appWidth1*80,
               width: R.appRatio.appWidth1*80,
               fit: BoxFit.cover,
@@ -185,13 +194,11 @@ class _RecordUploadPage extends State<RecordUploadPage>{
             stream: this.widget.streamFile.stream,
             builder: (context, snapshot) {
               return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   buildPhotoPreview(context,0),
-                  SizedBox(width: 10),
                   buildPhotoPreview(context,1),
-                  SizedBox(width: 10),
                   buildPhotoPreview(context,2),
-                  SizedBox(width: 10),
                   buildPhotoPreview(context,3)
                 ],
               );
@@ -236,24 +243,59 @@ class _RecordUploadPage extends State<RecordUploadPage>{
             children: <Widget>[
             UIButton( 
               color: R.colors.grayABABAB,
-              text: "Discard",
+              text: R.strings.discard,
               width: R.appRatio.deviceWidth*0.45,
               height: R.appRatio.appWidth1*50,
               onTap: (){},
             ),
             UIButton( 
               gradient: R.colors.uiGradient,
-              text: "Upload",
+              text: R.strings.upload,
               width: R.appRatio.deviceWidth*0.45,
               height: R.appRatio.appWidth1*50,
-              onTap: (){},
+              onTap: (){
+                _uploadActivity();
+              },
             ),
           ],),
       
     );
   }
 
+  _clearRecordData(){
 
+  }
+
+  _uploadActivity() async {
+    Response<ActivityData> response = await upload();
+    if (response.success)
+    {
+      print("Uploaded");
+    }
+    else
+    {
+      print("Uploaded error");
+    }
+  }
+
+  Future<Response<ActivityData>> upload() async {
+ 
+    //await this.widget.bloc.recordData.createTrack();
+    var params = RecordHelper.generateParamsForRequest(widget.activity);
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/activity/createUserActivity',params);
+
+    Response<ActivityData> result = Response();
+
+    if (response.success) {
+      result.success = true;
+      
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+
+    }
+    return result;
+  }
 
 
 
@@ -273,12 +315,18 @@ class _RecordUploadPage extends State<RecordUploadPage>{
         ),
         gradient: R.colors.uiGradient,
       );
-    return Scaffold(
+    return WillPopScope(
+      onWillPop:  () async {
+        this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
+        return true;
+      },
+      child: Scaffold(
       resizeToAvoidBottomPadding: true,
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: appBar,
-      body: Column(children: <Widget>[
+      body: SingleChildScrollView(
+      child: Column(children: <Widget>[
       Container( 
         height: R.appRatio.deviceHeight*0.9 - appBar.preferredSize.height - 25,
         child: SingleChildScrollView(
@@ -297,6 +345,7 @@ class _RecordUploadPage extends State<RecordUploadPage>{
       ),
       ),
       _buildButtons()
-      ],));
+      ],)))
+    );
   }
 }

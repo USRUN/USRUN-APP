@@ -912,6 +912,11 @@ class Strings {
   String afternoonRun;
   String eveningRun;
   String nightRun;
+  String pause;
+  String discard;
+  String upload;
+  String na;
+  String cancle;
 
   String chooseImage;
   String gallery;

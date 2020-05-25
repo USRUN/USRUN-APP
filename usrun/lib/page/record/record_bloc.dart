@@ -12,12 +12,13 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/kalman_filter.dart';
-import 'package:usrun/page/record/location_background.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/timer.dart';
+import 'package:background_location/background_location.dart';
 
 import 'package:location/location.dart';
+import 'package:location/location_background.dart';
 
 import 'dart:ui' as ui;
 
@@ -104,6 +105,21 @@ class RecordBloc extends BlocBase {
     // TODO: implement dispose
     if (this._locationSubscription != null) {
       this._locationSubscription.cancel();
+    }
+    if (_streamReportVisibilityController != null) {
+      this._streamReportVisibilityController.close();
+    }
+    if (_streamLocationController != null) {
+      this._streamLocationController.close();
+    }
+    if (_streamRecordStateController != null) {
+      this._streamRecordStateController.close();
+    }
+    if (_timeService != null) {
+      this._timeService.close();
+    }
+    if (_streamDuration != null) {
+      this._streamDuration.close();
     }
   }
 
@@ -373,7 +389,12 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
   void onRecordStageChange(RecordState newState) async{
     print("State: " + newState.toString());
     if (newState == RecordState.StatusStart) {
-      //this._locationBackground.startBackgroundLocation();
+      //this.recordData.createTrack();
+      // BackgroundLocation.getLocationUpdates((location) {
+      //     print("Latitude: ${location.latitude} and Long: ${location.longitude}" );
+      //   });
+
+      this._locationBackground.startBackgroundLocation();
       // if (this.recordData.startDate == null) {
       //   this.beginPoint = await this.getCurrentLocation();
       //   this.recordData.latestLocation = this.beginPoint;
@@ -382,16 +403,19 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       // }
       this.recordData.beginNewRoute();
       lastLoc = await getCurrentLocation();
+      drawMaker(LatLng(lastLoc.latitude,lastLoc.longitude));
       recordData.addLocation(lastLoc,0);
        polylineCoordinates.add(LatLng(lastLoc.latitude,lastLoc.longitude));
        Polyline polyline = Polyline(
-         polylineId: PolylineId("poly"),
+         polylineId: PolylineId('${recordData.trackRequest.routes.length}'),
          color: R.colors.majorOrange,
          width: 5,
-         points: polylineCoordinates
+         points: []
+
       );
 
-       lData.add(polyline);
+      lData.add(polyline);
+      lData.last.points.add(LatLng(lastLoc.latitude,lastLoc.longitude));
       this._timeService.start();
 
       _updatePositionCamera(LatLng(lastLoc.latitude,lastLoc.longitude),zoom:18 );
@@ -407,7 +431,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       this._timeService.stop();
       this.stopListening();
       // this.recordData.clearLatestTime();
-      //this._locationBackground.stopBackgroundLocation();
+      this._locationBackground.stopBackgroundLocation();
       if (this._locationSubscription != null) {
         this._locationSubscription.cancel();
         this._locationSubscription = null;
@@ -493,6 +517,13 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     var timePassed = (DateTime.now().millisecondsSinceEpoch - time);
     totalTimeElapsed+=timePassed;
     print("Location change in " + timePassed.toString());
+
+    if (timePassed<1000)
+    {
+      print("To close");
+      return;
+    }
+
     time = DateTime.now().millisecondsSinceEpoch;
     ///GPS CHECKING
        if(myLocation.accuracy <= 0){
@@ -518,7 +549,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         int elapsedTimeInMillis = timePassed;
 
         if(currentSpeed == 0){
-            Qvalue = 3; //3 meters per second
+            Qvalue = 1; //1 meters per second
         }else{
             Qvalue = currentSpeed; // meters per second
         }
@@ -558,7 +589,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
 
        print("total meters have to pass: " + (timePassed/1000).toString());
-       if (distance<1*timePassed~/1000)
+       if (distance<1*timePassed/1000)
         //||calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
         {
           print("Distance is less than required (1m/s) after: " + timePassed.toString());
@@ -575,20 +606,21 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
        print("1 min + lat: " + myLocation.latitude.toString() + " long: " + myLocation.longitude.toString() + "acc: " + myLocation.accuracy.toString() + "speed: "+ myLocation.speed.toString()) ;
        polylineCoordinates.add(LatLng(myLocation.latitude,myLocation.longitude));
        Polyline polyline = Polyline(
-         polylineId: PolylineId("poly"),
+         polylineId: PolylineId('${recordData.trackRequest.routes.length}'),
          color: R.colors.majorOrange,
          width: 5,
          points: polylineCoordinates
       );
 
       invalidCount = 0;
-       lData.add(polyline);
-       drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
+      //lData.add(polyline);
+      drawMaker(LatLng(myLocation.latitude,myLocation.longitude));
       this._streamLocationController.add(myLocation);
       recordData.totalDistance += distance.toInt();
       recordData.acceleration = a;
       recordData.latestPace = v2;
-      recordData.addLocation(myLocation,timePassed~/1000);
+      recordData.addLocation(myLocation,timePassed);
+      lData.last.points.add(LatLng(myLocation.latitude,myLocation.longitude));
       
       print("Add Location: " + recordData.lastLocation.toString());
 

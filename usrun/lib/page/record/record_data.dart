@@ -2,6 +2,15 @@
 import 'dart:io';
 
 import 'package:location/location.dart';
+import 'package:usrun/core/crypto.dart';
+import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/mapper_object.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/track.dart';
+import 'package:usrun/model/user.dart';
+import 'package:usrun/util/reflector.dart';
 
 class RunningRoute{
   
@@ -11,23 +20,26 @@ class RunningRoute{
     this.locations = [];
   }
 }
+
+@reflector
 class TrackRequest{
-  int trackID;
+  int trackId;
   String sig;
-  int createTime;
+  String createTime;
   List<RunningRoute> routes;
 
   TrackRequest(){
-    this.trackID = 0;
+    this.trackId = 0;
     this.sig = "";
-    this.createTime = 0;
+    this.createTime = "";
     this.routes = [];
   }
 }
 
+@reflector
 class RecordData {
 
-  int trackID;
+  int trackId;
   int totalTime;
   int totalMovingTime;
   int createTime;
@@ -46,7 +58,7 @@ class RecordData {
   TrackRequest trackRequest;
 
   RecordData(){
-    this.trackID = 0;
+    this.trackId = 0;
     this.totalTime = 0;
     this.totalMovingTime = 0;
     this.createTime = 0;
@@ -74,12 +86,57 @@ class RecordData {
   {
     totalMovingTime+=duration;
     trackRequest.routes.last.locations.add(data);
-    avgPace = totalMovingTime==0?0:totalDistance/totalTime;
+    avgPace = totalTime==0?-1:1000*(totalTime)/totalDistance;
     print(avgPace);
   }
 
 
 
   LocationData get lastLocation => this.trackRequest.routes.last.locations.last;
+
+   static Future<Response<Track>> requestTrackID() async {
+    Map<String, dynamic> params = {
+      'userID' : UserManager.currentUser.userId
+    }; 
+
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/track/create',params);
+
+    Response<Track> result = Response();
+
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<Track>(response.object);
+      print(result.object);
+      
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+
+    }
+    return result;
+  }
+
+  createTrack() async{
+    Response<Track> response = await requestTrackID();
+    if (response.success)
+    {
+      this.trackId = response.object.trackId;
+      this.trackRequest.trackId = response.object.trackId;
+      this.trackRequest.createTime = response.object.time.toString();
+      this.trackRequest.sig = UsrunCrypto.buildTrackSig(trackId, createTime);
+      print(this.trackRequest.trackId.toString());
+    }
+    else
+    {
+      print("Create track error");
+    }
+  }
+
+
+  _saveRecord()
+  {
+
+  }
+
 
 }

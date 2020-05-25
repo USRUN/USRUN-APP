@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="com.example.usrun.MainApplication"
         android:label="USRUN"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -47,5 +47,24 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyAISGxSGTliUoLYXEZNzewDXv0CrvqjWiM"
             />
+
+                    <!-- Location tracking background configuration -->
+        <service
+            android:name="com.lyokone.location.services.LocationUpdatesIntentService"
+            android:exported="false" />
+
+        <receiver android:name="com.lyokone.location.services.LocationUpdatesBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="usrun.PROCESS_UPDATES" />
+            </intent-filter>
+        </receiver>
+
+
+        <!-- Location tracking background configuration -->
+        <service
+            android:name="com.lyokone.location.BackgroundLocationUpdateService"
+            android:exported="false" />
     </application>
 </manifest>

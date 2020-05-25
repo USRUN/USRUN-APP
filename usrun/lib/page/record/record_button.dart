@@ -44,7 +44,7 @@ void showNoGPS(BuildContext context) {
   }
 
   void onResumeButtonTap(){
-    this.bloc.updateRecordStatus(RecordState.StatusResume);
+    this.bloc.updateRecordStatus(RecordState.StatusStart);
   }
   
 

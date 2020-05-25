@@ -92,7 +92,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
             textGPSStatus = R.strings.gpsAcquiring;
             colorBackground = Color(0xff8d1f17);
           } else {
-            textGPSStatus =  "R.strings.noGpsSignal";
+            textGPSStatus =  R.strings.gpsNotFound;
             colorBackground = Color(0xff8d1f17);
           }
         }
@@ -115,10 +115,10 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
   }
 
     Widget buildRecordStateStatus() {
-    return StreamBuilder<GPSSignalStatus>(
-        stream: this.bloc.streamGPSStatus,
+    return StreamBuilder<RecordState>(
+        stream: this.bloc.streamRecordState,
         builder: (context, snapshot) {
-          var isGone = this.bloc.currentRecordState == RecordState.StatusStart || this.bloc.gpsStatus != GPSSignalStatus.HIDE;
+          var isGone = this.bloc.currentRecordState != RecordState.StatusStop;
           return Offstage(
             offstage: isGone,
             child: Container(
@@ -127,7 +127,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text("R.strings.pause", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white))
+                    Text(R.strings.pause, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white))
                   ]),
               color: R.colors.majorOrange,
             ),
@@ -187,7 +187,9 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
   Widget build(BuildContext context) {
     // TODO: implement build
     this.bloc = BlocProvider.of(context);
-    return Container(
+    return WillPopScope( 
+      onWillPop: ()async => false,
+      child: Container(
         child: Column(
           children: <Widget>[
             buildRecordStateStatus(),
@@ -211,6 +213,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
             ],),
             )
           ])
+      ),
     );
   }
 

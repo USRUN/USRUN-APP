@@ -234,7 +234,7 @@
     "aboutUSRUN_7": "If you have any questions, please feel free to contact us at: usrun.hcmus@gmail.com.",
 
     "record": "Record",
-    "gpsAquiring":"GPS Acquiring", 
+    "gpsAcquiring":"GPS Acquiring", 
     "gpsReady":"GPS Ready",
     "gpsNotFound": "GPS Not Found",
     "time":"TIME",
@@ -262,6 +262,12 @@
     "afternoonRun": "Afternoon Run",
     "eveningRun": "Evening Run",
     "nightRun": "Night Run",
+    
+    "pause": "Pause",
+    "discard": "Discard",
+    "upload": "Upload",
+    "na": "N/A",
+    "cancle": "Cancle",
 
     "chooseImage": "Choose Image",
     "gallery": "Gallery",
