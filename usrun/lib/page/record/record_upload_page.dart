@@ -10,10 +10,12 @@ import 'package:usrun/core/net/client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
+import 'package:usrun/page/record/helper/record_cache.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
-import 'package:usrun/page/record/record_helper.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
+import 'package:usrun/widget/custom_dialog.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
@@ -32,7 +34,7 @@ class RecordUploadPage extends StatefulWidget {
 
   RecordUploadPage(RecordBloc recordBloc) {
     bloc = recordBloc;
-    recordBloc.recordData.createTrack();
+    //recordBloc.recordData.createTrack();
     activity = new ActivityData(recordBloc.recordData.trackId);
     streamFile = MyStreamController(defaultValue: null, activeBroadcast: true);
   }
@@ -246,7 +248,9 @@ class _RecordUploadPage extends State<RecordUploadPage>{
               text: R.strings.discard,
               width: R.appRatio.deviceWidth*0.45,
               height: R.appRatio.appWidth1*50,
-              onTap: (){},
+              onTap: (){
+                _clearRecordData();
+              },
             ),
             UIButton( 
               gradient: R.colors.uiGradient,
@@ -262,20 +266,36 @@ class _RecordUploadPage extends State<RecordUploadPage>{
     );
   }
 
-  _clearRecordData(){
-
+  _clearRecordData()async{
+    showCustomAlertDialog(context, 
+      title: R.strings.notice, 
+      content: "Discard this activity?", 
+      firstButtonText: R.strings.ok, 
+      firstButtonFunction: ()async{
+        pop(this.context);
+        await RecordHelper.removeFile();
+        this.widget.bloc.resetAll();
+        Navigator.pop(context);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: (){pop(this.context);}
+    );
   }
 
   _uploadActivity() async {
-    Response<ActivityData> response = await upload();
-    if (response.success)
-    {
-      print("Uploaded");
-    }
-    else
-    {
-      print("Uploaded error");
-    }
+    Map<String,dynamic> content =  RecordHelper.toJSON(this.widget.bloc.recordData);
+    await RecordHelper.saveFile(content);
+    await RecordHelper.loadFromFile();
+    await _clearRecordData();
+    // Response<ActivityData> response = await upload();
+    // if (response.success)
+    // {
+    //   print("Uploaded");
+    // }
+    // else
+    // {
+    //   print("Uploaded error");
+    // }
   }
 
   Future<Response<ActivityData>> upload() async {

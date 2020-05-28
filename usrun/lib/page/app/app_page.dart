@@ -41,6 +41,7 @@ class AppPage extends StatefulWidget {
   _AppPageState createState() => _AppPageState();
 }
 
+final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),ProfilePage(),SettingPage()];
 
 class _AppPageState extends State<AppPage> {
   int _selectedDrawerIndex = 0;
@@ -49,27 +50,22 @@ class _AppPageState extends State<AppPage> {
   String _fullName = "We Are USRUN";
   String _userCode = "USR9381852";
 
-    final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),ProfilePage(),SettingPage()];
   _getDrawerItemWidget(int pos) {
-
-    
-  
-  
     switch (pos) {
       case 0:
-        return new RecordPage();
+        return pages[0];
       case 1:
-        return new FeedPage();
+        return pages[1];
       case 2:
-        return new EventPage();
+        return pages[2];
       case 3:
-        return new TeamPage();
+        return pages[3];
       case 4:
-        return new ProfilePage();
+        return pages[4];
       case 5:
-        return new SettingPage();
+        return pages[5];
       default:
-        return new FeedPage();
+        return pages[0];
     }
   }
 
@@ -261,7 +257,13 @@ class _AppPageState extends State<AppPage> {
             ],
           )),
       body: NotificationListener<OverscrollIndicatorNotification>(
-          child: _getDrawerItemWidget(_selectedDrawerIndex),
+          child: WillPopScope(
+            child: IndexedStack(  
+              index: _selectedDrawerIndex,
+              children: pages,
+            ), 
+            onWillPop: () async => false
+          ),
           onNotification: (overscroll) {
             overscroll.disallowGlow();
           }),

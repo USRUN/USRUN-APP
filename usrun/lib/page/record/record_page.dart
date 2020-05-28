@@ -96,7 +96,8 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
             colorBackground = Color(0xff8d1f17);
           }
         }
-        var isGone = snapshot.data != null && snapshot.data == GPSSignalStatus.HIDE;
+        var isGone = snapshot.data != null && snapshot.data == GPSSignalStatus.HIDE 
+        || (this.bloc.currentRecordState==RecordState.StatusStop && snapshot.data == GPSSignalStatus.READY);
         return Offstage(
           offstage: isGone,
           child: Container(
@@ -144,7 +145,6 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
         stream: bloc.streamLocation,
         builder: (BuildContext context, snapShot) {
           var defaultBegin = LatLng(10.763106, 106.682214);
-          var markers = this.getDefaultBeginMaker(defaultBegin);
           return GestureDetector(
             child: GoogleMap(
                 initialCameraPosition: CameraPosition(
@@ -156,13 +156,14 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                 myLocationEnabled: true,
                 scrollGesturesEnabled: true,
                 myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
                 polylines: Set.of(bloc.lData),
                 ),
           );
         });
   }
 
-   Widget buildSplitView() {
+   Widget buildReportView() {
     return  Container (
       height: MediaQuery.of(context).size.height,
       alignment: Alignment.bottomLeft,
@@ -200,14 +201,9 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                     child: Stack(
                       children: <Widget>[
                         buildMap(context),
-                        buildSplitView(),
+                        buildReportView(),
                         buildGPSInfoSignal(),
                         RecordButton(),
-                        GestureDetector(child: Icon(Icons.location_on),onTap: ()async{
-                          LocationData myLocation = await this.bloc.getCurrentLocation();
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                             content: Text("acc: " + myLocation.accuracy.toString() + " speed: " + myLocation.speed.toString()),
-                        ));},)
                     ])
                     )
             ],),

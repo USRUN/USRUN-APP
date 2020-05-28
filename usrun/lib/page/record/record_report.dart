@@ -39,13 +39,13 @@ class RecordReport extends StatelessWidget{
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-              _builInfoBox("Time", (Duration(seconds: snapshot.data.totalTime).toString()).substring(0,7), unit: "HH:MM:SS"),
+              _builInfoBox(R.strings.time, (Duration(seconds: snapshot.data.totalTime).toString()).substring(0,7), unit: "HH:MM:SS"),
             
               SizedBox(width: 10,),
-              _builInfoBox("Distance", snapshot.data.totalDistance, unit: "Meters"),
+              _builInfoBox(R.strings.distance, snapshot.data.totalDistance, unit: "Meters"),
             
               SizedBox(width: 10,),
-              _builInfoBox("Avg. Pace",snapshot.data.avgPace == -1? "N/A": (Duration(seconds: snapshot.data.avgPace.toInt()).toString()).substring(0,7), unit: "per KM"),
+              _builInfoBox(R.strings.avgPace,snapshot.data.avgPace == -1? "N/A": (Duration(seconds: snapshot.data.avgPace.toInt()).toString()).substring(0,7), unit: "per KM"),
             
               SizedBox(width: 10,),
               _builInfoBox("Moving Time",(Duration(seconds: snapshot.data.totalMovingTime~/1000).toString()).substring(0,7), unit: "HH:MM:SS"),

@@ -7,6 +7,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_components.dart';
 import 'package:usrun/page/record/record_upload_page.dart';
+import 'package:usrun/widget/custom_dialog.dart';
 
 class RecordButton extends StatelessWidget{
   RecordBloc bloc;
@@ -24,12 +25,51 @@ void showNoGPS(BuildContext context) {
           )
       );
     }
+  
+  void showRequestServiceDialog(){
+     showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: '${R.strings.gpsServiceUnavailable}. ${R.strings.enableGPS}',
+            secondButtonText: R.strings.ok,
+            secondButtonFunction: ()async{
+              await this.bloc.requestService();
+              pop(this.context);
+            },
+            firstButtonText: R.strings.cancel,
+            firstButtonFunction: (){pop(this.context);}
+          );
+  }
 
-  void onStartButtonTap(){
+  void onStartButtonTap() async{
     try{
-      this.bloc.hideGPSView();
-      print(this.bloc.currentRecordState);
-      this.bloc.updateRecordStatus(RecordState.StatusStart);
+      var gpsStatus = this.bloc.gpsStatus == GPSSignalStatus.READY;
+      var isGPSEnable = await this.bloc.isGPSEnable();
+      if (gpsStatus && isGPSEnable)
+      {
+        this.bloc.hideGPSView();
+        print(this.bloc.currentRecordState);
+        this.bloc.updateRecordStatus(RecordState.StatusStart);
+      }
+      else {
+        if (this.bloc.gpsStatus == GPSSignalStatus.NOT_AVAILABLE || this.bloc.gpsStatus == GPSSignalStatus.CHECKING || !isGPSEnable ){
+
+          if(!isGPSEnable)
+          {
+            this.bloc.updateGPSStatus(GPSSignalStatus.NOT_AVAILABLE);
+            showRequestServiceDialog();
+            return;
+          }
+
+          showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: R.strings.gpsNotFound,
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: (){pop(this.context);}
+          );
+        }
+      }
     }
     catch(error){}
   }
@@ -43,8 +83,36 @@ void showNoGPS(BuildContext context) {
     pushPage(context, RecordUploadPage(this.bloc));
   }
 
-  void onResumeButtonTap(){
-    this.bloc.updateRecordStatus(RecordState.StatusStart);
+  void onResumeButtonTap() async{
+      
+      if (this.bloc.gpsStatus == GPSSignalStatus.CHECKING) {
+        print("uprace_app gps is checking");
+        return;
+      }
+      var success = await this.bloc.onGpsStatusChecking();
+      if (success) {
+        this.bloc.updateRecordStatus(RecordState.StatusStart);
+        this.bloc.hideGPSView();
+      } else {
+        if (this.bloc.gpsStatus == GPSSignalStatus.NOT_AVAILABLE || this.bloc.gpsStatus == GPSSignalStatus.CHECKING || !success) {
+         
+          if(!await this.bloc.hasServiceEnabled())
+          {
+            showRequestServiceDialog();
+            return;
+          }
+
+          showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: R.strings.gpsNotFound,
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: (){pop(this.context);},
+            secondButtonText: "",
+            secondButtonFunction: null
+          );
+        }
+      }
   }
   
 
@@ -136,7 +204,7 @@ void showNoGPS(BuildContext context) {
             icon: R.myIcons.icStartRecord, 
             size: R.appRatio.deviceWidth/5, 
             onPress: snapshot.data == null || snapshot.data != GPSSignalStatus.READY? 
-            (){showNoGPS(context);} : () {onStartButtonTap();} ),
+            (){showRequestServiceDialog();} : () {onStartButtonTap();} ),
           SizedBox(width: R.appRatio.appSpacing15,),
          
           Container(

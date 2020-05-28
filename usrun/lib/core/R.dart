@@ -887,6 +887,8 @@ class Strings {
   String gpsAcquiring;
   String gpsReady;
   String gpsNotFound;
+  String gpsServiceUnavailable;
+  String enableGPS;
   String time;
   String distance;
   String avgPace;

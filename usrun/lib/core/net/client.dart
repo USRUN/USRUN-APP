@@ -136,7 +136,7 @@ class Client {
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('Content-Type', 'application/json');
-      if (UserManager.currentUser.accessToken!=null || UserManager.currentUser.accessToken!="")
+      if (UserManager.currentUser.accessToken!=null && UserManager.currentUser.accessToken!="")
         request.headers.set('Authorization', 'Bearer ${UserManager.currentUser.accessToken}');
       if (params!=null)
        request.add(utf8.encode(json.encode(params)));

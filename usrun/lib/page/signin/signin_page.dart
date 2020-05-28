@@ -103,7 +103,7 @@ class SignInPage extends StatelessWidget {
                 gradient: R.colors.uiGradient,
                 text: R.strings.signIn,
                 textSize: R.appRatio.appFontSize22,
-                onTap: () => showPage(context, AppPage()),
+                onTap: () => pushPage(context, AppPage())
               ),
             ),
           ),
@@ -134,30 +134,15 @@ class SignInPage extends StatelessWidget {
         showPage(context, AppPage());
       }
     }
-    // else {
-    //   if (response.errorCode == USER_EMAIL_IS_USED) {
-    //     Map<String, dynamic> loginData = await UserManager.login(channel, params);
-    //     response = loginData['response'];
-    //     if (response.success) {
-    //       DataManager.setLoginChannel(channel.index);
-    //       showPage(context, AppPage());
-    //     }
-    //     else {
-    //       String message = UserManager.emailIsUserMessage(params['email']);
-    //       showAlert(context, R.strings.errorTitle, message, null);
-    //     }
-    //     return;
-    //   }
+    else {
+        // call channel logout with
+        showLoading(context);
+        UserManager.logout();
+        hideLoading(context);
 
-    //   if (response.success == false) {
-    //     // call channel logout with
-    //     showLoading(context);
-    //     UserManager.logout();
-    //     hideLoading(context);
-
-    //     showAlert(context, R.strings.errorTitle, response.errorMessage, null);
-    //   }
-    // }
+        showAlert(context, R.strings.errorTitle, response.errorMessage, null);
+      
+    }
   }
 
   void _adapterSignIn(LoginChannel channel, Map<String, dynamic> params,

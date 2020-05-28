@@ -65,7 +65,7 @@ class RecordData {
     this.createTime = 0;
     this.totalDistance = 0;
     this.totalStep = -1;
-    this.avgPace = 0;
+    this.avgPace = -1;
     this.latestPace = 0;
     this.acceleration = 0;
     this.avgHeart = -1;
@@ -86,7 +86,9 @@ class RecordData {
   {
     totalMovingTime+=duration;
     trackRequest.routes.last.locations.add(data);
-    avgPace = totalTime==0?-1:1000*(totalTime)/totalDistance;
+    if (totalDistance==0||totalTime==0)
+      return;
+    avgPace = 1000*(totalTime)/totalDistance;
     print(avgPace);
   }
 

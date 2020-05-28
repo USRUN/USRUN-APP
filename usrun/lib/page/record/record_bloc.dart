@@ -10,13 +10,16 @@ import 'package:pedometer/pedometer.dart';
 import 'package:sensors/sensors.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/life_cycle.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
+import 'package:usrun/page/record/helper/record_cache.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/kalman_filter.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/timer.dart';
-import 'package:background_location/background_location.dart';
 
+import 'package:android_intent/android_intent.dart';
 import 'package:location/location.dart';
 import 'package:location/location_background.dart';
 
@@ -48,6 +51,8 @@ class RecordBloc extends BlocBase {
   Pedometer _pedometer;
   StreamSubscription<int> _subscription;
 
+  LifecycleEventHandler lifecycleEventHandler;
+
   //test
   List<LatLng> polylineCoordinates = List<LatLng>();
   List<Polyline> lData = List<Polyline>();
@@ -56,6 +61,9 @@ class RecordBloc extends BlocBase {
   //end test
 
   RecordBloc() {
+    
+    setCustomMapPin();
+
     this.recordData = RecordData();
     this._streamSplitStateController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
     this._streamDuration = MyStreamController<int>(defaultValue: 0, activeBroadcast: true);
@@ -72,10 +80,10 @@ class RecordBloc extends BlocBase {
     
      this._pedometer =  Pedometer();
     this._locationBackground = LocationBackground();
+     
      _initTimeService(0);
      initListeners();
      
-    setCustomMapPin();
     
     kalmanFilter = new KalmanLatLong(3);
   }
@@ -162,33 +170,25 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
      markerIcon = await getBytesFromAsset(R.myIcons.icCurrentSpot, 100);
    }
 
-void drawMaker(LatLng curLocation) {
-    // if (this.bloc.currentRecordState != RecordState.StatusStart && this.bloc.currentRecordState != RecordState.StatusStop) {
-    //   return markers;
-    // }
 
-   
-    // LocationData firstPoint = beginPoint;
-    // if (firstPoint != null) {
-    //   curLocation = LatLng(firstPoint.latitude,firstPoint.longitude);
-    //   // if (bloc.recordData.polylineList.isNotEmpty) {
-    //   //   Polyline polyline = bloc.recordData.polylineList.first;
-    //   //   if (polyline != null && polyline.points.isNotEmpty) {
-    //   //     LatLng latLng = polyline.points.first;
-    //   //     if (latLng != null) {
-    //   //       defaultBegin = latLng;
-    //   //     }
-    //   //   }
-    //   // }
-    //   if (curLocation != null) {
-    //     markers.addAll([
-    //       Marker(
-    //           markerId: MarkerId('tracking'),
-    //           icon: pinLocationIcon,
-    //           position: defaultBegin),
-    //     ]);
-    //   }
-        // }
+  void drawLines(List<LocationData> myLocations, String id)
+  {
+    List<LatLng> list = [];
+    myLocations.forEach((loc) {
+      list.add(LatLng(loc.latitude,loc.longitude));
+    });
+    Polyline polyline = Polyline(
+         polylineId: PolylineId(id),
+         color: R.colors.majorOrange,
+         width: 5,
+         points: []
+      );
+    lData.add(polyline);
+    lData.last.points.addAll(list);
+    
+  }
+
+void drawMaker(LatLng curLocation) {
     mData.removeWhere(
           (m) => m.markerId.value == 'tracking');
     if (curLocation != null) {
@@ -264,6 +264,11 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     this._streamRecorData.add(recordData);
     this.onMapUpdate();
     // // update activity every 15 seconds;
+    if (duration%15==0)
+    {
+      Map<String,dynamic> content =  RecordHelper.toJSON(recordData);
+      RecordHelper.saveFile(content);
+    }
     
   }
 
@@ -351,6 +356,13 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     return await this._locationListener.serviceEnabled();
   }
 
+  Future<void> requestService() async {
+    final AndroidIntent intent = new AndroidIntent(
+      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    );
+    await intent.launch();
+  }
+
   Future<void> showCurrentLocation() async {
     LocationData myLocation = await getCurrentLocation();
     this._updatePositionCamera(
@@ -359,6 +371,10 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
   void updateRecordStatus(RecordState recordState) {
     this._streamRecordStateController.add(recordState);
+  }
+
+  void updateGPSStatus(GPSSignalStatus gpsSignalStatus) {
+    this._streamGPSSignal.add(gpsSignalStatus);
   }
 
   void showTrackingReport() {
@@ -430,6 +446,8 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       this.recordData.endTime = DateTime.now().millisecondsSinceEpoch;
       this._timeService.stop();
       this.stopListening();
+      Map<String,dynamic> content =  RecordHelper.toJSON(recordData);
+      RecordHelper.saveFile(content);
       // this.recordData.clearLatestTime();
       this._locationBackground.stopBackgroundLocation();
       if (this._locationSubscription != null) {
@@ -474,23 +492,26 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       }
       //onMapUpdate(forceUpdate: true);
     });
+    this.lifecycleEventHandler = new LifecycleEventHandler(
+        resumeCallBack: () async {
+          mapController.setMapStyle("[]");
+          if (gpsStatus == GPSSignalStatus.NOT_AVAILABLE){
+              await this.onGpsStatusChecking();
+          }
+          return;
+        },
+        detachedCallBack: () {
+          return;
+        }
+    );
+    WidgetsBinding.instance.addObserver(lifecycleEventHandler);
     this.streamSplit.listen((data) {
       //onMapUpdate(forceUpdate: true);
     });
     await this.onGpsStatusChecking();
-    // await this.onLoadActivity();
-    // await this.onResumeFromBackground();
-    // this.lifecycleEventHandler = new LifecycleEventHandler(
-    //     resumeCallBack: () {
-    //       this.onResumeFromBackground();
-    //       return;
-    //     },
-    //     suspendingCallBack: () {
-    //       this.onGoToBackground();
-    //       return;
-    //     }
-    // );
-    // WidgetsBinding.instance.addObserver(lifecycleEventHandler);
+    await this.loadLatestRecord();
+    //await this.onResumeFromBackground();
+    
 
     // KhaVN print raw gps data
 //    List<List<LocationData>> polylines = await RecordCache.loadRawRecord();
@@ -626,6 +647,40 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
       totalTimeElapsed = 0;
      
+  }
+
+  loadLatestRecord() async{
+    try{
+      RecordData data = await RecordHelper.loadFromFile();
+      if (data==null)
+        return;
+      
+      this.recordData = data;
+      recordData.trackRequest.routes.asMap().forEach((index, route) {
+        drawLines(route.locations, '$index');
+      });
+      this._streamReportVisibilityController.add(ReportVisibility.Visible);
+      _initTimeService(data.totalTime);
+    
+      this._streamRecorData.add(this.recordData);
+      this._streamGPSSignal.add(GPSSignalStatus.HIDE);
+      this.updateRecordStatus(RecordState.StatusStop);
+    }
+    catch(error) {
+      print(error);
+    }
+  }
+
+  
+  void resetAll() {
+    this.recordData = RecordData();
+    this._streamRecorData.add(this.recordData);
+    this.onGpsStatusChecking();
+    this.updateRecordStatus(RecordState.StatusNone);
+    if (this._timeService != null) {
+      this._timeService.close();
+    }
+    this._timeService = new TimerService(0, this.onTotalTimeChange);
   }
   
 }
