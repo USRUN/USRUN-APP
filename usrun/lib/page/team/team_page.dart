@@ -5,11 +5,9 @@ import 'package:usrun/core/R.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/widget/avatar_view.dart';
-import 'package:usrun/widget/custom_cell.dart';
-import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/team_list.dart';
@@ -50,13 +48,12 @@ class _TeamPageState extends State<TeamPage> {
 
   @override
   Widget build(BuildContext context) {
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : Scaffold(
-            backgroundColor: R.colors.appBackground,
-            body: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
+    return Scaffold(
+        backgroundColor: R.colors.appBackground,
+        body: (_isLoading
+            ? LoadingDotStyle02()
+            : SingleChildScrollView(
+                scrollDirection: Axis.vertical,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -86,6 +83,8 @@ class _TeamPageState extends State<TeamPage> {
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: (teamid) {
+                        // TODO: Test
+                        pushPage(context, TeamInfoPage());
                         print(
                             "[YourTeams] This team with id $teamid is pressed");
                       },
@@ -124,8 +123,6 @@ class _TeamPageState extends State<TeamPage> {
                     ),
                   ],
                 ),
-              ),
-            ),
-          ));
+              )));
   }
 }

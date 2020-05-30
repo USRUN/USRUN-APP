@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "462939571122",
+    "firebase_url": "https://usrun-f55e5.firebaseio.com",
+    "project_id": "usrun-f55e5",
+    "storage_bucket": "usrun-f55e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462939571122:android:1c4d6ee67faba7d72e9aab",
+        "android_client_info": {
+          "package_name": "vn.hcmus.usrun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462939571122-mogo8coog5uuqqq8p2k1h2fuva5da492.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyWZsh8oNLBJsB9zXlH_oZ1LByoxtiBoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462939571122-mogo8coog5uuqqq8p2k1h2fuva5da492.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

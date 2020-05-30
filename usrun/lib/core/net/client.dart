@@ -19,7 +19,7 @@ const String API_VERSION = "1.0.0";
 
 class Client {
 
-  static String _domain = 'http://128.199.159.72:8080';
+  static String _domain = 'http://128.199.168.137:8080';
 
   static String imageUrl(String endpoint) {
     if (endpoint == null || endpoint.isEmpty) {
@@ -34,7 +34,7 @@ class Client {
   }
 
   static String certificateUrl(int userId, String accessToken, int eventId) {
-    return "$_domain/api/$API_VERSION/certificate?userId=$userId&accessToken=$accessToken&eventId=$eventId";
+    return "$_domain/certificate?userId=$userId&accessToken=$accessToken&eventId=$eventId";
   }
 
   static Future<Response> nPost<T, E>(String endpoint, Map<String, dynamic> params) async {
@@ -42,7 +42,7 @@ class Client {
       HttpClient client = new HttpClient();
       client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
-      String url = _domain + "/api/$API_VERSION" + endpoint;
+      String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('content-type', 'application/json');
@@ -135,18 +135,21 @@ class Client {
       String url = _domain + endpoint;
 
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
-      request.headers.set('content-type', 'application/json');
-      if (UserManager.currentUser != null) {
-        request.headers.set('authorization', UserManager.currentUser.accessToken);
-      }
-      request.add(utf8.encode(json.encode(params)));
+      request.headers.set('Content-Type', 'application/json');
+      if (UserManager.currentUser.accessToken!=null && UserManager.currentUser.accessToken!="")
+        request.headers.set('Authorization', 'Bearer ${UserManager.currentUser.accessToken}');
+      if (params!=null)
+       request.add(utf8.encode(json.encode(params)));
+      else
+        request.add(utf8.encode(""));
 
       HttpClientResponse response = await request.close().timeout(Duration(seconds: 30));
       String reply = await response.transform(utf8.decoder).join();
 
-    //  print("post url: $url");
-    //  print(params);
-    //  print(reply);
+     print("post url: $url");
+     print("token: Bearer ${UserManager.currentUser.accessToken}");
+     print(params);
+     print(reply);
 
       return _handleResponse<T, E>(response, reply);
     }
@@ -162,7 +165,7 @@ class Client {
   }
 
   static Future<Response> get<T, E>(String endpoint, Map<String, String> params) async {
-    String url = _domain + "/api/$API_VERSION" + endpoint;
+    String url = _domain + endpoint;
     String query = "";
     params.forEach((key, value) {
       if (value is List) {
@@ -214,7 +217,7 @@ class Client {
 
     Map<String, dynamic> body = json.decode(reply);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200||response.statusCode == 201) {
       try {
         int code = body['code'];
         if (code == 0) {

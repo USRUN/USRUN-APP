@@ -91,10 +91,30 @@ class UserManager {
     return result;
   }
 
-  static Future<Response<User>> check(Map<String, dynamic> params) async {
-    Response<Map<String, dynamic>> res =
-        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
-            '/user/check', params);
+  static Future<Response<User>> signIn(Map<String, dynamic> params) async {
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
+
+    Response<User> result = Response();
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      await logout();
+    }
+
+    return result;
+  }
+
+
+   static Future<Response<User>> check(Map<String, dynamic> params) async {
+    Response<Map<String, dynamic>> res = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/check', params);
 
     if (res.errorCode == USER_EMAIL_IS_USED) {
       res.errorMessage = emailIsUserMessage(params['email']);

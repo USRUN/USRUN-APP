@@ -70,6 +70,8 @@ class _AppRatio {
   final double _figmaFontSize40                 = 40;
   final double _figmaFontSize42                 = 42;  
 
+  final double _figmaWidth1                     = 1;
+  final double _figmaWidth30                    = 30;
   final double _figmaWidth40                    = 40;
   final double _figmaWidth50                    = 50;
   final double _figmaWidth60                    = 60;
@@ -162,7 +164,7 @@ class _AppRatio {
   final double _figmaIconSize35                 = 35;
   final double _figmaIconSize40                 = 40;
 
-  final double _figmaAppBarIconSize             = 22;
+  final double _figmaAppBarIconSize             = 20;
   final double _figmaWelcomPageLogoTextSize     = 160;
   final double _figmaDropDownImageSquareSize    = 40;
   final double _figmaDropDownArrowIconSize      = 32;
@@ -202,6 +204,8 @@ class _AppRatio {
   double appFontSize40;
   double appFontSize42;
 
+  double appWidth1;
+  double appWidth30;
   double appWidth40;
   double appWidth50;
   double appWidth60;
@@ -366,6 +370,9 @@ class _AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+
+    appWidth1 = _computeWidth(this._figmaWidth1);
+    appWidth30 = _computeWidth(this._figmaWidth30);
     appWidth40 = _computeWidth(this._figmaWidth40);
     appWidth50 = _computeWidth(this._figmaWidth50);
     appWidth60 = _computeWidth(this._figmaWidth60);
@@ -525,6 +532,7 @@ class _Colors {
   Color lightBlurMajorOrange          = Color.fromRGBO(253, 99, 44, 0.1);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
+  Color gray515151                    = Color(0xFF515151);
   Color redPink                       = Color(0xFFFF5C4E);
   Color oldYellow                     = Color(0xFFF9C86A);
   Color labelText                     = Color(0xFFFD632C);
@@ -557,7 +565,7 @@ class _Colors {
       appBackground                 = Color(0xFFFFFFFF);
       boxBackground                 = Color(0xFFFFFFFF);
       grayButtonColor               = Color(0xFF515151);
-      sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.2);
+      sectionBackgroundLayer        = Color.fromRGBO(255, 235, 222, 0.75);
       btnShadow                     = Color.fromRGBO(0, 0, 0, 0.5);
       textShadow                    = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer                      = Color.fromRGBO(253, 99, 44, 0.1);
@@ -592,6 +600,7 @@ class _MyIcons {
   final String appBarShareBtn = 'assets/myicons/icon-white-bold-share.png';
   final String appBarSearchBtn = 'assets/myicons/icon-white-search.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
+  final String appBarPopupMenuIcon = 'assets/myicons/icon-white-3-dots.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
@@ -610,6 +619,20 @@ class _MyIcons {
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
+  final String icStartRecord = 'assets/myicons/icon-record-start.png';
+  final String icStopRecord = 'assets/myicons/icon-record-stop.png';
+  final String icResumeRecord = 'assets/myicons/icon-record-restart.png';
+  final String icPauseRecord = 'assets/myicons/icon-record-pause.png'; 
+  final String icStatisticWhite = 'assets/myicons/icon-white-record-statistics.png';
+  final String icStatisticColor = 'assets/myicons/icon-color-record-statistics.png'; 
+  final String icRecordEventWhite = 'assets/myicons/icon-white-record-events.png';
+  final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png'; 
+
+  final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
+
+  // Default is Light theme 
+  String defaultIcon = 'assets/myicons/icon-black-image-default.png';
+  String nextIcon = 'assets/myicons/icon-black-next.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
   final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
   final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
@@ -636,7 +659,10 @@ class _MyIcons {
   final String blackCloseIcon = 'assets/myicons/icon-black-close.png';
   final String whiteCloseIcon = 'assets/myicons/icon-white-close.png';
   final String blackNewsFeedIcon = 'assets/myicons/icon-black-news-feed.png';
+  final String colorEditIcon = 'assets/myicons/icon-color-edit.png';
+  final String colorEditIconOrangeBg = 'assets/myicons/icon-color-edit-orange-background.png';
   final String blackEditIcon = 'assets/myicons/icon-black-edit.png';
+  final String whiteEditIcon = 'assets/myicons/icon-white-edit.png';
   final String blackPostIcon = 'assets/myicons/icon-black-post.png';
   final String blackPopupMenuIcon = 'assets/myicons/icon-black-3-dots.png';
 
@@ -665,6 +691,7 @@ class _MyIcons {
   String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
   String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
+  String starIconByTheme = 'assets/myicons/icon-black-star.png';
   
   // User wants to change theme
   void changeTheme(String theme) {
@@ -693,6 +720,7 @@ class _MyIcons {
       popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
       gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
       keyIconByTheme = 'assets/myicons/icon-black-key.png';
+      starIconByTheme = 'assets/myicons/icon-black-star.png';
       
 
       // TODO: Light theme (Black color)
@@ -722,6 +750,7 @@ class _MyIcons {
       popupMenuIconByTheme = 'assets/myicons/icon-white-3-dots.png';
       gpsIconByTheme = 'assets/myicons/icon-white-gps.png';
       keyIconByTheme = 'assets/myicons/icon-white-key.png';
+      starIconByTheme = 'assets/myicons/icon-white-star.png';
 
 
       // TODO: Black theme (Light color)
@@ -761,6 +790,8 @@ class _Images {
   final String avatarKhaTM = 'assets/images/avatar_khatm.png';
 }
 
+
+
 @reflector
 class Strings {
   String usrun;
@@ -792,6 +823,21 @@ class Strings {
   String biographyHint;
   String follow;
   String unFollow;
+
+  String inviteNewMember;
+  String inviteNewMemberContent;
+  String invite;
+  String kickAMember;
+  String kickAMemberContent;
+  String kick;
+  String blockAPerson;
+  String blockAPersonContent;
+  String block;
+
+  String day;
+  String week;
+  String month;
+  String year;
   
   String yearPicker;
   String monthPicker;
@@ -866,15 +912,99 @@ class Strings {
   String personalActivities;
 
   String record;
+  String gpsAcquiring;
+  String gpsReady;
+  String gpsNotFound;
+  String gpsServiceUnavailable;
+  String enableGPS;
+  String time;
+  String distance;
+  String avgPace;
+  String avgHeart;
+  String movingTime;
+  String calories;
+  String total;
+  String timeUnit;
+  String distanceUnit;
+  String avgPaceUnit;
+  String avgHeartUnit;
+  String movingTimeUnit;
+  String caloriesUnit;
+  String totalUnit;
+  String stats;
+  String title;
+  String description;
+  String photos;
+  String maps;
+  String viewMapDescription;
+  String uploadActivity;
+  String morningRun;
+  String afternoonRun;
+  String eveningRun;
+  String nightRun;
+  String pause;
+  String discard;
+  String upload;
+  String na;
+  String cancle;
+
+  String chooseImage;
+  String gallery;
+  String camera;
 
   String uFeed;
 
   String events;
 
   String teams;
+  String team;
+
+  String public;
+  String private;
+  String join;
+  String symbol;
+  String verifiedByUsrun;
+  String teamStats;
+  String leaderboard;
+  String rank;
+  String activities;
+  String members;
+  String leadingTime;
+  String leadingDist;
+  String newMemThisWeek;
+  String toolZone;
+  String makeTeamPublicTitle;
+  String makeTeamPublicSubtitle;
+  String moderateNewPostsTitle;
+  String moderateNewPostsSubtitle;
+  String create;
+  String createNewTeamPlanTitle;
+  String createNewTeamPlanSubtitle;
+  String grant;
+  String grantRoleToMemberTitle;
+  String grantRoleToMemberSubtitle;
+  String transfer;
+  String transferOwnershipTitle;
+  String transferOwnershipSubtitle;
+  String delete;
+  String deleteTeamTitle;
+  String deleteTeamSubtitle;
+
   String viewAllTeams;
   String yourTeams;
   String weSuggestYou;
+  String teamLeaderboard;
+  String teamRank;
+  String numberOrder;
+  String name;
+  String distanceKm;
+  String distanceM;
+  String teamMember;
+  String all;
+  String hiding;
+  String requesting;
+  String blocking;
+  String reporting;
 
   String settings;
   String changePassword;
