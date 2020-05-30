@@ -18,3 +18,9 @@ samples, guidance on mobile development, and a full API reference.
 
 # setup
 flutter packages pub run build_runner build DIR
+
+# full command (debug)
+flutter clean && flutter pub get && flutter packages pub run build_runner build DIR && flutter run
+
+# full command (release)
+flutter clean && flutter pub get && flutter packages pub run build_runner build DIR && flutter run --release
