@@ -103,7 +103,7 @@ class SignInPage extends StatelessWidget {
                 gradient: R.colors.uiGradient,
                 text: R.strings.signIn,
                 textSize: R.appRatio.appFontSize22,
-                onTap: () => pushPage(context, AppPage())
+                onTap: () => _getSignInInfo(context)
               ),
             ),
           ),

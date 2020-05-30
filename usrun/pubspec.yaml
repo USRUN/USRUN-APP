@@ -209,6 +209,7 @@ flutter:
 
     
     - assets/myicons/spot.gif
+    - assets/myicons/icon-color-markeruser.png
 
 
   # To add assets to your application, add an assets section, like this:

@@ -35,7 +35,7 @@ class RecordUploadPage extends StatefulWidget {
   RecordUploadPage(RecordBloc recordBloc) {
     bloc = recordBloc;
     //recordBloc.recordData.createTrack();
-    activity = new ActivityData(recordBloc.recordData.trackId);
+    activity = new ActivityData(recordBloc.recordData.trackId, bloc.recordData);
     streamFile = MyStreamController(defaultValue: null, activeBroadcast: true);
   }
 
@@ -286,16 +286,33 @@ class _RecordUploadPage extends State<RecordUploadPage>{
     Map<String,dynamic> content =  RecordHelper.toJSON(this.widget.bloc.recordData);
     await RecordHelper.saveFile(content);
     await RecordHelper.loadFromFile();
-    await _clearRecordData();
-    // Response<ActivityData> response = await upload();
-    // if (response.success)
-    // {
-    //   print("Uploaded");
-    // }
-    // else
-    // {
-    //   print("Uploaded error");
-    // }
+    Response<ActivityData> response = await upload();
+    if (response.success)
+    {
+      print("Uploaded");
+      await RecordHelper.removeFile();
+      this.widget.bloc.resetAll();
+      showCustomAlertDialog(context, 
+      title: R.strings.notice, 
+      content: "Seccessfully uploaded!", 
+      firstButtonText: R.strings.ok, 
+      firstButtonFunction: ()async{
+        pop(this.context);
+        Navigator.pop(context);
+      });
+    }
+    else
+    {
+      print("Uploaded error");
+      showCustomAlertDialog(context, 
+      title: R.strings.notice, 
+      content: "Fail to upload, please try again later", 
+      firstButtonText: R.strings.ok, 
+      firstButtonFunction: ()async{
+        pop(this.context);
+      }
+    );
+    }
   }
 
   Future<Response<ActivityData>> upload() async {
@@ -327,7 +344,10 @@ class _RecordUploadPage extends State<RecordUploadPage>{
             R.myIcons.appBarBackBtn,
             width: R.appRatio.appAppBarIconSize,
           ),
-          onPressed: () => pop(context),
+          onPressed: () {
+            this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
+            pop(context);
+          },
         ),
         title: Container(
           margin: EdgeInsets.only(right: R.appRatio.appAppBarIconSize),

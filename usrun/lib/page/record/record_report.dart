@@ -34,29 +34,29 @@ class RecordReport extends StatelessWidget{
         builder: (context, snapshot) {
          
         return Container( 
-              height: 100,
-              child:  ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-              _builInfoBox(R.strings.time, (Duration(seconds: snapshot.data.totalTime).toString()).substring(0,7), unit: "HH:MM:SS"),
-            
-              SizedBox(width: 10,),
-              _builInfoBox(R.strings.distance, snapshot.data.totalDistance, unit: "Meters"),
-            
-              SizedBox(width: 10,),
-              _builInfoBox(R.strings.avgPace,snapshot.data.avgPace == -1? "N/A": (Duration(seconds: snapshot.data.avgPace.toInt()).toString()).substring(0,7), unit: "per KM"),
-            
-              SizedBox(width: 10,),
-              _builInfoBox("Moving Time",(Duration(seconds: snapshot.data.totalMovingTime~/1000).toString()).substring(0,7), unit: "HH:MM:SS"),
-            
-              SizedBox(width: 10,),
-              _builInfoBox("Total Step", snapshot.data.totalStep==-1?"N/A":snapshot.data.totalStep, unit: "steps"),
-              SizedBox(width: 10,),
-              _builInfoBox("Acceleration", snapshot.data.acceleration, unit: "m/s2"),
-              SizedBox(width: 10,),
+          height: 100,
+          child:  ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+            _builInfoBox(R.strings.time, (Duration(seconds: snapshot.data.totalTime).toString()).substring(0,7), unit: "HH:MM:SS"),
+          
+            SizedBox(width: 10),
+            _builInfoBox(R.strings.distance, snapshot.data.totalDistance, unit: "Meters"),
+          
+            SizedBox(width: 10,),
+            _builInfoBox(R.strings.avgPace,snapshot.data.avgPace == -1? "N/A": (Duration(seconds: snapshot.data.avgPace.toInt()).toString()).substring(0,7), unit: "per KM"),
+          
+            SizedBox(width: 10,),
+            _builInfoBox("Moving Time",(Duration(seconds: snapshot.data.totalMovingTime~/1000).toString()).substring(0,7), unit: "HH:MM:SS"),
+          
+            SizedBox(width: 10,),
+            _builInfoBox("Total Step", snapshot.data.totalStep==-1?"N/A":snapshot.data.totalStep, unit: "steps"),
+            SizedBox(width: 10,),
+            _builInfoBox("Acceleration", snapshot.data.acceleration, unit: "m/s2"),
+            SizedBox(width: 10,),
 
-          ])); 
+            ])); 
       });
   }
 

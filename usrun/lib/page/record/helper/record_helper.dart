@@ -63,14 +63,26 @@ class RecordHelper{
   static Map<String,dynamic> generateParamsForRequest(ActivityData activityData){
 
     RecordData data = activityData.recordData;
-    List<String> routes = [];
-      data.trackRequest.routes.forEach((route) {
-        routes.add(route.locations.toString());
+    List<List<Map<String,double>>> routes = [];
+    data.trackRequest.routes.forEach((route) {
+      List<Map<String,double>> loc = [];
+      route.locations.forEach((location) {
+        Map<String,double> map = {
+          'latitude': location.latitude,
+          'longitude': location.longitude,
+          'accuracy': location.accuracy,
+          'altitude': location.altitude,
+          'speed': location.speed,
+          'speed_accuracy': location.speedAccuracy,
+          'heading': location.heading,
+          'time': location.time
+        };
+        loc.add(map);
       });
+      routes.add(loc);
+    });
       
     Map<String,dynamic> res = {
-      "userActivityId": data.trackId,
-      "createTime": data.createTime,
       "totalDistance": data.totalDistance,
       "totalTime": data.totalTime,
       "totalStep": data.totalStep,
@@ -83,17 +95,15 @@ class RecordHelper{
       "photo": null,
       "title": activityData.title,
       "description": activityData.description,
-      "totalLike": activityData.totalLike,
-      "totalComment": activityData.totalLike,
+      "totalLove": activityData.totalLove,
+      "totalComment": activityData.totalComment,
       "totalShare": activityData.totalShare,
       "processed": true,
       "deleted": 0,
       "privacy": 0,
       "trackRequest":{
-      "trackId": data.trackId,
-      "time": data.createTime,
-      "sig": data.trackRequest.sig,
-      "locations": routes[0]
+        "time": data.createTime,
+        "locations": routes
       },
       "sig": activityData.sig
     };

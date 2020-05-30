@@ -417,6 +417,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       //   this.onMapUpdate(forceUpdate: true);
       //   this.recordData.startDate = DateTime.now();
       // }
+      this.updateReportVisibility(ReportVisibility.Visible);
       this.recordData.beginNewRoute();
       lastLoc = await getCurrentLocation();
       drawMaker(LatLng(lastLoc.latitude,lastLoc.longitude));
@@ -454,6 +455,8 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         this._locationSubscription.cancel();
         this._locationSubscription = null;
       }
+      
+      this.updateReportVisibility(ReportVisibility.Visible);
       // this.onUpdateActivity();
       // try {
       //   this.onResumeFromBackground();
@@ -467,6 +470,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       this._timeService.start();
     }
     if (newState == RecordState.StatusNone) {
+      this.updateReportVisibility(ReportVisibility.Gone);
       this._timeService.reset();
     }
   }
@@ -661,7 +665,8 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       });
       this._streamReportVisibilityController.add(ReportVisibility.Visible);
       _initTimeService(data.totalTime);
-    
+
+      this._streamLocationController.add(recordData.lastLocation);
       this._streamRecorData.add(this.recordData);
       this._streamGPSSignal.add(GPSSignalStatus.HIDE);
       this.updateRecordStatus(RecordState.StatusStop);

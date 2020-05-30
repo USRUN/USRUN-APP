@@ -19,7 +19,7 @@ const String API_VERSION = "1.0.0";
 
 class Client {
 
-  static String _domain = 'http://128.199.159.72:8080';
+  static String _domain = 'http://128.199.168.137:8080';
 
   static String imageUrl(String endpoint) {
     if (endpoint == null || endpoint.isEmpty) {

@@ -31,7 +31,7 @@ class TrackRequest{
   TrackRequest(){
     this.trackId = 0;
     this.sig = "";
-    this.createTime = "";
+    this.createTime = DateTime.now().millisecondsSinceEpoch.toString();
     this.routes = [];
   }
 }
@@ -61,8 +61,7 @@ class RecordData {
     this.trackId = 0;
     this.totalTime = 0;
     this.totalMovingTime = 0;
-    this.createTime = 0;
-    this.createTime = 0;
+    this.createTime = DateTime.now().millisecondsSinceEpoch;
     this.totalDistance = 0;
     this.totalStep = -1;
     this.avgPace = -1;

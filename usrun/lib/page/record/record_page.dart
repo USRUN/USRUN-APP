@@ -40,43 +40,6 @@ class _RecordWidget extends StatelessWidget {
 
   BitmapDescriptor pinLocationIcon;
 
-   void setCustomMapPin() async {
-      pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      R.myIcons.icCurrentSpot);
-   }
-
-Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
-    setCustomMapPin();
-    Set<Marker> markers = Set();
-    // if (this.bloc.currentRecordState != RecordState.StatusStart && this.bloc.currentRecordState != RecordState.StatusStop) {
-    //   return markers;
-    // }
-
-   
-    LocationData firstPoint = this.bloc.beginPoint;
-    if (firstPoint != null) {
-      defaultBegin = LatLng(firstPoint.latitude,firstPoint.longitude);
-      // if (bloc.recordData.polylineList.isNotEmpty) {
-      //   Polyline polyline = bloc.recordData.polylineList.first;
-      //   if (polyline != null && polyline.points.isNotEmpty) {
-      //     LatLng latLng = polyline.points.first;
-      //     if (latLng != null) {
-      //       defaultBegin = latLng;
-      //     }
-      //   }
-      // }
-      if (defaultBegin != null) {
-        markers.addAll([
-          Marker(
-              markerId: MarkerId('begin'),
-              icon: pinLocationIcon,
-              position: defaultBegin),
-        ]);
-      }
-    }
-    return markers;
-  }
 
   Widget buildGPSInfoSignal() {
     return StreamBuilder<GPSSignalStatus>(
@@ -153,7 +116,7 @@ Set<Marker> getDefaultBeginMaker(LatLng defaultBegin) {
                 ),
                 markers: Set.of(bloc.mData),
                 onMapCreated: (controller) => bloc.onMapCreated(controller),
-                myLocationEnabled: true,
+                myLocationEnabled: false,
                 scrollGesturesEnabled: true,
                 myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,

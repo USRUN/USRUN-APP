@@ -11,7 +11,7 @@ class ActivityData{
   String title;
   String description;
   List<File> photos;
-  int totalLike;
+  int totalLove;
   int totalComment;
   int totalShare;
   bool processed;
@@ -21,18 +21,19 @@ class ActivityData{
   RecordData recordData;
   String sig;
 
-  ActivityData(int trackID)
+  ActivityData(int trackID, RecordData data)
   {
     this.title = _generateTitle();
     this.description = "";
-    this.totalLike = 0;
+    this.totalLove = 0;
     this.totalComment = 0;
-    this.totalComment = 0;
+    this.totalShare = 0;
     this.deleted = 0;
     this.showMap = true;
     this.privacy = ActivityPrivacyMode.Public;
-    this.sig = UsrunCrypto.buildActivitySig(13);
+    this.sig = UsrunCrypto.buildActivitySig();
     this.photos = [];
+    this.recordData = data;
   }
 
   _generateTitle(){

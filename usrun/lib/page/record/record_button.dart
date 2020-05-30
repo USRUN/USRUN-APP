@@ -27,6 +27,7 @@ void showNoGPS(BuildContext context) {
     }
   
   void showRequestServiceDialog(){
+    if (this.bloc.gpsStatus == GPSSignalStatus.NOT_AVAILABLE)
      showCustomAlertDialog(
             context,
             title: R.strings.notice,
@@ -169,7 +170,7 @@ void showNoGPS(BuildContext context) {
   _buildStatisticButton(){
     return StreamBuilder<ReportVisibility>(
         stream: this.bloc.streamReportVisibility,
-        initialData: ReportVisibility.Gone,
+        initialData: this.bloc.getReportVisibilityValue,
         builder: (context, snapshot) {
           print(snapshot.data);
           if (snapshot.data == ReportVisibility.Gone)

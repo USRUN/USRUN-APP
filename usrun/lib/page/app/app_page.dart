@@ -41,7 +41,7 @@ class AppPage extends StatefulWidget {
   _AppPageState createState() => _AppPageState();
 }
 
-final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),ProfilePage(),SettingPage()];
+final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),TeamPage(), ProfilePage(),SettingPage()];
 
 class _AppPageState extends State<AppPage> {
   int _selectedDrawerIndex = 0;
