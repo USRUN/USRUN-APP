@@ -7,6 +7,7 @@ class LineButton extends StatelessWidget {
   final String mainText;
   final double mainTextFontSize;
   final String subText;
+  final TextStyle mainTextStyle;
   final double subTextFontSize;
   final String resultText;
   final double resultTextFontSize;
@@ -48,6 +49,7 @@ class LineButton extends StatelessWidget {
     @required this.mainText,
     this.mainTextFontSize = 14,
     this.subText = "",
+    this.mainTextStyle,
     this.subTextFontSize = 12,
     this.resultText = "",
     this.resultTextFontSize = 12,
@@ -129,9 +131,9 @@ class LineButton extends StatelessWidget {
                                 ? null
                                 : TextOverflow.ellipsis),
                             maxLines: (this.enableTextMaxLines ? null : 1),
-                            style: TextStyle(
+                            style: this.mainTextStyle==null?TextStyle(
                                 fontSize: this.mainTextFontSize,
-                                color: R.colors.contentText),
+                                color: R.colors.contentText):this.mainTextStyle,
                           ),
                           (this.subText.length != 0
                               ? Container(

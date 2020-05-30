@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/net/client.dart';
+import 'package:usrun/core/net/client.dart';
 
 const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
 const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
@@ -233,17 +233,6 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
     return SynchronousFuture<CustomImageProvider>(this);
   }
 
-  @override
-  ImageStreamCompleter load(CustomImageProvider key, DecoderCallback decode) {
-    return MultiFrameImageStreamCompleter(
-      codec: _loadAsync(key),
-      scale: key.scale,
-//      informationCollector: (StringBuffer information) {
-//        information.writeln('Image provider: $this');
-//        information.write('Image key: $key');
-//      },
-    );
-  }
 
   Future<ui.Codec> _loadAsync(CustomImageProvider key) async {
     assert(key == this);
@@ -289,6 +278,19 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
     if (_response != null && _response.statusCode == 200)
       return _response.bodyBytes;
 
+    return null;
+  }
+
+  @override
+  ImageStreamCompleter load(CustomImageProvider key, decode) {
+     return MultiFrameImageStreamCompleter(
+      codec: _loadAsync(key),
+      scale: key.scale,
+//      informationCollector: (StringBuffer information) {
+//        information.writeln('Image provider: $this');
+//        information.write('Image key: $key');
+//      },
+    );
     return null;
   }
 }
