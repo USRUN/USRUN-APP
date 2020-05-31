@@ -19,6 +19,7 @@
     "city": "City",
     "district": "District",
     "whatYourJob": "What's Your Job",
+    "whatYourJobHint": "Your Job",
     "birthday": "Birthday",
     "gender": "Gender",
     "height": "Height",
@@ -329,7 +330,6 @@
     "discard": "Discard",
     "upload": "Upload",
     "na": "N/A",
-    "cancle": "Cancle",
 
     "chooseImage": "Choose Image",
     "gallery": "Gallery",

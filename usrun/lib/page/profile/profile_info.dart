@@ -130,6 +130,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 height: R.appRatio.appSpacing20,
               ),
               // Team plans
+              /*
+              =======
+              UNUSED
+              =======
               TeamPlanList(
                 items: DemoData().teamPlanList,
                 labelTitle: R.strings.personalTeamPlans,
@@ -137,6 +141,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressTeamPlanItemFunction,
               ),
+              */
             ],
           ));
   }
