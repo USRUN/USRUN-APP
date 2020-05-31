@@ -162,19 +162,21 @@ class ComplexInfoBox extends StatelessWidget {
                                   height: R.appRatio.appSpacing15,
                                 )
                               : Container()),
-                          Text(
-                            this.dataTitle,
-                            style: TextStyle(
-                              color: R.colors.majorOrange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: R.appRatio.appFontSize18,
-                              shadows: [
-                                BoxShadow(
-                                  blurRadius: 2.0,
-                                  offset: Offset(1.0, 1.0),
-                                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                                ),
-                              ],
+                          FittedBox(
+                            child: Text(
+                              this.dataTitle,
+                              style: TextStyle(
+                                color: R.colors.majorOrange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: R.appRatio.appFontSize18,
+                                shadows: [
+                                  BoxShadow(
+                                    blurRadius: 2.0,
+                                    offset: Offset(1.0, 1.0),
+                                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           (this.unitTitle.length != 0

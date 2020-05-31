@@ -41,6 +41,7 @@ class _Constants {
   final int numberToSplitFFList = 60;
   final int numberToSplitPhotoList = 60;
   final int maxProfileTabBarNumber = 5;
+  final int activityTimelineNumber = 5;
   // DateTime(year, month, day, hour, minute, second, milisecond, microsecond)
   final DateTime releasedAppDate = DateTime(2019, 03, 12);
 }

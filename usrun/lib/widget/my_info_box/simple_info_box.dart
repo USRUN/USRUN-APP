@@ -55,21 +55,23 @@ class SimpleInfoBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     (dataTitle.length != 0
-                        ? Text(
-                            dataTitle.toUpperCase(),
-                            textAlign: (unitTitle.length != 0
-                                ? TextAlign.right
-                                : TextAlign.center),
-                            style: TextStyle(
-                              fontSize: R.appRatio.appFontSize22,
-                              color: R.colors.majorOrange,
-                              fontWeight: FontWeight.bold,
+                        ? FittedBox(
+                            child: Text(
+                              dataTitle.toUpperCase(),
+                              textAlign: (unitTitle.length != 0
+                                  ? TextAlign.right
+                                  : TextAlign.center),
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize20,
+                                color: R.colors.majorOrange,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           )
                         : Container()),
                     (unitTitle.length != 0
                         ? Padding(
-                            padding: EdgeInsets.only(bottom: 2.5),
+                            padding: EdgeInsets.only(bottom: 0.5),
                             child: Text(
                               unitTitle.toLowerCase(),
                               textAlign: (dataTitle.length != 0
