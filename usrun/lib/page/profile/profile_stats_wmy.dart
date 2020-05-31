@@ -37,6 +37,7 @@ class _ProfileStatsWeekState extends State<ProfileStatsWeek> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -85,6 +86,7 @@ class _ProfileStatsMonthState extends State<ProfileStatsMonth> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -133,6 +135,7 @@ class _ProfileStatsYearState extends State<ProfileStatsYear> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });

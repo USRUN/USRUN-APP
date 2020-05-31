@@ -8,7 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
-import 'package:usrun/widget/custom_dialog/custom_dialog_team.dart';
+import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -402,7 +402,7 @@ class _TeamMemberState extends State<TeamMember> {
   void _showCustomDialog(index) async {
     switch (index) {
       case 0: // Invite
-        await showCustomDialogTeam(
+        await showComplexCustomDialog(
           context: context,
           headerContent: R.strings.inviteNewMember,
           descriptionContent: R.strings.inviteNewMemberContent,
@@ -422,7 +422,7 @@ class _TeamMemberState extends State<TeamMember> {
         );
         break;
       case 1: // Kick
-        await showCustomDialogTeam(
+        await showComplexCustomDialog(
           context: context,
           headerContent: R.strings.kickAMember,
           descriptionContent: R.strings.kickAMemberContent,
@@ -442,7 +442,7 @@ class _TeamMemberState extends State<TeamMember> {
         );
         break;
       case 2: // Block
-        await showCustomDialogTeam(
+        await showComplexCustomDialog(
           context: context,
           headerContent: R.strings.blockAPerson,
           descriptionContent: R.strings.blockAPersonContent,

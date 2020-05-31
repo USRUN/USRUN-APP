@@ -268,7 +268,7 @@ class _CustomDialogState extends State<_CustomDialog> {
   }
 }
 
-Future<void> showCustomDialogTeam({
+Future<void> showComplexCustomDialog({
   BuildContext context,
   @required String headerContent,
   String descriptionContent = "",

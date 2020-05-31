@@ -50,6 +50,7 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
