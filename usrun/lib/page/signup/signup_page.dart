@@ -10,6 +10,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
 
@@ -164,8 +165,9 @@ class SignUpPage extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
@@ -223,7 +225,13 @@ class SignUpPage extends StatelessWidget {
     String email = _emailController.text.trim();
     message = validateEmail(email);
     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorTitle,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
@@ -231,7 +239,13 @@ class SignUpPage extends StatelessWidget {
     String password = _passwordController.text.trim();
     message = validatePassword(password);
     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorTitle,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
@@ -251,10 +265,21 @@ class SignUpPage extends StatelessWidget {
     hideLoading(context);
 
     if (loginParams == null) {
-      showAlert(
-          context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: R.strings.errorLoginFail,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else if (loginParams['error'] != null) {
-      showAlert(context, R.strings.errorLoginFail, loginParams['error'], null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: loginParams['error'],
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else {
       _signUp(context, channel, loginParams);
     }

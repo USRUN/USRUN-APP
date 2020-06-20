@@ -252,8 +252,9 @@ class _TeamMemberState extends State<TeamMember> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
@@ -415,7 +416,7 @@ class _TeamMemberState extends State<TeamMember> {
             ),
           ],
           submitBtnContent: R.strings.invite,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Invite new member");
           },
@@ -435,7 +436,7 @@ class _TeamMemberState extends State<TeamMember> {
             ),
           ],
           submitBtnContent: R.strings.kick,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Kick a member");
           },
@@ -455,7 +456,7 @@ class _TeamMemberState extends State<TeamMember> {
             ),
           ],
           submitBtnContent: R.strings.block,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Block a person");
           },

@@ -13,7 +13,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
-import 'package:usrun/widget/custom_dialog/custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';

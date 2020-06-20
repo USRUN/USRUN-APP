@@ -518,14 +518,6 @@ class _Colors {
       0.5,
       1.0
     ]);
-
-  /*
-    + [NgocVo] Unused colors
-      - final Color yellow = Color(0xFFFC8800);
-      - final Color red = Color(0xFFDA2A16);
-      - final Color pinkRed = Color(0xFFEE4C3E);
-      - final Color blue = Color(0xFF03318C);
-  */
   
   // Official/Main/Common color of app
   Color majorOrange                   = Color(0xFFFD632C);
@@ -789,8 +781,6 @@ class _Images {
   final String avatarPhucTT = 'assets/images/avatar_phuctt.png';
   final String avatarKhaTM = 'assets/images/avatar_khatm.png';
 }
-
-
 
 @reflector
 class Strings {

@@ -58,25 +58,6 @@ class _AppPageState extends State<AppPage> {
   String _fullName = "We Are USRUN";
   String _userCode = "USR9381852";
 
-  _getDrawerItemWidget(int pos) {
-    switch (pos) {
-      case 0:
-        return pages[0];
-      case 1:
-        return pages[1];
-      case 2:
-        return pages[2];
-      case 3:
-        return pages[3];
-      case 4:
-        return pages[4];
-      case 5:
-        return pages[5];
-      default:
-        return pages[0];
-    }
-  }
-
   _onSelectItem(int index) {
     if (_selectedDrawerIndex == index) return;
 
@@ -184,91 +165,94 @@ class _AppPageState extends State<AppPage> {
         title: Text(
           widget.drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
+            color: Colors.white,
+            fontSize: R.appRatio.appFontSize22,
+          ),
         ),
         actions: _appBarActionList(),
       ),
       backgroundColor: R.colors.appBackground,
       drawer: Container(
-          constraints: new BoxConstraints.expand(
-            width: R.appRatio.appWidth250,
-            height: R.appRatio.deviceHeight,
-          ),
-          child: Stack(
-            children: <Widget>[
-              Image.asset(
-                R.images.drawerBackground,
-                fit: BoxFit.cover,
-                width: R.appRatio.appWidth250,
-                height: R.appRatio.deviceHeight,
+        constraints: new BoxConstraints.expand(
+          width: R.appRatio.appWidth250,
+          height: R.appRatio.deviceHeight,
+        ),
+        child: Stack(
+          children: <Widget>[
+            Image.asset(
+              R.images.drawerBackground,
+              fit: BoxFit.cover,
+              width: R.appRatio.appWidth250,
+              height: R.appRatio.deviceHeight,
+            ),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: R.appRatio.appSpacing50,
+                  ),
+                  AvatarView(
+                    avatarImageURL: _avatar,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                    supportImageURL: _supportAvatar,
+                    avatarBoxShadow: BoxShadow(
+                      blurRadius: 20.0,
+                      color: R.colors.oldYellow,
+                      offset: Offset(0.0, 0.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  Text(
+                    _fullName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: R.appRatio.appFontSize20,
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing5,
+                  ),
+                  Text(
+                    _userCode,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: R.colors.oldYellow,
+                      fontSize: R.appRatio.appFontSize18,
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing25,
+                  ),
+                  Container(
+                    height: 1,
+                    width: R.appRatio.appWidth200,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: R.colors.oldYellow,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing25,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: drawerWidgets,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: R.appRatio.appSpacing50,
-                    ),
-                    AvatarView(
-                      avatarImageURL: _avatar,
-                      avatarImageSize: R.appRatio.appAvatarSize130,
-                      supportImageURL: _supportAvatar,
-                      avatarBoxShadow: BoxShadow(
-                        blurRadius: 20.0,
-                        color: R.colors.oldYellow,
-                        offset: Offset(0.0, 0.0),
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    Text(
-                      _fullName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: R.appRatio.appFontSize20,
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing5,
-                    ),
-                    Text(
-                      _userCode,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: R.colors.oldYellow,
-                        fontSize: R.appRatio.appFontSize18,
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing25,
-                    ),
-                    Container(
-                      height: 1,
-                      width: R.appRatio.appWidth200,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: R.colors.oldYellow,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing25,
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: drawerWidgets,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
+            )
+          ],
+        ),
+      ),
       body: NotificationListener<OverscrollIndicatorNotification>(
           child: WillPopScope(
               child: IndexedStack(
@@ -276,8 +260,9 @@ class _AppPageState extends State<AppPage> {
                 children: pages,
               ),
               onWillPop: () async => false),
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
+            return false;
           }),
     );
   }

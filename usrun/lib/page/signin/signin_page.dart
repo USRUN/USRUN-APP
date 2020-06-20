@@ -11,8 +11,11 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/reset_password/reset_password.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
+
+import '../../core/helper.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -98,13 +101,12 @@ class SignInPage extends StatelessWidget {
                 bottom: R.appRatio.appSpacing25,
               ),
               child: UIButton(
-                width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
-                gradient: R.colors.uiGradient,
-                text: R.strings.signIn,
-                textSize: R.appRatio.appFontSize22,
-                onTap: () => _getSignInInfo(context)
-              ),
+                  width: R.appRatio.appWidth381,
+                  height: R.appRatio.appHeight60,
+                  gradient: R.colors.uiGradient,
+                  text: R.strings.signIn,
+                  textSize: R.appRatio.appFontSize22,
+                  onTap: () => _getSignInInfo(context)),
             ),
           ),
         ),
@@ -112,8 +114,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-
-   _signIn(BuildContext context, LoginChannel channel,
+  _signIn(BuildContext context, LoginChannel channel,
       Map<String, String> params) async {
     showLoading(context);
     Response<User> response = await UserManager.signIn(params);
@@ -133,50 +134,77 @@ class SignInPage extends StatelessWidget {
         DataManager.setLastLoginUserId(response.object.userId);
         showPage(context, AppPage());
       }
-    }
-    else {
-        // call channel logout with
-        showLoading(context);
-        UserManager.logout();
-        hideLoading(context);
+    } else {
+      // call channel logout with
+      showLoading(context);
+      UserManager.logout();
+      hideLoading(context);
 
-        showAlert(context, R.strings.errorTitle, response.errorMessage, null);
-      
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorTitle,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     }
   }
 
   void _adapterSignIn(LoginChannel channel, Map<String, dynamic> params,
-    BuildContext context) async {
+      BuildContext context) async {
     showLoading(context);
     Map loginParams = await UserManager.adapterLogin(channel, params);
     hideLoading(context);
 
     if (loginParams == null) {
-      showAlert(
-          context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: R.strings.errorLoginFail,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else if (loginParams['error'] != null) {
-      showAlert(context, R.strings.errorLoginFail, loginParams['error'], null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: loginParams['error'],
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else {
       _signIn(context, channel, loginParams);
     }
   }
 
-  _getSignInInfo(BuildContext context){
-String message;
+  _getSignInInfo(BuildContext context) {
+    String message;
 
     // validate email
     String email = _emailController.text.trim();
     message = validateEmail(email);
     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorTitle,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
     // validate password
     String password = _passwordController.text.trim();
 
-     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+    if (message != null) {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorTitle,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
