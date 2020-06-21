@@ -9,6 +9,10 @@ import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/widget/line_button.dart';
 
+import '../../core/helper.dart';
+import '../../manager/user_manager.dart';
+import '../welcome/welcome_page.dart';
+
 class SettingPage extends StatefulWidget {
   @override
   _SettingPageState createState() => _SettingPageState();
@@ -319,8 +323,12 @@ class _SettingPageState extends State<SettingPage> {
                 spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
                 lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
+                  UserManager.logout();
+                  showPage(
+                    context,
+                    WelcomePage(),
+                    popAllRoutes: true,
+                  );
                 },
               )
             ],

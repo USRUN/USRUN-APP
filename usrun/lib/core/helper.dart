@@ -123,8 +123,11 @@ void showSystemMessage(BuildContext context) {
 
 // === NAVIGATOR === //
 
-void showPage<T>(BuildContext context, Widget page,
-    {bool popAllRoutes = false}) {
+void showPage<T>(
+  BuildContext context,
+  Widget page, {
+  bool popAllRoutes = false,
+}) {
   hideLoading(context);
 
   if (popAllRoutes) {
