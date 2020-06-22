@@ -6,6 +6,8 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
@@ -97,7 +99,7 @@ class _TeamMemberState extends State<TeamMember> {
     });
   }
 
-  void _getRequestingMembers() {
+  void _getRequestingMembers() async {
     setState(() {
       _isLoading = !_isLoading;
     });
@@ -111,6 +113,8 @@ class _TeamMemberState extends State<TeamMember> {
         items = val;
       });
     });
+
+//    Response<List<TeamMember>> teamMembers = await TeamManager.getTeamMemberByType(widget.teamId, 1);
   }
 
   void _getBlockingMembers() {

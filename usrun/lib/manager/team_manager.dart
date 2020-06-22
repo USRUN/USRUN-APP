@@ -23,6 +23,7 @@ class TeamManager{
 
   static Future<Response> getTeamById(int teamId) async {
     Map<String,dynamic> params = {'teamId':teamId};
+
     Response<dynamic> res = await Client.post('/team/getTeamById',params);
     return res;
   }
@@ -35,7 +36,60 @@ class TeamManager{
     };
 
     Response<dynamic> res = await Client.post('/team/getTeamSuggestion',  params);
+    return res;
+  }
 
+  static Future<Response> findTeamRequest(String teamName, int pageNum, int perPage) async{
+    Map<String,dynamic> params = {
+      'teamName': teamName,
+      'pageNum': pageNum,
+      'perPage': perPage
+    };
+
+    Response<dynamic> res = await Client.post('/team/findTeam',params);
+    return res;
+  }
+
+  static Future<Response> getAllTeamMemberPaged(int teamId, int pageNum, int perPage) async{
+    Map<String,dynamic> params = {
+      'teamId': teamId,
+      'pageNum': pageNum,
+      'perPage': perPage
+    };
+
+    Response<dynamic> res = await Client.post('/team/getAllTeamMember',params);
+    return res;
+  }
+
+  static Future<Response> getTeamMemberByType(int teamId, int teamMemberType) async{
+    Map<String,dynamic> params = {
+      'teamId': teamId,
+      'teamMemberType': teamMemberType
+    };
+  }
+
+  static Future<Response> requestJoinTeam(int teamId) async{
+    Map<String,dynamic> params = {'teamId':teamId};
+
+    Response<dynamic> res = await Client.post('/team/join',params);
+    return res;
+  }
+
+  static Future<Response> cancelJoinTeam(int teamId) async{
+    Map<String,dynamic> params = {'teamId':teamId};
+
+    Response<dynamic> res = await Client.post('/team/cancelJoin',params);
+    return res;
+  }
+
+  static Future<Response> updateTeamMemberRole(int teamId, int memberId, int newRole) async {
+    Map<String,dynamic> params = {
+      'teamId': teamId,
+      'memberId': memberId,
+      'memberType': newRole
+    };
+
+    Response<dynamic> res = await Client.post('/team/cancelJoin',params);
     return res;
   }
 }
