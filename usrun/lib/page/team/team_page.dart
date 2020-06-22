@@ -5,12 +5,14 @@ import 'package:usrun/core/R.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/team_list.dart';
+import 'package:usrun/manager/team_manager.dart';
 
 class TeamPage extends StatefulWidget {
   @override
@@ -19,11 +21,15 @@ class TeamPage extends StatefulWidget {
 
 class _TeamPageState extends State<TeamPage> {
   bool _isLoading;
+  List _teamSuggestionList;
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
+    _teamSuggestionList = List();
+    _getSuggestionList(10);
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
@@ -44,6 +50,16 @@ class _TeamPageState extends State<TeamPage> {
     }
 
     return bannerList;
+  }
+
+  void _getSuggestionList(int howMany) async{
+    Response<dynamic> response = await TeamManager.getTeamSuggestion(howMany);
+    if(response.success){
+      setState(() {
+        print(response.object);
+        _teamSuggestionList = response.object;
+      });
+    }
   }
 
   @override
@@ -78,13 +94,13 @@ class _TeamPageState extends State<TeamPage> {
                       height: R.appRatio.appSpacing20,
                     ),
                     TeamList(
-                      items: DemoData().teamList,
+                      items: _teamSuggestionList,
                       labelTitle: R.strings.yourTeams,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFuction: (teamid) {
                         // TODO: Test
-                        pushPage(context, TeamInfoPage());
+                        pushPage(context, TeamInfoPage(teamId: teamid));
                         print(
                             "[YourTeams] This team with id $teamid is pressed");
                       },
@@ -93,12 +109,14 @@ class _TeamPageState extends State<TeamPage> {
                       height: R.appRatio.appSpacing20,
                     ),
                     TeamList(
-                      items: DemoData().teamList + DemoData().teamList,
+//                      items: DemoData().teamList + DemoData().teamList,
+                      items: _teamSuggestionList,
                       labelTitle: R.strings.weSuggestYou,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       enableSplitListToTwo: true,
                       pressItemFuction: (teamid) {
+                        pushPage(context, TeamInfoPage(teamId: teamid));
                         print(
                             "[WeSuggestYou] This team with id $teamid is pressed");
                       },

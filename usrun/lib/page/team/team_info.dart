@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -17,6 +20,10 @@ import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class TeamInfoPage extends StatefulWidget {
+  final int teamId;
+
+  TeamInfoPage({@required this.teamId});
+
   @override
   _TeamInfoPageState createState() => _TeamInfoPageState();
 }
@@ -53,7 +60,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   void initState() {
     super.initState();
     _isLoading = true;
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getTeamInfo());
+  }
+
+  void _getTeamInfo() async{
+    Response<dynamic> response = await TeamManager.getTeamById(widget.teamId);
+    if(response.success){
+      if(response.object['description'] != null) {
+        _teamDescription = response.object['description'];
+      }
+      _teamName = response.object['teamName'];
+      if(response.object['banner'] != null) {
+        _teamBanner = response.object['banner'];
+      }
+      _teamMembers = response.object['totalMember'];
+//      _teamPublicStatus = (response.object['privacy']?true:false);
+      _teamLocation = response.object['district'] + response.object['province'];
+      _teamAvatar = response.object['thumbnail'];
+    }
   }
 
   void _updateLoading() {

@@ -145,12 +145,12 @@ class TeamList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: element.length,
       itemBuilder: (BuildContext ctxt, int index) {
-        String id = element[index]['id'];
-        String name = element[index]['name'];
+        int id = element[index]['teamId'];
+        String name = element[index]['teamName'];
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-            .format(element[index]['athleteQuantity']);
-        String avatarImageURL = element[index]['avatarImageURL'];
-        String supportImageURL = element[index]['supportImageURL'];
+            .format(element[index]['teamMemberCount']);
+        String avatarImageURL = element[index]['thumbnail'];
+        String supportImageURL = element[index]['thumbnail'];
 
         return Container(
           padding: EdgeInsets.only(
