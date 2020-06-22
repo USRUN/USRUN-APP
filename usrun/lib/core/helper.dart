@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -311,12 +310,12 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double max
   return photo;
 }
 
-Future<File> _cropImage(File imageFile) async {
-  File croppedFile = await ImageCropper.cropImage(
-    sourcePath: imageFile.path,
-  );
-  return croppedFile;
-}
+// Future<File> _cropImage(File imageFile) async {
+//   File croppedFile = await ImageCropper.cropImage(
+//     sourcePath: imageFile.path,
+//   );
+//   return croppedFile;
+// }
 
 
 

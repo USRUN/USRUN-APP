@@ -38,6 +38,7 @@ class RecordHelper{
 
 
     Map<String,dynamic> res = {
+      "eventId": data.eventId,
       'trackID': data.trackId,
       'totalTime': data.totalTime,
       'totalMovingTime': data.totalMovingTime,
@@ -83,6 +84,7 @@ class RecordHelper{
     });
       
     Map<String,dynamic> res = {
+      "eventId": data.eventId,
       "totalDistance": data.totalDistance,
       "totalTime": data.totalTime,
       "totalStep": data.totalStep,

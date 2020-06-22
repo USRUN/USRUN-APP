@@ -39,6 +39,7 @@ class TrackRequest{
 @reflector
 class RecordData {
 
+  int eventId;
   int trackId;
   int totalTime;
   int totalMovingTime;
@@ -58,6 +59,7 @@ class RecordData {
   TrackRequest trackRequest;
 
   RecordData(){
+    this.eventId = null;
     this.trackId = 0;
     this.totalTime = 0;
     this.totalMovingTime = 0;
