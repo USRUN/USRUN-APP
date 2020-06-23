@@ -15,6 +15,10 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+#facebook_signin:
+<string name="facebook_app_id">148274109786625</string> <string name="fb_login_protocol_scheme">fb148274109786625</string>
+appID: 148274109786625
+appSecret: 9491347aff49bf0278881afe7ce21ed0
 
 # setup
 flutter packages pub run build_runner build DIR

@@ -1,9 +1,15 @@
+
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/welcome/choose_language_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
 import 'main.reflectable.dart';
 import 'package:flutter/services.dart';
@@ -106,6 +112,15 @@ class _SplashPageState extends State<StatefulWidget> {
   Future<void> _initApp() {
     return Future.delayed(
             Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
-        .then((_) => showPage(context, WelcomePage())); // Raw: WelcomePage()
+        .then((_) {
+          if (UserManager.currentUser.userId == null) {
+            // show welcome
+            showPage(context, WelcomePage());
+          }
+          else
+            {
+              showPage(context, AppPage());
+            }
+        }); // Raw: WelcomePage()
   }
 }

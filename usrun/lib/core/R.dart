@@ -69,6 +69,7 @@ class _AppRatio {
   final double _figmaFontSize40                 = 40;
   final double _figmaFontSize42                 = 42;  
 
+  final double _figmaWidth1                     = 1;
   final double _figmaWidth40                    = 40;
   final double _figmaWidth50                    = 50;
   final double _figmaWidth60                    = 60;
@@ -201,6 +202,7 @@ class _AppRatio {
   double appFontSize40;
   double appFontSize42;
 
+  double appWidth1;
   double appWidth40;
   double appWidth50;
   double appWidth60;
@@ -365,6 +367,7 @@ class _AppRatio {
     // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
+    appWidth1 = _computeWidth(this._figmaWidth1);
     appWidth40 = _computeWidth(this._figmaWidth40);
     appWidth50 = _computeWidth(this._figmaWidth50);
     appWidth60 = _computeWidth(this._figmaWidth60);
@@ -609,6 +612,20 @@ class _MyIcons {
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
   final String aboutUsRateApp = 'assets/myicons/icon-color-stars.png';
+  final String icStartRecord = 'assets/myicons/icon-record-start.png';
+  final String icStopRecord = 'assets/myicons/icon-record-stop.png';
+  final String icResumeRecord = 'assets/myicons/icon-record-restart.png';
+  final String icPauseRecord = 'assets/myicons/icon-record-pause.png'; 
+  final String icStatisticWhite = 'assets/myicons/icon-white-record-statistics.png';
+  final String icStatisticColor = 'assets/myicons/icon-color-record-statistics.png'; 
+  final String icRecordEventWhite = 'assets/myicons/icon-white-record-events.png';
+  final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png'; 
+
+  final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
+
+  // Default is Light theme 
+  String defaultIcon = 'assets/myicons/icon-black-image-default.png';
+  String nextIcon = 'assets/myicons/icon-black-next.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
   final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
   final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
@@ -760,6 +777,8 @@ class _Images {
   final String avatarKhaTM = 'assets/images/avatar_khatm.png';
 }
 
+
+
 @reflector
 class Strings {
   String usrun;
@@ -865,6 +884,45 @@ class Strings {
   String personalActivities;
 
   String record;
+  String gpsAcquiring;
+  String gpsReady;
+  String gpsNotFound;
+  String gpsServiceUnavailable;
+  String enableGPS;
+  String time;
+  String distance;
+  String avgPace;
+  String avgHeart;
+  String movingTime;
+  String calories;
+  String total;
+  String timeUnit;
+  String distanceUnit;
+  String avgPaceUnit;
+  String avgHeartUnit;
+  String movingTimeUnit;
+  String caloriesUnit;
+  String totalUnit;
+  String stats;
+  String title;
+  String description;
+  String photos;
+  String maps;
+  String viewMapDescription;
+  String uploadActivity;
+  String morningRun;
+  String afternoonRun;
+  String eveningRun;
+  String nightRun;
+  String pause;
+  String discard;
+  String upload;
+  String na;
+  String cancle;
+
+  String chooseImage;
+  String gallery;
+  String camera;
 
   String uFeed;
 

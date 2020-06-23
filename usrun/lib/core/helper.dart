@@ -4,9 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/widget/ui_button.dart';
 
 import '../manager/data_manager.dart';
 import '../manager/data_manager.dart';
@@ -15,7 +18,8 @@ import '../manager/data_manager.dart';
 Future<void> initialize(BuildContext context) async {
   await setLanguage("en");
   R.initAppRatio(context);
-  DataManager.initialize();
+  await DataManager.initialize();
+  UserManager.initialize();
 
 }
 
@@ -254,6 +258,67 @@ void hideLoading(BuildContext context) {
   }
 }
 
+Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double maxHeight = 1920}) async {
+
+  Widget w = Material(
+    type: MaterialType.transparency,
+    child: Column(
+      children: <Widget>[
+        Text(R.strings.chooseImage, style: R.styles.labelStyle),
+        Divider(color: R.colors.majorOrange, height: 24),
+        UIButton(
+          text: R.strings.gallery,
+          gradient: R.colors.uiGradient,
+          onTap: () async {
+            File photo = await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: maxWidth, maxHeight: maxHeight);
+            if (photo == null) {
+              pop(context, null);
+            }
+            else {
+              //File result = await _cropImage(photo);
+              pop(context, photo);
+            }
+          },
+        ),
+        SizedBox(height: 10),
+        UIButton(
+          text: R.strings.camera,
+          gradient: R.colors.uiGradient,
+          onTap: () async {
+            File photo = await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: maxWidth, maxHeight: maxHeight);
+            if (photo == null) {
+              pop(context, null);
+            }
+            else {
+              //File result = await _cropImage(photo);
+              pop(context, photo);
+            }
+          },
+        ),
+        SizedBox(height: 30),
+        UIButton(
+          text: R.strings.cancel,
+          gradient: R.colors.uiGradient,
+          onTap: () => pop(context, null),
+        ),
+      ],
+    ),
+  );
+
+  File photo = await showActionSheet<File>(context, w, 350, []);
+
+  return photo;
+}
+
+// Future<File> _cropImage(File imageFile) async {
+//   File croppedFile = await ImageCropper.cropImage(
+//     sourcePath: imageFile.path,
+//   );
+//   return croppedFile;
+// }
+
+
+
 class _IndicatorRoute<T> extends ModalRoute {
   _IndicatorRoute(
       {bool barrierDismissible = true,
@@ -465,7 +530,7 @@ class _FullPageRoute<T> extends PageRoute<T> {
   ) {
     if (routeType == RouteType.present) {
       return CupertinoFullscreenDialogTransition(
-        animation: animation,
+        primaryRouteAnimation: animation,
         child: child,
       );
     } else {
