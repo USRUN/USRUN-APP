@@ -11,33 +11,35 @@ import 'package:usrun/util/reflector.dart';
 @reflector
 class Team extends MapperObject {
   int teamId;
-  int leagueId;
-  String name;
-  String nameSlug;
+  String teamName;
   String description;
-  String img;
-  String logo;
+  String banner;
+  String thumbnail;
   DateTime addDate;
   DateTime updateDate;
-  bool isActive;
-  int memberCount;
-  TeamVerifyStatus verifyStatus;
-  SportType sportType;
-  UserRole userType;
-  bool hasOwner = false;
-  bool official = false;
+  String district;
+  String province;
+  int privacy;
+  bool verified;
+  bool deleted;
+  int totalMember;
+//  TeamVerifyStatus verifyStatus;
+//  SportType sportType;
+//  UserRole userType;
+//  bool hasOwner = false;
+//  bool official = false;
 
 
   static Widget nameWidget(Team team, [TextStyle style, TextAlign textAlign]) {
     style = style ?? TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16);
     List<TextSpan> children = [
       TextSpan(
-        text: team.name + " ",
+        text: team.teamName + " ",
         style: style,
       )
     ];
 
-    if (team.official) {
+    if (team.verified) {
       children.add(TextSpan(
         text: String.fromCharCode(CupertinoIcons.check_mark_circled.codePoint),
         style: TextStyle(color: R.colors.majorOrange, fontSize: 13),

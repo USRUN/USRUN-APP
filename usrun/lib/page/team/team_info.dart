@@ -66,19 +66,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void _getTeamInfo() async{
-    Response<dynamic> response = await TeamManager.getTeamById(widget.teamId);
+    Response<Team> response = await TeamManager.getTeamById(widget.teamId);
     if(response.success){
-      if(response.object['description'] != null) {
-        _teamDescription = response.object['description'];
-      }
-      _teamName = response.object['teamName'];
-      if(response.object['banner'] != null) {
-        _teamBanner = response.object['banner'];
-      }
-      _teamMembers = response.object['totalMember'];
-//      _teamPublicStatus = (response.object['privacy']?true:false);
-      _teamLocation = response.object['district'] + response.object['province'];
-      _teamAvatar = response.object['thumbnail'];
+      _teamDescription = response.object.description;
+      _teamName = response.object.teamName;
+      _teamBanner = response.object.banner;
+      _teamMembers = response.object.totalMember;
+      _teamPublicStatus = (response.object.privacy == 0?true:false);
+      _teamLocation = response.object.district + ' ' + response.object.province;
+      _teamAvatar = response.object.thumbnail;
     }
   }
 
@@ -560,7 +556,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxButtonFuction: () => _createNewTeamPlan(),
                                 ),
                               ),
-                              // Grant role to member
+                              // Grant role to mantember
                               (_userRole == 3
                                   ? Padding(
                                       padding: EdgeInsets.only(

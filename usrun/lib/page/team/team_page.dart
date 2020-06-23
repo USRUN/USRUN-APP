@@ -6,6 +6,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -21,6 +22,7 @@ class TeamPage extends StatefulWidget {
 
 class _TeamPageState extends State<TeamPage> {
   bool _isLoading;
+  List _myTeamList;
   List _teamSuggestionList;
 
   @override
@@ -52,13 +54,19 @@ class _TeamPageState extends State<TeamPage> {
     return bannerList;
   }
 
+  void _getMyTeamList(int userId) async {
+//    Response<dynamic>
+  }
+
   void _getSuggestionList(int howMany) async{
-    Response<dynamic> response = await TeamManager.getTeamSuggestion(howMany);
+    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
     if(response.success){
       setState(() {
         print(response.object);
         _teamSuggestionList = response.object;
       });
+    } else{
+      _teamSuggestionList = null;
     }
   }
 

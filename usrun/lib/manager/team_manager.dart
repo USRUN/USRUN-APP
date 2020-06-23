@@ -6,6 +6,7 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/login/login_adapter.dart';
+import 'package:usrun/model/team_member.dart';
 import 'package:usrun/model/team_summary.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/mapper_object.dart';
@@ -21,22 +22,37 @@ class TeamManager{
   static User currentUser = new User();
   // ----------
 
-  static Future<Response> getTeamById(int teamId) async {
+  static Future<Response<Team>> getTeamById(int teamId) async {
     Map<String,dynamic> params = {'teamId':teamId};
 
     Response<dynamic> res = await Client.post('/team/getTeamById',params);
-    return res;
+
+    Response<Team> response = new Response(
+      errorCode: res.errorCode,
+      success: res.success,
+      object: res.success?MapperObject.create<Team>(res.object):null
+    );
+
+    return response;
   }
 
   static Future<Response> getTeamSuggestion(int howMany) async{
     Map<String,dynamic> params = {
-      'district':'',
-      'province':currentUser.city,
+      // TODO: Resolve User location
+      'district': null,
+      'province': null,
       'howMany':howMany
     };
 
     Response<dynamic> res = await Client.post('/team/getTeamSuggestion',  params);
-    return res;
+
+    Response<List<Team>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: res.success?MapperObject.create<List<Team>>(res.object):null
+    );
+
+    return response;
   }
 
   static Future<Response> findTeamRequest(String teamName, int pageNum, int perPage) async{
@@ -47,7 +63,14 @@ class TeamManager{
     };
 
     Response<dynamic> res = await Client.post('/team/findTeam',params);
-    return res;
+
+    Response<List<Team>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: res.success?MapperObject.create<List<Team>>(res.object):null
+    );
+
+    return response;
   }
 
   static Future<Response> getAllTeamMemberPaged(int teamId, int pageNum, int perPage) async{
@@ -58,7 +81,14 @@ class TeamManager{
     };
 
     Response<dynamic> res = await Client.post('/team/getAllTeamMember',params);
-    return res;
+
+    Response<List<TeamMember>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: res.success?MapperObject.create<List<TeamMember>>(res.object):null
+    );
+
+    return response;
   }
 
   static Future<Response> getTeamMemberByType(int teamId, int teamMemberType) async{
@@ -89,7 +119,17 @@ class TeamManager{
       'memberType': newRole
     };
 
-    Response<dynamic> res = await Client.post('/team/cancelJoin',params);
+    Response<dynamic> res = await Client.post('/team/changeMemberRole',params);
     return res;
+  }
+
+  static Future<Response> getMyTeam() async {
+    Response<dynamic> res = await Client.post('/user/info');
+    List<int> teamIdList;
+    if(res.success){
+      teamIdList.addAll(res.object['team']);
+    } else return null;
+
+
   }
 }
