@@ -5,6 +5,7 @@ import 'package:usrun/core/R.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_info.dart';
@@ -16,6 +17,7 @@ import 'package:usrun/widget/team_list.dart';
 import 'package:usrun/manager/team_manager.dart';
 
 class TeamPage extends StatefulWidget {
+  final int suggestionLength = 15;
   @override
   _TeamPageState createState() => _TeamPageState();
 }
@@ -30,7 +32,9 @@ class _TeamPageState extends State<TeamPage> {
     super.initState();
     _isLoading = true;
     _teamSuggestionList = List();
-    _getSuggestionList(10);
+    _myTeamList = List();
+    _getMyTeamList(UserManager.currentUser.userId);
+    _getSuggestionList(widget.suggestionLength);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -55,17 +59,25 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   void _getMyTeamList(int userId) async {
-//    Response<dynamic>
+    Response<dynamic> response = await TeamManager.getMyTeam();
+//    Response<List<Team>> response = await TeamManager.getTeamSuggestion(5);
+    if (response.success && (response.object as List).isNotEmpty) {
+      setState(() {
+        _myTeamList = response.object;
+      });
+    } else {
+      _myTeamList = null;
+    }
   }
 
-  void _getSuggestionList(int howMany) async{
-    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
-    if(response.success){
+  void _getSuggestionList(int howMany) async {
+//    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
+    Response<dynamic> response = await TeamManager.getMyTeam();
+    if (response.success && (response.object as List).isNotEmpty) {
       setState(() {
-        print(response.object);
         _teamSuggestionList = response.object;
       });
-    } else{
+    } else {
       _teamSuggestionList = null;
     }
   }
@@ -102,7 +114,7 @@ class _TeamPageState extends State<TeamPage> {
                       height: R.appRatio.appSpacing20,
                     ),
                     TeamList(
-                      items: _teamSuggestionList,
+                      items: _myTeamList,
                       labelTitle: R.strings.yourTeams,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
@@ -122,7 +134,7 @@ class _TeamPageState extends State<TeamPage> {
                       labelTitle: R.strings.weSuggestYou,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      enableSplitListToTwo: true,
+                      enableSplitListToTwo: _teamSuggestionList.length > 10? true:false,
                       pressItemFuction: (teamid) {
                         pushPage(context, TeamInfoPage(teamId: teamid));
                         print(

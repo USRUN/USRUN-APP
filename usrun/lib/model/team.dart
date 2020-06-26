@@ -10,7 +10,7 @@ import 'package:usrun/util/reflector.dart';
 
 @reflector
 class Team extends MapperObject {
-  int teamId;
+  int id;
   String teamName;
   String description;
   String banner;
@@ -23,6 +23,7 @@ class Team extends MapperObject {
   bool verified;
   bool deleted;
   int totalMember;
+  int teamMemberType;
 //  TeamVerifyStatus verifyStatus;
 //  SportType sportType;
 //  UserRole userType;
@@ -67,7 +68,7 @@ class Team extends MapperObject {
   @override
   bool operator == (other) {
     if (other is Team) {
-      return teamId == other.teamId;
+      return id == other.id;
     }
     return false;
   }

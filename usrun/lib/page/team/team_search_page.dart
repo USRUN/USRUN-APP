@@ -8,7 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/model/team_summary.dart';
+import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -33,7 +33,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
   bool remainingResults;
-  List teamList;
+  List<Team> teamList;
   String curSearchString;
   int curResultPage;
 
@@ -58,7 +58,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     super.initState();
     _isLoading = true;
     teamList = widget.defaultList;
-    curResultPage = 0;
+    curResultPage = 1;
     remainingResults = true;
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -73,14 +73,21 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
 
   void _findTeamByName() async {
-    Response<List<TeamSummary>> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
-    if(response.success){
+    if(!remainingResults) return;
+
+    remainingResults = false;
+    Response<dynamic> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
+
+    if(response.success && (response.object as List).isNotEmpty){
+      List<Team> toAdd = response.object;
       setState(() {
-        teamList.addAll(response.object);
+        teamList.addAll(toAdd);
       });
-      // if there's still more to load
-      if(response.object.length > 0)
+
+      if(response.object.length > 0) {
+        remainingResults = true;
         curResultPage += 1;
+      }
       else
         remainingResults = false;
     }
@@ -124,9 +131,35 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
       setState(() {
-        teamList = DemoData().suggestedTeamList;
+        teamList = widget.defaultList;
       });
     }
+  }
+
+  bool _isEmptyList() {
+    return ((this.teamList == null || this.teamList.length == 0) ? true : false);
+  }
+
+  Widget _buildEmptyList() {
+    String systemNoti =
+        "Can't find any team";
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize14,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _renderSuggestedTeams() {
@@ -135,22 +168,24 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels ==
             scrollInfo.metrics.maxScrollExtent) {
-          if(remainingResults)
+//          if(remainingResults)
             _findTeamByName();
         }
         return true; // just to clear a warning
       },
-      child: ListView.builder(
+      child: _isEmptyList()?
+      _buildEmptyList():
+      ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: teamList.length,
+          itemCount:(teamList!=null)?teamList.length:0,
           itemBuilder: (BuildContext ctxt, int index) {
-            String avatarImageURL = teamList[index]['avatarImageURL'];
-            String supportImageURL = teamList[index]['supportImageURL'];
-            String teamName = teamList[index]['teamName'];
+            String avatarImageURL = teamList[index].thumbnail;
+            String supportImageURL = teamList[index].thumbnail;
+            String teamName = teamList[index].teamName;
             String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(teamList[index]['athleteQuantity']);
-            String location = teamList[index]['location'];
+                .format(teamList[index].totalMember);
+            String location = "District " + teamList[index].district+ ", " +teamList[index].province;
 
             return AnimationConfiguration.staggeredList(
               position: index,

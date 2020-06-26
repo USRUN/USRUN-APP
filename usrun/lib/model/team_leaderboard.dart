@@ -4,11 +4,10 @@ import 'package:usrun/util/reflector.dart';
 
 import 'package:usrun/model/mapper_object.dart';
 
-
 @reflector
-class TeamSummary extends MapperObject {
-  int teamId;
-  String teamName;
-  int teamMemberCount;
-  String thumbnail;
+class TeamLeaderboard extends MapperObject {
+  int userId;
+  String displayName;
+  String avatar;
+  int totalDistance;
 }

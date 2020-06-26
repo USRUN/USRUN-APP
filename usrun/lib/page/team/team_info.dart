@@ -67,14 +67,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
   void _getTeamInfo() async{
     Response<Team> response = await TeamManager.getTeamById(widget.teamId);
-    if(response.success){
-      _teamDescription = response.object.description;
+    if(response.success && response.object != null){
+      _teamDescription = response.object.description == null?R.strings.description:response.object.description;
       _teamName = response.object.teamName;
       _teamBanner = response.object.banner;
       _teamMembers = response.object.totalMember;
       _teamPublicStatus = (response.object.privacy == 0?true:false);
-      _teamLocation = response.object.district + ' ' + response.object.province;
+      _teamLocation = "District " + response.object.district + ', ' + response.object.province;
       _teamAvatar = response.object.thumbnail;
+      _userRole = response.object.teamMemberType;
     }
   }
 
@@ -362,7 +363,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           ),
                           GestureDetector(
                             // TODO: Pass teamId to pushPage!!!
-                            onTap: () => pushPage(context, TeamLeaderboard()),
+                            onTap: () => pushPage(context, TeamLeaderboardPage(teamId:widget.teamId)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
@@ -470,7 +471,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 secondTitleLine: R.strings.members,
                                 pressBox: (id) {
                                   // TODO: Pass teamId to pushPage!!!
-                                  pushPage(context, TeamMember());
+                                  pushPage(context, TeamMemberPage());
                                 },
                               ),
                             ],

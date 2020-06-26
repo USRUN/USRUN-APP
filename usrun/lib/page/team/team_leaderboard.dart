@@ -6,20 +6,27 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
 
-class TeamLeaderboard extends StatefulWidget {
+class TeamLeaderboardPage extends StatefulWidget {
+  final int teamId;
+
+  TeamLeaderboardPage({@required this.teamId});
+
   @override
   _TeamLeaderboardState createState() => _TeamLeaderboardState();
 }
 
-class _TeamLeaderboardState extends State<TeamLeaderboard> {
+class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
   bool _isLoading;
-  List items;
+  List<TeamLeaderboard> items;
 
   /*
     + Structure of the "items" variable: 
@@ -38,8 +45,17 @@ class _TeamLeaderboardState extends State<TeamLeaderboard> {
   void initState() {
     super.initState();
     _isLoading = true;
-    items = DemoData().teamRankLead;
+
+    _getLeaderBoard();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+  }
+
+  void _getLeaderBoard() async{
+    Response<List<TeamLeaderboard>> teamLeaderboard = await TeamManager.getTeamLeaderBoard(widget.teamId);
+    if(teamLeaderboard.success && teamLeaderboard.object.length != 0){
+      items = teamLeaderboard.object;
+    }
   }
 
   void _updateLoading() {
@@ -126,10 +142,10 @@ class _TeamLeaderboardState extends State<TeamLeaderboard> {
             shrinkWrap: true,
             itemCount: items.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              String avatarImageURL = items[index]['avatarImageURL'];
-              String name = items[index]['name'];
+              String avatarImageURL = items[index].avatar;
+              String name = items[index].displayName;
               String distance = NumberFormat("#,##0.##", "en_US")
-                  .format(items[index]['distance']);
+                  .format(items[index].totalDistance);
 
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -174,7 +190,7 @@ class _TeamLeaderboardState extends State<TeamLeaderboard> {
                                 pressAvatarImage: () {
                                   // TODO: Implement here
                                   print(
-                                      "Pressing avatar image with index $index, no. ${index + 1}");
+                                      "Pressing avatar image with index $index, no. ${index + 1}, userId: ${items[index].userId}");
                                 },
                               ),
                               // Content

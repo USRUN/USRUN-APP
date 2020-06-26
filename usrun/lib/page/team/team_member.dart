@@ -8,6 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/model/team_member.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
@@ -16,7 +17,7 @@ import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
-class TeamMember extends StatefulWidget {
+class TeamMemberPage extends StatefulWidget {
   final tabBarItems = [
     {
       "tabName": R.strings.all,
@@ -47,14 +48,21 @@ class TeamMember extends StatefulWidget {
     },
   ];
 
+  final int teamId;
+  final int resultPerPage = 15;
+
+  TeamMemberPage({@required this.teamId});
+
   @override
-  _TeamMemberState createState() => _TeamMemberState();
+  _TeamMemberPageState createState() => _TeamMemberPageState();
 }
 
-class _TeamMemberState extends State<TeamMember> {
+class _TeamMemberPageState extends State<TeamMemberPage> {
   bool _isLoading = false;
   int _selectedTabIndex;
   List items = List();
+  int _curPage;
+  bool _remainingResults;
 
   final TextEditingController _nameController = TextEditingController();
   final String _nameLabel = R.strings.name;
@@ -79,29 +87,46 @@ class _TeamMemberState extends State<TeamMember> {
   void initState() {
     super.initState();
     _selectedTabIndex = 0;
+    _curPage = 1;
+    _remainingResults = true;
+
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _loadSuitableData(_selectedTabIndex));
   }
 
-  void _getAllMembers() {
+  void _getAllMembers() async {
     setState(() {
       _isLoading = !_isLoading;
+      _curPage = 1;
+      _remainingResults = true;
     });
 
-    // TODO: Implement function here
-    Future.delayed(Duration(milliseconds: 1000), () {
-      return items = DemoData().allTeamMember;
-    }).then((val) {
-      setState(() {
-        _isLoading = !_isLoading;
-        items = val;
-      });
+    if(_remainingResults) {
+      // TODO: Implement function here
+      Response<List<TeamMember>> response = await TeamManager
+          .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
+      if (response.success) {
+        setState(() {
+          items = response.object;
+          _curPage += 1;
+        });
+        if (response.object.length > 0)
+          _curPage += 1;
+        else
+          _remainingResults = false;
+      }
+    }
+
+    setState(() {
+      _isLoading = !_isLoading;
     });
   }
 
   void _getRequestingMembers() async {
     setState(() {
       _isLoading = !_isLoading;
+      _curPage = 0;
+      _remainingResults = true;
     });
 
     // TODO: Implement function here
@@ -120,6 +145,8 @@ class _TeamMemberState extends State<TeamMember> {
   void _getBlockingMembers() {
     setState(() {
       _isLoading = !_isLoading;
+      _curPage = 0;
+      _remainingResults = true;
     });
 
     // TODO: Implement function here
