@@ -11,6 +11,7 @@ class CustomCell extends StatelessWidget {
   final TextStyle titleStyle;
   final String subTitle;
   final TextStyle subTitleStyle;
+  final bool enableAddedContent;
   final String firstAddedTitle;
   final TextStyle firstAddedTitleStyle;
   final String firstAddedTitleIconURL;
@@ -45,6 +46,7 @@ class CustomCell extends StatelessWidget {
     this.titleStyle,
     this.subTitle = "",
     this.subTitleStyle,
+    this.enableAddedContent = true,
     this.firstAddedTitle = "",
     this.firstAddedTitleStyle,
     this.firstAddedTitleIconURL = "",
@@ -226,63 +228,65 @@ class CustomCell extends StatelessWidget {
                 )
               : Container()),
           // First & second added title
-          Container(
-            padding: EdgeInsets.only(
-              top: R.appRatio.appSpacing10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // First added title
-                ImageCacheManager.getImage(
-                  url: this.firstAddedTitleIconURL,
-                  width: this.firstAddedTitleIconSize,
-                  height: this.firstAddedTitleIconSize,
-                  fit: BoxFit.contain,
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: R.appRatio.appSpacing5,
-                    right: R.appRatio.appSpacing5,
+          (this.enableAddedContent
+              ? Container(
+                  padding: EdgeInsets.only(
+                    top: R.appRatio.appSpacing10,
                   ),
-                  width: R.appRatio.appWidth70,
-                  child: Text(
-                    this.firstAddedTitle,
-                    overflow: TextOverflow.ellipsis,
-                    style: (this.firstAddedTitleStyle ??
-                        TextStyle(
-                          fontSize: R.appRatio.appFontSize12,
-                          color: R.colors.contentText,
-                        )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // First added title
+                      ImageCacheManager.getImage(
+                        url: this.firstAddedTitleIconURL,
+                        width: this.firstAddedTitleIconSize,
+                        height: this.firstAddedTitleIconSize,
+                        fit: BoxFit.contain,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: R.appRatio.appSpacing5,
+                          right: R.appRatio.appSpacing10,
+                        ),
+                        constraints: BoxConstraints(maxWidth: R.appRatio.appWidth120),
+                        child: Text(
+                          this.firstAddedTitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: (this.firstAddedTitleStyle ??
+                              TextStyle(
+                                fontSize: R.appRatio.appFontSize12,
+                                color: R.colors.contentText,
+                              )),
+                        ),
+                      ),
+                      // Second added title
+                      ImageCacheManager.getImage(
+                        url: this.secondAddedTitleIconURL,
+                        width: this.secondAddedTitleIconSize,
+                        height: this.secondAddedTitleIconSize,
+                        fit: BoxFit.contain,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            left: R.appRatio.appSpacing5,
+                          ),
+                          child: Text(
+                            this.secondAddedTitle,
+                            overflow: TextOverflow.ellipsis,
+                            style: (this.firstAddedTitleStyle ??
+                                TextStyle(
+                                  fontSize: R.appRatio.appFontSize12,
+                                  color: R.colors.contentText,
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                // Second added title
-                ImageCacheManager.getImage(
-                  url: this.secondAddedTitleIconURL,
-                  width: this.secondAddedTitleIconSize,
-                  height: this.secondAddedTitleIconSize,
-                  fit: BoxFit.contain,
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      left: R.appRatio.appSpacing5,
-                    ),
-                    child: Text(
-                      this.secondAddedTitle,
-                      overflow: TextOverflow.ellipsis,
-                      style: (this.firstAddedTitleStyle ??
-                          TextStyle(
-                            fontSize: R.appRatio.appFontSize12,
-                            color: R.colors.contentText,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
+                )
+              : Container()),
         ],
       ),
     );

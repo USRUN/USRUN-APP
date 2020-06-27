@@ -14,13 +14,14 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/core/net/client.dart';
+// Used for max age, the default is 24 hours
+const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 24;
 
-const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
-const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
+// Used for max age, approximately 100 years (Not use the default above)
+const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365; 
 
-/// approximately 100 years
-const int IMAGE_CACHE_MAX_NUMBER = 100;
+// Used for max entries
+const int IMAGE_CACHE_MAX_NUMBER = 100; 
 
 class ImageCacheManager {
   static final DiskCache _customDiskCache = DiskCache();
@@ -103,7 +104,6 @@ class ImageCacheManager {
         );
       }
 
-      url = Client.imageUrl(url); // correct image
       Widget image = FadeInImage.assetNetwork(
         placeholder: R.images.smallDefaultImage,
         image: url,

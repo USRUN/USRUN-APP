@@ -7,15 +7,13 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
-import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
-import 'package:usrun/page/record/helper/record_cache.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
-import 'package:usrun/widget/custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_dialog.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
@@ -292,7 +290,7 @@ class _RecordUploadPage extends State<RecordUploadPage>{
       print("Uploaded");
       await RecordHelper.removeFile();
       this.widget.bloc.resetAll();
-      showCustomAlertDialog(context, 
+      showCustomAlertDialog(context,
       title: R.strings.notice, 
       content: "Seccessfully uploaded!", 
       firstButtonText: R.strings.ok, 

@@ -24,7 +24,9 @@ class User extends MapperObject {
   Gender gender;
   num weight;
   num height;
-  String accessToken;
+  // test tạm thời
+  String accessToken = "Bearer  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNTg1ODEwNDE5LCJleHAiOjE1ODY0MTUyMTl9.CSIQmHZgpde8TVX6PKZxpqBujqgKQ2Hsy5j4HSTPZvA";
+  // --------------
   DateTime lastLogin;
 
   DateTime addDate;
@@ -50,8 +52,6 @@ class User extends MapperObject {
   List<int> notifications;
 
   UserRole teamRole;
-
-
 
   @override
   bool operator == (other) {

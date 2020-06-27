@@ -18,6 +18,7 @@ class DrawerItem {
   String title;
   String icon;
   String activeIcon;
+
   DrawerItem(this.title, this.icon, this.activeIcon);
 }
 
@@ -41,7 +42,14 @@ class AppPage extends StatefulWidget {
   _AppPageState createState() => _AppPageState();
 }
 
-final List<Widget> pages = [RecordPage(),FeedPage(),EventPage(),TeamPage(), ProfilePage(),SettingPage()];
+final List<Widget> pages = [
+  RecordPage(),
+  FeedPage(),
+  EventPage(),
+  TeamPage(),
+  ProfilePage(),
+  SettingPage()
+];
 
 class _AppPageState extends State<AppPage> {
   int _selectedDrawerIndex = 0;
@@ -70,6 +78,8 @@ class _AppPageState extends State<AppPage> {
   }
 
   _onSelectItem(int index) {
+    if (_selectedDrawerIndex == index) return;
+
     setState(() {
       _selectedDrawerIndex = index;
     });
@@ -99,7 +109,7 @@ class _AppPageState extends State<AppPage> {
           onPressed: () {
             pushPage(
               context,
-              TeamSearchPage(autoFocusInput: true),
+              TeamSearchPage(autoFocusInput: true,defaultList: null),
             );
           },
         ));
@@ -129,15 +139,14 @@ class _AppPageState extends State<AppPage> {
     var drawerWidgets = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var item = widget.drawerItems[i];
-      drawerWidgets.add(new GestureDetector(
-        onTap: () => _onSelectItem(i),
-        child: new Container(
-          width: R.appRatio.appWidth150,
-          padding: EdgeInsets.only(
-            bottom: R.appRatio.appSpacing30,
-          ),
+      drawerWidgets.add(FlatButton(
+        onPressed: () => _onSelectItem(i),
+        padding: EdgeInsets.all(0),
+        textColor: Colors.white,
+        child: Container(
+          height: R.appRatio.appHeight60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
@@ -149,14 +158,18 @@ class _AppPageState extends State<AppPage> {
                   height: R.appRatio.appIconSize25,
                 ),
               ),
-              Text(
-                item.title.toUpperCase(),
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: R.appRatio.appFontSize18,
-                    color: i == _selectedDrawerIndex
-                        ? R.colors.oldYellow
-                        : Colors.white),
+              Container(
+                width: R.appRatio.appWidth100,
+                child: Text(
+                  item.title.toUpperCase(),
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: R.appRatio.appFontSize18,
+                      color: i == _selectedDrawerIndex
+                          ? R.colors.oldYellow
+                          : Colors.white),
+                ),
               ),
             ],
           ),
@@ -258,12 +271,11 @@ class _AppPageState extends State<AppPage> {
           )),
       body: NotificationListener<OverscrollIndicatorNotification>(
           child: WillPopScope(
-            child: IndexedStack(  
-              index: _selectedDrawerIndex,
-              children: pages,
-            ), 
-            onWillPop: () async => false
-          ),
+              child: IndexedStack(
+                index: _selectedDrawerIndex,
+                children: pages,
+              ),
+              onWillPop: () async => false),
           onNotification: (overscroll) {
             overscroll.disallowGlow();
           }),

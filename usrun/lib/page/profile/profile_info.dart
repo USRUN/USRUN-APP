@@ -21,15 +21,16 @@ class _ProfileInfoState extends State<ProfileInfo> {
 
   @override
   void initState() {
+    super.initState();
     _isLoading = true;
     _followingNumber = DemoData().ffItemList.length;
     _followerNumber = DemoData().ffItemList.length;
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -129,6 +130,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 height: R.appRatio.appSpacing20,
               ),
               // Team plans
+              /*
+              =======
+              UNUSED
+              =======
               TeamPlanList(
                 items: DemoData().teamPlanList,
                 labelTitle: R.strings.personalTeamPlans,
@@ -136,6 +141,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 enableScrollBackgroundColor: true,
                 pressItemFuction: _pressTeamPlanItemFunction,
               ),
+              */
             ],
           ));
   }

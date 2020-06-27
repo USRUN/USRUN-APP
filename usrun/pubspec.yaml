@@ -25,7 +25,7 @@ dependencies:
   flutter_map: ^0.8.2
   latlong: ^0.6.1
   geolocator: ^5.0.0
-  path: 1.7.0
+  path: 1.6.4
   location:
     path: ./myLibs/location_plugin
   sensors: ^0.4.1+8
@@ -124,6 +124,8 @@ flutter:
     - assets/myicons/icon-color-update-version.png
     - assets/myicons/icon-black-next.png
     - assets/myicons/icon-white-next.png
+    - assets/myicons/icon-color-edit-orange-background.png
+    - assets/myicons/icon-color-edit.png
     - assets/myicons/icon-white-edit.png
     - assets/myicons/icon-black-edit.png
     - assets/myicons/icon-color-finish.png
@@ -178,6 +180,8 @@ flutter:
     - assets/myicons/icon-white-gps.png
     - assets/myicons/icon-black-key.png
     - assets/myicons/icon-white-key.png
+    - assets/myicons/icon-black-star.png
+    - assets/myicons/icon-white-star.png
 
     - assets/myicons/icon-white-light-record.png
     - assets/myicons/icon-yellow-light-record.png

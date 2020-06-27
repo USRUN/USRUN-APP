@@ -219,6 +219,7 @@ class EditProfilePage extends StatelessWidget {
                         controller: _jobController,
                         enableFullWidth: false,
                         labelTitle: R.strings.whatYourJob,
+                        hintText: R.strings.whatYourJobHint,
                       ),
                     )
                   ],

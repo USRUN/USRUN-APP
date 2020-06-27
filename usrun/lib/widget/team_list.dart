@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:intl/intl.dart';
+import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/avatar_view.dart';
 
 class TeamList extends StatelessWidget {
@@ -139,18 +140,18 @@ class TeamList extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamList(List element) {
+  Widget _buildTeamList(List<Team> element) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: element.length,
-      itemBuilder: (BuildContext ctxt, int index) {
-        String id = element[index]['id'];
-        String name = element[index]['name'];
+      itemBuilder: (BuildContext ctx, int index) {
+        int id = element[index].id;
+        String name = element[index].teamName;
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-            .format(element[index]['athleteQuantity']);
-        String avatarImageURL = element[index]['avatarImageURL'];
-        String supportImageURL = element[index]['supportImageURL'];
+            .format((element[index].totalMember));
+        String avatarImageURL = element[index].thumbnail;
+        String supportImageURL = element[index].thumbnail;
 
         return Container(
           padding: EdgeInsets.only(
