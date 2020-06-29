@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/setting/about_us.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
+import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/widget/line_button.dart';
-
-import '../../core/helper.dart';
-import '../../manager/user_manager.dart';
-import '../welcome/welcome_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override

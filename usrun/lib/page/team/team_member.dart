@@ -8,7 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
-import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -403,7 +403,7 @@ class _TeamMemberState extends State<TeamMember> {
   void _showCustomDialog(index) async {
     switch (index) {
       case 0: // Invite
-        await showComplexCustomDialog(
+        await showCustomComplexDialog(
           context: context,
           headerContent: R.strings.inviteNewMember,
           descriptionContent: R.strings.inviteNewMemberContent,
@@ -415,15 +415,17 @@ class _TeamMemberState extends State<TeamMember> {
               hintText: _nameLabel,
             ),
           ],
-          submitBtnContent: R.strings.invite,
-          submitBtnFunction: () {
+          firstButtonText: R.strings.invite.toUpperCase(),
+          firstButtonFunction: () {
             // TODO: Implement function here
             print("Invite new member");
           },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
         );
         break;
       case 1: // Kick
-        await showComplexCustomDialog(
+        await showCustomComplexDialog(
           context: context,
           headerContent: R.strings.kickAMember,
           descriptionContent: R.strings.kickAMemberContent,
@@ -435,15 +437,17 @@ class _TeamMemberState extends State<TeamMember> {
               hintText: _nameLabel,
             ),
           ],
-          submitBtnContent: R.strings.kick,
-          submitBtnFunction: () {
+          firstButtonText: R.strings.kick.toUpperCase(),
+          firstButtonFunction: () {
             // TODO: Implement function here
             print("Kick a member");
           },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
         );
         break;
       case 2: // Block
-        await showComplexCustomDialog(
+        await showCustomComplexDialog(
           context: context,
           headerContent: R.strings.blockAPerson,
           descriptionContent: R.strings.blockAPersonContent,
@@ -455,11 +459,13 @@ class _TeamMemberState extends State<TeamMember> {
               hintText: _nameLabel,
             ),
           ],
-          submitBtnContent: R.strings.block,
-          submitBtnFunction: () {
+          firstButtonText: R.strings.block.toUpperCase(),
+          firstButtonFunction: () {
             // TODO: Implement function here
             print("Block a person");
           },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
         );
         break;
       default:

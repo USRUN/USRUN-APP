@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
-import 'package:usrun/model/week_date_time.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 
 class MyWeekList extends StatefulWidget {
   final WeekDateTime selectedWeek;
