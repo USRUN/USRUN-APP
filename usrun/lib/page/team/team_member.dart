@@ -9,6 +9,7 @@ import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
@@ -18,6 +19,18 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamMemberPage extends StatefulWidget {
+  final adminTabBarItems = [
+    {
+      "tabName": R.strings.all,
+    },
+    {
+      "tabName": R.strings.requesting,
+    },
+    {
+      "tabName": R.strings.blocking,
+    }
+  ];
+
   final tabBarItems = [
     {
       "tabName": R.strings.all,
@@ -49,9 +62,10 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final int teamId;
+  final int teamMemberType;
   final int resultPerPage = 15;
 
-  TeamMemberPage({@required this.teamId});
+  TeamMemberPage({@required this.teamId, @required this.teamMemberType});
 
   @override
   _TeamMemberPageState createState() => _TeamMemberPageState();
@@ -60,9 +74,10 @@ class TeamMemberPage extends StatefulWidget {
 class _TeamMemberPageState extends State<TeamMemberPage> {
   bool _isLoading = false;
   int _selectedTabIndex;
-  List items = List();
+  List<User> items = List();
   int _curPage;
   bool _remainingResults;
+  List tabItems;
 
   final TextEditingController _nameController = TextEditingController();
   final String _nameLabel = R.strings.name;
@@ -90,86 +105,83 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _curPage = 1;
     _remainingResults = true;
 
+    if(widget.teamMemberType < 3){
+      tabItems = widget.adminTabBarItems;
+    } else{
+      tabItems = widget.tabBarItems;
+    }
+
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _loadSuitableData(_selectedTabIndex));
   }
 
   void _getAllMembers() async {
-    setState(() {
-      _isLoading = !_isLoading;
-      _curPage = 1;
-      _remainingResults = true;
-    });
+    if(!_remainingResults) return;
+    _remainingResults = false;
 
-    if(_remainingResults) {
+    if (_remainingResults) {
       // TODO: Implement function here
-      Response<List<TeamMember>> response = await TeamManager
+      Response<dynamic> response = await TeamManager
           .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
-      if (response.success) {
+
+      if (response.success && (response.object as List).isNotEmpty) {
+        List<User> toAdd = response.object;
         setState(() {
-          items = response.object;
-          _curPage += 1;
+          items.addAll(toAdd);
         });
-        if (response.object.length > 0)
+
+        if (response.object.length > 0) {
+          _remainingResults = true;
           _curPage += 1;
+        }
         else
           _remainingResults = false;
       }
     }
-
-    setState(() {
-      _isLoading = !_isLoading;
-    });
   }
 
-  void _getRequestingMembers() async {
-    setState(() {
-      _isLoading = !_isLoading;
-      _curPage = 0;
-      _remainingResults = true;
-    });
+  void _getMemberByType(int memberType) async {
+    if(!_remainingResults) return;
+    _remainingResults = false;
 
-    // TODO: Implement function here
-    Future.delayed(Duration(milliseconds: 1000), () {
-      return items = DemoData().requestingTeamMember;
-    }).then((val) {
-      setState(() {
-        _isLoading = !_isLoading;
-        items = val;
-      });
-    });
+    if (_remainingResults) {
+      // TODO: Implement function here
+      Response<dynamic> response = await TeamManager
+          .getTeamMemberByType(widget.teamId, memberType,_curPage, widget.resultPerPage);
 
-//    Response<List<TeamMember>> teamMembers = await TeamManager.getTeamMemberByType(widget.teamId, 1);
-  }
+      if (response.success && (response.object as List).isNotEmpty) {
+        List<User> toAdd = response.object;
+        setState(() {
+          items.addAll(toAdd);
+        });
 
-  void _getBlockingMembers() {
-    setState(() {
-      _isLoading = !_isLoading;
-      _curPage = 0;
-      _remainingResults = true;
-    });
-
-    // TODO: Implement function here
-    Future.delayed(Duration(milliseconds: 1000), () {
-      return items = DemoData().blockingTeamMember;
-    }).then((val) {
-      setState(() {
-        _isLoading = !_isLoading;
-        items = val;
-      });
-    });
+        if (response.object.length > 0) {
+          _remainingResults = true;
+          _curPage += 1;
+        }
+        else
+          _remainingResults = false;
+      }
+    }
   }
 
   void _loadSuitableData(tabIndex) {
+    //  OWNER(1),
+    //  ADMIN(2),
+    //  MEMBER(3),
+    //  PENDING(4),
+    //  BLOCKED(5);
+    // GUESS (6);
+
     switch (tabIndex) {
       case 0: // All
         _getAllMembers();
         break;
       case 1: // Requesting
-        _getRequestingMembers();
+        _getMemberByType(4);
         break;
       case 2: // Blocking
-        _getBlockingMembers();
+        _getMemberByType(5);
         break;
       default:
         break;
@@ -179,6 +191,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   _onSelectItem(int tabIndex) {
     if (_selectedTabIndex == tabIndex) return;
     setState(() {
+      _curPage = 1;
+      _remainingResults = true;
       _selectedTabIndex = tabIndex;
       _loadSuitableData(tabIndex);
     });
@@ -259,7 +273,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         children: <Widget>[
           // TabBar
           CustomTabBarStyle03(
-            items: widget.tabBarItems,
+            items: tabItems,
             selectedTabIndex: _selectedTabIndex,
             pressTab: _onSelectItem,
           ),
@@ -295,6 +309,15 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         right: R.appRatio.appSpacing15,
       ),
       child: AnimationLimiter(
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels ==
+            scrollInfo.metrics.maxScrollExtent) {
+              if(_remainingResults)
+            _getAllMembers();
+          }
+          return true; // just to clear a warning
+        },
         child: ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
@@ -319,18 +342,20 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               );
             }),
       ),
+      )
     );
   }
 
   Widget _renderCustomCell(index) {
-    String avatarImageURL = items[index]['avatarImageURL'];
-    String supportImageURL = items[index]['supportImageURL'];
-    String name = items[index]['name'];
-    String location = items[index]['location'];
+    String avatarImageURL = items[index].img;
+    String supportImageURL = items[index].img;
+    String name = items[index].name;
+    String location = items[index].city;
 
     switch (_selectedTabIndex) {
       case 0: // All
-        bool isFollowing = items[index]['isFollowing'];
+      // TODO: IMPLEMENT FOLLOWING FEATURES
+        bool isFollowing = false;
         return CustomCell(
           avatarView: AvatarView(
             avatarImageURL: avatarImageURL,

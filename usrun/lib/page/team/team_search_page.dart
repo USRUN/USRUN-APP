@@ -168,7 +168,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels ==
             scrollInfo.metrics.maxScrollExtent) {
-//          if(remainingResults)
+          if(remainingResults)
             _findTeamByName();
         }
         return true; // just to clear a warning

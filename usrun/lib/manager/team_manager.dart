@@ -95,10 +95,10 @@ class TeamManager{
 
     if(!res.success || (res.object as List).length == 0) return res;
 
-    List<TeamMember> teamMembers = (res.object as List)
-    .map((item) => MapperObject.create<TeamMember>(item)).toList();
+    List<User> teamMembers = (res.object as List)
+    .map((item) => MapperObject.create<User>(item)).toList();
 
-    Response<List<TeamMember>> response = new Response(
+    Response<List<User>> response = new Response(
         errorCode: res.errorCode,
         success: res.success,
         object: teamMembers
@@ -107,20 +107,23 @@ class TeamManager{
     return response;
   }
 
-  static Future<Response> getTeamMemberByType(int teamId, int teamMemberType) async{
+  static Future<Response> getTeamMemberByType(int teamId, int teamMemberType, int pageNum, int perPage) async{
     Map<String,dynamic> params = {
       'teamId': teamId,
-      'teamMemberType': teamMemberType
+      'memberType': teamMemberType,
+      'page': pageNum,
+      'count': perPage
     };
 
-    Response<dynamic> res = await Client.post('/team/getAllTeamMember',params);
+    // NOT YET IMPLEMENTED ON BACKEND
+    Response<dynamic> res = await Client.post('/team/getUserByMemberType',params);
 
     if(!res.success || (res.object as List).length == 0) return res;
 
-    List<TeamMember> teamMembers = (res.object as List)
-        .map((item) => MapperObject.create<TeamMember>(item)).toList();
+    List<User> teamMembers = (res.object as List)
+        .map((item) => MapperObject.create<User>(item)).toList();
 
-    Response<List<TeamMember>> response = new Response(
+    Response<List<User>> response = new Response(
         errorCode: res.errorCode,
         success: res.success,
         object: teamMembers

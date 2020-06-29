@@ -46,14 +46,16 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamLeadingDistance = 285;
   int _teamNewMemThisWeek = 492;
   int _teamMembers = 29472;
-  int _userRole = 3;
+  int _userRole = 4;
 
   /*
     + userRole:
-      - 0: Guess
-      - 1: Member
-      - 2: Admin
-      - 3: Owner
+      //  OWNER(1),
+      //  ADMIN(2),
+      //  MEMBER(3),
+      //  PENDING(4),
+      //  BLOCKED(5);
+      // GUESS (6);
   */
 
   @override
@@ -471,7 +473,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 secondTitleLine: R.strings.members,
                                 pressBox: (id) {
                                   // TODO: Pass teamId to pushPage!!!
-                                  pushPage(context, TeamMemberPage());
+                                  pushPage(context, TeamMemberPage(teamId: widget.teamId,teamMemberType: _userRole,));
                                 },
                               ),
                             ],

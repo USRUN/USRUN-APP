@@ -56,6 +56,7 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
     if(teamLeaderboard.success && teamLeaderboard.object.length != 0){
       items = teamLeaderboard.object;
     }
+    else items = null;
   }
 
   void _updateLoading() {
