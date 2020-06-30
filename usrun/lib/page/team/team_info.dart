@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,16 +72,25 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   void _getTeamInfo() async{
     Response<Team> response = await TeamManager.getTeamById(widget.teamId);
     if(response.success && response.object != null){
-      _teamDescription = response.object.description == null?R.strings.description:response.object.description;
-      _teamName = response.object.teamName;
-      _teamBanner = response.object.banner;
-      _teamMembers = response.object.totalMember;
-      _teamPublicStatus = (response.object.privacy == 0?true:false);
-      _teamLocation = "District " + response.object.district + ', ' + response.object.province;
-      _teamAvatar = response.object.thumbnail;
+      mapTeamInfo(response.object);
       _userRole = response.object.teamMemberType;
     }
   }
+
+  void mapTeamInfo(Team toMap){
+    setState(() {
+      _teamDescription =
+      toMap.description == null ? R.strings.description : toMap.description;
+      _teamName = toMap.teamName;
+      _teamBanner = toMap.banner;
+      _teamMembers = toMap.totalMember;
+      _teamPublicStatus = (toMap.privacy == 0 ? true : false);
+      _teamLocation = toMap.province.toString();
+      _teamAvatar = toMap.thumbnail;
+    });
+  }
+
+
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
@@ -96,36 +105,45 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     print("Pressing share team info");
   }
 
-  _changeTeamBanner() async{
-    // TODO: Code here
-    if (_userRole > 2) return;
-    print("Changing banner image");
+  _changeTeamImage(String fieldToChange) async{
+    Map<String,dynamic> reqParam = Map();
+
+    if (_userRole > 2) {
+      showAlert(context, R.strings.error, "You are not authorized to change $fieldToChange",null);
+    }
+    print("Changing $fieldToChange image");
+
     try {
       var image = await pickImage(context);
       if (image != null) {
         // call API update Team
+        List<int> imageBytes = image.readAsBytesSync();
+        String base64Image = "data:image/${image.path.split('.').last};base64,${Base64Codec().encode(imageBytes)}";
+        reqParam[fieldToChange] = base64Image;
+        reqParam['teamId'] = widget.teamId;
+        Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
+
+        if(updatedTeam.success && updatedTeam.object != null) {
+          mapTeamInfo(updatedTeam.object);
+        } else{
+          showAlert(context,R.strings.error,updatedTeam.errorMessage,null);
+        }
       }
     } catch (error) {
       print(error);
+      showAlert(context,R.strings.error,error.toString(),null);
     }
+  }
+
+  _changeTeamBanner() async{
+    _changeTeamImage("banner");
   }
 
   _changeTeamAvatar() async {
-    // TODO: Code here
-    if (_userRole > 2) return;
-    print("Changing avatar image");
-    try {
-      var image = await pickImage(context);
-      if (image != null) {
-        // call API update Team
-      }
-    } catch (error) {
-      print(error);
-    }
+    _changeTeamImage("thumbnail");
   }
 
   _joinTeamFunction() async {
-    print("Hey");
     if(_userRole == 6){
     print("Joining team");
     Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);

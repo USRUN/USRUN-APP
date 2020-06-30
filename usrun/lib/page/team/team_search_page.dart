@@ -187,7 +187,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
             String teamName = teamList[index].teamName;
             String athleteQuantity = NumberFormat("#,##0", "en_US")
                 .format(teamList[index].totalMember);
-            String location = "District " + teamList[index].district+ ", " +teamList[index].province;
+            String location = teamList[index].province.toString();
 
             return AnimationConfiguration.staggeredList(
               position: index,

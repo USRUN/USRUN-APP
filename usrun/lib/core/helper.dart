@@ -256,7 +256,7 @@ void hideLoading(BuildContext context) {
   }
 }
 
-Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double maxHeight = 1920}) async {
+Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxHeight = 600}) async {
 
   Widget w = Material(
     type: MaterialType.transparency,

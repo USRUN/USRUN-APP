@@ -42,13 +42,14 @@ class TeamManager{
 
     if(!res.success || res.object == null) return res;
 
-    Response<Team> response = new Response(
-        errorCode: res.errorCode,
-        success: res.success,
-        object: MapperObject.create<Team>(res.object)
-    );
-    return response;
+        Response<Team> response = new Response(
+            errorCode: res.errorCode,
+            success: res.success,
+            object: MapperObject.create<Team>(res.object)
+        );
+        return response;
   }
+
 
   static Future<Response> getTeamSuggestion(int howMany) async{
     Map<String,dynamic> params = {
