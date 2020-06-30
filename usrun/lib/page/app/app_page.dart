@@ -13,6 +13,8 @@ import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class DrawerItem {
   String title;
@@ -52,6 +54,8 @@ final List<Widget> pages = [
 ];
 
 class _AppPageState extends State<AppPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int _selectedDrawerIndex = 0;
   String _avatar = R.images.avatarQuocTK;
   String _supportAvatar = R.images.avatar;
@@ -69,7 +73,29 @@ class _AppPageState extends State<AppPage> {
     Navigator.of(context).pop();
   }
 
+  _openDrawer() {
+    _scaffoldKey.currentState.openDrawer();
+  }
+
   List<Widget> _appBarActionList() {
+    Widget wrapWidget(String iconUrl, Function func) {
+      return Container(
+        width: R.appRatio.appWidth60,
+        child: FlatButton(
+          onPressed: func,
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: iconUrl,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+
     List<Widget> list = List<Widget>();
     switch (_selectedDrawerIndex) {
       case 0: // Record page
@@ -82,29 +108,25 @@ class _AppPageState extends State<AppPage> {
         list.add(Container());
         break;
       case 3: // Team page
-        list.add(IconButton(
-          icon: Image.asset(
+        list.add(
+          wrapWidget(
             R.myIcons.appBarSearchBtn,
-            width: R.appRatio.appAppBarIconSize,
+            () {
+              pushPage(
+                context,
+                TeamSearchPage(autoFocusInput: true),
+              );
+            },
           ),
-          onPressed: () {
-            pushPage(
-              context,
-              TeamSearchPage(autoFocusInput: true),
-            );
-          },
-        ));
+        );
         break;
       case 4: // Profile page
-        list.add(IconButton(
-          icon: Image.asset(
+        list.add(
+          wrapWidget(
             R.myIcons.appBarEditBtn,
-            width: R.appRatio.appAppBarIconSize,
+            () => pushPage(context, EditProfilePage()),
           ),
-          onPressed: () {
-            pushPage(context, EditProfilePage());
-          },
-        ));
+        );
         break;
       case 5: // Setting page
         list.add(Container());
@@ -158,7 +180,8 @@ class _AppPageState extends State<AppPage> {
       ));
     }
 
-    return Scaffold(
+    Widget _buildElement = Scaffold(
+      key: _scaffoldKey,
       appBar: GradientAppBar(
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -167,6 +190,17 @@ class _AppPageState extends State<AppPage> {
           style: TextStyle(
             color: Colors.white,
             fontSize: R.appRatio.appFontSize22,
+          ),
+        ),
+        leading: FlatButton(
+          onPressed: () => _openDrawer(),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.menuIcon,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
           ),
         ),
         actions: _appBarActionList(),
@@ -254,16 +288,27 @@ class _AppPageState extends State<AppPage> {
         ),
       ),
       body: NotificationListener<OverscrollIndicatorNotification>(
-          child: WillPopScope(
-              child: IndexedStack(
-                index: _selectedDrawerIndex,
-                children: pages,
-              ),
-              onWillPop: () async => false),
+          child: IndexedStack(
+            index: _selectedDrawerIndex,
+            children: pages,
+          ),
           onNotification: (overScroll) {
             overScroll.disallowGlow();
             return false;
           }),
+    );
+
+    return WillPopScope(
+      child: _buildElement,
+      onWillPop: () async {
+        if (_scaffoldKey.currentState.isDrawerOpen) {
+          pop(context);
+          return false;
+        } else {
+          // TODO: return await showCustomExitDialog(context);
+          return false;
+        }
+      },
     );
   }
 }

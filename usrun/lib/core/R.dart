@@ -522,6 +522,7 @@ class _Colors {
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
   Color gray515151                    = Color(0xFF515151);
+  Color gray808080                    = Color(0xFF808080);
   Color redPink                       = Color(0xFFFF5C4E);
   Color oldYellow                     = Color(0xFFF9C86A);
   Color labelText                     = Color(0xFFFD632C);
@@ -619,7 +620,11 @@ class _MyIcons {
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
+  final String menuIcon = 'assets/myicons/icon-white-hamburger-menu.png';
   final String nextIcon = 'assets/myicons/icon-black-next.png';
+  final String chevronLeftIcon = 'assets/myicons/icon-black-chevron-left.png';
+  final String chevronRightIcon = 'assets/myicons/icon-black-chevron-right.png';
+  final String repeatIcon = 'assets/myicons/icon-black-repeat.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
   final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
   final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
@@ -868,6 +873,12 @@ class Strings {
   String signIn;
   String signUp;
   String resetPassword;
+
+  String caution;
+  String exitApp;
+  String yes;
+  String no;
+  String close;
 
   String profile;
   String editProfile;

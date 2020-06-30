@@ -13,6 +13,7 @@ import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -35,12 +36,16 @@ class SignUpPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,

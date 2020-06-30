@@ -5,6 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _currentPWController = TextEditingController();
@@ -18,12 +19,16 @@ class ChangePasswordPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -33,16 +38,24 @@ class ChangePasswordPage extends StatelessWidget {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarCheckBtn,
-              width: R.appRatio.appAppBarIconSize,
+          Container(
+            width: R.appRatio.appWidth60,
+            child: FlatButton(
+              onPressed: () {
+                // TODO: Function for changing password
+                FocusScope.of(context).requestFocus(new FocusNode());
+                // _yourFunction('yourParameter'),
+              },
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.appBarCheckBtn,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,
+              ),
             ),
-            // TODO: Function for changing password
-            onPressed: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-              // _yourFunction('yourParameter'),
-            },
           ),
         ],
       ),

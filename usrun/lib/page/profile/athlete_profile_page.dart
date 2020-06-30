@@ -13,6 +13,7 @@ import 'package:usrun/widget/stats_section.dart';
 import 'package:usrun/widget/team_list.dart';
 import 'package:usrun/widget/team_plan_list.dart';
 import 'package:usrun/widget/ui_button.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 // Demo data
 import 'package:usrun/demo_data.dart';
@@ -194,12 +195,16 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,

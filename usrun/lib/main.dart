@@ -103,7 +103,6 @@ class _SplashPageState extends State<StatefulWidget> {
       () => initialize(context),
     ).then((_) {
       if (UserManager.currentUser.userId == null) {
-        // show welcome
         showPage(context, WelcomePage());
       } else {
         showPage(context, AppPage());

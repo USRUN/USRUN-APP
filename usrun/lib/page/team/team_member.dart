@@ -13,6 +13,7 @@ import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamMember extends StatefulWidget {
   final tabBarItems = [
@@ -189,12 +190,16 @@ class _TeamMemberState extends State<TeamMember> {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -205,19 +210,23 @@ class _TeamMemberState extends State<TeamMember> {
         ),
         actions: <Widget>[
           Container(
-            padding: EdgeInsets.only(
-              right: R.appRatio.appSpacing15 - 2,
-            ),
-            child: CustomPopupMenu(
-              items: widget.popUpMenu,
-              onSelected: (index) {
-                _showCustomDialog(index);
-              },
-              popupImage: Image.asset(
-                R.myIcons.appBarPopupMenuIcon,
-                width: R.appRatio.appAppBarIconSize,
-                height: R.appRatio.appAppBarIconSize,
-                fit: BoxFit.contain,
+            width: R.appRatio.appWidth60,
+            child: FlatButton(
+              onPressed: () {},
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: CustomPopupMenu(
+                items: widget.popUpMenu,
+                onSelected: (index) {
+                  _showCustomDialog(index);
+                },
+                popupImage: Image.asset(
+                  R.myIcons.appBarPopupMenuIcon,
+                  width: R.appRatio.appAppBarIconSize,
+                  height: R.appRatio.appAppBarIconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),

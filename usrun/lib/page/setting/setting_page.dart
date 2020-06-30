@@ -8,6 +8,7 @@ import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/widget/line_button.dart';
+import 'package:usrun/widget/web_inapp_page.dart';
 
 import '../../core/helper.dart';
 import '../../manager/user_manager.dart';

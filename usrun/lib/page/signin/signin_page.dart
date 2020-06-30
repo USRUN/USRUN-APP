@@ -14,8 +14,7 @@ import 'package:usrun/page/reset_password/reset_password.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
-
-import '../../core/helper.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -28,12 +27,16 @@ class SignInPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,

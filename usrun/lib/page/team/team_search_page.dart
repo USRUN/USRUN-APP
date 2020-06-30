@@ -11,6 +11,7 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamSearchPage extends StatefulWidget {
   final bool autoFocusInput;
@@ -161,12 +162,16 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         title: InputField(

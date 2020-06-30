@@ -122,12 +122,16 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: R.colors.appBackground,
         appBar: GradientAppBar(
-          leading: new IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarBackBtn,
-              width: R.appRatio.appAppBarIconSize,
-            ),
+          leading: FlatButton(
             onPressed: () => pop(context),
+            padding: EdgeInsets.all(0.0),
+            splashColor: R.colors.lightBlurMajorOrange,
+            textColor: Colors.white,
+            child: ImageCacheManager.getImage(
+              url: R.myIcons.appBarBackBtn,
+              width: R.appRatio.appAppBarIconSize,
+              height: R.appRatio.appAppBarIconSize,
+            ),
           ),
           gradient: R.colors.uiGradient,
           centerTitle: true,
@@ -137,12 +141,20 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                 color: Colors.white, fontSize: R.appRatio.appFontSize22),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Image.asset(
-                R.myIcons.appBarShareBtn,
-                width: R.appRatio.appAppBarIconSize,
+            Container(
+              width: R.appRatio.appWidth60,
+              child: FlatButton(
+                onPressed: () => _shareTeamInfo(),
+                padding: EdgeInsets.all(0.0),
+                splashColor: R.colors.lightBlurMajorOrange,
+                textColor: Colors.white,
+                child: ImageCacheManager.getImage(
+                  url: R.myIcons.appBarShareBtn,
+                  width: R.appRatio.appAppBarIconSize,
+                  height: R.appRatio.appAppBarIconSize,
+                  color: Colors.white,
+                ),
               ),
-              onPressed: () => _shareTeamInfo(),
             ),
           ],
         ),

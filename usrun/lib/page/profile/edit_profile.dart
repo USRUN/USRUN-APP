@@ -8,6 +8,7 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class EditProfilePage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -62,12 +63,16 @@ class EditProfilePage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -77,12 +82,20 @@ class EditProfilePage extends StatelessWidget {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarCheckBtn,
-              width: R.appRatio.appAppBarIconSize,
+          Container(
+            width: R.appRatio.appWidth60,
+            child: FlatButton(
+              onPressed: () => _updateProfile(context),
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.appBarCheckBtn,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,
+              ),
             ),
-            onPressed: () => _updateProfile(context),
           ),
         ],
       ),
@@ -99,20 +112,23 @@ class EditProfilePage extends StatelessWidget {
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
-                AvatarView(
-                  avatarImageURL: R.images.avatarQuocTK,
-                  avatarImageSize: R.appRatio.appAvatarSize150,
-                  enableSquareAvatarImage: false,
-                  pressAvatarImage: () {
-                    // TODO: A function for doing something
-                    // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                    print(R.strings.nothingToShow);
-                  },
-                  avatarBoxBorder: Border.all(
-                    color: R.colors.majorOrange,
-                    width: 2,
+                Align(
+                  alignment: Alignment.center,
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarQuocTK,
+                    avatarImageSize: R.appRatio.appAvatarSize150,
+                    enableSquareAvatarImage: false,
+                    pressAvatarImage: () {
+                      // TODO: A function for doing something
+                      // Example: Click to change avatar of my profile or my teams, or direct to other pages.
+                      print(R.strings.nothingToShow);
+                    },
+                    avatarBoxBorder: Border.all(
+                      color: R.colors.majorOrange,
+                      width: 2,
+                    ),
+                    supportImageURL: R.images.avatar,
                   ),
-                  supportImageURL: R.images.avatar,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
