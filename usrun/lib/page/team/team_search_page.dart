@@ -9,6 +9,7 @@ import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
+import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -56,10 +57,16 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   @override
   void initState() {
     super.initState();
+    curSearchString = "";
     _isLoading = true;
-    teamList = widget.defaultList;
     curResultPage = 1;
     remainingResults = true;
+    teamList = List();
+
+    if(widget.defaultList != null)
+      teamList = widget.defaultList;
+    else _findTeamByName();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
@@ -82,14 +89,9 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
       List<Team> toAdd = response.object;
       setState(() {
         teamList.addAll(toAdd);
-      });
-
-      if(response.object.length > 0) {
         remainingResults = true;
         curResultPage += 1;
-      }
-      else
-        remainingResults = false;
+      });
     }
   }
 
@@ -142,7 +144,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
   Widget _buildEmptyList() {
     String systemNoti =
-        "Can't find any team";
+        "No result";
 
     return Center(
       child: Container(
@@ -228,6 +230,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                       secondAddedTitleIconSize: R.appRatio.appIconSize15,
                       pressInfo: () {
                         print("Pressing info");
+                        pushPage(context, TeamInfoPage(teamId: teamList[index].id));
                       },
                     ),
                   ),

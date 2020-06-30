@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -94,20 +96,59 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     print("Pressing share team info");
   }
 
-  _changeTeamBanner() {
+  _changeTeamBanner() async{
     // TODO: Code here
+    if (_userRole > 2) return;
     print("Changing banner image");
+    try {
+      var image = await pickImage(context);
+      if (image != null) {
+        // call API update Team
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 
-  _changeTeamAvatar() {
+  _changeTeamAvatar() async {
     // TODO: Code here
-    if (_userRole < 2) return;
+    if (_userRole > 2) return;
     print("Changing avatar image");
+    try {
+      var image = await pickImage(context);
+      if (image != null) {
+        // call API update Team
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 
-  _joinTeamFunction() {
-    // TODO: Code here
+  _joinTeamFunction() async {
+    print("Hey");
+    if(_userRole == 6){
     print("Joining team");
+    Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);
+
+    if(response.success){
+      setState(() {
+        _userRole = 4;
+      });
+    } else {
+      showAlert(context, R.strings.error, response.errorMessage, null);
+    }}
+    else {
+      print("Cancel join team");
+      Response<dynamic> response = await TeamManager.cancelJoinTeam(widget.teamId);
+
+      if(response.success){
+        setState(() {
+          _userRole = 6;
+        });
+      } else {
+        showAlert(context, R.strings.error, response.errorMessage, null);
+      }
+    }
   }
 
   _makeTeamPublic(status) {
@@ -187,7 +228,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           height: R.appRatio.appHeight250,
                           fit: BoxFit.cover,
                         ),
-                        (_userRole < 2
+                        (_userRole > 2
                             ? Container()
                             : GestureDetector(
                                 onTap: () => _changeTeamBanner(),
@@ -242,7 +283,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             width: 1,
                             color: R.colors.majorOrange,
                           ),
-                          supportImageURL: (_userRole < 2
+                          supportImageURL: (_userRole > 2
                               ? null
                               : R.myIcons.colorEditIconOrangeBg),
                           pressAvatarImage: () => _changeTeamAvatar(),
@@ -269,7 +310,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                       child: ExpandableText(_teamDescription),
                     ),
                     // Join button
-                    (_userRole == 0
+                    (_userRole > 3
                         ? Padding(
                             padding: EdgeInsets.only(
                               left: R.appRatio.appSpacing15,
@@ -280,9 +321,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 width: R.appRatio.appWidth381,
                                 height: R.appRatio.appHeight50,
                                 gradient: R.colors.uiGradient,
-                                text: R.strings.join,
+                                text: _userRole == 6 ? R.strings.join: "Cancel join request",
                                 textSize: R.appRatio.appFontSize20,
-                                onTap: () => _joinTeamFunction),
+                                onTap: () => _joinTeamFunction()),
                           )
                         : Container()),
                     // Symbol
@@ -483,7 +524,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     ),
                     // Tool zone
                     // TODO: Pass teamId to pushPage!!!
-                    (_userRole < 2
+                    (_userRole > 2
                         ? Container()
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -501,7 +542,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 ),
                               ),
                               // Make team public
-                              (_userRole == 3
+                              (_userRole < 3
                                   ? Padding(
                                       padding: EdgeInsets.only(
                                         bottom: R.appRatio.appSpacing15,
@@ -560,7 +601,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 ),
                               ),
                               // Grant role to mantember
-                              (_userRole == 3
+                              (_userRole < 3
                                   ? Padding(
                                       padding: EdgeInsets.only(
                                         bottom: R.appRatio.appSpacing15,
@@ -583,7 +624,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                     )
                                   : Container()),
                               // Transfer ownership
-                              (_userRole == 3
+                              (_userRole == 1
                                   ? Padding(
                                       padding: EdgeInsets.only(
                                         bottom: R.appRatio.appSpacing15,
@@ -606,7 +647,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                     )
                                   : Container()),
                               // Delete team
-                              (_userRole == 3
+                              (_userRole == 1
                                   ? LineButton(
                                       mainText: R.strings.deleteTeamTitle,
                                       mainTextFontSize:

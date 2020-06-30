@@ -109,7 +109,7 @@ class _AppPageState extends State<AppPage> {
           onPressed: () {
             pushPage(
               context,
-              TeamSearchPage(autoFocusInput: true,defaultList: null),
+              TeamSearchPage(autoFocusInput: false,defaultList: null),
             );
           },
         ));

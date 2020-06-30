@@ -33,10 +33,15 @@ class _TeamPageState extends State<TeamPage> {
     _isLoading = true;
     _teamSuggestionList = List();
     _myTeamList = List();
-    _getMyTeamList(UserManager.currentUser.userId);
-    _getSuggestionList(widget.suggestionLength);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+    WidgetsBinding.instance.addPostFrameCallback((_) =>_getMyTeamList(UserManager.currentUser.userId));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getSuggestionList(widget.suggestionLength));
+  }
+  
+  void reloadTeamList(){
+    _getMyTeamList(UserManager.currentUser.userId);
+    _getSuggestionList(widget.suggestionLength);
   }
 
   void _updateLoading() {
@@ -71,8 +76,8 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   void _getSuggestionList(int howMany) async {
-//    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
-    Response<dynamic> response = await TeamManager.getMyTeam();
+    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
+//    Response<dynamic> response = await TeamManager.getMyTeam();
     if (response.success && (response.object as List).isNotEmpty) {
       setState(() {
         _teamSuggestionList = response.object;
@@ -136,7 +141,7 @@ class _TeamPageState extends State<TeamPage> {
                       enableScrollBackgroundColor: true,
                       enableSplitListToTwo: _teamSuggestionList.length > 10? true:false,
                       pressItemFuction: (teamid) {
-                        pushPage(context, TeamInfoPage(teamId: teamid));
+                        pushPage(context, TeamInfoPage(teamId: teamid)).then((value) => reloadTeamList());
                         print(
                             "[WeSuggestYou] This team with id $teamid is pressed");
                       },
@@ -156,7 +161,7 @@ class _TeamPageState extends State<TeamPage> {
                         pushPage(
                           context,
                           TeamSearchPage(autoFocusInput: false,defaultList: _teamSuggestionList),
-                        );
+                        ).then((value) => reloadTeamList());
                       },
                     ),
                   ],

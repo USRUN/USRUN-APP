@@ -37,6 +37,19 @@ class TeamManager{
     return response;
   }
 
+  static Future<Response> updateTeam(dynamic params) async {
+    Response<dynamic> res = await Client.post('/team/update',params);
+
+    if(!res.success || res.object == null) return res;
+
+    Response<Team> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: MapperObject.create<Team>(res.object)
+    );
+    return response;
+  }
+
   static Future<Response> getTeamSuggestion(int howMany) async{
     Map<String,dynamic> params = {
       // TODO: Resolve User location
@@ -114,8 +127,6 @@ class TeamManager{
       'page': pageNum,
       'count': perPage
     };
-
-    // NOT YET IMPLEMENTED ON BACKEND
     Response<dynamic> res = await Client.post('/team/getUserByMemberType',params);
 
     if(!res.success || (res.object as List).length == 0) return res;
@@ -153,7 +164,7 @@ class TeamManager{
       'memberType': newRole
     };
 
-    Response<dynamic> res = await Client.post('/team/changeMemberRole',params);
+    Response<dynamic> res = await Client.post('/team/changeMemberType',params);
     return res;
   }
 

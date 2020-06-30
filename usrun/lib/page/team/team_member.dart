@@ -35,12 +35,6 @@ class TeamMemberPage extends StatefulWidget {
     {
       "tabName": R.strings.all,
     },
-    {
-      "tabName": R.strings.requesting,
-    },
-    {
-      "tabName": R.strings.blocking,
-    }
   ];
 
   final popUpMenu = [
@@ -63,7 +57,7 @@ class TeamMemberPage extends StatefulWidget {
 
   final int teamId;
   final int teamMemberType;
-  final int resultPerPage = 15;
+  final int resultPerPage = 10;
 
   TeamMemberPage({@required this.teamId, @required this.teamMemberType});
 
@@ -118,51 +112,42 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   void _getAllMembers() async {
     if(!_remainingResults) return;
     _remainingResults = false;
+    Response<dynamic> response = await TeamManager
+        .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
 
-    if (_remainingResults) {
-      // TODO: Implement function here
-      Response<dynamic> response = await TeamManager
-          .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
-
-      if (response.success && (response.object as List).isNotEmpty) {
-        List<User> toAdd = response.object;
-        setState(() {
-          items.addAll(toAdd);
-        });
-
-        if (response.object.length > 0) {
-          _remainingResults = true;
-          _curPage += 1;
-        }
-        else
-          _remainingResults = false;
-      }
+    if (response.success && (response.object as List).isNotEmpty) {
+      List<User> toAdd = response.object;
+      setState(() {
+        items.addAll(toAdd);
+        _remainingResults = true;
+        _curPage += 1;
+      });
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _getMemberByType(int memberType) async {
     if(!_remainingResults) return;
     _remainingResults = false;
 
-    if (_remainingResults) {
-      // TODO: Implement function here
-      Response<dynamic> response = await TeamManager
-          .getTeamMemberByType(widget.teamId, memberType,_curPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager
+        .getTeamMemberByType(widget.teamId, memberType,_curPage, widget.resultPerPage);
 
-      if (response.success && (response.object as List).isNotEmpty) {
-        List<User> toAdd = response.object;
-        setState(() {
-          items.addAll(toAdd);
-        });
-
-        if (response.object.length > 0) {
-          _remainingResults = true;
-          _curPage += 1;
-        }
-        else
-          _remainingResults = false;
-      }
+    if (response.success && (response.object as List).isNotEmpty) {
+      List<User> toAdd = response.object;
+      setState(() {
+        items.addAll(toAdd);
+        _remainingResults = true;
+        _curPage += 1;
+      });
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _loadSuitableData(tabIndex) {
@@ -191,6 +176,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   _onSelectItem(int tabIndex) {
     if (_selectedTabIndex == tabIndex) return;
     setState(() {
+      _isLoading = true;
+      items = List();
       _curPage = 1;
       _remainingResults = true;
       _selectedTabIndex = tabIndex;
@@ -220,12 +207,46 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
   _pressCloseBtn(index) {
     // TODO: Implement function here
-    print("Pressing CLOSE button on this person");
+    // Decline join request
+
+    print("Decline ${items[index].userId} join request");
+
+    changeMemberRole(index, 5);
   }
 
   _pressCheckBtn(index) {
     // TODO: Implement function here
-    print("Pressing CHECK button on this person");
+    // Approve join request
+
+    print("Approve ${items[index].userId} join request");
+
+    changeMemberRole(index, 3);
+  }
+
+  _releaseFromBlock(index){
+    // Remove from block list
+    print("Remove ${items[index].userId} from block list");
+
+    changeMemberRole(index,4);
+  }
+
+  void changeMemberRole(int index, int newMemberType) async{
+    setState(() {
+      _isLoading= true;
+    });
+
+    Response<dynamic> response = await TeamManager.updateTeamMemberRole(widget.teamId, items[index].userId, newMemberType);
+    if(response.success){
+      setState(() {
+        items.removeAt(index);
+        _isLoading= false;
+      });
+    } else {
+      showAlert(context, R.strings.errorTitle, response.errorMessage, null);
+      setState(() {
+        _isLoading= false;
+      });
+    }
   }
 
   @override
@@ -279,6 +300,16 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           // All contents
           Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
+                  if(_remainingResults) {
+                    _loadSuitableData(_selectedTabIndex);
+                  }
+                }
+                return true; // just to clear a warning
+              },
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: (_isLoading
@@ -289,7 +320,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                       child: LoadingDotStyle02(),
                     )
                   : _renderList()),
-            ),
+            ),)
           ),
         ],
       ),
@@ -309,20 +340,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         right: R.appRatio.appSpacing15,
       ),
       child: AnimationLimiter(
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels ==
-            scrollInfo.metrics.maxScrollExtent) {
-              if(_remainingResults)
-            _getAllMembers();
-          }
-          return true; // just to clear a warning
-        },
-        child: ListView.builder(
+          child:ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: items.length,
+            itemCount:(items!=null)?items.length:0,
             itemBuilder: (BuildContext ctxt, int index) {
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -341,9 +363,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 ),
               );
             }),
-      ),
-      )
-    );
+    ));
   }
 
   Widget _renderCustomCell(index) {
@@ -448,7 +468,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableCloseButton: true,
-          pressCloseButton: () => _pressCloseBtn(index),
+          pressCloseButton: () => _releaseFromBlock(index),
         );
       default:
         return Container();
