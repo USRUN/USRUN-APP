@@ -29,6 +29,10 @@ class EditProfilePage extends StatelessWidget {
     {'value': '3', 'text': 'Other'},
   ];
 
+  final _dropdownCities = buildOptionForDropdown(R.strings.cities);
+
+
+
   void _getDOBFunction(DateTime picker) {
     print("Birthday/DOB: ${picker.day}/${picker.month}/${picker.year}");
 
@@ -181,57 +185,6 @@ class EditProfilePage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _countryController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.country,
-                        hintText: R.strings.country,
-                      ),
-                    ),
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _cityController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.city,
-                        hintText: R.strings.city,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _districtController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.district,
-                        hintText: R.strings.district,
-                      ),
-                    ),
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _jobController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.whatYourJob,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: R.appRatio.appWidth181,
                       child: InputCalendar(
                         labelTitle: R.strings.birthday,
                         enableFullWidth: false,
@@ -285,12 +238,15 @@ class EditProfilePage extends StatelessWidget {
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
-                InputField(
-                  controller: _biographyController,
-                  enableFullWidth: true,
-                  labelTitle: R.strings.biography,
-                  hintText: R.strings.biographyHint,
-                  enableMaxLines: true,
+                DropDownMenu(
+                  errorEmptyData: R.strings.nothingToShow,
+                  enableFullWidth: false,
+                  maxHeightBox: R.appRatio.appHeight320,
+                  labelTitle: R.strings.city,
+                  hintText: R.strings.city,
+                  enableHorizontalLabelTitle: false,
+                  onChanged: this._getSelectedDropDownMenuItem,
+                  items: this._dropdownCities,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

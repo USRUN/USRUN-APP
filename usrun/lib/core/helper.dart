@@ -35,6 +35,14 @@ Future setLanguage(String lang) async {
   R.initLocalized(lang, jsonContent);
 }
 
+List buildOptionForDropdown(List option){
+  List re = [];
+  option.asMap().forEach((index, value) {
+    re.add({'value': index, 'text': value.toString()});
+  });
+  return re;
+}
+
 // === ALERT === //
 Future<T> showAlert<T>(
     BuildContext context, String title, String message, List<Widget> actions) {

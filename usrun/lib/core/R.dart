@@ -812,6 +812,8 @@ class Strings {
   String biographyHint;
   String follow;
   String unFollow;
+
+  List<String> cities;
   
   String yearPicker;
   String monthPicker;
