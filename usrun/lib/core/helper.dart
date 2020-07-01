@@ -12,7 +12,6 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 import '../manager/data_manager.dart';
-import '../manager/data_manager.dart';
 
 // === MAIN === //
 Future<void> initialize(BuildContext context) async {
@@ -20,7 +19,6 @@ Future<void> initialize(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
   UserManager.initialize();
-
 }
 
 enum RouteType {

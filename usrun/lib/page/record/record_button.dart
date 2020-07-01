@@ -7,7 +7,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_components.dart';
 import 'package:usrun/page/record/record_upload_page.dart';
-import 'package:usrun/widget/custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_dialog.dart';
 
 import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 

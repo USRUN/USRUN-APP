@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -14,9 +17,12 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class TeamSearchPage extends StatefulWidget {
   final bool autoFocusInput;
+  final int resultPerPage = 15;
+  final List defaultList;
 
   TeamSearchPage({
     this.autoFocusInput = false,
+    @required this.defaultList
   });
 
   @override
@@ -26,13 +32,34 @@ class TeamSearchPage extends StatefulWidget {
 class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
-  List teamList;
+  bool remainingResults;
+  List<Team> teamList;
+  String curSearchString;
+  int curResultPage;
+
+  /*
+    + Structure of the "items" variable: 
+    [
+      {
+        "avatarImageURL":
+          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
+        "supportImageURL":
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+        "teamName": "Trường Đại học Khoa học Tự nhiên TP. HCM",
+        "athleteQuantity": 67842,
+        "location": "Ho Chi Minh City, Viet Nam",
+      },
+      ...
+    ]
+  */
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
-    teamList = DemoData().suggestedTeamList;
+    teamList = widget.defaultList;
+    curResultPage = 1;
+    remainingResults = true;
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
@@ -44,49 +71,121 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     });
   }
 
+
+  void _findTeamByName() async {
+    if(!remainingResults) return;
+
+    remainingResults = false;
+    Response<dynamic> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
+
+    if(response.success && (response.object as List).isNotEmpty){
+      List<Team> toAdd = response.object;
+      setState(() {
+        teamList.addAll(toAdd);
+      });
+
+      if(response.object.length > 0) {
+        remainingResults = true;
+        curResultPage += 1;
+      }
+      else
+        remainingResults = false;
+    }
+  }
+
   void _onSubmittedFunction(data) {
     if (data.toString().length == 0) return;
+
+    //reset states
+
     setState(() {
       _isLoading = !_isLoading;
+      curSearchString = data.toString();
+      teamList.clear();
+      curResultPage = 0;
+      remainingResults = true;
     });
 
     // TODO: Implement function here
     print("Data: $data");
 
-    // [Demo] Enter searching content => Render "SearchedTeams" by setState
-    List<dynamic> newList = List<dynamic>();
-    Future.delayed(Duration(milliseconds: 1000), () {
-      newList.addAll(teamList.getRange(2, 7));
-    }).then((val) {
-      setState(() {
-        _isLoading = !_isLoading;
-        teamList = newList;
-      });
+    _findTeamByName();
+
+    setState(() {
+      _isLoading = !_isLoading;
     });
+
+    // [Demo] Enter searching content => Render "SearchedTeams" by setState
+//    List<dynamic> newList = List<dynamic>();
+//    Future.delayed(Duration(milliseconds: 1000), () {
+//      newList.addAll(teamList.getRange(2, 7));
+//    }).then((val) {
+//      setState(() {
+//        _isLoading = !_isLoading;
+//        teamList = newList;
+//      });
+//    });
   }
 
   void _onChangedFunction(data) {
     // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
       setState(() {
-        teamList = DemoData().suggestedTeamList;
+        teamList = widget.defaultList;
       });
     }
   }
 
+  bool _isEmptyList() {
+    return ((this.teamList == null || this.teamList.length == 0) ? true : false);
+  }
+
+  Widget _buildEmptyList() {
+    String systemNoti =
+        "Can't find any team";
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize14,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderSuggestedTeams() {
     return AnimationLimiter(
-      child: ListView.builder(
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+        if (scrollInfo.metrics.pixels ==
+            scrollInfo.metrics.maxScrollExtent) {
+//          if(remainingResults)
+            _findTeamByName();
+        }
+        return true; // just to clear a warning
+      },
+      child: _isEmptyList()?
+      _buildEmptyList():
+      ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: teamList.length,
+          itemCount:(teamList!=null)?teamList.length:0,
           itemBuilder: (BuildContext ctxt, int index) {
-            String avatarImageURL = teamList[index]['avatarImageURL'];
-            String supportImageURL = teamList[index]['supportImageURL'];
-            String teamName = teamList[index]['teamName'];
+            String avatarImageURL = teamList[index].thumbnail;
+            String supportImageURL = teamList[index].thumbnail;
+            String teamName = teamList[index].teamName;
             String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(teamList[index]['athleteQuantity']);
-            String location = teamList[index]['location'];
+                .format(teamList[index].totalMember);
+            String location = "District " + teamList[index].district+ ", " +teamList[index].province;
 
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -135,7 +234,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                 ),
               ),
             );
-          }),
+          })),
     );
   }
 

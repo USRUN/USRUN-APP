@@ -65,61 +65,59 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: R.colors.appBackground,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SizedBox(
-                height: R.appRatio.appSpacing25,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(
+              height: R.appRatio.appSpacing25,
+            ),
+            AvatarView(
+              avatarImageURL: _avatarImageURL,
+              avatarImageSize: R.appRatio.appAvatarSize130,
+              supportImageURL: _supportImageURL,
+              avatarBoxBorder: Border.all(
+                color: R.colors.majorOrange,
+                width: 2,
               ),
-              AvatarView(
-                avatarImageURL: _avatarImageURL,
-                avatarImageSize: R.appRatio.appAvatarSize130,
-                supportImageURL: _supportImageURL,
-                avatarBoxBorder: Border.all(
-                  color: R.colors.majorOrange,
-                  width: 2,
-                ),
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing20,
+            ),
+            Text(
+              _fullName,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: R.colors.contentText,
+                fontSize: R.appRatio.appFontSize20,
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing5,
+            ),
+            Text(
+              _userCode,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: R.colors.contentText,
+                fontSize: R.appRatio.appFontSize18,
               ),
-              Text(
-                _fullName,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: R.colors.contentText,
-                  fontSize: R.appRatio.appFontSize20,
-                ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing5,
-              ),
-              Text(
-                _userCode,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: R.colors.contentText,
-                  fontSize: R.appRatio.appFontSize18,
-                ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
-              CustomTabBarStyle01(
-                selectedTabIndex: _selectedTabIndex,
-                items: widget.tabBarItems,
-                pressTab: _onSelectItem,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
-              _getContentItemWidget(_selectedTabIndex),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing20,
+            ),
+            CustomTabBarStyle01(
+              selectedTabIndex: _selectedTabIndex,
+              items: widget.tabBarItems,
+              pressTab: _onSelectItem,
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing20,
+            ),
+            _getContentItemWidget(_selectedTabIndex),
+          ],
         ),
       ),
     );
