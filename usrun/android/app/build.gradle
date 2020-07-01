@@ -54,6 +54,26 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../keystore/google.keystore")
+            storePassword '123456'
+            keyAlias 'ngocvtt'
+            keyPassword '123456'
+        }
+        release {
+            storeFile file("../keystore/google.keystore")
+            storePassword '123456'
+            keyAlias 'ngocvtt'
+            keyPassword '123456'
+        }
+    }
 }
 
 flutter {
