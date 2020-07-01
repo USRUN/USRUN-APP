@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'custom_dropdown.dart' as custom_DropDown;
 
 class DropDownMenu extends StatefulWidget {
   final String labelTitle;
@@ -12,7 +11,9 @@ class DropDownMenu extends StatefulWidget {
   final Function onChanged;
   final List items;
   final String errorEmptyData;
-  final double maxHeightBox;
+  final Widget underline;
+  final bool isDense;
+  final int elevation;
 
   /*
     Structure of the "items" variable: 
@@ -36,7 +37,9 @@ class DropDownMenu extends StatefulWidget {
     @required this.onChanged,
     @required this.items,
     @required this.errorEmptyData,
-    @required this.maxHeightBox,
+    this.underline,
+    this.isDense = false,
+    this.elevation = 2,
   }) : super(key: key);
 
   @override
@@ -46,11 +49,13 @@ class DropDownMenu extends StatefulWidget {
 class _DropDownMenuState extends State<DropDownMenu> {
   String _selectedValue;
   bool _itemsHasImageURL = false;
+  Widget _underline;
 
   @override
   void initState() {
-    _selectedValue = '0';
     super.initState();
+    _selectedValue = '0';
+    _initUnderlineWidget();
   }
 
   @override
@@ -77,6 +82,16 @@ class _DropDownMenuState extends State<DropDownMenu> {
           ? this._horizontalObjects()
           : this._verticalObjects()),
     );
+  }
+
+  void _initUnderlineWidget() {
+    _underline = widget.underline;
+    if (widget.underline == null) {
+      _underline = Container(
+        height: 1,
+        color: R.colors.majorOrange,
+      );
+    }
   }
 
   Widget _emptyDropDownBtn() {
@@ -145,14 +160,13 @@ class _DropDownMenuState extends State<DropDownMenu> {
     );
   }
 
-  List<custom_DropDown.DropdownMenuItem<String>> _createMenuItemList() {
-    List<custom_DropDown.DropdownMenuItem<String>> menuItemList = [];
+  List<DropdownMenuItem<String>> _createMenuItemList() {
+    List<DropdownMenuItem<String>> menuItemList = [];
 
     for (int i = 0; i < widget.items.length; ++i) {
       dynamic element = widget.items[i];
 
-      custom_DropDown.DropdownMenuItem<String> menuItem =
-          custom_DropDown.DropdownMenuItem(
+      DropdownMenuItem<String> menuItem = DropdownMenuItem(
         value: element['value'],
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -202,7 +216,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                       : R.styles.labelStyle),
                 )),
         ),
-        custom_DropDown.DropdownButton<String>(
+        DropdownButton<String>(
           icon: Icon(Icons.arrow_drop_down),
           iconEnabledColor: R.colors.majorOrange,
           iconSize: R.appRatio.appDropDownArrowIconSize,
@@ -211,8 +225,8 @@ class _DropDownMenuState extends State<DropDownMenu> {
             fontSize: R.appRatio.appFontSize18,
           ),
           underline: Container(
-            height: 1,
-            color: R.colors.majorOrange,
+            height: 1.0,
+            color: Colors.transparent,
           ),
           hint: Text(
             (widget.hintText.length != 0) ? widget.hintText : "",
@@ -232,69 +246,73 @@ class _DropDownMenuState extends State<DropDownMenu> {
           value: _selectedValue,
           items: this._createMenuItemList(),
           isExpanded: true,
-          maxHeightBox: (widget.maxHeightBox > R.appRatio.deviceHeight / 2
-              ? R.appRatio.deviceHeight / 2 - R.appRatio.appSpacing40
-              : widget.maxHeightBox),
-          elevation: 8,
+          elevation: widget.elevation,
+          isDense: widget.isDense,
         ),
+        this._underline,
       ],
     );
   }
 
   Widget _horizontalObjects() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              right: (widget.labelTitle.length == 0
-                  ? 0
-                  : R.appRatio.appSpacing15)),
-          child: (widget.labelTitle.length == 0
-              ? null
-              : Text(
-                  widget.labelTitle,
-                  style: (widget.enableLabelShadow
-                      ? R.styles.shadowLabelStyle
-                      : R.styles.labelStyle),
-                )),
-        ),
-        Expanded(
-          child: custom_DropDown.DropdownButton<String>(
-            icon: Icon(Icons.arrow_drop_down),
-            iconEnabledColor: R.colors.majorOrange,
-            iconSize: R.appRatio.appDropDownArrowIconSize,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontSize: R.appRatio.appFontSize18,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                  right: (widget.labelTitle.length == 0
+                      ? 0
+                      : R.appRatio.appSpacing15)),
+              child: (widget.labelTitle.length == 0
+                  ? null
+                  : Text(
+                      widget.labelTitle,
+                      style: (widget.enableLabelShadow
+                          ? R.styles.shadowLabelStyle
+                          : R.styles.labelStyle),
+                    )),
             ),
-            underline: Container(
-              height: 1,
-              color: R.colors.majorOrange,
-            ),
-            hint: Text(
-              (widget.hintText.length != 0) ? widget.hintText : "",
-              style: TextStyle(
-                color: R.colors.normalNoteText,
-                fontSize: R.appRatio.appFontSize18,
+            Expanded(
+              child: DropdownButton<String>(
+                items: this._createMenuItemList(),
+                onChanged: (newValue) {
+                  if (widget.onChanged != null) {
+                    widget.onChanged(newValue);
+                  }
+                  setState(() {
+                    this._selectedValue = newValue;
+                  });
+                },
+                icon: Icon(Icons.arrow_drop_down),
+                iconEnabledColor: R.colors.majorOrange,
+                iconSize: R.appRatio.appDropDownArrowIconSize,
+                style: TextStyle(
+                  color: R.colors.contentText,
+                  fontSize: R.appRatio.appFontSize18,
+                ),
+                underline: Container(
+                  height: 1.0,
+                  color: Colors.transparent,
+                ),
+                hint: Text(
+                  (widget.hintText.length != 0) ? widget.hintText : "",
+                  style: TextStyle(
+                    color: R.colors.normalNoteText,
+                    fontSize: R.appRatio.appFontSize18,
+                  ),
+                ),
+                value: _selectedValue,
+                isExpanded: true,
+                elevation: widget.elevation,
+                isDense: widget.isDense,
               ),
             ),
-            onChanged: (newValue) {
-              if (widget.onChanged != null) {
-                widget.onChanged(newValue);
-              }
-              setState(() {
-                this._selectedValue = newValue;
-              });
-            },
-            value: _selectedValue,
-            items: this._createMenuItemList(),
-            isExpanded: true,
-            maxHeightBox: (widget.maxHeightBox > R.appRatio.deviceHeight / 2
-                ? R.appRatio.deviceHeight / 2 - R.appRatio.appSpacing40
-                : widget.maxHeightBox),
-          ),
+          ],
         ),
+        this._underline,
       ],
     );
   }
