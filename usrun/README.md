@@ -23,8 +23,8 @@ appSecret: 9491347aff49bf0278881afe7ce21ed0
 # setup
 flutter packages pub run build_runner build DIR
 
-# full command (debug)
+## Full command (debug)
 flutter clean && flutter pub get && flutter packages pub run build_runner build DIR && flutter run
 
-# full command (release)
+## Full command (release)
 flutter clean && flutter pub get && flutter packages pub run build_runner build DIR && flutter run --release

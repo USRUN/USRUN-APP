@@ -60,7 +60,6 @@ class _WelcomePageState extends State<WelcomePage>
             Center(
               child: Column(
                 children: <Widget>[
-
                   SizedBox(
                     height: R.appRatio.appSpacing10,
                   ),

@@ -70,13 +70,16 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: R.appRatio.appSpacing25,
             ),
-            AvatarView(
-              avatarImageURL: _avatarImageURL,
-              avatarImageSize: R.appRatio.appAvatarSize130,
-              supportImageURL: _supportImageURL,
-              avatarBoxBorder: Border.all(
-                color: R.colors.majorOrange,
-                width: 2,
+            Align(
+              alignment: Alignment.center,
+              child: AvatarView(
+                avatarImageURL: _avatarImageURL,
+                avatarImageSize: R.appRatio.appAvatarSize130,
+                supportImageURL: _supportImageURL,
+                avatarBoxBorder: Border.all(
+                  color: R.colors.majorOrange,
+                  width: 2,
+                ),
               ),
             ),
             SizedBox(
