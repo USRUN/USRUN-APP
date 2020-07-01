@@ -22,9 +22,9 @@ class RecordButton extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("GPS not found"),
-              content: Text("GPS not detected. Please activate it."),
-            ));
+          title: Text("GPS not found"),
+          content: Text("GPS not detected. Please activate it."),
+        ));
   }
 
   void showRequestServiceDialog() {
@@ -65,8 +65,8 @@ class RecordButton extends StatelessWidget {
               title: R.strings.notice,
               content: R.strings.gpsNotFound,
               firstButtonText: R.strings.ok, firstButtonFunction: () {
-            pop(this.context);
-          });
+                pop(this.context);
+              });
         }
       }
     } catch (error) {}
@@ -103,8 +103,8 @@ class RecordButton extends StatelessWidget {
             title: R.strings.notice,
             content: R.strings.gpsNotFound,
             firstButtonText: R.strings.ok, firstButtonFunction: () {
-          pop(this.context);
-        }, secondButtonText: "", secondButtonFunction: null);
+              pop(this.context);
+            }, secondButtonText: "", secondButtonFunction: null);
       }
     }
   }
@@ -115,20 +115,37 @@ class RecordButton extends StatelessWidget {
         Container(
           width: R.appRatio.deviceWidth,
           alignment: Alignment.bottomCenter,
-          child:  Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          StateButton(disabled: false, icon: R.myIcons.icResumeRecord, size: R.appRatio.deviceWidth/5.5, onPress: () {onResumeButtonTap();} ),
-          SizedBox(width: R.appRatio.appSpacing20,),
-          StateButton(disabled: false, icon: R.myIcons.icStopRecord, size: R.appRatio.deviceWidth/5.5, onPress: () {onFinishButtonTap(context);} ),
-          SizedBox(width: R.appRatio.appSpacing20,),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: R.appRatio.deviceWidth/5,
-            height: R.appRatio.deviceWidth/5,
-            child: Stack(children: <Widget>[_buildStatisticButton()]),
-          )                   
-        ],),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              StateButton(
+                  disabled: false,
+                  icon: R.myIcons.icResumeRecord,
+                  size: R.appRatio.deviceWidth / 5,
+                  onPress: () {
+                    onResumeButtonTap();
+                  }),
+              SizedBox(
+                width: R.appRatio.appSpacing15,
+              ),
+              StateButton(
+                  disabled: false,
+                  icon: R.myIcons.icStopRecord,
+                  size: R.appRatio.deviceWidth / 5,
+                  onPress: () {
+                    onFinishButtonTap(context);
+                  }),
+              SizedBox(
+                width: R.appRatio.appSpacing15,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                width: R.appRatio.deviceWidth / 5,
+                height: R.appRatio.deviceWidth / 5,
+                child: Stack(children: <Widget>[_buildStatisticButton()]),
+              )
+            ],
+          ),
         ),
       ],
     );
@@ -140,19 +157,30 @@ class RecordButton extends StatelessWidget {
         Container(
           width: R.appRatio.deviceWidth,
           alignment: Alignment.bottomCenter,
-          child:  Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          SizedBox(width: R.appRatio.deviceWidth/5+ R.appRatio.appSpacing20,),
-          StateButton(disabled: false, icon: R.myIcons.icPauseRecord, size: R.appRatio.deviceWidth/5.5, onPress: () {onPauseButtonTap();} ),
-          SizedBox(width: R.appRatio.appSpacing20,),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: R.appRatio.deviceWidth/5,
-            height: R.appRatio.deviceWidth/5,
-            child: Stack(children: <Widget>[_buildStatisticButton()]),
-          )                   
-        ],),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: R.appRatio.deviceWidth / 5 + R.appRatio.appSpacing15,
+              ),
+              StateButton(
+                  disabled: false,
+                  icon: R.myIcons.icPauseRecord,
+                  size: R.appRatio.deviceWidth / 5,
+                  onPress: () {
+                    onPauseButtonTap();
+                  }),
+              SizedBox(
+                width: R.appRatio.appSpacing15,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                width: R.appRatio.deviceWidth / 5,
+                height: R.appRatio.deviceWidth / 5,
+                child: Stack(children: <Widget>[_buildStatisticButton()]),
+              )
+            ],
+          ),
         ),
       ],
     );
@@ -165,12 +193,20 @@ class RecordButton extends StatelessWidget {
         builder: (context, snapshot) {
           print(snapshot.data);
           if (snapshot.data == ReportVisibility.Gone)
-            return StateButton(disabled: false, icon: R.myIcons.icStatisticWhite, size: R.appRatio.deviceWidth/8,
-              onPress: () => this.bloc.updateReportVisibility(ReportVisibility.Visible),
+            return StateButton(
+              disabled: false,
+              icon: R.myIcons.icStatisticWhite,
+              size: R.appRatio.deviceWidth / 7,
+              onPress: () =>
+                  this.bloc.updateReportVisibility(ReportVisibility.Visible),
             );
-          else{
-            return StateButton(disabled: false, icon: R.myIcons.icStatisticColor, size: R.appRatio.deviceWidth/8,
-              onPress: () => this.bloc.updateReportVisibility(ReportVisibility.Gone),
+          else {
+            return StateButton(
+              disabled: false,
+              icon: R.myIcons.icStatisticColor,
+              size: R.appRatio.deviceWidth / 7,
+              onPress: () =>
+                  this.bloc.updateReportVisibility(ReportVisibility.Gone),
             );
           }
         });
@@ -254,60 +290,87 @@ class RecordButton extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Row(
           children: <Widget>[
-          SizedBox(width: R.appRatio.deviceWidth/5+ R.appRatio.appSpacing20,),
-          StateButton(
-            disabled: false, 
-            icon: R.myIcons.icStartRecord, 
-            size: R.appRatio.deviceWidth/5.5,
-            onPress: snapshot.data == null || snapshot.data != GPSSignalStatus.READY? 
-            (){showRequestServiceDialog();} : () {onStartButtonTap();} ),
-          SizedBox(width: R.appRatio.appSpacing20,),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: R.appRatio.deviceWidth/5,
-            height: R.appRatio.deviceWidth/5,
-            child: Stack(children: <Widget>[ChooseEventButton((){})]),
-          )                   
-        ],),
-        );
-       })
-      ],
-    )
-    );   
+            StreamBuilder<Object>(
+                stream: this.bloc.streamGPSStatus,
+                builder: (context, snapshot) {
+                  return Container(
+                      height: R.appRatio.deviceHeight,
+                      width: R.appRatio.deviceWidth,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _buildEventPicker(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  width: R.appRatio.deviceWidth / 5 +
+                                      R.appRatio.appSpacing15,
+                                ),
+                                StateButton(
+                                    disabled: false,
+                                    icon: R.myIcons.icStartRecord,
+                                    size: R.appRatio.deviceWidth / 5,
+                                    onPress: snapshot.data == null ||
+                                        snapshot.data !=
+                                            GPSSignalStatus.READY
+                                        ? () {
+                                      showRequestServiceDialog();
+                                    }
+                                        : () {
+                                      onStartButtonTap();
+                                    }),
+                                SizedBox(
+                                  width: R.appRatio.appSpacing15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: R.appRatio.deviceWidth / 5,
+                                  height: R.appRatio.deviceWidth / 5,
+                                  child: Stack(children: <Widget>[
+                                    _buildChooseEventButton()
+                                  ]),
+                                )
+                              ],
+                            ),
+                          ]));
+                })
+          ],
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     bloc = BlocProvider.of(context);
+    Size sizeScreen = MediaQuery.of(context).size;
     this.context = context;
-    return Container (
-      padding: EdgeInsets.only(top: 10, bottom: R.appRatio.appSpacing15),
-      child: StreamBuilder(
-        initialData: RecordState.StatusNone,
-        stream: bloc.streamRecordState,
-        builder: (BuildContext context, snapShot) {
-          var state = snapShot.data;
-          switch(state) {
-            case RecordState.StatusNone:
-              return _buildLayoutForStateNone(context);
-            break;
-             case RecordState.StatusStart:
-              return _buildLayoutForStateStart(context);
-            break;   
-             case RecordState.StatusStop:
-              return _buildLayoutForStatePause(context);
-            break;
-             case RecordState.StatusResume:
-             return _buildLayoutForStateStart(context);
-            break;
-             case RecordState.StatusFinish:
-              return _buildLayoutForStateNone(context);
-            break;
-             default:
-              return _buildLayoutForStateNone(context);
-          }
-        }
-    ));
+    return Container(
+        padding: EdgeInsets.only(top: 10, bottom: sizeScreen.height / 75.0),
+        child: StreamBuilder(
+            initialData: RecordState.StatusNone,
+            stream: bloc.streamRecordState,
+            builder: (BuildContext context, snapShot) {
+              var state = snapShot.data;
+              switch (state) {
+                case RecordState.StatusNone:
+                  return _buildLayoutForStateNone(context);
+                  break;
+                case RecordState.StatusStart:
+                  return _buildLayoutForStateStart(context);
+                  break;
+                case RecordState.StatusStop:
+                  return _buildLayoutForStatePause(context);
+                  break;
+                case RecordState.StatusResume:
+                  return _buildLayoutForStateStart(context);
+                  break;
+                case RecordState.StatusFinish:
+                  return _buildLayoutForStateNone(context);
+                  break;
+                default:
+                  return _buildLayoutForStateNone(context);
+              }
+            }));
   }
 }
 
@@ -324,14 +387,19 @@ class _ChooseEventButtonState extends State<ChooseEventButton> {
 
   @override
   Widget build(BuildContext context) {
-    return StateButton(disabled: false, icon: icon, size: R.appRatio.deviceWidth/8,
-      onPress: (){
-        setState(() {
-          if (isPressed)
-            icon = R.myIcons.icRecordEventWhite;
-          else
-            icon = R.myIcons.icRecordEventColor;
-            isPressed=!isPressed;
+    return StateButton(
+        disabled: false,
+        icon: icon,
+        size: R.appRatio.deviceWidth / 7,
+        onPress: () {
+          setState(() {
+            if (isPressed)
+              icon = R.myIcons.icRecordEventWhite;
+            else
+              icon = R.myIcons.icRecordEventColor;
+            isPressed = !isPressed;
+          });
+          widget.onPress();
         });
   }
 }

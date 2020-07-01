@@ -15,6 +15,7 @@ import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/expandable_text.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -64,9 +65,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   void initState() {
     super.initState();
     _isLoading = true;
+    _getTeamInfo();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-    WidgetsBinding.instance.addPostFrameCallback((_) => _getTeamInfo());
   }
 
   void _getTeamInfo() async{
@@ -109,7 +110,14 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     Map<String,dynamic> reqParam = Map();
 
     if (_userRole > 2) {
-      showAlert(context, R.strings.error, "You are not authorized to change $fieldToChange",null);
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: "You are not authorized to change $fieldToChange",
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          });
+      return;
     }
     print("Changing $fieldToChange image");
 
@@ -126,20 +134,34 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         if(updatedTeam.success && updatedTeam.object != null) {
           mapTeamInfo(updatedTeam.object);
         } else{
-          showAlert(context,R.strings.error,updatedTeam.errorMessage,null);
+          showCustomAlertDialog(context,
+              title: R.strings.notice,
+              content: updatedTeam.errorMessage,
+              firstButtonText: R.strings.ok.toUpperCase(),
+              firstButtonFunction: () {
+                pop(this.context);
+              });
         }
       }
     } catch (error) {
       print(error);
-      showAlert(context,R.strings.error,error.toString(),null);
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: error.toString(),
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          });
     }
   }
 
   _changeTeamBanner() async{
+    if(_userRole > 2) return;
     _changeTeamImage("banner");
   }
 
   _changeTeamAvatar() async {
+    if(_userRole > 2) return;
     _changeTeamImage("thumbnail");
   }
 
@@ -153,7 +175,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         _userRole = 4;
       });
     } else {
-      showAlert(context, R.strings.error, response.errorMessage, null);
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          });
     }}
     else {
       print("Cancel join team");
@@ -164,7 +192,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           _userRole = 6;
         });
       } else {
-        showAlert(context, R.strings.error, response.errorMessage, null);
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: response.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(this.context);
+        });
       }
     }
   }

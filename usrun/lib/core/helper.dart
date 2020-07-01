@@ -22,6 +22,32 @@ Future<void> initialize(BuildContext context) async {
   UserManager.initialize();
 }
 
+
+// === ALERT === //
+Future<T> showAlert<T>(
+    BuildContext context, String title, String message, List<Widget> actions) {
+  if (actions == null) {
+    actions = [
+      CupertinoButton(
+        child: Text(R.strings.ok),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      )
+    ];
+  }
+  return showCupertinoDialog<T>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: actions,
+        );
+      });
+}
+
+
 enum RouteType {
   push,
   present,
@@ -239,7 +265,7 @@ void hideLoading(BuildContext context) {
   }
 }
 
-Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxHeight = 600}) async {
+Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxHeight = 600, int quality = 80}) async {
 
   Widget w = Material(
     type: MaterialType.transparency,
@@ -271,7 +297,9 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxH
             File photo = await ImagePicker.pickImage(
                 source: ImageSource.camera,
                 maxWidth: maxWidth,
-                maxHeight: maxHeight);
+                maxHeight: maxHeight,
+                imageQuality: quality
+            );
             if (photo == null) {
               pop(context, object: null);
             } else {

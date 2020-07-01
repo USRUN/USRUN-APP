@@ -13,6 +13,7 @@ import 'package:usrun/model/user.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -243,7 +244,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         _isLoading= false;
       });
     } else {
-      showAlert(context, R.strings.errorTitle, response.errorMessage, null);
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          });
       setState(() {
         _isLoading= false;
       });

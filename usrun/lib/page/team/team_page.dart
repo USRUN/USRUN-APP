@@ -24,8 +24,8 @@ class TeamPage extends StatefulWidget {
 
 class _TeamPageState extends State<TeamPage> {
   bool _isLoading;
-  List _myTeamList;
-  List _teamSuggestionList;
+  List<Team> _myTeamList;
+  List<Team> _teamSuggestionList;
 
   @override
   void initState() {
@@ -55,9 +55,8 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     List<dynamic> bannerList = List<dynamic>();
 
-    List<dynamic> data = DemoData().bannerList;
-    for (int i = 0; i < data.length; ++i) {
-      bannerList.add(ImageCacheManager.getImageData(url: data[i]['imageURL']));
+    for (int i = 0; i < _teamSuggestionList.length; ++i) {
+      bannerList.add(ImageCacheManager.getImageData(url: _teamSuggestionList[i].banner));
     }
 
     return bannerList;
@@ -125,7 +124,7 @@ class _TeamPageState extends State<TeamPage> {
                       enableScrollBackgroundColor: true,
                       pressItemFuction: (teamid) {
                         // TODO: Test
-                        pushPage(context, TeamInfoPage(teamId: teamid));
+                        pushPage(context, TeamInfoPage(teamId: teamid)).then((value) => reloadTeamList());
                         print(
                             "[YourTeams] This team with id $teamid is pressed");
                       },
