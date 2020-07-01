@@ -17,8 +17,7 @@ class Team extends MapperObject {
   String thumbnail;
   DateTime addDate;
   DateTime updateDate;
-  String district;
-  String province;
+  int province;
   int privacy;
   bool verified;
   bool deleted;

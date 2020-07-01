@@ -73,7 +73,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       _teamBanner = response.object.banner;
       _teamMembers = response.object.totalMember;
       _teamPublicStatus = (response.object.privacy == 0?true:false);
-      _teamLocation = "District " + response.object.district + ', ' + response.object.province;
+      _teamLocation = response.object.province.toString();
       _teamAvatar = response.object.thumbnail;
       _userRole = response.object.teamMemberType;
     }
