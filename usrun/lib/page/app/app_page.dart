@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/edit_profile.dart';
@@ -57,10 +58,10 @@ class _AppPageState extends State<AppPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedDrawerIndex = 0;
-  String _avatar = R.images.avatarQuocTK;
-  String _supportAvatar = R.images.avatar;
-  String _fullName = "We Are USRUN";
-  String _userCode = "USR9381852";
+  String _avatar = UserManager.currentUser.avatar;
+  String _supportAvatar = UserManager.currentUser.hcmus?R.myIcons.hcmusLogo:null;
+  String _fullName = UserManager.currentUser.name;
+  String _userCode = UserManager.currentUser.code==null?"USRUN${UserManager.currentUser.userId}":UserManager.currentUser.code;
 
   _onSelectItem(int index) {
     if (_selectedDrawerIndex == index) return;
@@ -139,6 +140,7 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
+
     var drawerWidgets = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var item = widget.drawerItems[i];

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
 import 'package:usrun/widget/input_calendar.dart';
@@ -112,29 +113,26 @@ class EditProfilePage extends StatelessWidget {
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: AvatarView(
-                    avatarImageURL: R.images.avatarQuocTK,
-                    avatarImageSize: R.appRatio.appAvatarSize150,
-                    enableSquareAvatarImage: false,
-                    pressAvatarImage: () {
-                      // TODO: A function for doing something
-                      // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                      print(R.strings.nothingToShow);
-                    },
-                    avatarBoxBorder: Border.all(
-                      color: R.colors.majorOrange,
-                      width: 2,
-                    ),
-                    supportImageURL: R.images.avatar,
+                AvatarView(
+                  avatarImageURL: UserManager.currentUser.avatar,
+                  avatarImageSize: R.appRatio.appAvatarSize150,
+                  enableSquareAvatarImage: false,
+                  pressAvatarImage: () {
+                    // TODO: A function for doing something
+                    // Example: Click to change avatar of my profile or my teams, or direct to other pages.
+                    print(R.strings.nothingToShow);
+                  },
+                  avatarBoxBorder: Border.all(
+                    color: R.colors.majorOrange,
+                    width: 2,
                   ),
+                  supportImageURL: R.images.logo,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
                 Text(
-                  "TRẦN KIẾN QUỐC",
+                  UserManager.currentUser.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: R.colors.contentText,
@@ -146,7 +144,7 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing5,
                 ),
                 Text(
-                  _userCode,
+                  UserManager.currentUser.code==null?"USRUN${UserManager.currentUser.userId}":UserManager.currentUser.code,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: R.colors.contentText,

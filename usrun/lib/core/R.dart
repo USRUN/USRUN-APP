@@ -683,6 +683,7 @@ class _MyIcons {
   String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
   String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
+  String hcmusLogo = 'assets/myicons/khtn.jpg';
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
 
   // User wants to change theme

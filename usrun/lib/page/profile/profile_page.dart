@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/profile/profile_activity.dart';
 import 'package:usrun/page/profile/profile_info.dart';
 import 'package:usrun/page/profile/profile_stats.dart';
@@ -25,10 +26,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int _selectedTabIndex = 0;
-  String _avatarImageURL = R.images.avatarQuocTK;
-  String _supportImageURL = R.images.avatarHuyTA;
-  String _fullName = "Quốc Trần Kiến";
-  String _userCode = "USR9381852";
+  String _avatarImageURL = UserManager.currentUser.avatar;
+  String _supportImageURL = UserManager.currentUser.hcmus?R.myIcons.hcmusLogo:null;
+  String _fullName = UserManager.currentUser.name;
+  String _userCode = UserManager.currentUser.code==null?"USRUN${UserManager.currentUser.userId}":UserManager.currentUser.code;
 
   dynamic _getContentItemWidget(int tabIndex) {
     Widget widget;
