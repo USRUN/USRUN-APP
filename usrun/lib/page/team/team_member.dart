@@ -384,10 +384,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   Widget _renderCustomCell(index) {
-    String avatarImageURL = items[index].img;
-    String supportImageURL = items[index].img;
+    String avatarImageURL = items[index].avatar;
+    String supportImageURL = items[index].avatar;
     String name = items[index].name;
-    String location = items[index].city;
+    String location = items[index].province.toString();
 
     switch (_selectedTabIndex) {
       case 0: // All
