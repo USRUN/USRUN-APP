@@ -98,9 +98,9 @@ class _TeamPageState extends State<TeamPage> {
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       enableSplitListToTwo: true,
-                      pressItemFuction: (teamid) {
+                      pressItemFuction: (teamId) {
                         print(
-                            "[WeSuggestYou] This team with id $teamid is pressed");
+                            "[WeSuggestYou] This team with id $teamId is pressed");
                       },
                     ),
                     SizedBox(
