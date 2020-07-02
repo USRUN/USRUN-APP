@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'custom_dropdown.dart' as custom_DropDown;
 
-class DropDownMenu extends StatefulWidget {
+import 'drop_down_object.dart';
+
+class DropDownMenu<T> extends StatefulWidget {
   final String labelTitle;
   final String hintText;
   final bool enableLabelShadow;
   final bool enableHorizontalLabelTitle;
   final bool enableFullWidth;
   final Function onChanged;
-  final List items;
+  final List<DropDownObject<T>> items;
   final String errorEmptyData;
-  final double maxHeightBox;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "value": "0",                   [This field must have NUMBER value as string]
-        "text": "Male",                 
-        "imageURL": "https://..."       [This field is OPTIONAL]
-      },
-      ...
-    ]
-  */
+  final Widget underline;
+  final bool isDense;
+  final int elevation;
+  final T initialValue;
 
   DropDownMenu({
     Key key,
@@ -36,21 +28,25 @@ class DropDownMenu extends StatefulWidget {
     @required this.onChanged,
     @required this.items,
     @required this.errorEmptyData,
-    @required this.maxHeightBox,
+    this.underline,
+    this.isDense = false,
+    this.elevation = 2,
+    this.initialValue,
   }) : super(key: key);
 
   @override
-  _DropDownMenuState createState() => new _DropDownMenuState();
+  _DropDownMenuState<T> createState() => _DropDownMenuState<T>();
 }
 
-class _DropDownMenuState extends State<DropDownMenu> {
-  String _selectedValue;
-  bool _itemsHasImageURL = false;
+class _DropDownMenuState<T> extends State<DropDownMenu> {
+  T _selectedValue;
+  Widget _underline;
 
   @override
   void initState() {
-    _selectedValue = '0';
     super.initState();
+    _selectedValue = widget.initialValue;
+    _initUnderlineWidget();
   }
 
   @override
@@ -58,14 +54,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
     // EMPTY items
     if (widget.items == null || widget.items.length == 0) {
       return this._emptyDropDownBtn();
-    }
-
-    // CHECK items has "imageURL" field or not
-    for (int i = 0; i < widget.items.length; ++i) {
-      if (widget.items[i].containsKey('imageURL')) {
-        _itemsHasImageURL = true;
-        break;
-      }
     }
 
     // RENDER drop down button
@@ -77,6 +65,16 @@ class _DropDownMenuState extends State<DropDownMenu> {
           ? this._horizontalObjects()
           : this._verticalObjects()),
     );
+  }
+
+  void _initUnderlineWidget() {
+    _underline = widget.underline;
+    if (widget.underline == null) {
+      _underline = Container(
+        height: 1,
+        color: R.colors.majorOrange,
+      );
+    }
   }
 
   Widget _emptyDropDownBtn() {
@@ -145,15 +143,15 @@ class _DropDownMenuState extends State<DropDownMenu> {
     );
   }
 
-  List<custom_DropDown.DropdownMenuItem<String>> _createMenuItemList() {
-    List<custom_DropDown.DropdownMenuItem<String>> menuItemList = [];
+  List<DropdownMenuItem<T>> _createMenuItemList<T>() {
+    List<DropdownMenuItem<T>> menuItemList = [];
 
     for (int i = 0; i < widget.items.length; ++i) {
-      dynamic element = widget.items[i];
+      DropDownObject element = widget.items[i];
+      bool hasImage = (element.imageURL.length != 0);
 
-      custom_DropDown.DropdownMenuItem<String> menuItem =
-          custom_DropDown.DropdownMenuItem(
-        value: element['value'],
+      DropdownMenuItem<T> menuItem = DropdownMenuItem<T>(
+        value: element.value,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -162,12 +160,12 @@ class _DropDownMenuState extends State<DropDownMenu> {
               Container(
                 padding: EdgeInsets.only(
                     right:
-                        (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0)),
-                child: (this._itemsHasImageURL
+                        (hasImage ? R.appRatio.appSpacing10 : 0)),
+                child: (hasImage
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         child: ImageCacheManager.getImage(
-                          url: element['imageURL'],
+                          url: element.imageURL,
                           width: R.appRatio.appDropDownImageSquareSize,
                           height: R.appRatio.appDropDownImageSquareSize,
                           fit: BoxFit.cover,
@@ -175,7 +173,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                     : null),
               ),
               Text(
-                element['text'],
+                element.text,
               )
             ],
           ),
@@ -202,7 +200,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                       : R.styles.labelStyle),
                 )),
         ),
-        custom_DropDown.DropdownButton<String>(
+        DropdownButton<T>(
           icon: Icon(Icons.arrow_drop_down),
           iconEnabledColor: R.colors.majorOrange,
           iconSize: R.appRatio.appDropDownArrowIconSize,
@@ -211,8 +209,8 @@ class _DropDownMenuState extends State<DropDownMenu> {
             fontSize: R.appRatio.appFontSize18,
           ),
           underline: Container(
-            height: 1,
-            color: R.colors.majorOrange,
+            height: 1.0,
+            color: Colors.transparent,
           ),
           hint: Text(
             (widget.hintText.length != 0) ? widget.hintText : "",
@@ -232,69 +230,73 @@ class _DropDownMenuState extends State<DropDownMenu> {
           value: _selectedValue,
           items: this._createMenuItemList(),
           isExpanded: true,
-          maxHeightBox: (widget.maxHeightBox > R.appRatio.deviceHeight / 2
-              ? R.appRatio.deviceHeight / 2 - R.appRatio.appSpacing40
-              : widget.maxHeightBox),
-          elevation: 8,
+          elevation: widget.elevation,
+          isDense: widget.isDense,
         ),
+        this._underline,
       ],
     );
   }
 
   Widget _horizontalObjects() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              right: (widget.labelTitle.length == 0
-                  ? 0
-                  : R.appRatio.appSpacing15)),
-          child: (widget.labelTitle.length == 0
-              ? null
-              : Text(
-                  widget.labelTitle,
-                  style: (widget.enableLabelShadow
-                      ? R.styles.shadowLabelStyle
-                      : R.styles.labelStyle),
-                )),
-        ),
-        Expanded(
-          child: custom_DropDown.DropdownButton<String>(
-            icon: Icon(Icons.arrow_drop_down),
-            iconEnabledColor: R.colors.majorOrange,
-            iconSize: R.appRatio.appDropDownArrowIconSize,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontSize: R.appRatio.appFontSize18,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                  right: (widget.labelTitle.length == 0
+                      ? 0
+                      : R.appRatio.appSpacing15)),
+              child: (widget.labelTitle.length == 0
+                  ? null
+                  : Text(
+                      widget.labelTitle,
+                      style: (widget.enableLabelShadow
+                          ? R.styles.shadowLabelStyle
+                          : R.styles.labelStyle),
+                    )),
             ),
-            underline: Container(
-              height: 1,
-              color: R.colors.majorOrange,
-            ),
-            hint: Text(
-              (widget.hintText.length != 0) ? widget.hintText : "",
-              style: TextStyle(
-                color: R.colors.normalNoteText,
-                fontSize: R.appRatio.appFontSize18,
+            Expanded(
+              child: DropdownButton<T>(
+                items: this._createMenuItemList(),
+                onChanged: (newValue) {
+                  if (widget.onChanged != null) {
+                    widget.onChanged(newValue);
+                  }
+                  setState(() {
+                    this._selectedValue = newValue;
+                  });
+                },
+                icon: Icon(Icons.arrow_drop_down),
+                iconEnabledColor: R.colors.majorOrange,
+                iconSize: R.appRatio.appDropDownArrowIconSize,
+                style: TextStyle(
+                  color: R.colors.contentText,
+                  fontSize: R.appRatio.appFontSize18,
+                ),
+                underline: Container(
+                  height: 1.0,
+                  color: Colors.transparent,
+                ),
+                hint: Text(
+                  (widget.hintText.length != 0) ? widget.hintText : "",
+                  style: TextStyle(
+                    color: R.colors.normalNoteText,
+                    fontSize: R.appRatio.appFontSize18,
+                  ),
+                ),
+                value: _selectedValue,
+                isExpanded: true,
+                elevation: widget.elevation,
+                isDense: widget.isDense,
               ),
             ),
-            onChanged: (newValue) {
-              if (widget.onChanged != null) {
-                widget.onChanged(newValue);
-              }
-              setState(() {
-                this._selectedValue = newValue;
-              });
-            },
-            value: _selectedValue,
-            items: this._createMenuItemList(),
-            isExpanded: true,
-            maxHeightBox: (widget.maxHeightBox > R.appRatio.deviceHeight / 2
-                ? R.appRatio.deviceHeight / 2 - R.appRatio.appSpacing40
-                : widget.maxHeightBox),
-          ),
+          ],
         ),
+        this._underline,
       ],
     );
   }

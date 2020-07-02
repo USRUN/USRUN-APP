@@ -122,8 +122,9 @@ class _CustomDialogState extends State<_CustomDialog> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
@@ -277,13 +278,33 @@ Future<void> showComplexCustomDialog({
   List<String> checkBoxList,
   Function getCheckBoxResult(List<bool> value),
   String submitBtnContent = "Ok",
-  Function submitBtnFuction,
+  Function submitBtnFunction,
 }) async {
-  return await showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
+  return await showGeneralDialog(
+    context: context,
+    barrierLabel: "Label",
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: Duration(milliseconds: 500),
+    transitionBuilder: (context, anim1, anim2, child) {
+      return ScaleTransition(
+        scale: Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: anim1,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        child: child,
+      );
+    },
+    pageBuilder: (context, anim1, anim2) {
+      return Material(
+        type: MaterialType.transparency,
+        child: Align(
+          alignment: Alignment.center,
           child: _CustomDialog(
             headerContent: headerContent,
             descriptionContent: descriptionContent,
@@ -292,8 +313,10 @@ Future<void> showComplexCustomDialog({
             checkBoxList: checkBoxList,
             getCheckBoxResult: getCheckBoxResult,
             submitBtnContent: submitBtnContent,
-            submitBtnFuction: submitBtnFuction,
+            submitBtnFuction: submitBtnFunction,
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }

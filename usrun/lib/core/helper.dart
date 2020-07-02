@@ -9,6 +9,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 import '../manager/data_manager.dart';
@@ -31,30 +32,6 @@ Future setLanguage(String lang) async {
   String jsonContent =
       await rootBundle.loadString("assets/localization/$lang.json");
   R.initLocalized(lang, jsonContent);
-}
-
-// === ALERT === //
-Future<T> showAlert<T>(
-    BuildContext context, String title, String message, List<Widget> actions) {
-  if (actions == null) {
-    actions = [
-      CupertinoButton(
-        child: Text(R.strings.ok),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      )
-    ];
-  }
-  return showCupertinoDialog<T>(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: actions,
-        );
-      });
 }
 
 Future<T> showActionSheet<T>(BuildContext context, Widget builderItem,
@@ -104,6 +81,7 @@ Future<T> showActionSheet<T>(BuildContext context, Widget builderItem,
 }
 
 int _errorCode = 0;
+
 void setErrorCode(int code) {
   _errorCode = code;
 }
@@ -121,36 +99,41 @@ void showSystemMessage(BuildContext context) {
         case LOGOUT_CODE:
           _errorCode = 0;
           return;
-
         case ACCESS_DENY:
           _errorCode = 0;
           message = R.strings.error + "$ACCESS_DENY";
           break;
-
         default:
           _errorCode = 0;
           message = "";
           return;
       }
-      showAlert(context, R.strings.notice, message, [
-        CupertinoButton(
-          child: Text(R.strings.ok),
-          onPressed: () => pop(context),
-        )
-      ]);
+
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     });
   }
 }
 
 // === NAVIGATOR === //
-void showPage<T>(BuildContext context, Widget page) {
+
+void showPage<T>(
+  BuildContext context,
+  Widget page, {
+  bool popAllRoutes = false,
+}) {
   hideLoading(context);
 
-  // TODO: pop all route
-  //Navigator.of(context).popUntil((route) => route.isFirst);
+  if (popAllRoutes) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
 
-  Route route =
-      _NoAnimateRoute(fullscreenDialog: true, builder: (context) => page);
+  Route route = MaterialPageRoute(builder: (context) => page);
   Navigator.of(context).pushReplacement(route);
 }
 
@@ -161,7 +144,6 @@ Future<T> pushPageWithRoute<T>(BuildContext context, Route<T> route) {
   }
 
   hideLoading(context);
-
   return Navigator.of(context).push(route);
 }
 
@@ -204,8 +186,9 @@ Future<T> replacePage<T>(BuildContext context, Widget page, {dynamic result}) {
   return Navigator.of(context).pushReplacement(route, result: result);
 }
 
-void pop(BuildContext context, [dynamic object]) {
-  Navigator.of(context).pop(object);
+void pop(BuildContext context, {bool rootNavigator = false, dynamic object}) {
+  if (rootNavigator == null) rootNavigator = false;
+  Navigator.of(context, rootNavigator: rootNavigator).pop(object);
 }
 
 // === VALIDATE === //
@@ -256,8 +239,8 @@ void hideLoading(BuildContext context) {
   }
 }
 
-Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double maxHeight = 1920}) async {
-
+Future<File> pickImage(BuildContext context,
+    {double maxWidth = 1920, double maxHeight = 1920}) async {
   Widget w = Material(
     type: MaterialType.transparency,
     child: Column(
@@ -268,13 +251,15 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double max
           text: R.strings.gallery,
           gradient: R.colors.uiGradient,
           onTap: () async {
-            File photo = await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: maxWidth, maxHeight: maxHeight);
+            File photo = await ImagePicker.pickImage(
+                source: ImageSource.gallery,
+                maxWidth: maxWidth,
+                maxHeight: maxHeight);
             if (photo == null) {
-              pop(context, null);
-            }
-            else {
+              pop(context, object: null);
+            } else {
               //File result = await _cropImage(photo);
-              pop(context, photo);
+              pop(context, object: photo);
             }
           },
         ),
@@ -283,13 +268,15 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double max
           text: R.strings.camera,
           gradient: R.colors.uiGradient,
           onTap: () async {
-            File photo = await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: maxWidth, maxHeight: maxHeight);
+            File photo = await ImagePicker.pickImage(
+                source: ImageSource.camera,
+                maxWidth: maxWidth,
+                maxHeight: maxHeight);
             if (photo == null) {
-              pop(context, null);
-            }
-            else {
+              pop(context, object: null);
+            } else {
               //File result = await _cropImage(photo);
-              pop(context, photo);
+              pop(context, object: photo);
             }
           },
         ),
@@ -297,7 +284,7 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double max
         UIButton(
           text: R.strings.cancel,
           gradient: R.colors.uiGradient,
-          onTap: () => pop(context, null),
+          onTap: () => pop(context, object: null),
         ),
       ],
     ),
@@ -314,8 +301,6 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 1920, double max
 //   );
 //   return croppedFile;
 // }
-
-
 
 class _IndicatorRoute<T> extends ModalRoute {
   _IndicatorRoute(

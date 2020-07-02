@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
-import 'package:usrun/widget/event_badge_list.dart';
+
 import 'package:usrun/widget/photo_list.dart';
 
 // Demo data
@@ -92,9 +93,9 @@ class _ProfileActivityState extends State<ProfileActivity> {
     });
   }
 
-  void _pressEventBadge(eventID) {
+  void _pressEventBadge(data) {
     // TODO: Implement function here
-    print("[EventBadgesWidget] This is pressed by event id $eventID");
+    print("[EventBadgesWidget] This is pressed with data $data");
   }
 
   void _pressActivityFunction(actID) {
@@ -130,7 +131,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
   @override
   Widget build(BuildContext context) {
     return (_isLoading
-        ? LoadingDotStyle02()
+        ? LoadingIndicator()
         : Column(
             children: <Widget>[
               // Event Badges
@@ -139,7 +140,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                 labelTitle: R.strings.personalEventBadges,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
-                pressItemFuction: _pressEventBadge,
+                pressItemFunction: _pressEventBadge,
               ),
               SizedBox(
                 height: R.appRatio.appSpacing20,
