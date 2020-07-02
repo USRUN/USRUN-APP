@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/team_plan_list/team_plan_item.dart';
 
 class _TeamPlanItem extends StatelessWidget {
-  final String planID;
-  final String planName;
-  final String dateTime;
-  final bool isFinished;
-  final String teamName;
-  final String mapImageURL;
-  final Function pressItemFuction;
+  final TeamPlanItem item;
+  final void Function(TeamPlanItem data) pressItemFunction;
 
   final double _teamPlanItemWidth = R.appRatio.appWidth220;
   final Color _pinkRedColor = Color(0xFFFF5C4E);
@@ -33,23 +28,18 @@ class _TeamPlanItem extends StatelessWidget {
   static String _day = "", _month = "", _year = "", _time = "";
 
   _TeamPlanItem({
-    @required this.planID,
-    this.planName,
-    this.dateTime,
-    this.isFinished = false,
-    this.teamName,
-    this.mapImageURL,
-    this.pressItemFuction(planid),
+    @required this.item,
+    this.pressItemFunction(data),
   });
 
   void _splitDateTimeToAtomic() {
-    var splitted = new DateFormat("dd/MM/yyyy hh:mm").parse(this.dateTime);
-    _day = splitted.day.toString();
-    _month = this._monthName[splitted.month - 1];
-    _year = splitted.year.toString();
-    _time = (splitted.hour == 0 ? "00" : splitted.hour.toString()) +
+    DateTime dt = this.item.dateTime;
+    _day = dt.day.toString();
+    _month = this._monthName[dt.month - 1];
+    _year = dt.year.toString();
+    _time = (dt.hour == 0 ? "00" : dt.hour.toString()) +
         ":" +
-        (splitted.minute == 0 ? "00" : splitted.minute.toString());
+        (dt.minute == 0 ? "00" : dt.minute.toString());
   }
 
   @override
@@ -60,8 +50,8 @@ class _TeamPlanItem extends StatelessWidget {
     // Render everything
     return GestureDetector(
       onTap: () {
-        if (this.pressItemFuction != null) {
-          this.pressItemFuction(planID);
+        if (this.pressItemFunction != null) {
+          this.pressItemFunction(this.item);
         }
       },
       child: Container(
@@ -98,7 +88,7 @@ class _TeamPlanItem extends StatelessWidget {
                 right: R.appRatio.appSpacing5,
               ),
               child: Text(
-                this.teamName,
+                this.item.teamName,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -113,12 +103,12 @@ class _TeamPlanItem extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               children: <Widget>[
                 ImageCacheManager.getImage(
-                  url: this.mapImageURL,
+                  url: this.item.mapImageURL,
                   width: this._teamPlanItemWidth,
                   height: R.appRatio.appHeight140,
                   fit: BoxFit.cover,
                 ),
-                (this.isFinished
+                (this.item.isFinished
                     ? Container(
                         child: Image.asset(
                           R.myIcons.finishIcon,
@@ -260,7 +250,7 @@ class _TeamPlanItem extends StatelessWidget {
                       right: R.appRatio.appSpacing5,
                     ),
                     child: Text(
-                      this.planName,
+                      this.item.planName,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
@@ -283,31 +273,16 @@ class _TeamPlanItem extends StatelessWidget {
 class TeamPlanList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  final List items;
+  final List<TeamPlanItem> items;
   final bool enableScrollBackgroundColor;
-  final Function pressItemFuction;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "planID": "0",
-        "planName": "Time to train, get high friends, oh yay!",
-        "dateTime": "10/01/2020 18:30",                     [This must have format "dd/MM/yyyy HH:mm"]
-        "isFinished": true,
-        "teamName": "Trường Đại học Khoa học Tự nhiên",
-        "mapImageURL": "https://..."                        [This must be value of HTTP LINK]
-      },
-      ...
-    ]
-  */
+  final void Function(TeamPlanItem data) pressItemFunction;
 
   TeamPlanList({
     this.labelTitle = "",
     this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
-    this.pressItemFuction(planid),
+    this.pressItemFunction(data),
   });
 
   @override
@@ -379,14 +354,7 @@ class TeamPlanList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: this.items.length,
-      itemBuilder: (BuildContext ctxt, int index) {
-        String planID = this.items[index]['planID'];
-        String planName = this.items[index]['planName'];
-        String dateTime = this.items[index]['dateTime'];
-        bool isFinished = this.items[index]['isFinished'];
-        String teamName = this.items[index]['teamName'];
-        String mapImageURL = this.items[index]['mapImageURL'];
-
+      itemBuilder: (BuildContext context, int index) {
         return Container(
           padding: EdgeInsets.only(
             left: R.appRatio.appSpacing15,
@@ -395,15 +363,8 @@ class TeamPlanList extends StatelessWidget {
           ),
           child: Center(
             child: _TeamPlanItem(
-              planID: planID,
-              dateTime: dateTime,
-              planName: planName,
-              isFinished: isFinished,
-              teamName: teamName,
-              mapImageURL: mapImageURL,
-              pressItemFuction: (planid) {
-                print("This is team plan with id $planid");
-              },
+              item: this.items[index],
+              pressItemFunction: this.pressItemFunction,
             ),
           ),
         );

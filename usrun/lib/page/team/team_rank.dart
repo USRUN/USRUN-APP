@@ -102,7 +102,7 @@ class _TeamRankState extends State<TeamRank> {
                       padding: EdgeInsets.only(
                         top: R.appRatio.appSpacing15,
                       ),
-                      child: LoadingDotStyle02(),
+                      child: LoadingIndicator(),
                     )
                   : _renderList()),
             ),

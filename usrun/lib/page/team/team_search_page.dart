@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/page/team/team_search_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -27,23 +28,7 @@ class TeamSearchPage extends StatefulWidget {
 class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
-  List teamList;
-
-  /*
-    + Structure of the "items" variable: 
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "supportImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-        "teamName": "Trường Đại học Khoa học Tự nhiên TP. HCM",
-        "athleteQuantity": 67842,
-        "location": "Ho Chi Minh City, Viet Nam",
-      },
-      ...
-    ]
-  */
+  List<TeamSearchItem> teamList;
 
   @override
   void initState() {
@@ -97,13 +82,13 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: teamList.length,
-          itemBuilder: (BuildContext ctxt, int index) {
-            String avatarImageURL = teamList[index]['avatarImageURL'];
-            String supportImageURL = teamList[index]['supportImageURL'];
-            String teamName = teamList[index]['teamName'];
+          itemBuilder: (BuildContext context, int index) {
+            String avatarImageURL = teamList[index].avatarImageURL;
+            String supportImageURL = teamList[index].supportImageURL;
+            String teamName = teamList[index].teamName;
             String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(teamList[index]['athleteQuantity']);
-            String location = teamList[index]['location'];
+                .format(teamList[index].athleteQuantity);
+            String location = teamList[index].location;
 
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -195,7 +180,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           onChangedFunction: _onChangedFunction,
         ),
       ),
-      body: (_isLoading ? LoadingDotStyle02() : _renderSuggestedTeams()),
+      body: (_isLoading ? LoadingIndicator() : _renderSuggestedTeams()),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(

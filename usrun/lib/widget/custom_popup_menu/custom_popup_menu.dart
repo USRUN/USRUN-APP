@@ -2,22 +2,12 @@ import "package:flutter/material.dart";
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
+import 'custom_popup_item.dart';
+
 class CustomPopupMenu extends StatefulWidget {
-  final List items;
+  final List<CustomPopupItem> items;
   final Function onSelected;
   final Image popupImage;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "iconURL": "...",                [This has value of an ASSET]
-        "iconSize": R.appRatio.appIconSize15
-        "title": "Block this post",
-      },
-      ...
-    ]
-  */
 
   CustomPopupMenu({
     @required this.items,
@@ -45,10 +35,10 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
         itemBuilder: (BuildContext context) {
           List popupList = List<PopupMenuEntry<dynamic>>();
           for (int i = 0; i < widget.items.length; ++i) {
-            dynamic element = widget.items[i];
-            double iconSize = element['iconSize'];
+            CustomPopupItem element = widget.items[i];
+            double iconSize = element.iconSize;
             if (iconSize <= 2.0) {
-              element = R.appRatio.appIconSize15;
+              element.iconSize = R.appRatio.appIconSize15;
             }
             popupList.add(
               PopupMenuItem(
@@ -62,14 +52,14 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                       height: 30,
                       alignment: Alignment.centerLeft,
                       child: ImageCacheManager.getImage(
-                        url: element['iconURL'],
+                        url: element.iconURL,
                         width: iconSize,
                         height: iconSize,
                         fit: BoxFit.contain,
                       ),
                     ),
                     Text(
-                      element['title'],
+                      element.title,
                       style: TextStyle(
                         fontSize: R.appRatio.appFontSize18,
                         color: Colors.black,

@@ -2,30 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-class DropDownMenu extends StatefulWidget {
+import 'drop_down_object.dart';
+
+class DropDownMenu<T> extends StatefulWidget {
   final String labelTitle;
   final String hintText;
   final bool enableLabelShadow;
   final bool enableHorizontalLabelTitle;
   final bool enableFullWidth;
   final Function onChanged;
-  final List items;
+  final List<DropDownObject<T>> items;
   final String errorEmptyData;
   final Widget underline;
   final bool isDense;
   final int elevation;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "value": "0",                   [This field must have NUMBER value as string]
-        "text": "Male",                 
-        "imageURL": "https://..."       [This field is OPTIONAL]
-      },
-      ...
-    ]
-  */
+  final T initialValue;
 
   DropDownMenu({
     Key key,
@@ -40,21 +31,21 @@ class DropDownMenu extends StatefulWidget {
     this.underline,
     this.isDense = false,
     this.elevation = 2,
+    this.initialValue,
   }) : super(key: key);
 
   @override
-  _DropDownMenuState createState() => new _DropDownMenuState();
+  _DropDownMenuState<T> createState() => _DropDownMenuState<T>();
 }
 
-class _DropDownMenuState extends State<DropDownMenu> {
-  String _selectedValue;
-  bool _itemsHasImageURL = false;
+class _DropDownMenuState<T> extends State<DropDownMenu> {
+  T _selectedValue;
   Widget _underline;
 
   @override
   void initState() {
     super.initState();
-    _selectedValue = '0';
+    _selectedValue = widget.initialValue;
     _initUnderlineWidget();
   }
 
@@ -63,14 +54,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
     // EMPTY items
     if (widget.items == null || widget.items.length == 0) {
       return this._emptyDropDownBtn();
-    }
-
-    // CHECK items has "imageURL" field or not
-    for (int i = 0; i < widget.items.length; ++i) {
-      if (widget.items[i].containsKey('imageURL')) {
-        _itemsHasImageURL = true;
-        break;
-      }
     }
 
     // RENDER drop down button
@@ -160,14 +143,15 @@ class _DropDownMenuState extends State<DropDownMenu> {
     );
   }
 
-  List<DropdownMenuItem<String>> _createMenuItemList() {
-    List<DropdownMenuItem<String>> menuItemList = [];
+  List<DropdownMenuItem<T>> _createMenuItemList<T>() {
+    List<DropdownMenuItem<T>> menuItemList = [];
 
     for (int i = 0; i < widget.items.length; ++i) {
-      dynamic element = widget.items[i];
+      DropDownObject element = widget.items[i];
+      bool hasImage = (element.imageURL.length != 0);
 
-      DropdownMenuItem<String> menuItem = DropdownMenuItem(
-        value: element['value'],
+      DropdownMenuItem<T> menuItem = DropdownMenuItem<T>(
+        value: element.value,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -176,12 +160,12 @@ class _DropDownMenuState extends State<DropDownMenu> {
               Container(
                 padding: EdgeInsets.only(
                     right:
-                        (this._itemsHasImageURL ? R.appRatio.appSpacing10 : 0)),
-                child: (this._itemsHasImageURL
+                        (hasImage ? R.appRatio.appSpacing10 : 0)),
+                child: (hasImage
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         child: ImageCacheManager.getImage(
-                          url: element['imageURL'],
+                          url: element.imageURL,
                           width: R.appRatio.appDropDownImageSquareSize,
                           height: R.appRatio.appDropDownImageSquareSize,
                           fit: BoxFit.cover,
@@ -189,7 +173,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                     : null),
               ),
               Text(
-                element['text'],
+                element.text,
               )
             ],
           ),
@@ -216,7 +200,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                       : R.styles.labelStyle),
                 )),
         ),
-        DropdownButton<String>(
+        DropdownButton<T>(
           icon: Icon(Icons.arrow_drop_down),
           iconEnabledColor: R.colors.majorOrange,
           iconSize: R.appRatio.appDropDownArrowIconSize,
@@ -276,7 +260,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
                     )),
             ),
             Expanded(
-              child: DropdownButton<String>(
+              child: DropdownButton<T>(
                 items: this._createMenuItemList(),
                 onChanged: (newValue) {
                   if (widget.onChanged != null) {

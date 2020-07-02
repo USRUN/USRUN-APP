@@ -159,7 +159,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           ],
         ),
         body: (_isLoading
-            ? LoadingDotStyle02()
+            ? LoadingIndicator()
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -352,7 +352,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           ),
                           GestureDetector(
                             // TODO: Pass teamId to pushPage!!!
-                            onTap: () => pushPage(context, TeamLeaderboard()),
+                            onTap: () => pushPage(context, TeamLeaderBoard()),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[

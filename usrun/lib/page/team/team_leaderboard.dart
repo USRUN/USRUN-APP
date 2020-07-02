@@ -7,33 +7,21 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-class TeamLeaderboard extends StatefulWidget {
+class TeamLeaderBoard extends StatefulWidget {
   @override
-  _TeamLeaderboardState createState() => _TeamLeaderboardState();
+  _TeamLeaderBoardState createState() => _TeamLeaderBoardState();
 }
 
-class _TeamLeaderboardState extends State<TeamLeaderboard> {
+class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
   bool _isLoading;
-  List items;
-
-  /*
-    + Structure of the "items" variable: 
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "name": "Quốc Trần Kiến",
-        "distance": 421.34,
-      },
-      ...
-    ]
-  */
+  List<TeamRankItem> items;
 
   @override
   void initState() {
@@ -102,7 +90,7 @@ class _TeamLeaderboardState extends State<TeamLeaderboard> {
                       padding: EdgeInsets.only(
                         top: R.appRatio.appSpacing15,
                       ),
-                      child: LoadingDotStyle02(),
+                      child: LoadingIndicator(),
                     )
                   : _renderList()),
             ),
@@ -132,10 +120,10 @@ class _TeamLeaderboardState extends State<TeamLeaderboard> {
             shrinkWrap: true,
             itemCount: items.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              String avatarImageURL = items[index]['avatarImageURL'];
-              String name = items[index]['name'];
+              String avatarImageURL = items[index].avatarImageURL;
+              String name = items[index].name;
               String distance = NumberFormat("#,##0.##", "en_US")
-                  .format(items[index]['distance']);
+                  .format(items[index].distance);
 
               return AnimationConfiguration.staggeredList(
                 position: index,

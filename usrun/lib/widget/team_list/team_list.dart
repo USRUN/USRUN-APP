@@ -2,33 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/team_list/team_item.dart';
 
 class TeamList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  List items;
+  final List<TeamItem> items;
   final bool enableScrollBackgroundColor;
   final bool enableSplitListToTwo;
-  final Function pressItemFuction;
+  final void Function(TeamItem data) pressItemFunction;
+  final VoidCallback loadMoreFunction;
 
   // Define configurations
   final double _avatarSize = R.appRatio.appAvatarSize80;
-  static List _newItemList = [];
+  static List<List<TeamItem>> _newItemList = [];
   static int _endPositionOfFirstList = 0;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "id": "0",
-        "name": "Trường Đại học Khoa học Tự nhiên",
-        "athleteQuantity": 44284,
-        "avatarImageURL": "https://...",    [This has value of HTTP LINK, or an ASSET]
-        "supportImageURL": "https://..."    [This has value of HTTP LINK, or an ASSET, or the NULL]
-      },
-      ...
-    ]
-  */
 
   TeamList({
     this.labelTitle = "",
@@ -36,7 +24,8 @@ class TeamList extends StatelessWidget {
     this.enableSplitListToTwo = false,
     @required this.items,
     this.enableScrollBackgroundColor = true,
-    this.pressItemFuction(teamId),
+    this.pressItemFunction(data),
+    this.loadMoreFunction,
   });
 
   void _splitItemList() {
@@ -91,13 +80,22 @@ class TeamList extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            this._buildTeamList(_newItemList[0]),
+                            this._buildTeamList(
+                              _newItemList[0],
+                              canLoadMore: false,
+                            ),
                             SizedBox(height: 5),
-                            this._buildTeamList(_newItemList[1]),
+                            this._buildTeamList(
+                              _newItemList[1],
+                              canLoadMore: true,
+                            ),
                           ],
                         ),
                       )
-                    : this._buildTeamList(this.items))),
+                    : this._buildTeamList(
+                        this.items,
+                        canLoadMore: true,
+                      ))),
           ),
         ],
       ),
@@ -130,18 +128,23 @@ class TeamList extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamList(List element) {
+  Widget _buildTeamList(List<TeamItem> element, {bool canLoadMore: false}) {
     Widget listWidget = ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: element.length,
       itemBuilder: (BuildContext context, int index) {
-        String id = element[index]['id'];
-        String name = element[index]['name'];
+        if (index == element.length - 1 &&
+            this.loadMoreFunction != null &&
+            canLoadMore) {
+          this.loadMoreFunction();
+        }
+
+        String name = element[index].name;
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-            .format(element[index]['athleteQuantity']);
-        String avatarImageURL = element[index]['avatarImageURL'];
-        String supportImageURL = element[index]['supportImageURL'];
+            .format(element[index].athleteQuantity);
+        String avatarImageURL = element[index].avatarImageURL;
+        String supportImageURL = element[index].supportImageURL;
 
         return Container(
           margin: EdgeInsets.only(
@@ -162,8 +165,8 @@ class TeamList extends StatelessWidget {
                 supportImageURL: supportImageURL,
                 enableSquareAvatarImage: true,
                 pressAvatarImage: () {
-                  if (this.pressItemFuction != null) {
-                    this.pressItemFuction(id);
+                  if (this.pressItemFunction != null) {
+                    this.pressItemFunction(element[index]);
                   }
                 },
               ),
@@ -173,8 +176,8 @@ class TeamList extends StatelessWidget {
               // Athlete quantity
               GestureDetector(
                 onTap: () {
-                  if (this.pressItemFuction != null) {
-                    this.pressItemFuction(id);
+                  if (this.pressItemFunction != null) {
+                    this.pressItemFunction(element[index]);
                   }
                 },
                 child: Row(
@@ -207,8 +210,8 @@ class TeamList extends StatelessWidget {
               // Team name
               GestureDetector(
                 onTap: () {
-                  if (this.pressItemFuction != null) {
-                    this.pressItemFuction(id);
+                  if (this.pressItemFunction != null) {
+                    this.pressItemFunction(element[index]);
                   }
                 },
                 child: Container(

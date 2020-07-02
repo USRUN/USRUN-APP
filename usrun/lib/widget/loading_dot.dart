@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:usrun/core/R.dart';
 
-class LoadingDotStyle01 extends StatelessWidget {
+class LoadingDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -17,7 +17,7 @@ class LoadingDotStyle01 extends StatelessWidget {
   }
 }
 
-class LoadingDotStyle02 extends StatelessWidget {
+class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(

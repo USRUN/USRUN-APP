@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'dart:math';
-import 'package:usrun/core/R.dart';
 
-/// Customable and attractive Switch button.
-/// Currently, you can't change the widget
-/// width and height properties.
-///
-/// As well as the classical Switch Widget
-/// from flutter material, the following
-/// arguments are required:
-///
-/// * [value] determines whether this switch is on or off.
-/// * [onChanged] is called when the user toggles the switch on or off.
-///
-/// If you don't set these arguments you would
-/// experiment errors related to animationController
-/// states or any other undesirable behavior, please
-/// don't forget to set them.
-///
-class LiteRollingSwitch extends StatefulWidget {
+class SmallLiteRollingSwitch extends StatefulWidget {
   @required
   final bool value;
   @required
@@ -36,7 +19,7 @@ class LiteRollingSwitch extends StatefulWidget {
   final Function onDoubleTap;
   final Function onSwipe;
 
-  LiteRollingSwitch(
+  SmallLiteRollingSwitch(
       {this.value = false,
       this.textOff = "Off",
       this.textOn = "On",
@@ -52,10 +35,10 @@ class LiteRollingSwitch extends StatefulWidget {
       this.onChanged});
 
   @override
-  _RollingSwitchState createState() => _RollingSwitchState();
+  _SmallRollingSwitchState createState() => _SmallRollingSwitchState();
 }
 
-class _RollingSwitchState extends State<LiteRollingSwitch>
+class _SmallRollingSwitchState extends State<SmallLiteRollingSwitch>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<double> animation;
@@ -108,8 +91,9 @@ class _RollingSwitchState extends State<LiteRollingSwitch>
       },
       child: Container(
         padding: EdgeInsets.all(5),
-        width: R.appRatio
-            .appWidth70, // Raw: 130 -> style 1: width80 | style 2: with70
+        width: 45,
+        // Raw: 130 -> New value: 45
+        height: 25,
         decoration: BoxDecoration(
             color: transitionColor, borderRadius: BorderRadius.circular(50)),
         child: Stack(
@@ -119,10 +103,9 @@ class _RollingSwitchState extends State<LiteRollingSwitch>
               child: Opacity(
                 opacity: (1 - value).clamp(0.0, 1.0),
                 child: Container(
-                  padding: EdgeInsets.only(right: 5), // Raw: right5
+                  padding: EdgeInsets.only(right: 2), // Raw: right5
                   alignment: Alignment.centerRight,
-                  height: R.appRatio
-                      .appHeight25, // Raw: 40 -> style 1: height30 | style 2: height25
+                  height: 20, // Raw: 40 -> New value: 20
                   child: Text(
                     widget.textOff,
                     style: TextStyle(
@@ -138,31 +121,30 @@ class _RollingSwitchState extends State<LiteRollingSwitch>
               child: Opacity(
                 opacity: value.clamp(0.0, 1.0),
                 child: Container(
-                  padding: EdgeInsets.only(/*top: 10,*/ left: 5),
+                  padding: EdgeInsets.only(/*top: 10,*/ left: 2),
                   alignment: Alignment.centerLeft,
-                  height: R.appRatio
-                      .appHeight25, // Raw: 40 -> style 1: height30 | style 2: height25
+                  height: 20, // Raw: 40 -> New value: 20
                   child: Text(
                     widget.textOn,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: widget.textSize),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: widget.textSize,
+                    ),
                   ),
                 ),
               ),
             ),
             Transform.translate(
-              offset: Offset(
-                  (R.appRatio.appWidth70 / 1.95).roundToDouble() * value,
-                  0), // Raw: 80 * value -> style 1: (R.appRatio.appWidth80/1.95).roundToDouble() | style 2: (R.appRatio.appWidth70/1.95).roundToDouble()
+              offset: Offset((40 / 2.0).roundToDouble() * value, 0),
+              // Raw: 80 * value -> New value: (40/2.0).roundToDouble()
               child: Transform.rotate(
                 angle: lerpDouble(0, 2 * pi, value),
                 child: Container(
-                  height: R.appRatio
-                      .appHeight25, // Raw: 40 -> style 1: height30 | style 2: height25
-                  width: R.appRatio
-                      .appHeight25, // Raw: 40 -> style 1: height30 | style 2: height25
+                  height: 15,
+                  // Raw: 40 -> New value: 15
+                  width: 15,
+                  // Raw: 40 -> New value: 15
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
@@ -173,7 +155,7 @@ class _RollingSwitchState extends State<LiteRollingSwitch>
                           opacity: (1 - value).clamp(0.0, 1.0),
                           child: Icon(
                             widget.iconOff,
-                            size: R.appRatio.appIconSize18.roundToDouble(),
+                            size: 14, // Icon size
                             color: transitionColor,
                           ),
                         ),
@@ -183,7 +165,7 @@ class _RollingSwitchState extends State<LiteRollingSwitch>
                               opacity: value.clamp(0.0, 1.0),
                               child: Icon(
                                 widget.iconOn,
-                                size: R.appRatio.appIconSize18.roundToDouble(),
+                                size: 14, // Icon size
                                 color: transitionColor,
                               ))),
                     ],

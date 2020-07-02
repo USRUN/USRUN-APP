@@ -10,7 +10,7 @@ import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
-import 'package:usrun/widget/team_list.dart';
+import 'package:usrun/widget/team_list/team_list.dart';
 
 class TeamPage extends StatefulWidget {
   @override
@@ -38,9 +38,9 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     List<dynamic> bannerList = List<dynamic>();
 
-    List<dynamic> data = DemoData().bannerList;
+    List<String> data = DemoData().bannerList;
     for (int i = 0; i < data.length; ++i) {
-      bannerList.add(ImageCacheManager.getImageData(url: data[i]['imageURL']));
+      bannerList.add(ImageCacheManager.getImageData(url: data[i]));
     }
 
     return bannerList;
@@ -51,7 +51,7 @@ class _TeamPageState extends State<TeamPage> {
     return Scaffold(
         backgroundColor: R.colors.appBackground,
         body: (_isLoading
-            ? LoadingDotStyle02()
+            ? LoadingIndicator()
             : SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
@@ -82,11 +82,11 @@ class _TeamPageState extends State<TeamPage> {
                       labelTitle: R.strings.yourTeams,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: (teamid) {
+                      pressItemFunction: (data) {
                         // TODO: Test
                         pushPage(context, TeamInfoPage());
                         print(
-                            "[YourTeams] This team with id $teamid is pressed");
+                            "[YourTeams] This team is pressed with data $data");
                       },
                     ),
                     SizedBox(
@@ -98,9 +98,9 @@ class _TeamPageState extends State<TeamPage> {
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       enableSplitListToTwo: true,
-                      pressItemFuction: (teamId) {
+                      pressItemFunction: (data) {
                         print(
-                            "[WeSuggestYou] This team with id $teamId is pressed");
+                            "[WeSuggestYou] This team is pressed with data $data");
                       },
                     ),
                     SizedBox(
