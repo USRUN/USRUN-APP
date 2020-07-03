@@ -88,6 +88,12 @@
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
 
+    "caution": "Caution",
+    "exitApp": "Do you want to exit USRUN app?",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+
     "profile": "Profile",
     "editProfile": "Edit Profile",
 
@@ -121,7 +127,7 @@
 
     "teams": "Teams",
     "team": "Team",
-    
+
     "public": "Public",
     "private": "Private",
     "join": "Join",
@@ -177,7 +183,7 @@
     "hotContact": "Hot Contact",
     "legal": "Legal",
     "faqs": "FAQs",
-    
+
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",
     "notiActReactionSubtitle": "Notify me when someone sends me reaction",
@@ -264,7 +270,7 @@
     "settingsSOLegalTitle": "Legal",
     "settingsSOAboutUsTitle": "About Us",
     "settingsSOLogOutTitle": "Log Out",
-    
+
     "aboutUsUSRUNTitle": "About USRUN",
     "aboutUsUSRUNSubtitle": "Both you and USRUN are flawless!",
     "aboutUsDevelopersTitle": "Developers",
@@ -295,7 +301,7 @@
     "aboutUSRUN_7": "If you have any questions, please feel free to contact us at: usrun.hcmus@gmail.com.",
 
     "record": "Record",
-    "gpsAcquiring":"GPS Acquiring", 
+    "gpsAcquiring":"GPS Acquiring",
     "gpsReady":"GPS Ready",
     "gpsNotFound": "GPS Not Found",
     "gpsServiceUnavailable": "GPS service is not avalable",
@@ -325,7 +331,7 @@
     "afternoonRun": "Afternoon Run",
     "eveningRun": "Evening Run",
     "nightRun": "Night Run",
-    
+
     "pause": "Pause",
     "discard": "Discard",
     "upload": "Upload",
@@ -369,14 +375,14 @@
         "-1": "UNKNOWN",
         "101": "System under maintenance. Please try again later!",
         "102": "New version available. Please update app to continue!",
-    
+
         "1000": "Field required",
         "1001": "Access denied",
         "1002": "Update fail",
         "1003": "Image invalid",
         "1004": "OTP invalid",
         "1005": "Your OTP is expired",
-    
+
         "2000": "User not found",
         "2001": "User cannot join",
         "2002": "User joined",
@@ -397,20 +403,20 @@
         "2022": "Reset password failed. Please try again!",
         "2023": "This email has not been used. Do you want to create an account with this email?",
         "2024": "The account related to this email does not have password to reset because it is logged in using Facebook/Google",
-    
+
         "3000": "Team not found",
         "3001": "Team cannot be created",
-    
-    
+
+
         "4000": "Event not found",
         "4001": "EVENT_EVENT_EXIT",
         "4002": "EVENT_UN_ACTIVE",
-    
+
         "5000": "Activity not found",
         "5001": "Activity add failed",
-    
+
         "6000": "Fund not found",
-    
+
         "7000": "Leaderboard not found",
         "7001": "Leaderboard create fail",
         "7002": "Leaderboard not support",

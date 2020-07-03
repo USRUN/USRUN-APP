@@ -22,7 +22,8 @@ class R {
     Size size = MediaQuery.of(context).size;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    appRatio.setUpAppRatio(size.width, size.height, devicePixelRatio, textScaleFactor);
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+    appRatio.setUpAppRatio(size.width, size.height, devicePixelRatio, textScaleFactor, statusBarHeight);
   }
 
   static void changeAppTheme(String appTheme) {
@@ -47,7 +48,7 @@ class _Constants {
 }
 
 class _AppRatio {
-  /* 
+  /*
     + This is private variables.
     + Figma design information.
   */
@@ -62,13 +63,13 @@ class _AppRatio {
   final double _figmaFontSize22                 = 22;
   final double _figmaFontSize24                 = 24;
   final double _figmaFontSize26                 = 26;
-  final double _figmaFontSize28                 = 28;  
-  final double _figmaFontSize32                 = 32; 
+  final double _figmaFontSize28                 = 28;
+  final double _figmaFontSize32                 = 32;
   final double _figmaFontSize34                 = 34;
   final double _figmaFontSize36                 = 36;
-  final double _figmaFontSize38                 = 38;  
+  final double _figmaFontSize38                 = 38;
   final double _figmaFontSize40                 = 40;
-  final double _figmaFontSize42                 = 42;  
+  final double _figmaFontSize42                 = 42;
 
   final double _figmaWidth1                     = 1;
   final double _figmaWidth30                    = 30;
@@ -175,7 +176,7 @@ class _AppRatio {
   final double _figmaAvatarSize130              = 130;
   final double _figmaAvatarSize150              = 150;
 
-  /* 
+  /*
     + This is public variables.
     + Information of device screen.
   */
@@ -183,6 +184,8 @@ class _AppRatio {
   double deviceHeight;
   double devicePixelRatio;
   double textScaleFactor;
+  double statusBarHeight;
+  double appBarHeight;
 
   /*
     + This is public variables.
@@ -318,12 +321,12 @@ class _AppRatio {
   }
 
   double _computeHeight(num figmaObjSize) {
-    double result = ((this.deviceHeight / this._figmaDeviceHeight) * figmaObjSize).roundToDouble();  
+    double result = ((this.deviceHeight / this._figmaDeviceHeight) * figmaObjSize).roundToDouble();
     return (result <= figmaObjSize)
-            ? result : 
+            ? result :
             (
-              (result <= figmaObjSize + 10) 
-              ? figmaObjSize : 
+              (result <= figmaObjSize + 10)
+              ? figmaObjSize :
               (
                 (result <= figmaObjSize + 20) ? (figmaObjSize + 10) : (figmaObjSize + 15)
               )
@@ -331,25 +334,26 @@ class _AppRatio {
   }
 
   double _computeFontSize(double desiredFontSize) {
-    double result =  ((this.textScaleFactor == 1.0) ? 
-                      (_computeWidth(desiredFontSize)) : 
+    double result =  ((this.textScaleFactor == 1.0) ?
+                      (_computeWidth(desiredFontSize)) :
                       (desiredFontSize - (desiredFontSize * (this.textScaleFactor - 1.0)))
                     );
     return (result > desiredFontSize) ? desiredFontSize : result;
   }
 
-  /* 
+  /*
     + This is public function.
     + This is used when initializing application.
     + Set up app ratio.
   */
-  void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor) {
+  void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor, double statusBarHeight,) {
     // Store device width and height
     this.deviceWidth = deviceWidth.roundToDouble();
     this.deviceHeight = deviceHeight.roundToDouble();
     this.devicePixelRatio = devicePixelRatio.roundToDouble();
     this.textScaleFactor = textScaleFactor.roundToDouble();
-    // print("Width x Height x DPR x TSF: $deviceWidth, $deviceHeight, $devicePixelRatio, $textScaleFactor");
+    this.statusBarHeight = statusBarHeight.roundToDouble();
+    this.appBarHeight = AppBar().preferredSize.height;
 
     // Find font size
     appFontSize12 = _computeFontSize(this._figmaFontSize12);
@@ -367,10 +371,8 @@ class _AppRatio {
     appFontSize38 = _computeFontSize(this._figmaFontSize38);
     appFontSize40 = _computeFontSize(this._figmaFontSize40);
     appFontSize42 = _computeFontSize(this._figmaFontSize42);
-    // print("Font size: ${this._figmaFontSize22}, $appFontSize22 - ${this._figmaFontSize18}, $appFontSize18");
 
     // Find width & height of objects
-
     appWidth1 = _computeWidth(this._figmaWidth1);
     appWidth30 = _computeWidth(this._figmaWidth30);
     appWidth40 = _computeWidth(this._figmaWidth40);
@@ -496,7 +498,7 @@ class _Colors {
       Color(0xFFF26B30),
       Color(0xFFEE4C3E),
       Color(0xFFDA2A16)
-    ], 
+    ],
     stops: [
       0.0,
       0.25,
@@ -511,7 +513,7 @@ class _Colors {
       Color(0xFFF26B30),
       Color(0xFFEE4C3E),
       Color(0xFFDA2A16)
-    ], 
+    ],
     stops: [
       0.0,
       0.25,
@@ -519,20 +521,13 @@ class _Colors {
       1.0
     ]);
 
-  /*
-    + [NgocVo] Unused colors
-      - final Color yellow = Color(0xFFFC8800);
-      - final Color red = Color(0xFFDA2A16);
-      - final Color pinkRed = Color(0xFFEE4C3E);
-      - final Color blue = Color(0xFF03318C);
-  */
-  
   // Official/Main/Common color of app
   Color majorOrange                   = Color(0xFFFD632C);
   Color lightBlurMajorOrange          = Color.fromRGBO(253, 99, 44, 0.1);
   Color blurMajorOrange               = Color.fromRGBO(253, 99, 44, 0.5);
   Color grayABABAB                    = Color(0xFFABABAB);
   Color gray515151                    = Color(0xFF515151);
+  Color gray808080                    = Color(0xFF808080);
   Color redPink                       = Color(0xFFFF5C4E);
   Color oldYellow                     = Color(0xFFF9C86A);
   Color labelText                     = Color(0xFFFD632C);
@@ -622,17 +617,19 @@ class _MyIcons {
   final String icStartRecord = 'assets/myicons/icon-record-start.png';
   final String icStopRecord = 'assets/myicons/icon-record-stop.png';
   final String icResumeRecord = 'assets/myicons/icon-record-restart.png';
-  final String icPauseRecord = 'assets/myicons/icon-record-pause.png'; 
+  final String icPauseRecord = 'assets/myicons/icon-record-pause.png';
   final String icStatisticWhite = 'assets/myicons/icon-white-record-statistics.png';
-  final String icStatisticColor = 'assets/myicons/icon-color-record-statistics.png'; 
+  final String icStatisticColor = 'assets/myicons/icon-color-record-statistics.png';
   final String icRecordEventWhite = 'assets/myicons/icon-white-record-events.png';
-  final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png'; 
-
+  final String icRecordEventColor = 'assets/myicons/icon-color-record-events.png';
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
-
-  // Default is Light theme 
-  String defaultIcon = 'assets/myicons/icon-black-image-default.png';
-  String nextIcon = 'assets/myicons/icon-black-next.png';
+  // ---
+  final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
+  final String menuIcon = 'assets/myicons/icon-white-hamburger-menu.png';
+  final String nextIcon = 'assets/myicons/icon-black-next.png';
+  final String chevronLeftIcon = 'assets/myicons/icon-black-chevron-left.png';
+  final String chevronRightIcon = 'assets/myicons/icon-black-chevron-right.png';
+  final String repeatIcon = 'assets/myicons/icon-black-repeat.png';
   final String finishIcon = 'assets/myicons/icon-color-finish.png';
   final String heartBeatStatsIcon = 'assets/myicons/icon-black-heart-beat.png';
   final String footStepStatsIcon = 'assets/myicons/icon-black-footstep.png';
@@ -686,14 +683,14 @@ class _MyIcons {
   String blockIconByTheme = 'assets/myicons/icon-black-block.png';
   String addIcon02ByTheme = 'assets/myicons/icon-black-add-02.png';
   String closeIconByTheme = 'assets/myicons/icon-black-close.png';
-  String editIconByTheme = 'assets/myicons/icon-black-edit.png'; 
+  String editIconByTheme = 'assets/myicons/icon-black-edit.png';
   String postIconByTheme = 'assets/myicons/icon-black-post.png';
   String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
   String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
   String hcmusLogo = 'assets/myicons/khtn.jpg';
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
-  
+
   // User wants to change theme
   void changeTheme(String theme) {
     if (theme.compareTo('Light') == 0) {
@@ -722,7 +719,7 @@ class _MyIcons {
       gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
       keyIconByTheme = 'assets/myicons/icon-black-key.png';
       starIconByTheme = 'assets/myicons/icon-black-star.png';
-      
+
 
       // TODO: Light theme (Black color)
     }
@@ -791,8 +788,6 @@ class _Images {
   final String avatarKhaTM = 'assets/images/avatar_khatm.png';
 }
 
-
-
 @reflector
 class Strings {
   String usrun;
@@ -839,7 +834,7 @@ class Strings {
   String week;
   String month;
   String year;
-  
+
   String yearPicker;
   String monthPicker;
   String weekPicker;
@@ -866,7 +861,7 @@ class Strings {
   String october;
   String november;
   String december;
-  
+
   String monday;
   String tuesday;
   String wednesday;
@@ -884,6 +879,12 @@ class Strings {
   String signIn;
   String signUp;
   String resetPassword;
+
+  String caution;
+  String exitApp;
+  String yes;
+  String no;
+  String close;
 
   String profile;
   String editProfile;

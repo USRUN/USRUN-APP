@@ -3,35 +3,25 @@ import 'package:usrun/core/R.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
+import 'event_item.dart';
+
 class EventList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  final List items;
+  final List<EventItem> items;
   final bool enableScrollBackgroundColor;
-  final Function pressItemFuction;
+  final void Function(EventItem data) pressItemFunction;
+  final VoidCallback loadMoreFunction;
 
   final double _eventItemWidth = R.appRatio.appWidth160;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "id": "0",
-        "name": "UpRace - Move Viet Nam",
-        "athleteQuantity": 44284,
-        "isFinished": false,
-        "bannerImageURL": "https://..."   [This must be value of HTTP LINK]
-      },
-      ...
-    ]
-  */
 
   EventList({
     this.labelTitle = "",
     this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
-    this.pressItemFuction(eventid),
+    this.pressItemFunction(data),
+    this.loadMoreFunction,
   });
 
   @override
@@ -102,14 +92,17 @@ class EventList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: this.items.length,
-      itemBuilder: (BuildContext ctxt, int index) {
-        String id = this.items[index]['id'];
-        String name = this.items[index]['name'];
+      itemBuilder: (BuildContext context, int index) {
+        if (index == this.items.length - 1 && this.loadMoreFunction != null) {
+          this.loadMoreFunction();
+        }
+
+        String name = this.items[index].name;
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(this.items[index]['athleteQuantity']) +
+                .format(this.items[index].athleteQuantity) +
             " athletes";
-        bool isFinished = this.items[index]['isFinished'];
-        String bannerImageURL = this.items[index]['bannerImageURL'];
+        bool isFinished = this.items[index].isFinished;
+        String bannerImageURL = this.items[index].bannerImageURL;
 
         return Container(
           padding: EdgeInsets.only(
@@ -127,8 +120,8 @@ class EventList extends StatelessWidget {
                   // Banner and isFinished
                   GestureDetector(
                     onTap: () {
-                      if (this.pressItemFuction != null) {
-                        this.pressItemFuction(id);
+                      if (this.pressItemFunction != null) {
+                        this.pressItemFunction(this.items[index]);
                       }
                     },
                     child: Stack(
@@ -177,8 +170,8 @@ class EventList extends StatelessWidget {
                   // Event name
                   GestureDetector(
                     onTap: () {
-                      if (this.pressItemFuction != null) {
-                        this.pressItemFuction(id);
+                      if (this.pressItemFunction != null) {
+                        this.pressItemFunction(this.items[index]);
                       }
                     },
                     child: Text(
@@ -198,8 +191,8 @@ class EventList extends StatelessWidget {
                   // Athlete quantity
                   GestureDetector(
                     onTap: () {
-                      if (this.pressItemFuction != null) {
-                        this.pressItemFuction(id);
+                      if (this.pressItemFunction != null) {
+                        this.pressItemFunction(this.items[index]);
                       }
                     },
                     child: Text(

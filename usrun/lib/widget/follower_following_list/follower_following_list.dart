@@ -3,38 +3,27 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/ui_button.dart';
 
+import 'follower_following_item.dart';
+
 class FollowerFollowingList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
   final String subTitle;
   final bool enableSubtitleShadow;
-  final List items;
+  final List<FollowerFollowingItem> items;
   final bool enableScrollBackgroundColor;
-  final Function pressFollowFuction;
-  final Function pressUnfollowFuction;
-  final Function pressProfileFunction;
+  final void Function(FollowerFollowingItem item) pressFollowFunction;
+  final void Function(FollowerFollowingItem item) pressUnfollowFunction;
+  final void Function(FollowerFollowingItem item) pressProfileFunction;
   final bool isFollowingList;
   final bool enableFFButton;
-  
+  final VoidCallback loadMoreFunction;
+
   // Define configurations for splitting item list
-  static List _newItemList = [];
-  static bool _enableListWithTwoRows = false;
+  static List<List<FollowerFollowingItem>> _newItemList = [];
+  static bool _enableSplitListToTwo = false;
   static int _numberToSplit = R.constants.numberToSplitFFList;
   static int _endPositionOfFirstList = 0;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "userCode": "0",
-        "avatarImageURL": "https://...",    [This must be value of HTTP LINK]
-        "supportImageURL": "https://...",   [This must be value of HTTP LINK]
-        "fullName": "Trần Kiến Quốc",
-        "cityName": "Ho Chi Minh",
-      },
-      ...
-    ]
-  */
 
   FollowerFollowingList({
     this.labelTitle = "",
@@ -43,16 +32,17 @@ class FollowerFollowingList extends StatelessWidget {
     this.enableSubtitleShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
-    this.pressFollowFuction(usercode),
-    this.pressUnfollowFuction(usercode),
-    this.pressProfileFunction(usercode),
+    this.pressFollowFunction(data),
+    this.pressUnfollowFunction(data),
+    this.pressProfileFunction(data),
     this.isFollowingList = true,
     this.enableFFButton = true,
+    this.loadMoreFunction,
   });
 
   void _splitItemList() {
     if (this.items.length > _numberToSplit) {
-      _enableListWithTwoRows = true;
+      _enableSplitListToTwo = true;
       _endPositionOfFirstList = (this.items.length / 2).round();
       _newItemList.add(this.items.sublist(0, _endPositionOfFirstList));
       _newItemList
@@ -64,7 +54,7 @@ class FollowerFollowingList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Split item list
     this._splitItemList();
-    
+
     // Render everything
     return Container(
       child: Column(
@@ -106,39 +96,35 @@ class FollowerFollowingList extends StatelessWidget {
                 ? R.colors.sectionBackgroundLayer
                 : R.colors.appBackground),
             width: R.appRatio.deviceWidth,
-            height: (this._isEmptyList()
-                ? R.appRatio.appHeight100
-                : (_enableListWithTwoRows
-                    ? (this.enableFFButton
-                        ? R.appRatio.appHeight200 + R.appRatio.appHeight200
-                        : R.appRatio.appHeight160 + R.appRatio.appHeight160)
-                    : (this.enableFFButton
-                        ? R.appRatio.appHeight200
-                        : R.appRatio.appHeight160))),
-            padding: (_enableListWithTwoRows
-                ? EdgeInsets.only(
-                    top: R.appRatio.appSpacing10,
-                    bottom: R.appRatio.appSpacing10,
-                  )
-                : null),
+            padding: EdgeInsets.only(
+              top: R.appRatio.appSpacing10,
+              bottom: R.appRatio.appSpacing10,
+            ),
             child: (this._isEmptyList()
                 ? this._buildEmptyList()
-                : (_enableListWithTwoRows
+                : (_enableSplitListToTwo
                     ? SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Expanded(
-                              child: this._buildFFList(_newItemList[0]),
+                            this._buildFFList(
+                              _newItemList[0],
+                              canLoadMore: false,
                             ),
-                            Expanded(
-                              child: this._buildFFList(_newItemList[1]),
+                            SizedBox(height: 5),
+                            this._buildFFList(
+                              _newItemList[1],
+                              canLoadMore: true,
                             ),
                           ],
                         ),
                       )
-                    : this._buildFFList(this.items))),
+                    : this._buildFFList(
+                        this.items,
+                        canLoadMore: true,
+                      ))),
           ),
         ],
       ),
@@ -159,41 +145,46 @@ class FollowerFollowingList extends StatelessWidget {
       systemNoti = "USRUN: Be active and passionate, everyone will follow you.";
     }
 
-    return Center(
-      child: Container(
-        padding: EdgeInsets.only(
-          left: R.appRatio.appSpacing25,
-          right: R.appRatio.appSpacing25,
-        ),
-        child: Text(
-          systemNoti,
-          textAlign: TextAlign.justify,
-          style: TextStyle(
-            color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
-          ),
+    return Container(
+      height: R.appRatio.appHeight60,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+        left: R.appRatio.appSpacing25,
+        right: R.appRatio.appSpacing25,
+      ),
+      child: Text(
+        systemNoti,
+        textAlign: TextAlign.justify,
+        style: TextStyle(
+          color: R.colors.contentText,
+          fontSize: R.appRatio.appFontSize14,
         ),
       ),
     );
   }
 
-  Widget _buildFFList(List element) {
-    return ListView.builder(
+  Widget _buildFFList(List<FollowerFollowingItem> element,
+      {bool canLoadMore: false}) {
+    Widget listWidget = ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: element.length,
-      itemBuilder: (BuildContext ctxt, int index) {
-        String userCode = element[index]['userCode'];
-        String avatarImageURL = element[index]['avatarImageURL'];
-        String supportImageURL = element[index]['supportImageURL'];
-        String fullName = element[index]['fullName'];
-        String cityName = element[index]['cityName'];
+      itemBuilder: (BuildContext context, int index) {
+        if (index == element.length - 1 &&
+            this.loadMoreFunction != null &&
+            canLoadMore) {
+          this.loadMoreFunction();
+        }
+
+        String avatarImageURL = element[index].avatarImageURL;
+        String supportImageURL = element[index].supportImageURL;
+        String fullName = element[index].fullName;
+        String cityName = element[index].cityName;
 
         return Container(
           padding: EdgeInsets.only(
             left: R.appRatio.appSpacing15,
-            right:
-                (index == element.length - 1 ? R.appRatio.appSpacing15 : 0),
+            right: (index == element.length - 1 ? R.appRatio.appSpacing15 : 0),
           ),
           child: Center(
             child: Container(
@@ -210,7 +201,7 @@ class FollowerFollowingList extends StatelessWidget {
                     supportImageURL: supportImageURL,
                     pressAvatarImage: () {
                       if (this.pressProfileFunction != null) {
-                        this.pressProfileFunction(userCode);
+                        this.pressProfileFunction(element[index]);
                       }
                     },
                   ),
@@ -221,7 +212,7 @@ class FollowerFollowingList extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       if (this.pressProfileFunction != null) {
-                        this.pressProfileFunction(userCode);
+                        this.pressProfileFunction(element[index]);
                       }
                     },
                     child: Text(
@@ -242,7 +233,7 @@ class FollowerFollowingList extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       if (this.pressProfileFunction != null) {
-                        this.pressProfileFunction(userCode);
+                        this.pressProfileFunction(element[index]);
                       }
                     },
                     child: Text(
@@ -276,8 +267,8 @@ class FollowerFollowingList extends StatelessWidget {
                                 color: R.colors.grayButtonColor,
                               ),
                               onTap: () {
-                                if (this.pressUnfollowFuction != null) {
-                                  this.pressUnfollowFuction(userCode);
+                                if (this.pressUnfollowFunction != null) {
+                                  this.pressUnfollowFunction(element[index]);
                                 }
                               },
                             )
@@ -294,8 +285,8 @@ class FollowerFollowingList extends StatelessWidget {
                                 color: R.colors.majorOrange,
                               ),
                               onTap: () {
-                                if (this.pressFollowFuction != null) {
-                                  this.pressFollowFuction(userCode);
+                                if (this.pressFollowFunction != null) {
+                                  this.pressFollowFunction(element[index]);
                                 }
                               },
                             ))
@@ -306,6 +297,15 @@ class FollowerFollowingList extends StatelessWidget {
           ),
         );
       },
+    );
+
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: (this.enableFFButton
+            ? R.appRatio.appHeight190
+            : R.appRatio.appHeight140),
+      ),
+      child: listWidget,
     );
   }
 }

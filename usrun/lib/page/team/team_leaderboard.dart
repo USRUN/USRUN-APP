@@ -7,39 +7,26 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
-import 'package:usrun/model/team_leaderboard.dart';
+import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
-class TeamLeaderboardPage extends StatefulWidget {
+class TeamLeaderBoard extends StatefulWidget {
   final int teamId;
 
-  TeamLeaderboardPage({@required this.teamId});
+  TeamLeaderBoard({@required this.teamId});
 
   @override
-  _TeamLeaderboardState createState() => _TeamLeaderboardState();
+  _TeamLeaderBoardState createState() => _TeamLeaderBoardState();
 }
 
-class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
+class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
   bool _isLoading;
-  List<TeamLeaderboard> items;
-
-  /*
-    + Structure of the "items" variable: 
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "name": "Quốc Trần Kiến",
-        "distance": 421.34,
-      },
-      ...
-    ]
-  */
+  List<TeamRankItem> items;
 
   @override
   void initState() {
@@ -51,9 +38,10 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
-  void _getLeaderBoard() async{
-    Response<List<TeamLeaderboard>> teamLeaderboard = await TeamManager.getTeamLeaderBoard(widget.teamId);
-    if(teamLeaderboard.success && teamLeaderboard.object.length != 0){
+  void _getLeaderBoard() async {
+    Response<List<TeamRankItem>> teamLeaderboard =
+        await TeamManager.getTeamLeaderBoard(widget.teamId);
+    if (teamLeaderboard.success && teamLeaderboard.object.length != 0) {
       items = teamLeaderboard.object;
     }
   }
@@ -72,12 +60,16 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -113,7 +105,7 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
                       padding: EdgeInsets.only(
                         top: R.appRatio.appSpacing15,
                       ),
-                      child: LoadingDotStyle02(),
+                      child: LoadingIndicator(),
                     )
                   : _renderList()),
             ),
@@ -124,8 +116,9 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
@@ -142,10 +135,10 @@ class _TeamLeaderboardState extends State<TeamLeaderboardPage> {
             shrinkWrap: true,
             itemCount: items.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              String avatarImageURL = items[index].avatar;
-              String name = items[index].displayName;
+              String avatarImageURL = items[index].avatarImageURL;
+              String name = items[index].name;
               String distance = NumberFormat("#,##0.##", "en_US")
-                  .format(items[index].totalDistance);
+                  .format(items[index].distance);
 
               return AnimationConfiguration.staggeredList(
                 position: index,

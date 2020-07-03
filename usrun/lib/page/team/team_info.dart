@@ -65,10 +65,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _getTeamInfo());
   }
 
-  void _getTeamInfo() async{
+  void _getTeamInfo() async {
     Response<Team> response = await TeamManager.getTeamById(widget.teamId);
-    if(response.success && response.object != null){
-      _teamDescription = response.object.description == null?R.strings.description:response.object.description;
+    if (response.success && response.object != null) {
+      _teamDescription = response.object.description == null
+          ? R.strings.description
+          : response.object.description;
       _teamName = response.object.teamName;
       _teamBanner = response.object.banner;
       _teamMembers = response.object.totalMember;
@@ -145,12 +147,16 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: R.colors.appBackground,
         appBar: GradientAppBar(
-          leading: new IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarBackBtn,
-              width: R.appRatio.appAppBarIconSize,
-            ),
+          leading: FlatButton(
             onPressed: () => pop(context),
+            padding: EdgeInsets.all(0.0),
+            splashColor: R.colors.lightBlurMajorOrange,
+            textColor: Colors.white,
+            child: ImageCacheManager.getImage(
+              url: R.myIcons.appBarBackBtn,
+              width: R.appRatio.appAppBarIconSize,
+              height: R.appRatio.appAppBarIconSize,
+            ),
           ),
           gradient: R.colors.uiGradient,
           centerTitle: true,
@@ -160,17 +166,25 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                 color: Colors.white, fontSize: R.appRatio.appFontSize22),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Image.asset(
-                R.myIcons.appBarShareBtn,
-                width: R.appRatio.appAppBarIconSize,
+            Container(
+              width: R.appRatio.appWidth60,
+              child: FlatButton(
+                onPressed: () => _shareTeamInfo(),
+                padding: EdgeInsets.all(0.0),
+                splashColor: R.colors.lightBlurMajorOrange,
+                textColor: Colors.white,
+                child: ImageCacheManager.getImage(
+                  url: R.myIcons.appBarShareBtn,
+                  width: R.appRatio.appAppBarIconSize,
+                  height: R.appRatio.appAppBarIconSize,
+                  color: Colors.white,
+                ),
               ),
-              onPressed: () => _shareTeamInfo(),
             ),
           ],
         ),
         body: (_isLoading
-            ? LoadingDotStyle02()
+            ? LoadingIndicator()
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -363,7 +377,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           ),
                           GestureDetector(
                             // TODO: Pass teamId to pushPage!!!
-                            onTap: () => pushPage(context, TeamLeaderboardPage(teamId:widget.teamId)),
+                            onTap: () => pushPage(context,
+                                TeamLeaderboardPage(teamId: widget.teamId)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
@@ -625,8 +640,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

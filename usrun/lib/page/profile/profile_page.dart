@@ -9,15 +9,9 @@ import 'package:usrun/widget/custom_tab_bar.dart';
 
 class ProfilePage extends StatefulWidget {
   final tabBarItems = [
-    {
-      "iconURL": R.myIcons.whiteStatisticsIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteShoeIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteInfoIcon,
-    }
+    R.myIcons.whiteStatisticsIcon,
+    R.myIcons.whiteShoeIcon,
+    R.myIcons.whiteInfoIcon,
   ];
 
   @override
@@ -71,13 +65,16 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: R.appRatio.appSpacing25,
             ),
-            AvatarView(
-              avatarImageURL: _avatarImageURL,
-              avatarImageSize: R.appRatio.appAvatarSize130,
-              supportImageURL: _supportImageURL,
-              avatarBoxBorder: Border.all(
-                color: R.colors.majorOrange,
-                width: 2,
+            Align(
+              alignment: Alignment.center,
+              child: AvatarView(
+                avatarImageURL: _avatarImageURL,
+                avatarImageSize: R.appRatio.appAvatarSize130,
+                supportImageURL: _supportImageURL,
+                avatarBoxBorder: Border.all(
+                  color: R.colors.majorOrange,
+                  width: 2,
+                ),
               ),
             ),
             SizedBox(

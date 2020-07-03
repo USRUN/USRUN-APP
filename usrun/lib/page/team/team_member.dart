@@ -9,43 +9,40 @@ import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
+import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
-import 'package:usrun/widget/custom_popup_menu.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamMemberPage extends StatefulWidget {
   final tabBarItems = [
-    {
-      "tabName": R.strings.all,
-    },
-    {
-      "tabName": R.strings.requesting,
-    },
-    {
-      "tabName": R.strings.blocking,
-    }
+    R.strings.all,
+    R.strings.requesting,
+    R.strings.blocking,
   ];
 
   final popUpMenu = [
-    {
-      "iconURL": R.myIcons.blackAddIcon02,
-      "iconSize": R.appRatio.appIconSize15 + 1,
-      "title": R.strings.inviteNewMember,
-    },
-    {
-      "iconURL": R.myIcons.blackCloseIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": R.strings.kickAMember,
-    },
-    {
-      "iconURL": R.myIcons.blackBlockIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": R.strings.blockAPerson,
-    },
+    CustomPopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15 + 1,
+      title: R.strings.inviteNewMember,
+    ),
+    CustomPopupItem(
+      iconURL: R.myIcons.blackCloseIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.kickAMember,
+    ),
+    CustomPopupItem(
+      iconURL: R.myIcons.blackBlockIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.blockAPerson,
+    ),
   ];
 
   final int teamId;
@@ -60,28 +57,12 @@ class TeamMemberPage extends StatefulWidget {
 class _TeamMemberPageState extends State<TeamMemberPage> {
   bool _isLoading = false;
   int _selectedTabIndex;
-  List items = List();
   int _curPage;
   bool _remainingResults;
+  List<TeamMemberItem> items = List();
 
   final TextEditingController _nameController = TextEditingController();
   final String _nameLabel = R.strings.name;
-
-  /*
-    + Structure of the "items" variable: 
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "name": "Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến",
-        'supportImageURL':
-          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-        "location": "Ho Chi Minh City, Viet Nam",
-        "isFollowing": false,
-      },
-      ...
-    ]
-  */
 
   @override
   void initState() {
@@ -101,13 +82,15 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       _remainingResults = true;
     });
 
-    if(_remainingResults) {
-      // TODO: Implement function here
-      Response<List<TeamMember>> response = await TeamManager
-          .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
+    if (_remainingResults) {
+      Response<List<TeamMember>> response =
+          await TeamManager.getAllTeamMemberPaged(
+              widget.teamId, _curPage, widget.resultPerPage);
       if (response.success) {
+        // TODO: Implement function here
+        List<TeamMember> data = response.object;
         setState(() {
-          items = response.object;
+          items = DemoData().allTeamMember;
           _curPage += 1;
         });
         if (response.object.length > 0)
@@ -176,6 +159,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     }
   }
 
+  _loadMoreData() {
+    // TODO: Implement function here
+    print("Loading more data...");
+  }
+
   _onSelectItem(int tabIndex) {
     if (_selectedTabIndex == tabIndex) return;
     setState(() {
@@ -220,12 +208,16 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -236,19 +228,23 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         ),
         actions: <Widget>[
           Container(
-            padding: EdgeInsets.only(
-              right: R.appRatio.appSpacing15 - 2,
-            ),
-            child: CustomPopupMenu(
-              items: widget.popUpMenu,
-              onSelected: (index) {
-                _showCustomDialog(index);
-              },
-              popupImage: Image.asset(
-                R.myIcons.appBarPopupMenuIcon,
-                width: R.appRatio.appAppBarIconSize,
-                height: R.appRatio.appAppBarIconSize,
-                fit: BoxFit.contain,
+            width: R.appRatio.appWidth60,
+            child: FlatButton(
+              onPressed: () {},
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: CustomPopupMenu(
+                items: widget.popUpMenu,
+                onSelected: (index) {
+                  _showCustomDialog(index);
+                },
+                popupImage: Image.asset(
+                  R.myIcons.appBarPopupMenuIcon,
+                  width: R.appRatio.appAppBarIconSize,
+                  height: R.appRatio.appAppBarIconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
@@ -265,17 +261,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           // All contents
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: (_isLoading
-                  ? Container(
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing15,
-                      ),
-                      child: LoadingDotStyle02(),
-                    )
-                  : _renderList()),
-            ),
+            child: (_isLoading ? LoadingIndicator() : _renderList()),
           ),
         ],
       ),
@@ -283,54 +269,54 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
   Widget _renderList() {
-    return Container(
-      padding: EdgeInsets.only(
-        left: R.appRatio.appSpacing15,
-        right: R.appRatio.appSpacing15,
-      ),
-      child: AnimationLimiter(
-        child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 400),
-                child: SlideAnimation(
-                  verticalOffset: 100.0,
-                  child: FadeInAnimation(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                        bottom: R.appRatio.appSpacing15,
-                      ),
-                      child: _renderCustomCell(index),
+    return AnimationLimiter(
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: items.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == items.length - 1) {
+              _loadMoreData();
+            }
+
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 400),
+              child: SlideAnimation(
+                verticalOffset: 100.0,
+                child: FadeInAnimation(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+                      bottom: R.appRatio.appSpacing15,
+                      left: R.appRatio.appSpacing15,
+                      right: R.appRatio.appSpacing15,
                     ),
+                    child: _renderCustomCell(index),
                   ),
                 ),
-              );
-            }),
-      ),
+              ),
+            );
+          }),
     );
   }
 
   Widget _renderCustomCell(index) {
-    String avatarImageURL = items[index]['avatarImageURL'];
-    String supportImageURL = items[index]['supportImageURL'];
-    String name = items[index]['name'];
-    String location = items[index]['location'];
+    String avatarImageURL = items[index].avatarImageURL;
+    String supportImageURL = items[index].supportImageURL;
+    String name = items[index].name;
+    String location = items[index].location;
 
     switch (_selectedTabIndex) {
       case 0: // All
-        bool isFollowing = items[index]['isFollowing'];
+        bool isFollowing = items[index].isFollowing;
         return CustomCell(
           avatarView: AvatarView(
             avatarImageURL: avatarImageURL,
@@ -446,7 +432,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             ),
           ],
           submitBtnContent: R.strings.invite,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Invite new member");
           },
@@ -466,7 +452,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             ),
           ],
           submitBtnContent: R.strings.kick,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Kick a member");
           },
@@ -486,7 +472,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             ),
           ],
           submitBtnContent: R.strings.block,
-          submitBtnFuction: () {
+          submitBtnFunction: () {
             // TODO: Implement function here
             print("Block a person");
           },

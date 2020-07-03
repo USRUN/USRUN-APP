@@ -9,23 +9,13 @@ import 'package:usrun/util/image_cache_manager.dart';
 */
 class CustomTabBarStyle01 extends StatelessWidget {
   final int selectedTabIndex;
-  final List items;
+  final List<String> items;
   final Function pressTab;
 
   static double _tabIconSize = R.appRatio.appIconSize30;
   static double _tabBarWidth = R.appRatio.deviceWidth;
   static double _tabWidth = 0;
   static double _lastTabWidth = 0;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "iconURL": "...",              [This must be value of ASSET]
-      },
-      ...
-    ]
-  */
 
   CustomTabBarStyle01({
     @required this.selectedTabIndex,
@@ -70,8 +60,8 @@ class CustomTabBarStyle01 extends StatelessWidget {
                         ? _lastTabWidth
                         : _tabWidth),
                     child: ImageCacheManager.getImage(
-                      url: (this.items[i].containsKey('iconURL')
-                          ? this.items[i]['iconURL']
+                      url: (this.items[i] != null && this.items[i].length != 0
+                          ? this.items[i]
                           : null),
                       width: _tabIconSize,
                       height: _tabIconSize,
@@ -102,23 +92,13 @@ class CustomTabBarStyle01 extends StatelessWidget {
 */
 class CustomTabBarStyle02 extends StatelessWidget {
   final int selectedTabIndex;
-  final List items;
+  final List<String> items;
   final Function pressTab;
 
   static double _tabFontSize = R.appRatio.appFontSize16;
   static double _tabBarWidth = R.appRatio.deviceWidth;
   static double _tabWidth = 0;
   static double _lastTabWidth = 0;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "tabName": "...",              
-      },
-      ...
-    ]
-  */
 
   CustomTabBarStyle02({
     @required this.selectedTabIndex,
@@ -170,8 +150,8 @@ class CustomTabBarStyle02 extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  (this.items[i].containsKey('tabName')
-                      ? this.items[i]['tabName'].toString().toUpperCase()
+                  (this.items[i] != null && this.items[i].length != 0
+                      ? this.items[i].toUpperCase()
                       : ""),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -198,22 +178,12 @@ class CustomTabBarStyle02 extends StatelessWidget {
 
 class CustomTabBarStyle03 extends StatelessWidget {
   final int selectedTabIndex;
-  final List items;
+  final List<String> items;
   final Function pressTab;
 
   static double _tabFontSize = R.appRatio.appFontSize16;
   static double _tabWidth = R.appRatio.appWidth120;
   static double _tabHeight = R.appRatio.appHeight40;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "tabName": "...",              
-      },
-      ...
-    ]
-  */
 
   CustomTabBarStyle03({
     @required this.selectedTabIndex,
@@ -262,8 +232,8 @@ class CustomTabBarStyle03 extends StatelessWidget {
                           ? R.colors.tabLayer
                           : null),
                       child: Text(
-                        (this.items[i].containsKey('tabName')
-                            ? this.items[i]['tabName'].toString().toUpperCase()
+                        (this.items[i] != null && this.items[i].length != 0
+                            ? this.items[i].toUpperCase()
                             : ""),
                         textAlign: TextAlign.center,
                         style: TextStyle(
