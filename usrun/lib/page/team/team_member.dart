@@ -10,6 +10,7 @@ import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
@@ -54,6 +55,24 @@ class TeamMemberPage extends StatefulWidget {
       "iconURL": R.myIcons.blackBlockIcon,
       "iconSize": R.appRatio.appIconSize15,
       "title": R.strings.blockAPerson,
+    },
+  ];
+
+  final member_options = [
+    {
+      "iconURL": R.myIcons.peopleIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Follow/Unfollow",
+    },
+    {
+      "iconURL": R.myIcons.starIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Promote to admin",
+    },
+    {
+      "iconURL": R.myIcons.blockIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Block from team",
     },
   ];
 
@@ -187,6 +206,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     });
   }
 
+  _onSelectMemberOption(int memberIndex){
+
+  }
+
   _pressAvatar(index) {
     // TODO: Implement function here
     print("Pressing avatar image");
@@ -285,22 +308,21 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           Container(
             width: R.appRatio.appWidth60,
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                pushPage(
+                  context,
+                  //MEMBER SEARCH PAGE
+                  TeamSearchPage(autoFocusInput: true, defaultList: [],),
+                );},
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
-              child: CustomPopupMenu(
-                items: widget.popUpMenu,
-                onSelected: (index) {
-                  _showCustomDialog(index);
-                },
-                popupImage: Image.asset(
-                  R.myIcons.appBarPopupMenuIcon,
+                child: ImageCacheManager.getImage(
+                  url: R.myIcons.appBarSearchBtn,
                   width: R.appRatio.appAppBarIconSize,
                   height: R.appRatio.appAppBarIconSize,
-                  fit: BoxFit.contain,
+                  color: Colors.white,
                 ),
-              ),
             ),
           ),
         ],
@@ -419,11 +441,19 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
-          enableFFButton: true,
-          isFollowButton: (isFollowing ? false : true),
-          pressFFButton: (isFollowing
-              ? () => _pressUnFollowBtn(index)
-              : () => _pressFollowBtn(index)),
+          enablePopupMenuButton: true,
+          customPopupMenu: CustomPopupMenu(
+            items: widget.member_options,
+            onSelected: (index) {
+              _onSelectMemberOption(index);
+            },
+            popupImage: Image.asset(
+              R.myIcons.popupMenuIconByTheme,
+              width: R.appRatio.appIconSize15,
+              height: R.appRatio.appIconSize15,
+              fit: BoxFit.contain,
+            ),
+          ),
         );
       case 1: // Requesting
         return CustomCell(
