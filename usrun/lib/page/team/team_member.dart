@@ -21,6 +21,8 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
+import 'member_search_page.dart';
+
 class TeamMemberPage extends StatefulWidget {
   final adminTabBarItems = [
     {
@@ -59,6 +61,83 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final member_options = [
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      }
+    ],
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      },
+    ],
+    [
+    {
+      "iconURL": R.myIcons.peopleIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Follow/Unfollow",
+    },
+    ]
+  ];
+
+  final admin_options = [
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      }
+    ],[
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      }
+    ],
+    //
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      },{
+      "iconURL": R.myIcons.peopleIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Block from team",
+    },
+    ]
+  ];
+
+  final owner_options = [
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      },
+    ],
+    [
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Follow/Unfollow",
+      },
+      {
+      "iconURL": R.myIcons.peopleIconByTheme,
+      "iconSize": R.appRatio.appIconSize15,
+      "title": "Demote from Admin",
+      },
+      {
+        "iconURL": R.myIcons.peopleIconByTheme,
+        "iconSize": R.appRatio.appIconSize15,
+        "title": "Block from team",
+      },
+    ],
+    [
     {
       "iconURL": R.myIcons.peopleIconByTheme,
       "iconSize": R.appRatio.appIconSize15,
@@ -74,7 +153,7 @@ class TeamMemberPage extends StatefulWidget {
       "iconSize": R.appRatio.appIconSize15,
       "title": "Block from team",
     },
-  ];
+  ]];
 
   final int teamId;
   final int teamMemberType;
@@ -93,6 +172,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   int _curPage;
   bool _remainingResults;
   List tabItems;
+  List<String> memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
+  List options = List();
 
   final TextEditingController _nameController = TextEditingController();
   final String _nameLabel = R.strings.name;
@@ -124,6 +205,18 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       tabItems = widget.adminTabBarItems;
     } else{
       tabItems = widget.tabBarItems;
+    }
+
+    switch(widget.teamMemberType){
+      case 1:
+        options = widget.owner_options;
+        break;
+      case 2:
+        options = widget.admin_options;
+        break;
+      case 3:
+        options = widget.member_options;
+        break;
     }
 
     WidgetsBinding.instance
@@ -306,13 +399,35 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         ),
         actions: <Widget>[
           Container(
+            width: R.appRatio.appWidth40,
+            child: FlatButton(
+              onPressed: () {
+                print("Open member invitation page");
+                // push page
+//                pushPage(
+//                  context,
+//                  // TODO: INVITE MEMBER PAGE
+//                );
+                },
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.addIcon02ByTheme,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Container(
             width: R.appRatio.appWidth60,
             child: FlatButton(
               onPressed: () {
                 pushPage(
                   context,
                   //MEMBER SEARCH PAGE
-                  TeamSearchPage(autoFocusInput: true, defaultList: [],),
+                  MemberSearchPage(autoFocusInput: true, defaultList: items,selectedTab:_selectedTabIndex,),
                 );},
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -406,10 +521,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   Widget _renderCustomCell(index) {
+    int listMemberTypeIndex = items[index].teamMemberType.index - 1;
     String avatarImageURL = items[index].avatar;
     String supportImageURL = items[index].avatar;
     String name = items[index].name;
     String location = items[index].province.toString();
+    String listTeamMemberType = memberTypes[listMemberTypeIndex];
+
 
     switch (_selectedTabIndex) {
       case 0: // All
@@ -434,7 +552,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             fontWeight: FontWeight.w500,
           ),
           enableAddedContent: false,
-          subTitle: location,
+          subTitle: listTeamMemberType,
           subTitleStyle: TextStyle(
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
@@ -442,8 +560,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enablePopupMenuButton: true,
-          customPopupMenu: CustomPopupMenu(
-            items: widget.member_options,
+          customPopupMenu:
+          CustomPopupMenu(
+            items: options[listMemberTypeIndex],
             onSelected: (index) {
               _onSelectMemberOption(index);
             },

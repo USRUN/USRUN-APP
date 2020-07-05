@@ -7,6 +7,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/team_member.dart';
@@ -20,10 +21,11 @@ import 'package:usrun/widget/loading_dot.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-class TeamSearchPage extends StatefulWidget {
+class MemberSearchPage extends StatefulWidget {
   final bool autoFocusInput;
   final int resultPerPage = 15;
   final List defaultList;
+  final int selectedTab;
 
   final member_options = [
     {
@@ -43,22 +45,26 @@ class TeamSearchPage extends StatefulWidget {
     },
   ];
 
-  TeamSearchPage({
+  MemberSearchPage({
     this.autoFocusInput = false,
-    @required this.defaultList
+    @required this.defaultList,
+    @required this.selectedTab
   });
 
   @override
-  _TeamSearchPageState createState() => _TeamSearchPageState();
+  _MemberSearchPageState createState() => _MemberSearchPageState();
 }
 
-class _TeamSearchPageState extends State<TeamSearchPage> {
+class _MemberSearchPageState extends State<MemberSearchPage> {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
   bool remainingResults;
-  List<User> teamList;
+  List<User> memberList;
   String curSearchString;
   int curResultPage;
+  int _selectedTab;
+  int _selectedMemberType;
+  final _currentUser = UserManager.currentUser;
 
   @override
   void initState() {
@@ -67,11 +73,11 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     _isLoading = true;
     curResultPage = 1;
     remainingResults = true;
-    teamList = List();
+    memberList = List();
 
     if(widget.defaultList != null)
-      teamList = widget.defaultList;
-    else _findTeamByName();
+      memberList = widget.defaultList;
+//    else _findMember();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -85,16 +91,40 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   }
 
 
-  void _findTeamByName() async {
+  void _findMember() async {
+    if(_selectedMemberType == 0){
+      _findMemberAndAdmin();
+    } else {
+      _findMemberByType();
+    }
+  }
+
+  void _findMemberAndAdmin() async {
     if(!remainingResults) return;
 
     remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager.findTeamMemberRequest(curSearchString, curResultPage, widget.resultPerPage);
 
     if(response.success && (response.object as List).isNotEmpty){
       List<User> toAdd = response.object;
       setState(() {
-        teamList.addAll(toAdd);
+        memberList.addAll(toAdd);
+        remainingResults = true;
+        curResultPage += 1;
+      });
+    }
+  }
+
+  void _findMemberByType() async {
+    if(!remainingResults) return;
+
+    remainingResults = false;
+    Response<dynamic> response = await TeamManager.findTeamMemberByTypeRequest(curSearchString,_selectedMemberType, curResultPage, widget.resultPerPage);
+
+    if(response.success && (response.object as List).isNotEmpty){
+      List<User> toAdd = response.object;
+      setState(() {
+        memberList.addAll(toAdd);
         remainingResults = true;
         curResultPage += 1;
       });
@@ -109,7 +139,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     setState(() {
       _isLoading = !_isLoading;
       curSearchString = data.toString();
-      teamList.clear();
+      memberList.clear();
       curResultPage = 0;
       remainingResults = true;
     });
@@ -117,7 +147,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     // TODO: Implement function here
     print("Data: $data");
 
-    _findTeamByName();
+    _findMember();
 
     setState(() {
       _isLoading = !_isLoading;
@@ -139,18 +169,18 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
       setState(() {
-        teamList = widget.defaultList;
+        memberList = widget.defaultList;
       });
     }
   }
 
   bool _isEmptyList() {
-    return ((this.teamList == null || this.teamList.length == 0) ? true : false);
+    return ((this.memberList == null || this.memberList.length == 0) ? true : false);
   }
 
   Widget _buildEmptyList() {
     String systemNoti =
-        "No result";
+        "No result available";
 
     return Center(
       child: Container(
@@ -177,7 +207,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
             if (scrollInfo.metrics.pixels ==
                 scrollInfo.metrics.maxScrollExtent) {
               if(remainingResults)
-                _findTeamByName();
+                _findMember();
             }
             return true; // just to clear a warning
           },
@@ -186,12 +216,13 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount:(teamList!=null)?teamList.length:0,
+              itemCount:(memberList!=null)?memberList.length:0,
               itemBuilder: (BuildContext ctxt, int index) {
-                String avatarImageURL = teamList[index].avatar;
-                String supportImageURL = teamList[index].avatar;
-                String teamName = teamList[index].name;
-                String location = teamList[index].province.toString();
+                String avatarImageURL = memberList[index].avatar;
+                String supportImageURL = memberList[index].avatar;
+                String teamName = memberList[index].name;
+                String location = memberList[index].province.toString();
+                int memberUserId = memberList[index].userId;
 
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -232,7 +263,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           ),
                           pressInfo: () => null,
                           centerVerticalSuffix: true,
-                          enablePopupMenuButton: true,
+                          enablePopupMenuButton: (memberUserId == _currentUser.userId) ?false:true,
                           customPopupMenu: CustomPopupMenu(
                             items: widget.member_options,
                             onSelected: (index) {
@@ -254,53 +285,204 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget _buildElement = Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        title: InputField(
-          controller: _textSearchController,
-          hintText: R.strings.search,
-          hintStyle: TextStyle(
-            fontSize: R.appRatio.appFontSize18,
-            color: Colors.white.withOpacity(0.5),
-          ),
-          contentStyle: TextStyle(
-            color: Colors.white,
-            fontSize: R.appRatio.appFontSize18,
-            fontWeight: FontWeight.w500,
-          ),
-          bottomUnderlineColor: Colors.white,
-          enableBottomUnderline: true,
-          isDense: true,
-          autoFocus: widget.autoFocusInput,
-          textInputAction: TextInputAction.search,
-          onSubmittedFunction: _onSubmittedFunction,
-          onChangedFunction: _onChangedFunction,
-        ),
-      ),
-      body: (_isLoading ? LoadingDotStyle02() : _renderUserList()),
-    );
+//  @override
+//  Widget build(BuildContext context) {
+//    Widget _buildElement = Scaffold(
+//      resizeToAvoidBottomInset: true,
+//      backgroundColor: R.colors.appBackground,
+//      appBar: GradientAppBar(
+//        leading: FlatButton(
+//          onPressed: () => pop(context),
+//          padding: EdgeInsets.all(0.0),
+//          splashColor: R.colors.lightBlurMajorOrange,
+//          textColor: Colors.white,
+//          child: ImageCacheManager.getImage(
+//            url: R.myIcons.appBarBackBtn,
+//            width: R.appRatio.appAppBarIconSize,
+//            height: R.appRatio.appAppBarIconSize,
+//          ),
+//        ),
+//        gradient: R.colors.uiGradient,
+//        title: InputField(
+//          controller: _textSearchController,
+//          hintText: R.strings.search,
+//          hintStyle: TextStyle(
+//            fontSize: R.appRatio.appFontSize18,
+//            color: Colors.white.withOpacity(0.5),
+//          ),
+//          contentStyle: TextStyle(
+//            color: Colors.white,
+//            fontSize: R.appRatio.appFontSize18,
+//            fontWeight: FontWeight.w500,
+//          ),
+//          bottomUnderlineColor: Colors.white,
+//          enableBottomUnderline: true,
+//          isDense: true,
+//          autoFocus: widget.autoFocusInput,
+//          textInputAction: TextInputAction.search,
+//          onSubmittedFunction: _onSubmittedFunction,
+//          onChangedFunction: _onChangedFunction,
+//        ),
+//      ),
+//      body: (_isLoading ? LoadingDotStyle02() : _renderUserList()),
+//    );
+//
+//    return NotificationListener<OverscrollIndicatorNotification>(
+//        child: _buildElement,
+//        onNotification: (overScroll) {
+//          overScroll.disallowGlow();
+//          return false;
+//        });
+//    bool _isEmptyList() {
+//      return ((this.teamList == null || this.teamList.length == 0) ? true : false);
+//    }
+//
+//    Widget _buildEmptyList() {
+//      String systemNoti =
+//          "No result";
+//
+//      return Center(
+//        child: Container(
+//          padding: EdgeInsets.only(
+//            left: R.appRatio.appSpacing25,
+//            right: R.appRatio.appSpacing25,
+//          ),
+//          child: Text(
+//            systemNoti,
+//            textAlign: TextAlign.justify,
+//            style: TextStyle(
+//              color: R.colors.contentText,
+//              fontSize: R.appRatio.appFontSize14,
+//            ),
+//          ),
+//        ),
+//      );
+//    }
+//
+//    Widget _renderSuggestedTeams() {
+//      return AnimationLimiter(
+//        child: NotificationListener<ScrollNotification>(
+//            onNotification: (ScrollNotification scrollInfo) {
+//              if (scrollInfo.metrics.pixels ==
+//                  scrollInfo.metrics.maxScrollExtent) {
+//                if(remainingResults)
+//                  _findTeamByName();
+//              }
+//              return true; // just to clear a warning
+//            },
+//            child: _isEmptyList()?
+//            _buildEmptyList():
+//            ListView.builder(
+//                scrollDirection: Axis.vertical,
+//                shrinkWrap: true,
+//                itemCount:(teamList!=null)?teamList.length:0,
+//                itemBuilder: (BuildContext ctxt, int index) {
+//                  String avatarImageURL = teamList[index].thumbnail;
+//                  String supportImageURL = teamList[index].thumbnail;
+//                  String teamName = teamList[index].teamName;
+//                  String athleteQuantity = NumberFormat("#,##0", "en_US")
+//                      .format(teamList[index].totalMember);
+//                  String location = teamList[index].province.toString();
+//
+//                  return AnimationConfiguration.staggeredList(
+//                    position: index,
+//                    duration: const Duration(milliseconds: 400),
+//                    child: SlideAnimation(
+//                      verticalOffset: 100.0,
+//                      child: FadeInAnimation(
+//                        child: Container(
+//                          padding: EdgeInsets.only(
+//                            top: (index == 0 ? R.appRatio.appSpacing20 : 0),
+//                            bottom: R.appRatio.appSpacing20,
+//                            left: R.appRatio.appSpacing15,
+//                            right: R.appRatio.appSpacing15,
+//                          ),
+//                          child: CustomCell(
+//                            avatarView: AvatarView(
+//                              avatarImageURL: avatarImageURL,
+//                              avatarImageSize: R.appRatio.appWidth60,
+//                              avatarBoxBorder: Border.all(
+//                                width: 1,
+//                                color: R.colors.majorOrange,
+//                              ),
+//                              supportImageURL: supportImageURL,
+//                              pressAvatarImage: () {
+//                                print("Pressing avatar image");
+//                              },
+//                            ),
+//                            // Content
+//                            title: teamName,
+//                            titleStyle: TextStyle(
+//                              fontSize: R.appRatio.appFontSize16,
+//                              color: R.colors.contentText,
+//                              fontWeight: FontWeight.w500,
+//                            ),
+//                            firstAddedTitle: athleteQuantity,
+//                            firstAddedTitleIconURL: R.myIcons.peopleIconByTheme,
+//                            firstAddedTitleIconSize: R.appRatio.appIconSize15,
+//                            secondAddedTitle: location,
+//                            secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
+//                            secondAddedTitleIconSize: R.appRatio.appIconSize15,
+//                            pressInfo: () {
+//                              print("Pressing info");
+//                              pushPage(context, TeamInfoPage(teamId: teamList[index].id));
+//                            },
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                  );
+//                })),
+//      );
+//    }
 
-    return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
-  }
+    @override
+    Widget build(BuildContext context) {
+      Widget _buildElement = Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: R.colors.appBackground,
+        appBar: GradientAppBar(
+          leading: FlatButton(
+            onPressed: () => pop(context),
+            padding: EdgeInsets.all(0.0),
+            splashColor: R.colors.lightBlurMajorOrange,
+            textColor: Colors.white,
+            child: ImageCacheManager.getImage(
+              url: R.myIcons.appBarBackBtn,
+              width: R.appRatio.appAppBarIconSize,
+              height: R.appRatio.appAppBarIconSize,
+            ),
+          ),
+          gradient: R.colors.uiGradient,
+          title: InputField(
+            controller: _textSearchController,
+            hintText: R.strings.search,
+            hintStyle: TextStyle(
+              fontSize: R.appRatio.appFontSize18,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            contentStyle: TextStyle(
+              color: Colors.white,
+              fontSize: R.appRatio.appFontSize18,
+              fontWeight: FontWeight.w500,
+            ),
+            bottomUnderlineColor: Colors.white,
+            enableBottomUnderline: true,
+            isDense: true,
+            autoFocus: widget.autoFocusInput,
+            textInputAction: TextInputAction.search,
+            onSubmittedFunction: _onSubmittedFunction,
+            onChangedFunction: _onChangedFunction,
+          ),
+        ),
+        body: (_isLoading ? LoadingDotStyle02() : _renderUserList()),
+      );
+
+      return NotificationListener<OverscrollIndicatorNotification>(
+          child: _buildElement,
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
+            return false;
+          });
+    }
 }

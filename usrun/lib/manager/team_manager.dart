@@ -206,4 +206,52 @@ class TeamManager{
 
     return response;
   }
+
+  static Future<Response> findTeamMemberRequest(String searchString, int pageNum, int perPage) async {
+    Map<String,dynamic> params = {
+      'searchString': searchString,
+      'pageNum': pageNum,
+      'perPage': perPage
+    };
+
+    Response<dynamic> res = await Client.post('/team/findTeamMember',params);
+
+    if(!res.success || (res.object as List).isEmpty) return res;
+
+    List<User> teamMembers = (res.object as List)
+        .map((item)=> MapperObject.create<User>(item)).toList();
+
+    Response<List<User>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teamMembers
+    );
+
+    return response;
+  }
+
+  static Future<Response> findTeamMemberByTypeRequest(String searchString, int memberType, int pageNum, int perPage) async {
+    Map<String,dynamic> params = {
+      'searchString': searchString,
+      'memberType': memberType,
+      'pageNum': pageNum,
+      'perPage': perPage
+    };
+
+    Response<dynamic> res = await Client.post('/team/findTeamMemberByType',params);
+
+    if(!res.success || (res.object as List).isEmpty) return res;
+
+    List<User> teamMembers = (res.object as List)
+        .map((item)=> MapperObject.create<User>(item)).toList();
+
+    Response<List<User>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teamMembers
+    );
+
+    return response;
+  }
+
 }
