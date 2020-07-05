@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
-import 'file:///C:/GitHub/USRUN/usrun/lib/widget/custom_popup_menu/custom_popup_menu.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class CustomCell extends StatelessWidget {

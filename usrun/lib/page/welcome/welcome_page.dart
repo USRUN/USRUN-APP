@@ -11,6 +11,7 @@ import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/signin/signin_page.dart';
 import 'package:usrun/page/signup/signup_page.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -81,7 +82,10 @@ class _WelcomePageState extends State<WelcomePage>
                         child: Column(
                           children: <Widget>[
                             UIImageButton(
-                              onTap: (){_adapterSignUp(LoginChannel.Facebook, null, context);},
+                              onTap: () {
+                                _adapterSignUp(
+                                    LoginChannel.Facebook, null, context);
+                              },
                               width: R.appRatio.appWidth381,
                               image: Image.asset(
                                 (R.currentAppLanguage == "en"
@@ -101,7 +105,10 @@ class _WelcomePageState extends State<WelcomePage>
                                 ),
                               ),
                               child: UIImageButton(
-                                onTap: (){_adapterSignUp(LoginChannel.Google, null, context);},
+                                onTap: () {
+                                  _adapterSignUp(
+                                      LoginChannel.Google, null, context);
+                                },
                                 width: R.appRatio.appWidth381,
                                 image: Image.asset(
                                   (R.currentAppLanguage == "en"
@@ -231,7 +238,6 @@ class _WelcomePageState extends State<WelcomePage>
     // }
   }
 
-
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
       BuildContext context) async {
     showLoading(context);
@@ -239,10 +245,21 @@ class _WelcomePageState extends State<WelcomePage>
     hideLoading(context);
 
     if (loginParams == null) {
-      showAlert(
-          context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
+      showCustomAlertDialog(context,
+          title: R.strings.errorLoginFail,
+          content: R.strings.errorLoginFail,
+          firstButtonText: R.strings.cancel,
+          firstButtonFunction: () {
+            pop(this.context);
+          });
     } else if (loginParams['error'] != null) {
-      showAlert(context, R.strings.errorLoginFail, loginParams['error'], null);
+      showCustomAlertDialog(context,
+          title: R.strings.errorLoginFail,
+          content: R.strings.errorLoginFail,
+          firstButtonText: R.strings.cancel,
+          firstButtonFunction: () {
+            pop(this.context);
+          });
     } else {
       _signUp(context, channel, loginParams);
     }
