@@ -9,13 +9,12 @@ import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
-import 'package:usrun/model/user.dart';
-import 'package:usrun/page/team/team_search_page.dart';
+import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_popup_menu.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -24,16 +23,10 @@ import 'package:usrun/util/image_cache_manager.dart';
 import 'member_search_page.dart';
 
 class TeamMemberPage extends StatefulWidget {
-  final adminTabBarItems = [
-    {
-      "tabName": R.strings.all,
-    },
-    {
-      "tabName": R.strings.requesting,
-    },
-    {
-      "tabName": R.strings.blocking,
-    }
+  final tabBarItems = [
+    R.strings.all,
+    R.strings.requesting,
+    R.strings.blocking,
   ];
 
   final tabBarItems = [
@@ -43,21 +36,21 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final popUpMenu = [
-    {
-      "iconURL": R.myIcons.blackAddIcon02,
-      "iconSize": R.appRatio.appIconSize15 + 1,
-      "title": R.strings.inviteNewMember,
-    },
-    {
-      "iconURL": R.myIcons.blackCloseIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": R.strings.kickAMember,
-    },
-    {
-      "iconURL": R.myIcons.blackBlockIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": R.strings.blockAPerson,
-    },
+    CustomPopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15 + 1,
+      title: R.strings.inviteNewMember,
+    ),
+    CustomPopupItem(
+      iconURL: R.myIcons.blackCloseIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.kickAMember,
+    ),
+    CustomPopupItem(
+      iconURL: R.myIcons.blackBlockIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.blockAPerson,
+    ),
   ];
 
   final member_options = [
@@ -178,22 +171,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   final TextEditingController _nameController = TextEditingController();
   final String _nameLabel = R.strings.name;
 
-  /*
-    + Structure of the "items" variable: 
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "name": "Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến",
-        'supportImageURL':
-          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-        "location": "Ho Chi Minh City, Viet Nam",
-        "isFollowing": false,
-      },
-      ...
-    ]
-  */
-
   @override
   void initState() {
     super.initState();
@@ -229,13 +206,22 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     Response<dynamic> response = await TeamManager
         .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
 
-    if (response.success && (response.object as List).isNotEmpty) {
-      List<User> toAdd = response.object;
-      setState(() {
-        items.addAll(toAdd);
-        _remainingResults = true;
-        _curPage += 1;
-      });
+    if (_remainingResults) {
+      Response<List<TeamMember>> response =
+          await TeamManager.getAllTeamMemberPaged(
+              widget.teamId, _curPage, widget.resultPerPage);
+      if (response.success) {
+        // TODO: Implement function here
+        List<TeamMember> data = response.object;
+        setState(() {
+          items = DemoData().allTeamMember;
+          _curPage += 1;
+        });
+        if (response.object.length > 0)
+          _curPage += 1;
+        else
+          _remainingResults = false;
+      }
     }
 
     setState(() {
@@ -285,6 +271,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       default:
         break;
     }
+  }
+
+  _loadMoreData() {
+    // TODO: Implement function here
+    print("Loading more data...");
   }
 
   _onSelectItem(int tabIndex) {
@@ -453,27 +444,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           // All contents
           Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-                  if(_remainingResults) {
-                    _loadSuitableData(_selectedTabIndex);
-                  }
-                }
-                return true; // just to clear a warning
-              },
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: (_isLoading
-                  ? Container(
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing15,
-                      ),
-                      child: LoadingDotStyle02(),
-                    )
-                  : _renderList()),
-            ),)
+            child: (_isLoading ? LoadingIndicator() : _renderList()),
           ),
         ],
       ),
@@ -488,36 +459,36 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   Widget _renderList() {
-    return Container(
-      padding: EdgeInsets.only(
-        left: R.appRatio.appSpacing15,
-        right: R.appRatio.appSpacing15,
-      ),
-      child: AnimationLimiter(
-          child:ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount:(items!=null)?items.length:0,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 400),
-                child: SlideAnimation(
-                  verticalOffset: 100.0,
-                  child: FadeInAnimation(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                        bottom: R.appRatio.appSpacing15,
-                      ),
-                      child: _renderCustomCell(index),
+    return AnimationLimiter(
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: items.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == items.length - 1) {
+              _loadMoreData();
+            }
+
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 400),
+              child: SlideAnimation(
+                verticalOffset: 100.0,
+                child: FadeInAnimation(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+                      bottom: R.appRatio.appSpacing15,
+                      left: R.appRatio.appSpacing15,
+                      right: R.appRatio.appSpacing15,
                     ),
+                    child: _renderCustomCell(index),
                   ),
                 ),
-              );
-            }),
-    ));
+              ),
+            );
+          }),
+    );
   }
 
   Widget _renderCustomCell(index) {
@@ -531,8 +502,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     switch (_selectedTabIndex) {
       case 0: // All
-      // TODO: IMPLEMENT FOLLOWING FEATURES
-        bool isFollowing = false;
+        bool isFollowing = items[index].isFollowing;
         return CustomCell(
           avatarView: AvatarView(
             avatarImageURL: avatarImageURL,

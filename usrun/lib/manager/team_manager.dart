@@ -14,6 +14,8 @@ import 'package:usrun/model/team.dart';
 import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/page/team/team_rank.dart';
+import 'package:usrun/page/team/team_rank_item.dart';
 
 class TeamManager{
   // static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
@@ -195,10 +197,10 @@ class TeamManager{
 
     if(!res.success || (res.object as List).length == 0) return res;
 
-    List<TeamLeaderboard> leaderboard = (res.object as List)
-        .map((item)=> MapperObject.create<TeamLeaderboard>(item)).toList();
+    List<TeamRankItem> leaderboard = (res.object as List)
+        .map((item)=> MapperObject.create<TeamRankItem>(item)).toList();
 
-    Response<List<TeamLeaderboard>> response = new Response(
+    Response<List<TeamRankItem>> response = new Response(
         errorCode: res.errorCode,
         success: res.success,
         object: leaderboard

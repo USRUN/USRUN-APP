@@ -5,11 +5,12 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
-import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
+import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/input_calendar.dart';
+import 'package:usrun/widget/input_field.dart';
 
 class EditProfilePage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -24,10 +25,10 @@ class EditProfilePage extends StatelessWidget {
   final TextEditingController _biographyController = TextEditingController();
   final String _userCode = "STU1653072";
   final _dropDownMenuItemList = [
-    {'value': '0', 'text': 'Male'},
-    {'value': '1', 'text': 'Female'},
-    {'value': '2', 'text': 'Prefer not to say'},
-    {'value': '3', 'text': 'Other'},
+    DropDownObject<int>(value: 0, text: 'Male'),
+    DropDownObject<int>(value: 1, text: 'Female'),
+    DropDownObject<int>(value: 2, text: 'Prefer not to say'),
+    DropDownObject<int>(value: 3, text: 'Other'),
   ];
 
   void _getDOBFunction(DateTime picker) {
@@ -36,17 +37,8 @@ class EditProfilePage extends StatelessWidget {
     // TODO: Do something with "picker" variable
   }
 
-  void _getSelectedDropDownMenuItem(String newValue) {
-    dynamic object = this._dropDownMenuItemList[0];
-
-    for (int i = 0; i < this._dropDownMenuItemList.length; ++i) {
-      if (this._dropDownMenuItemList[i]['value'].compareTo(newValue) == 0) {
-        object = this._dropDownMenuItemList[i];
-        break;
-      }
-    }
-
-    print("Selected drop down menu item: ${object.toString()}");
+  void _getSelectedDropDownMenuItem<T>(T value) {
+    print("Selected item with value: $value");
 
     // TODO: Do something with "object" variable
   }
@@ -144,7 +136,9 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing5,
                 ),
                 Text(
-                  UserManager.currentUser.code==null?"USRUN${UserManager.currentUser.userId}":UserManager.currentUser.code,
+                  UserManager.currentUser.code == null
+                      ? "USRUN${UserManager.currentUser.userId}"
+                      : UserManager.currentUser.code,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: R.colors.contentText,
@@ -252,18 +246,16 @@ class EditProfilePage extends StatelessWidget {
                         getDOBFunc: this._getDOBFunction,
                       ),
                     ),
-                    Container(
-                      child: DropDownMenu(
-                        errorEmptyData: R.strings.nothingToShow,
-                        enableFullWidth: false,
-                        maxHeightBox: R.appRatio.appHeight320,
-                        labelTitle: R.strings.gender,
-                        hintText: R.strings.gender,
-                        enableHorizontalLabelTitle: false,
-                        onChanged: this._getSelectedDropDownMenuItem,
-                        items: this._dropDownMenuItemList,
-                      ),
-                    )
+                    DropDownMenu(
+                      errorEmptyData: R.strings.nothingToShow,
+                      enableFullWidth: false,
+                      labelTitle: R.strings.gender,
+                      hintText: R.strings.gender,
+                      enableHorizontalLabelTitle: false,
+                      onChanged: this._getSelectedDropDownMenuItem,
+                      items: this._dropDownMenuItemList,
+                      initialValue: _dropDownMenuItemList[0].value,
+                    ),
                   ],
                 ),
                 SizedBox(

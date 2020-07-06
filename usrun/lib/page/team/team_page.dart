@@ -13,7 +13,7 @@ import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
-import 'package:usrun/widget/team_list.dart';
+import 'package:usrun/widget/team_list/team_list.dart';
 import 'package:usrun/manager/team_manager.dart';
 
 class TeamPage extends StatefulWidget {
@@ -91,80 +91,80 @@ class _TeamPageState extends State<TeamPage> {
     return Scaffold(
         backgroundColor: R.colors.appBackground,
         body: (_isLoading
-            ? LoadingDotStyle02()
+            ? LoadingDot()
             : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    SizedBox(
-                      height: R.appRatio.appHeight250,
-                      width: R.appRatio.deviceWidth,
-                      child: Carousel(
-                        images: _getBannerList(),
-                        defaultImage: R.images.smallDefaultImage,
-                        dotSize: R.appRatio.appIconSize5,
-                        dotSpacing: R.appRatio.appSpacing20,
-                        dotColor: Colors.white,
-                        dotIncreasedColor: R.colors.majorOrange,
-                        dotBgColor: Colors.black.withOpacity(0.25),
-                        boxFit: BoxFit.cover,
-                        indicatorBgPadding: 5.0,
-                        animationDuration: Duration(milliseconds: 500),
-                        autoplayDuration: Duration(seconds: 8),
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    TeamList(
-                      items: _myTeamList,
-                      labelTitle: R.strings.yourTeams,
-                      enableLabelShadow: true,
-                      enableScrollBackgroundColor: true,
-                      pressItemFuction: (teamid) {
-                        // TODO: Test
-                        pushPage(context, TeamInfoPage(teamId: teamid)).then((value) => reloadTeamList());
-                        print(
-                            "[YourTeams] This team with id $teamid is pressed");
-                      },
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    TeamList(
-//                      items: DemoData().teamList + DemoData().teamList,
-                      items: _teamSuggestionList,
-                      labelTitle: R.strings.weSuggestYou,
-                      enableLabelShadow: true,
-                      enableScrollBackgroundColor: true,
-                      enableSplitListToTwo: _teamSuggestionList.length > 10? true:false,
-                      pressItemFuction: (teamid) {
-                        pushPage(context, TeamInfoPage(teamId: teamid)).then((value) => reloadTeamList());
-                        print(
-                            "[WeSuggestYou] This team with id $teamid is pressed");
-                      },
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    LineButton(
-                      mainText: R.strings.viewAllTeams,
-                      mainTextFontSize: R.appRatio.appFontSize16,
-                      enableSuffixIcon: true,
-                      suffixIconSize: R.appRatio.appIconSize15,
-                      suffixIconImageURL: R.myIcons.nextIconByTheme,
-                      enableBottomUnderline: true,
-                      enableTopUnderline: true,
-                      lineFunction: () {
-                        pushPage(
-                          context,
-                          TeamSearchPage(autoFocusInput: false,defaultList: _teamSuggestionList),
-                        ).then((value) => reloadTeamList());
-                      },
-                    ),
-                  ],
+          scrollDirection: Axis.vertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(
+                height: R.appRatio.appHeight250,
+                width: R.appRatio.deviceWidth,
+                child: Carousel(
+                  images: _getBannerList(),
+                  defaultImage: R.images.smallDefaultImage,
+                  dotSize: R.appRatio.appIconSize5,
+                  dotSpacing: R.appRatio.appSpacing20,
+                  dotColor: Colors.white,
+                  dotIncreasedColor: R.colors.majorOrange,
+                  dotBgColor: Colors.black.withOpacity(0.25),
+                  boxFit: BoxFit.cover,
+                  indicatorBgPadding: 5.0,
+                  animationDuration: Duration(milliseconds: 500),
+                  autoplayDuration: Duration(seconds: 8),
                 ),
-              )));
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing20,
+              ),
+              TeamList(
+                items: _myTeamList,
+                labelTitle: R.strings.yourTeams,
+                enableLabelShadow: true,
+                enableScrollBackgroundColor: true,
+                pressItemFunction: (teamid) {
+                  // TODO: Test
+                  pushPage(context, TeamInfoPage(teamId: teamid));
+                  print(
+                      "[YourTeams] This team with id $teamid is pressed");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing20,
+              ),
+              TeamList(
+//                      items: DemoData().teamList + DemoData().teamList,
+                items: _teamSuggestionList,
+                labelTitle: R.strings.weSuggestYou,
+                enableLabelShadow: true,
+                enableScrollBackgroundColor: true,
+                enableSplitListToTwo: _teamSuggestionList.length > 10? true:false,
+                pressItemFunction: (teamid) {
+                  pushPage(context, TeamInfoPage(teamId: teamid));
+                  print(
+                      "[WeSuggestYou] This team with id $teamid is pressed");
+                },
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing20,
+              ),
+              LineButton(
+                mainText: R.strings.viewAllTeams,
+                mainTextFontSize: R.appRatio.appFontSize16,
+                enableSuffixIcon: true,
+                suffixIconSize: R.appRatio.appIconSize15,
+                suffixIconImageURL: R.myIcons.nextIconByTheme,
+                enableBottomUnderline: true,
+                enableTopUnderline: true,
+                lineFunction: () {
+                  pushPage(
+                    context,
+                    TeamSearchPage(autoFocusInput: false,defaultList: _teamSuggestionList),
+                  );
+                },
+              ),
+            ],
+          ),
+        )));
   }
 }

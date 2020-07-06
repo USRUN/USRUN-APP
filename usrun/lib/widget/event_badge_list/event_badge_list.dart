@@ -1,33 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/event_badge_list/event_badge_item.dart';
 
 class EventBadgeList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  final List items;
+  final List<EventBadgeItem> items;
   final bool enableScrollBackgroundColor;
-  final Function pressItemFuction;
+  final void Function(EventBadgeItem data) pressItemFunction;
+  final VoidCallback loadMoreFunction;
 
-  final _badgeImageSize = R.appRatio.appEventBadgeSize;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "eventID": "0",                 
-        "badgeImageURL": "https://..."    [This must be value of HTTP LINK]
-      },
-      ...
-    ]
-  */
+  final _imageSize = R.appRatio.appEventBadgeSize;
 
   EventBadgeList({
     this.labelTitle = "",
     this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
-    this.pressItemFuction(eventid),
+    this.pressItemFunction(data),
+    this.loadMoreFunction,
   });
 
   @override
@@ -99,9 +91,12 @@ class EventBadgeList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: this.items.length,
-      itemBuilder: (BuildContext ctxt, int index) {
-        String eventID = this.items[index]['eventID'];
-        String badgeImageURL = this.items[index]['badgeImageURL'];
+      itemBuilder: (BuildContext context, int index) {
+        if (index == this.items.length - 1 && this.loadMoreFunction != null) {
+          this.loadMoreFunction();
+        }
+
+        String imageURL = this.items[index].imageURL;
 
         return Container(
           padding: EdgeInsets.only(
@@ -111,16 +106,16 @@ class EventBadgeList extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              if (this.pressItemFuction != null) {
-                this.pressItemFuction(eventID);
+              if (this.pressItemFunction != null) {
+                this.pressItemFunction(this.items[index]);
               }
             },
             child: Center(
               child: ImageCacheManager.getImage(
-                url: badgeImageURL,
+                url: imageURL,
                 fit: BoxFit.cover,
-                height: this._badgeImageSize,
-                width: this._badgeImageSize,
+                height: this._imageSize,
+                width: this._imageSize,
               ),
             ),
           ),

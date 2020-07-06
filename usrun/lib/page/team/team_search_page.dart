@@ -15,7 +15,6 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamSearchPage extends StatefulWidget {
   final bool autoFocusInput;
@@ -40,7 +39,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   int curResultPage;
 
   /*
-    + Structure of the "items" variable: 
+    + Structure of the "items" variable:
     [
       {
         "avatarImageURL":
@@ -190,55 +189,54 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                 .format(teamList[index].totalMember);
             String location = teamList[index].province.toString();
 
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 400),
-              child: SlideAnimation(
-                verticalOffset: 100.0,
-                child: FadeInAnimation(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: (index == 0 ? R.appRatio.appSpacing20 : 0),
-                      bottom: R.appRatio.appSpacing20,
-                      left: R.appRatio.appSpacing15,
-                      right: R.appRatio.appSpacing15,
-                    ),
-                    child: CustomCell(
-                      avatarView: AvatarView(
-                        avatarImageURL: avatarImageURL,
-                        avatarImageSize: R.appRatio.appWidth60,
-                        avatarBoxBorder: Border.all(
-                          width: 1,
-                          color: R.colors.majorOrange,
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 400),
+                  child: SlideAnimation(
+                    verticalOffset: 100.0,
+                    child: FadeInAnimation(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: (index == 0 ? R.appRatio.appSpacing20 : 0),
+                          bottom: R.appRatio.appSpacing20,
+                          left: R.appRatio.appSpacing15,
+                          right: R.appRatio.appSpacing15,
                         ),
-                        supportImageURL: supportImageURL,
-                        pressAvatarImage: () {
-                          print("Pressing avatar image");
-                        },
+                        child: CustomCell(
+                          avatarView: AvatarView(
+                            avatarImageURL: avatarImageURL,
+                            avatarImageSize: R.appRatio.appWidth60,
+                            avatarBoxBorder: Border.all(
+                              width: 1,
+                              color: R.colors.majorOrange,
+                            ),
+                            supportImageURL: supportImageURL,
+                            pressAvatarImage: () {
+                              print("Pressing avatar image");
+                            },
+                          ),
+                          // Content
+                          title: teamName,
+                          titleStyle: TextStyle(
+                            fontSize: R.appRatio.appFontSize16,
+                            color: R.colors.contentText,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          firstAddedTitle: athleteQuantity,
+                          firstAddedTitleIconURL: R.myIcons.peopleIconByTheme,
+                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
+                          secondAddedTitle: location,
+                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
+                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
+                          pressInfo: () {
+                            print("Pressing info");
+                          },
+                        ),
                       ),
-                      // Content
-                      title: teamName,
-                      titleStyle: TextStyle(
-                        fontSize: R.appRatio.appFontSize16,
-                        color: R.colors.contentText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      firstAddedTitle: athleteQuantity,
-                      firstAddedTitleIconURL: R.myIcons.peopleIconByTheme,
-                      firstAddedTitleIconSize: R.appRatio.appIconSize15,
-                      secondAddedTitle: location,
-                      secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
-                      secondAddedTitleIconSize: R.appRatio.appIconSize15,
-                      pressInfo: () {
-                        print("Pressing info");
-                        pushPage(context, TeamInfoPage(teamId: teamList[index].id));
-                      },
                     ),
                   ),
-                ),
-              ),
-            );
-          })),
+                );
+              })),
     );
   }
 
@@ -248,16 +246,12 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
+        leading: new IconButton(
+          icon: Image.asset(
+            R.myIcons.appBarBackBtn,
             width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
           ),
+          onPressed: () => pop(context),
         ),
         gradient: R.colors.uiGradient,
         title: InputField(
@@ -281,14 +275,13 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           onChangedFunction: _onChangedFunction,
         ),
       ),
-      body: (_isLoading ? LoadingDotStyle02() : _renderSuggestedTeams()),
+      body: (_isLoading ? LoadingDot() : _renderSuggestedTeams()),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
         });
   }
 }

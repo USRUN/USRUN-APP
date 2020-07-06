@@ -232,14 +232,14 @@ class StatsSection extends StatelessWidget {
 
   Widget _buildList() {
     // Compute some data
-    int _seperatedPoint = (this.items.length / 2).round();
-    _verticalDividerHeight = R.appRatio.appHeight60 * _seperatedPoint +
-        R.appRatio.appSpacing15 * (_seperatedPoint - 1);
+    int _separatedPoint = (this.items.length / 2).round();
+    _verticalDividerHeight = R.appRatio.appHeight60 * _separatedPoint +
+        R.appRatio.appSpacing15 * (_separatedPoint - 1);
     _verticalDividerHeight = _verticalDividerHeight.roundToDouble();
 
-    List<Widget> _firstColumn = _renderAllItem(0, _seperatedPoint);
+    List<Widget> _firstColumn = _renderAllItem(0, _separatedPoint);
     List<Widget> _secondColumn =
-        _renderAllItem(_seperatedPoint, this.items.length);
+        _renderAllItem(_separatedPoint, this.items.length);
 
     // Render result
     return Column(

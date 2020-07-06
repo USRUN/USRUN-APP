@@ -9,15 +9,9 @@ import 'package:usrun/widget/custom_tab_bar.dart';
 
 class ProfilePage extends StatefulWidget {
   final tabBarItems = [
-    {
-      "iconURL": R.myIcons.whiteStatisticsIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteShoeIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteInfoIcon,
-    }
+    R.myIcons.whiteStatisticsIcon,
+    R.myIcons.whiteShoeIcon,
+    R.myIcons.whiteInfoIcon,
   ];
 
   @override

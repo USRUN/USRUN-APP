@@ -22,7 +22,8 @@ class R {
     Size size = MediaQuery.of(context).size;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    appRatio.setUpAppRatio(size.width, size.height, devicePixelRatio, textScaleFactor);
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+    appRatio.setUpAppRatio(size.width, size.height, devicePixelRatio, textScaleFactor, statusBarHeight);
   }
 
   static void changeAppTheme(String appTheme) {
@@ -183,6 +184,8 @@ class _AppRatio {
   double deviceHeight;
   double devicePixelRatio;
   double textScaleFactor;
+  double statusBarHeight;
+  double appBarHeight;
 
   /*
     + This is public variables.
@@ -343,12 +346,14 @@ class _AppRatio {
     + This is used when initializing application.
     + Set up app ratio.
   */
-  void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor) {
+  void setUpAppRatio(double deviceWidth, double deviceHeight, double devicePixelRatio, double textScaleFactor, double statusBarHeight,) {
     // Store device width and height
     this.deviceWidth = deviceWidth.roundToDouble();
     this.deviceHeight = deviceHeight.roundToDouble();
     this.devicePixelRatio = devicePixelRatio.roundToDouble();
     this.textScaleFactor = textScaleFactor.roundToDouble();
+    this.statusBarHeight = statusBarHeight.roundToDouble();
+    this.appBarHeight = AppBar().preferredSize.height;
 
     // Find font size
     appFontSize12 = _computeFontSize(this._figmaFontSize12);

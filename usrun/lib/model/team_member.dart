@@ -1,9 +1,5 @@
-import 'package:usrun/core/define.dart';
-
 import 'package:usrun/util/reflector.dart';
-
 import 'package:usrun/model/mapper_object.dart';
-
 
 @reflector
 class TeamMember extends MapperObject {
@@ -12,7 +8,7 @@ class TeamMember extends MapperObject {
   //  MEMBER(3),
   //  PENDING(4),
   //  BLOCKED(5);
-  // GUESS (6);
+  //  GUESS (6);
 
   int teamId;
   int userId;
