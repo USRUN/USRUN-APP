@@ -13,4 +13,10 @@ class CustomPopupItem {
             iconSize > 0.0 &&
             title != null &&
             title.length != 0);
+
+  CustomPopupItem.from(Map<String,dynamic> map){
+    this.iconURL = map['iconURL'];
+    this.iconSize = map['iconSize'];
+    this.title = map['title'];
+  }
 }

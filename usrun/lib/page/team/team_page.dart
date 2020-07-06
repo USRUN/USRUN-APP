@@ -13,6 +13,7 @@ import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
+import 'package:usrun/widget/team_list/team_item.dart';
 import 'package:usrun/widget/team_list/team_list.dart';
 import 'package:usrun/manager/team_manager.dart';
 
@@ -24,8 +25,8 @@ class TeamPage extends StatefulWidget {
 
 class _TeamPageState extends State<TeamPage> {
   bool _isLoading;
-  List<Team> _myTeamList;
-  List<Team> _teamSuggestionList;
+  List<TeamItem> _myTeamList;
+  List<TeamItem> _teamSuggestionList;
 
   @override
   void initState() {
@@ -33,9 +34,11 @@ class _TeamPageState extends State<TeamPage> {
     _isLoading = true;
     _teamSuggestionList = List();
     _myTeamList = List();
+//    _getMyTeamList(UserManager.currentUser.userId);
+//    _getSuggestionList(widget.suggestionLength);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-    WidgetsBinding.instance.addPostFrameCallback((_) =>_getMyTeamList(UserManager.currentUser.userId));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getMyTeamList(UserManager.currentUser.userId));
     WidgetsBinding.instance.addPostFrameCallback((_) => _getSuggestionList(widget.suggestionLength));
   }
   
@@ -53,21 +56,31 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   List<dynamic> _getBannerList() {
-    List<dynamic> bannerList = List<dynamic>();
+    if(_teamSuggestionList == null){
+      List<dynamic> bannerList = List<dynamic>();
+      for (int i = 0; i < DemoData().bannerList.length; ++i) {
+        bannerList.add(ImageCacheManager.getImageData(url: DemoData().bannerList[i]));
+      }
+      return bannerList;
+    };
 
+    List<dynamic> bannerList = List<dynamic>();
     for (int i = 0; i < _teamSuggestionList.length; ++i) {
-      bannerList.add(ImageCacheManager.getImageData(url: _teamSuggestionList[i].banner));
+      bannerList.add(ImageCacheManager.getImageData(url: _teamSuggestionList[i].bannerImageURL));
     }
 
     return bannerList;
   }
 
   void _getMyTeamList(int userId) async {
-    Response<dynamic> response = await TeamManager.getMyTeam();
-//    Response<List<Team>> response = await TeamManager.getTeamSuggestion(5);
-    if (response.success && (response.object as List).isNotEmpty) {
+    Response<List<Team>> response = await TeamManager.getMyTeam();
+    if (response.success && (response.object).isNotEmpty) {
+      List<TeamItem> toAdd = List();
+      response.object.forEach((element) {
+        toAdd.add(new TeamItem.from(element));
+      });
       setState(() {
-        _myTeamList = response.object;
+        _myTeamList = toAdd;
       });
     } else {
       _myTeamList = null;
@@ -76,10 +89,15 @@ class _TeamPageState extends State<TeamPage> {
 
   void _getSuggestionList(int howMany) async {
     Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
-//    Response<dynamic> response = await TeamManager.getMyTeam();
-    if (response.success && (response.object as List).isNotEmpty) {
+    if (response.success && (response.object).isNotEmpty) {
+      List<TeamItem> toAdd = List();
+
+      response.object.forEach((element) {
+        toAdd.add(new TeamItem.from(element));
+      });
+
       setState(() {
-        _teamSuggestionList = response.object;
+        _teamSuggestionList = toAdd;
       });
     } else {
       _teamSuggestionList = null;
@@ -122,27 +140,26 @@ class _TeamPageState extends State<TeamPage> {
                 labelTitle: R.strings.yourTeams,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
-                pressItemFunction: (teamid) {
+                pressItemFunction: (team) {
                   // TODO: Test
-                  pushPage(context, TeamInfoPage(teamId: teamid));
+                  pushPage(context, TeamInfoPage(teamId: team.teamId));
                   print(
-                      "[YourTeams] This team with id $teamid is pressed");
+                      "[YourTeams] This team with id ${team.teamid} is pressed");
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing20,
               ),
               TeamList(
-//                      items: DemoData().teamList + DemoData().teamList,
                 items: _teamSuggestionList,
                 labelTitle: R.strings.weSuggestYou,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
-                enableSplitListToTwo: _teamSuggestionList.length > 10? true:false,
-                pressItemFunction: (teamid) {
-                  pushPage(context, TeamInfoPage(teamId: teamid));
+                enableSplitListToTwo: false,
+                pressItemFunction: (team) {
+                  pushPage(context, TeamInfoPage(teamId: team.teamid));
                   print(
-                      "[WeSuggestYou] This team with id $teamid is pressed");
+                      "[WeSuggestYou] This team with id ${team.teamid} is pressed");
                 },
               ),
               SizedBox(

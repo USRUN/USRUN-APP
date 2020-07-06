@@ -427,15 +427,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               color: R.colors.contentText,
                               fontSize: R.appRatio.appFontSize14,
                               fontStyle: FontStyle.italic,
-                            ),
-                            child: UIButton(
+                            ),),
+                            UIButton(
                                 width: R.appRatio.appWidth381,
                                 height: R.appRatio.appHeight50,
                                 gradient: R.colors.uiGradient,
                                 text: _userRole == 6 ? R.strings.join: "Cancel join request",
                                 textSize: R.appRatio.appFontSize20,
-                                onTap: () => _joinTeamFunction()),
-                          )
+                                onTap: () => _joinTeamFunction()
+                            ),
                         ],
                       ),
                     ),

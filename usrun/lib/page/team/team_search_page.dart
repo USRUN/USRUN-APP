@@ -38,22 +38,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   String curSearchString;
   int curResultPage;
 
-  /*
-    + Structure of the "items" variable:
-    [
-      {
-        "avatarImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-        "supportImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-        "teamName": "Trường Đại học Khoa học Tự nhiên TP. HCM",
-        "athleteQuantity": 67842,
-        "location": "Ho Chi Minh City, Viet Nam",
-      },
-      ...
-    ]
-  */
-
   @override
   void initState() {
     super.initState();
@@ -116,17 +100,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     setState(() {
       _isLoading = !_isLoading;
     });
-
-    // [Demo] Enter searching content => Render "SearchedTeams" by setState
-//    List<dynamic> newList = List<dynamic>();
-//    Future.delayed(Duration(milliseconds: 1000), () {
-//      newList.addAll(teamList.getRange(2, 7));
-//    }).then((val) {
-//      setState(() {
-//        _isLoading = !_isLoading;
-//        teamList = newList;
-//      });
-//    });
   }
 
   void _onChangedFunction(data) {
@@ -230,6 +203,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           secondAddedTitleIconSize: R.appRatio.appIconSize15,
                           pressInfo: () {
                             print("Pressing info");
+                            pushPage(context, TeamInfoPage(teamId: teamList[index].id));
                           },
                         ),
                       ),

@@ -9,10 +9,12 @@ import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
@@ -23,7 +25,7 @@ import 'package:usrun/util/image_cache_manager.dart';
 import 'member_search_page.dart';
 
 class TeamMemberPage extends StatefulWidget {
-  final tabBarItems = [
+  final adminTabBarItems = [
     R.strings.all,
     R.strings.requesting,
     R.strings.blocking,
@@ -91,7 +93,6 @@ class TeamMemberPage extends StatefulWidget {
         "title": "Follow/Unfollow",
       }
     ],
-    //
     [
       {
         "iconURL": R.myIcons.peopleIconByTheme,
@@ -203,18 +204,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   void _getAllMembers() async {
     if(!_remainingResults) return;
     _remainingResults = false;
-    Response<dynamic> response = await TeamManager
-        .getAllTeamMemberPaged(widget.teamId, _curPage, widget.resultPerPage);
 
     if (_remainingResults) {
-      Response<List<TeamMember>> response =
+      Response<List<User>> response =
           await TeamManager.getAllTeamMemberPaged(
               widget.teamId, _curPage, widget.resultPerPage);
       if (response.success) {
-        // TODO: Implement function here
-        List<TeamMember> data = response.object;
         setState(() {
-          items = DemoData().allTeamMember;
+          items = response.object;
           _curPage += 1;
         });
         if (response.object.length > 0)
@@ -502,7 +499,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     switch (_selectedTabIndex) {
       case 0: // All
-        bool isFollowing = items[index].isFollowing;
         return CustomCell(
           avatarView: AvatarView(
             avatarImageURL: avatarImageURL,
