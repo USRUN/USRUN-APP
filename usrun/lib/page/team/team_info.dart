@@ -92,8 +92,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     });
   }
 
-
-
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
       setState(() {
@@ -281,7 +279,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     height: R.appRatio.appHeight250,
                     fit: BoxFit.cover,
                   ),
-                  (_userRole < 2
+                  (_userRole > 2
                       ? Container()
                       : GestureDetector(
                     onTap: () => _changeTeamBanner(),
@@ -336,7 +334,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                       width: 1,
                       color: R.colors.majorOrange,
                     ),
-                    supportImageURL: (_userRole < 2
+                    supportImageURL: (_userRole > 2
                         ? null
                         : R.myIcons.colorEditIconOrangeBg),
                     pressAvatarImage: () => _changeTeamAvatar(),
@@ -363,7 +361,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                 child: ExpandableText(_teamDescription),
               ),
               // Join button
-              (_userRole == 0
+              (_userRole > 3 && _userRole != 5
                   ? Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,
@@ -374,9 +372,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     width: R.appRatio.appWidth381,
                     height: R.appRatio.appHeight50,
                     gradient: R.colors.uiGradient,
-                    text: R.strings.join,
+                    text: _userRole == 6 ? R.strings.join: R.strings.cancelJoin,
                     textSize: R.appRatio.appFontSize20,
-                    onTap: () => _joinTeamFunction),
+                    onTap: () => _joinTeamFunction()),
               )
                   : Container()),
               // Symbol
@@ -428,14 +426,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               fontSize: R.appRatio.appFontSize14,
                               fontStyle: FontStyle.italic,
                             ),),
-                            UIButton(
-                                width: R.appRatio.appWidth381,
-                                height: R.appRatio.appHeight50,
-                                gradient: R.colors.uiGradient,
-                                text: _userRole == 6 ? R.strings.join: "Cancel join request",
-                                textSize: R.appRatio.appFontSize20,
-                                onTap: () => _joinTeamFunction()
-                            ),
+//                          (_userRole > 3 && _userRole != 5?
+//                            UIButton(
+//                                width: R.appRatio.appWidth381,
+//                                height: R.appRatio.appHeight50,
+//                                gradient: R.colors.uiGradient,
+//                                text: _userRole == 6 ? R.strings.join: R.strings.cancelJoin,
+//                                textSize: R.appRatio.appFontSize20,
+//                                onTap: () => _joinTeamFunction()
+//                            ):Container()),
                         ],
                       ),
                     ),
@@ -466,7 +465,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     ),
                     GestureDetector(
                       // TODO: Pass teamId to pushPage!!!
-                      onTap: () => pushPage(context, TeamLeaderBoard(teamId:widget.teamId)),
+                      onTap: () => pushPage(context, TeamLeaderBoardPage(teamId:widget.teamId)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -574,7 +573,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           secondTitleLine: R.strings.members,
                           pressBox: (id) {
                             // TODO: Pass teamId to pushPage!!!
-                            pushPage(context, TeamMemberPage());
+                            pushPage(context, TeamMemberPage(teamId: widget.teamId, teamMemberType: _userRole,));
                           },
                         ),
                       ],
@@ -584,7 +583,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
               ),
               // Tool zone
               // TODO: Pass teamId to pushPage!!!
-              (_userRole < 2
+              (_userRole > 2
                   ? Container()
                   : Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -602,7 +601,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     ),
                   ),
                   // Make team public
-                  (_userRole == 3
+                  (_userRole == 1
                       ? Padding(
                     padding: EdgeInsets.only(
                       bottom: R.appRatio.appSpacing15,
@@ -626,65 +625,65 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                   )
                       : Container()),
                   // Moderate post
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: LineButton(
-                      mainText: R.strings.moderateNewPostsTitle,
-                      mainTextFontSize: R.appRatio.appFontSize18,
-                      subTextFontSize: R.appRatio.appFontSize14,
-                      subText: R.strings.moderateNewPostsSubtitle,
-                      enableBottomUnderline: true,
-                      enableSwitchButton: true,
-                      switchButtonOffTitle: "Off",
-                      switchButtonOnTitle: "On",
-                      initSwitchStatus: false,
-                      switchFunction: (status) =>
-                          _moderateNewPosts(status),
-                    ),
-                  ),
-                  // Create new team plan
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: LineButton(
-                      mainText: R.strings.createNewTeamPlanTitle,
-                      mainTextFontSize: R.appRatio.appFontSize18,
-                      subTextFontSize: R.appRatio.appFontSize14,
-                      subText: R.strings.createNewTeamPlanSubtitle,
-                      enableBottomUnderline: true,
-                      enableBoxButton: true,
-                      boxButtonTitle: R.strings.create,
-                      boxButtonFuction: () => _createNewTeamPlan(),
-                    ),
-                  ),
-                  // Grant role to mantember
-                  (_userRole == 3
-                      ? Padding(
-                    padding: EdgeInsets.only(
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: LineButton(
-                      mainText:
-                      R.strings.grantRoleToMemberTitle,
-                      mainTextFontSize:
-                      R.appRatio.appFontSize18,
-                      subTextFontSize:
-                      R.appRatio.appFontSize14,
-                      subText:
-                      R.strings.grantRoleToMemberSubtitle,
-                      enableBottomUnderline: true,
-                      enableBoxButton: true,
-                      boxButtonTitle: R.strings.grant,
-                      boxButtonFuction: () =>
-                          _grantRoleToMember(),
-                    ),
-                  )
-                      : Container()),
+//                  Padding(
+//                    padding: EdgeInsets.only(
+//                      bottom: R.appRatio.appSpacing15,
+//                    ),
+//                    child: LineButton(
+//                      mainText: R.strings.moderateNewPostsTitle,
+//                      mainTextFontSize: R.appRatio.appFontSize18,
+//                      subTextFontSize: R.appRatio.appFontSize14,
+//                      subText: R.strings.moderateNewPostsSubtitle,
+//                      enableBottomUnderline: true,
+//                      enableSwitchButton: true,
+//                      switchButtonOffTitle: "Off",
+//                      switchButtonOnTitle: "On",
+//                      initSwitchStatus: false,
+//                      switchFunction: (status) =>
+//                          _moderateNewPosts(status),
+//                    ),
+//                  ),
+//                  // Create new team plan
+//                  Padding(
+//                    padding: EdgeInsets.only(
+//                      bottom: R.appRatio.appSpacing15,
+//                    ),
+//                    child: LineButton(
+//                      mainText: R.strings.createNewTeamPlanTitle,
+//                      mainTextFontSize: R.appRatio.appFontSize18,
+//                      subTextFontSize: R.appRatio.appFontSize14,
+//                      subText: R.strings.createNewTeamPlanSubtitle,
+//                      enableBottomUnderline: true,
+//                      enableBoxButton: true,
+//                      boxButtonTitle: R.strings.create,
+//                      boxButtonFuction: () => _createNewTeamPlan(),
+//                    ),
+//                  ),
+//                  // Grant role to mantember
+//                  (_userRole < 3
+//                      ? Padding(
+//                    padding: EdgeInsets.only(
+//                      bottom: R.appRatio.appSpacing15,
+//                    ),
+//                    child: LineButton(
+//                      mainText:
+//                      R.strings.grantRoleToMemberTitle,
+//                      mainTextFontSize:
+//                      R.appRatio.appFontSize18,
+//                      subTextFontSize:
+//                      R.appRatio.appFontSize14,
+//                      subText:
+//                      R.strings.grantRoleToMemberSubtitle,
+//                      enableBottomUnderline: true,
+//                      enableBoxButton: true,
+//                      boxButtonTitle: R.strings.grant,
+//                      boxButtonFuction: () =>
+//                          _grantRoleToMember(),
+//                    ),
+//                  )
+//                      : Container()),
                   // Transfer ownership
-                  (_userRole == 3
+                  (_userRole == 1
                       ? Padding(
                     padding: EdgeInsets.only(
                       bottom: R.appRatio.appSpacing15,
@@ -707,7 +706,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                   )
                       : Container()),
                   // Delete team
-                  (_userRole == 3
+                  (_userRole == 1
                       ? LineButton(
                     mainText: R.strings.deleteTeamTitle,
                     mainTextFontSize:

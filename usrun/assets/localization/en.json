@@ -131,6 +131,7 @@
     "public": "Public",
     "private": "Private",
     "join": "Join",
+    "cancelJoin": "Cancel join request",
     "symbol": "Symbol",
     "verifiedByUsrun": "Verified by USRUN",
     "teamStats": "Team Stats",

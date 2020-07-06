@@ -963,6 +963,7 @@ class Strings {
   String public;
   String private;
   String join;
+  String cancelJoin;
   String symbol;
   String verifiedByUsrun;
   String teamStats;

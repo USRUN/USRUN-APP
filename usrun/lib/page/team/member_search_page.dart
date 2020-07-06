@@ -320,7 +320,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
             onChangedFunction: _onChangedFunction,
           ),
         ),
-        body: (_isLoading ? LoadingDot() : _renderUserList()),
+        body: (_isLoading ? LoadingIndicator() : _renderUserList()),
       );
 
       return NotificationListener<OverscrollIndicatorNotification>(

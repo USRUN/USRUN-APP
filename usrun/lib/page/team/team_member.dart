@@ -55,99 +55,66 @@ class TeamMemberPage extends StatefulWidget {
     ),
   ];
 
-  final member_options = [
-    [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      }
-    ],
-    [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      },
-    ],
-    [
-    {
-      "iconURL": R.myIcons.peopleIconByTheme,
+  static final Map<String,dynamic> follow = {
+    "iconURL": R.myIcons.peopleIconByTheme,
+    "iconSize": R.appRatio.appIconSize15,
+    "title": "Follow/Unfollow",
+  };
+
+  static final Map<String,dynamic> block = {
+    "iconURL": R.myIcons.peopleIconByTheme,
+    "iconSize": R.appRatio.appIconSize15,
+    "title": "Block from team",
+  };
+
+  static final Map<String,dynamic> promote = {
+      "iconURL": R.myIcons.starIconByTheme,
       "iconSize": R.appRatio.appIconSize15,
-      "title": "Follow/Unfollow",
-    },
-    ]
+      "title": "Promote to admin",
+  };
+
+  static final Map<String,dynamic> demote = {
+    "iconURL": R.myIcons.peopleIconByTheme,
+    "iconSize": R.appRatio.appIconSize15,
+    "title": "Demote from Admin",
+  };
+
+
+
+  final member_options = [
+    new CustomPopupItem.from(follow)
   ];
 
   final admin_options = [
     [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      }
-    ],[
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      }
+      new CustomPopupItem.from(follow)
     ],
     [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      },{
-      "iconURL": R.myIcons.peopleIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Block from team",
-    },
+      new CustomPopupItem.from(follow)
+    ],
+    [
+      new CustomPopupItem.from(follow),
+      new CustomPopupItem.from(block)
     ]
   ];
 
   final owner_options = [
     [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      },
+      new CustomPopupItem.from(follow)
     ],
+
     [
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Follow/Unfollow",
-      },
-      {
-      "iconURL": R.myIcons.peopleIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Demote from Admin",
-      },
-      {
-        "iconURL": R.myIcons.peopleIconByTheme,
-        "iconSize": R.appRatio.appIconSize15,
-        "title": "Block from team",
-      },
+      new CustomPopupItem.from(follow),
+      new CustomPopupItem.from(demote),
+      new CustomPopupItem.from(block)
     ],
+
     [
-    {
-      "iconURL": R.myIcons.peopleIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Follow/Unfollow",
-    },
-    {
-      "iconURL": R.myIcons.starIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Promote to admin",
-    },
-    {
-      "iconURL": R.myIcons.blockIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Block from team",
-    },
-  ]];
+      new CustomPopupItem.from(follow),
+      new CustomPopupItem.from(promote),
+      new CustomPopupItem.from(block)
+    ]
+  ];
 
   final int teamId;
   final int teamMemberType;
@@ -187,6 +154,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     switch(widget.teamMemberType){
       case 1:
+        options = List();
         options = widget.owner_options;
         break;
       case 2:
@@ -196,6 +164,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         options = widget.member_options;
         break;
     }
+    
+    _loadSuitableData(0);
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _loadSuitableData(_selectedTabIndex));
@@ -203,23 +173,21 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
   void _getAllMembers() async {
     if(!_remainingResults) return;
-    _remainingResults = false;
+      _remainingResults = false;
 
-    if (_remainingResults) {
-      Response<List<User>> response =
-          await TeamManager.getAllTeamMemberPaged(
-              widget.teamId, _curPage, widget.resultPerPage);
-      if (response.success) {
-        setState(() {
-          items = response.object;
-          _curPage += 1;
-        });
-        if (response.object.length > 0)
-          _curPage += 1;
-        else
-          _remainingResults = false;
+    Response<List<User>> response =
+        await TeamManager.getAllTeamMemberPaged(
+            widget.teamId, _curPage, widget.resultPerPage);
+    if (response.success) {
+      setState(() {
+        items = response.object;
+        _curPage += 1;
+      });
+      if (response.object.length > 0)
+        _curPage += 1;
+      else
+        _remainingResults = false;
       }
-    }
 
     setState(() {
       _isLoading = false;

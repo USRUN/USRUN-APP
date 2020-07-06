@@ -140,11 +140,11 @@ class _TeamPageState extends State<TeamPage> {
                 labelTitle: R.strings.yourTeams,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
-                pressItemFunction: (team) {
+                pressItemFunction: (teamItem) {
                   // TODO: Test
-                  pushPage(context, TeamInfoPage(teamId: team.teamId));
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId));
                   print(
-                      "[YourTeams] This team with id ${team.teamid} is pressed");
+                      "[YourTeams] This team with id ${teamItem.teamId} is pressed");
                 },
               ),
               SizedBox(
@@ -156,10 +156,10 @@ class _TeamPageState extends State<TeamPage> {
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 enableSplitListToTwo: false,
-                pressItemFunction: (team) {
-                  pushPage(context, TeamInfoPage(teamId: team.teamid));
+                pressItemFunction: (teamItem) {
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId));
                   print(
-                      "[WeSuggestYou] This team with id ${team.teamid} is pressed");
+                      "[WeSuggestYou] This team with id ${teamItem.teamId} is pressed");
                 },
               ),
               SizedBox(

@@ -197,10 +197,10 @@ class TeamManager{
 
     if(!res.success || (res.object as List).length == 0) return res;
 
-    List<TeamRankItem> leaderboard = (res.object as List)
-        .map((item)=> MapperObject.create<TeamRankItem>(item)).toList();
+    List<TeamLeaderboard> leaderboard = (res.object as List)
+        .map((item)=> MapperObject.create<TeamLeaderboard>(item)).toList();
 
-    Response<List<TeamRankItem>> response = new Response(
+    Response<List<TeamLeaderboard>> response = new Response(
         errorCode: res.errorCode,
         success: res.success,
         object: leaderboard

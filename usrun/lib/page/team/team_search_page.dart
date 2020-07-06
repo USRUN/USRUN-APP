@@ -5,7 +5,6 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -249,7 +248,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           onChangedFunction: _onChangedFunction,
         ),
       ),
-      body: (_isLoading ? LoadingDot() : _renderSuggestedTeams()),
+      body: (_isLoading ? LoadingIndicator() : _renderSuggestedTeams()),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
