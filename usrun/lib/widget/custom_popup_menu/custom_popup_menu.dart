@@ -1,78 +1,113 @@
 import "package:flutter/material.dart";
-import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 import 'custom_popup_item.dart';
 
-class CustomPopupMenu extends StatefulWidget {
-  final List<CustomPopupItem> items;
+class CustomPopupMenu<T> extends StatefulWidget {
+  final List<PopupItem<T>> items;
   final Function onSelected;
-  final Image popupImage;
+  final Function onCancel;
+  final Widget popupIcon;
+  final T initialValue;
+  final bool enableChild;
+  final Widget popupChild;
+  final bool fullPopupWidth;
+  final ShapeBorder shapeBorder;
+  final double elevation;
+  final bool enable;
+  final Color popupColor;
 
   CustomPopupMenu({
+    Key key,
     @required this.items,
     @required this.onSelected(index),
-    @required this.popupImage,
-  }) : assert(items != null && onSelected != null && popupImage != null);
+    this.onCancel,
+    this.popupIcon,
+    this.initialValue,
+    this.enableChild = false,
+    this.popupChild,
+    this.fullPopupWidth = false,
+    this.shapeBorder,
+    this.elevation = 4.0,
+    this.enable = true,
+    this.popupColor,
+  }) : super(key: key);
 
   @override
-  _CustomPopupMenuState createState() => _CustomPopupMenuState();
+  _CustomPopupMenuState<T> createState() => _CustomPopupMenuState<T>();
 }
 
-class _CustomPopupMenuState extends State<CustomPopupMenu> {
+class _CustomPopupMenuState<T> extends State<CustomPopupMenu> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 25,
-      height: 25,
-      alignment: Alignment.center,
-      child: PopupMenuButton<dynamic>(
-        padding: EdgeInsets.all(0),
-        elevation: 4.0,
-        initialValue: null,
-        onSelected: widget.onSelected,
-        icon: widget.popupImage,
-        itemBuilder: (BuildContext context) {
-          List popupList = List<PopupMenuEntry<dynamic>>();
-          for (int i = 0; i < widget.items.length; ++i) {
-            CustomPopupItem element = widget.items[i];
-            double iconSize = element.iconSize;
-            if (iconSize <= 2.0) {
-              element.iconSize = R.appRatio.appIconSize15;
-            }
-            popupList.add(
-              PopupMenuItem(
-                value: i,
+    return PopupMenuButton<T>(
+      padding: EdgeInsets.all(0),
+      elevation: widget.elevation,
+      shape: widget.shapeBorder,
+      enabled: widget.enable,
+      color: widget.popupColor ?? Theme.of(context).cardColor,
+      initialValue: widget.initialValue,
+      onSelected: widget.onSelected,
+      onCanceled: widget.onCancel,
+      icon: (!widget.enableChild ? widget.popupIcon : null),
+      child: (widget.enableChild ? widget.popupChild : null),
+      itemBuilder: (BuildContext context) {
+        List<PopupMenuEntry<T>> popupList = List<PopupMenuEntry<T>>();
+
+        for (int i = 0; i < widget.items.length; ++i) {
+          PopupItem element = widget.items[i];
+
+          double iconSize = element.iconSize;
+          if (iconSize <= 2.0) {
+            iconSize = 15.0;
+          }
+
+          bool hasIcon = element.iconURL.length != 0;
+          Widget leftIcon = Container();
+          if (hasIcon) {
+            leftIcon = Container(
+              width: iconSize,
+              height: iconSize,
+              alignment: Alignment.centerLeft,
+              child: ImageCacheManager.getImage(
+                url: element.iconURL,
+                width: iconSize,
+                height: iconSize,
+                fit: BoxFit.contain,
+              ),
+            );
+          }
+
+          popupList.add(
+            PopupMenuItem<T>(
+              value: element.value,
+              child: Container(
+                width: (widget.fullPopupWidth ? double.maxFinite : null),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      width: 30,
-                      height: 30,
-                      alignment: Alignment.centerLeft,
-                      child: ImageCacheManager.getImage(
-                        url: element.iconURL,
-                        width: iconSize,
-                        height: iconSize,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                    leftIcon,
                     Text(
                       element.title,
-                      style: TextStyle(
-                        fontSize: R.appRatio.appFontSize18,
-                        color: Colors.black,
-                      ),
+                      textScaleFactor: 1.0,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: element.titleStyle ??
+                          TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
                     ),
                   ],
                 ),
               ),
-            );
-          }
-          return popupList;
-        },
-      ),
+            ),
+          );
+        }
+
+        return popupList;
+      },
     );
   }
 }

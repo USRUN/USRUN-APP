@@ -25,17 +25,17 @@ class TeamMember extends StatefulWidget {
   ];
 
   final popUpMenu = [
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackAddIcon02,
       iconSize: R.appRatio.appIconSize15 + 1,
       title: R.strings.inviteNewMember,
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackCloseIcon,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.kickAMember,
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackBlockIcon,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.blockAPerson,
@@ -206,7 +206,7 @@ class _TeamMemberState extends State<TeamMember> {
                 onSelected: (index) {
                   _showCustomDialog(index);
                 },
-                popupImage: Image.asset(
+                popupIcon: Image.asset(
                   R.myIcons.appBarPopupMenuIcon,
                   width: R.appRatio.appAppBarIconSize,
                   height: R.appRatio.appAppBarIconSize,

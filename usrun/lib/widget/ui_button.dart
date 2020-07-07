@@ -56,32 +56,33 @@ class UIButton extends StatelessWidget {
         border: this.border,
         boxShadow: (this.enableShadow
             ? [
-                this.boxShadow ??
-                    BoxShadow(
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 2.0,
-                      color: Color.fromRGBO(0, 0, 0, 0.2),
-                    )
-              ]
+          this.boxShadow ??
+              BoxShadow(
+                offset: Offset(2.0, 2.0),
+                blurRadius: 2.0,
+                color: Color.fromRGBO(0, 0, 0, 0.2),
+              )
+        ]
             : null),
       ),
       child: FlatButton(
-        padding: EdgeInsets.all(0.0),
+        onPressed: (this.enable && this.onTap != null) ? this.onTap : () {},
         splashColor: Color.fromRGBO(0, 0, 0, 0.1),
+        padding: EdgeInsets.all(0.0),
         textColor: Colors.white,
         color: Colors.transparent,
-        onPressed: (this.enable && this.onTap != null) ? this.onTap : () {},
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          textScaleFactor: 1.0,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: this.textSize,
-            color: this.textColor,
-            fontWeight: this.fontWeight,
-          ),
-        ),
+        child: Center(
+          child: Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            textScaleFactor: 1.0,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: this.textSize,
+              color: this.textColor,
+              fontWeight: this.fontWeight,
+            ),
+          ),),
       ),
     );
   }
