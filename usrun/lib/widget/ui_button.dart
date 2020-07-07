@@ -56,13 +56,13 @@ class UIButton extends StatelessWidget {
         border: this.border,
         boxShadow: (this.enableShadow
             ? [
-          this.boxShadow ??
-              BoxShadow(
-                offset: Offset(2.0, 2.0),
-                blurRadius: 2.0,
-                color: Color.fromRGBO(0, 0, 0, 0.2),
-              )
-        ]
+                this.boxShadow ??
+                    BoxShadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 2.0,
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
+                    )
+              ]
             : null),
       ),
       child: FlatButton(
@@ -82,7 +82,8 @@ class UIButton extends StatelessWidget {
               color: this.textColor,
               fontWeight: this.fontWeight,
             ),
-          ),),
+          ),
+        ),
       ),
     );
   }
