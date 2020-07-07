@@ -21,7 +21,6 @@ class RunningRoute{
   }
 }
 
-@reflector
 class TrackRequest{
   int trackId;
   String sig;
@@ -36,13 +35,13 @@ class TrackRequest{
   }
 }
 
-@reflector
 class RecordData {
 
   int eventId;
   int trackId;
   int totalTime;
   int totalMovingTime;
+  Map<String, double> splitData;
   int createTime;
   int totalDistance;
   int totalStep;
@@ -63,6 +62,7 @@ class RecordData {
     this.trackId = 0;
     this.totalTime = 0;
     this.totalMovingTime = 0;
+    this.splitData = Map<String, double>();
     this.createTime = DateTime.now().millisecondsSinceEpoch;
     this.totalDistance = 0;
     this.totalStep = -1;
@@ -91,6 +91,14 @@ class RecordData {
       return;
     avgPace = 1000*(totalTime)/totalDistance;
     print(avgPace);
+    updateSplit();
+  }
+
+
+  void updateSplit() {
+    var km = (this.totalDistance / 1000).ceil();
+    var pace = this.avgPace;
+    this.splitData[km.toString()] = pace;
   }
 
 

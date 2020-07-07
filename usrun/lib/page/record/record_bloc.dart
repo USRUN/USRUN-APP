@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -459,6 +461,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
      
     }
     if (newState == RecordState.StatusStop) {
+      finishedUpdateSplits();
       this.recordData.endTime = DateTime.now().millisecondsSinceEpoch;
       this._timeService.stop();
       this.stopListening();
@@ -472,12 +475,6 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
       }
       
       this.updateReportVisibility(ReportVisibility.Visible);
-      // this.onUpdateActivity();
-      // try {
-      //   this.onResumeFromBackground();
-      // } catch(error) {
-      //   print("uprace_app error $error");
-      // }
 
     }
     if (newState == RecordState.StatusResume) {
@@ -691,6 +688,20 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     }
   }
 
+  finishedUpdateSplits() {
+    var currentDistance1 = (this.recordData.totalDistance ~/1000);
+    var currentDistance2 = (this.recordData.totalDistance / 1000);
+    double x = currentDistance2 - currentDistance1;
+    this.recordData.splitData.forEach((key, value) {
+      print(key);
+      if (key==currentDistance2.ceil().toString() || currentDistance2 == 0)
+        {
+          key = (currentDistance1 + (x*100).ceil()/100).toString();
+          return;
+        }
+    });
+    this.recordData.splitData[(currentDistance1 + (x*100).ceil()/100).toString()]= this.recordData.avgPace;
+  }
   
   void resetAll() {
     this.recordData = RecordData();
