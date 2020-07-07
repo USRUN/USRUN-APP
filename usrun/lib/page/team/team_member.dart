@@ -32,27 +32,7 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final tabBarItems = [
-    {
-      "tabName": R.strings.all,
-    },
-  ];
-
-  final popUpMenu = [
-    CustomPopupItem(
-      iconURL: R.myIcons.blackAddIcon02,
-      iconSize: R.appRatio.appIconSize15 + 1,
-      title: R.strings.inviteNewMember,
-    ),
-    CustomPopupItem(
-      iconURL: R.myIcons.blackCloseIcon,
-      iconSize: R.appRatio.appIconSize15,
-      title: R.strings.kickAMember,
-    ),
-    CustomPopupItem(
-      iconURL: R.myIcons.blackBlockIcon,
-      iconSize: R.appRatio.appIconSize15,
-      title: R.strings.blockAPerson,
-    ),
+    R.strings.all
   ];
 
   static final Map<String,dynamic> follow = {
@@ -116,6 +96,8 @@ class TeamMemberPage extends StatefulWidget {
     ]
   ];
 
+  final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
+
   final int teamId;
   final int teamMemberType;
   final int resultPerPage = 10;
@@ -133,7 +115,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   int _curPage;
   bool _remainingResults;
   List tabItems;
-  List<String> memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
   List options = List();
 
   final TextEditingController _nameController = TextEditingController();
@@ -175,18 +156,17 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     if(!_remainingResults) return;
       _remainingResults = false;
 
-    Response<List<User>> response =
+    Response<dynamic> response =
         await TeamManager.getAllTeamMemberPaged(
             widget.teamId, _curPage, widget.resultPerPage);
-    if (response.success) {
+
+    if (response.success && (response.object as List).isNotEmpty) {
+      List<User> toAdd = response.object;
       setState(() {
-        items = response.object;
-        _curPage += 1;
-      });
-      if (response.object.length > 0)
-        _curPage += 1;
-      else
-        _remainingResults = false;
+        items.addAll(toAdd);
+          _curPage += 1;
+        _remainingResults = true;
+        });
       }
 
     setState(() {
@@ -241,6 +221,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   _loadMoreData() {
     // TODO: Implement function here
     print("Loading more data...");
+    _loadSuitableData(_selectedTabIndex);
   }
 
   _onSelectItem(int tabIndex) {
@@ -255,8 +236,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     });
   }
 
-  _onSelectMemberOption(int memberIndex){
-
+  _onSelectMemberOption(int memberIndex, int optionIndex){
   }
 
   _pressAvatar(index) {
@@ -272,11 +252,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   _pressFollowBtn(index) {
     // TODO: Implement function here
     print("Pressing FOLLOWING button on this person");
-  }
-
-  _pressUnFollowBtn(index) {
-    // TODO: Implement function here
-    print("Pressing UNFOLLOW button on this person");
   }
 
   _pressCloseBtn(index) {
@@ -383,7 +358,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 pushPage(
                   context,
                   //MEMBER SEARCH PAGE
-                  MemberSearchPage(autoFocusInput: true, defaultList: items,selectedTab:_selectedTabIndex,),
+                  MemberSearchPage(autoFocusInput: true,tabItems: tabItems,selectedTab:_selectedTabIndex,teamId: widget.teamId,options: options,),
                 );},
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -462,7 +437,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     String supportImageURL = items[index].avatar;
     String name = items[index].name;
     String location = items[index].province.toString();
-    String listTeamMemberType = memberTypes[listMemberTypeIndex];
+    String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
 
 
     switch (_selectedTabIndex) {
@@ -497,8 +472,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           customPopupMenu:
           CustomPopupMenu(
             items: options[listMemberTypeIndex],
-            onSelected: (index) {
-              _onSelectMemberOption(index);
+            onSelected: (optionIndex) {
+              _onSelectMemberOption(index,optionIndex);
             },
             popupImage: Image.asset(
               R.myIcons.popupMenuIconByTheme,
@@ -572,73 +547,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         );
       default:
         return Container();
-    }
-  }
-
-  void _showCustomDialog(index) async {
-    switch (index) {
-      case 0: // Invite
-        await showComplexCustomDialog(
-          context: context,
-          headerContent: R.strings.inviteNewMember,
-          descriptionContent: R.strings.inviteNewMemberContent,
-          inputFieldList: [
-            InputField(
-              controller: _nameController,
-              enableFullWidth: false,
-              labelTitle: _nameLabel,
-              hintText: _nameLabel,
-            ),
-          ],
-          submitBtnContent: R.strings.invite,
-          submitBtnFunction: () {
-            // TODO: Implement function here
-            print("Invite new member");
-          },
-        );
-        break;
-      case 1: // Kick
-        await showComplexCustomDialog(
-          context: context,
-          headerContent: R.strings.kickAMember,
-          descriptionContent: R.strings.kickAMemberContent,
-          inputFieldList: [
-            InputField(
-              controller: _nameController,
-              enableFullWidth: false,
-              labelTitle: _nameLabel,
-              hintText: _nameLabel,
-            ),
-          ],
-          submitBtnContent: R.strings.kick,
-          submitBtnFunction: () {
-            // TODO: Implement function here
-            print("Kick a member");
-          },
-        );
-        break;
-      case 2: // Block
-        await showComplexCustomDialog(
-          context: context,
-          headerContent: R.strings.blockAPerson,
-          descriptionContent: R.strings.blockAPersonContent,
-          inputFieldList: [
-            InputField(
-              controller: _nameController,
-              enableFullWidth: false,
-              labelTitle: _nameLabel,
-              hintText: _nameLabel,
-            ),
-          ],
-          submitBtnContent: R.strings.block,
-          submitBtnFunction: () {
-            // TODO: Implement function here
-            print("Block a person");
-          },
-        );
-        break;
-      default:
-        break;
     }
   }
 }

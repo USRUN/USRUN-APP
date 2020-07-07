@@ -209,14 +209,15 @@ class TeamManager{
     return response;
   }
 
-  static Future<Response> findTeamMemberRequest(String searchString, int pageNum, int perPage) async {
+  static Future<Response> findTeamMemberRequest(int teamId, String searchString, int pageNum, int perPage) async {
     Map<String,dynamic> params = {
-      'searchString': searchString,
-      'pageNum': pageNum,
-      'perPage': perPage
+      'teamId': teamId,
+      'keyword': searchString,
+      'offset': pageNum,
+      'count': perPage
     };
 
-    Response<dynamic> res = await Client.post('/team/findTeamMember',params);
+    Response<dynamic> res = await Client.post('/team/findUser',params);
 
     if(!res.success || (res.object as List).isEmpty) return res;
 
@@ -255,5 +256,4 @@ class TeamManager{
 
     return response;
   }
-
 }

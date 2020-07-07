@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -12,6 +13,7 @@ import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
+import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -20,31 +22,18 @@ import 'package:usrun/widget/loading_dot.dart';
 class MemberSearchPage extends StatefulWidget {
   final bool autoFocusInput;
   final int resultPerPage = 15;
-  final List defaultList;
+  final List tabItems;
   final int selectedTab;
-
-  final member_options = [
-    {
-      "iconURL": R.myIcons.peopleIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Follow/Unfollow",
-    },
-    {
-      "iconURL": R.myIcons.starIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Promote to admin",
-    },
-    {
-      "iconURL": R.myIcons.blockIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Block from team",
-    },
-  ];
+  final int teamId;
+  final List options;
+  final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
 
   MemberSearchPage({
     this.autoFocusInput = false,
-    @required this.defaultList,
-    @required this.selectedTab
+    @required this.tabItems,
+    @required this.selectedTab,
+    @required this.teamId,
+    @required this.options
   });
 
   @override
@@ -56,9 +45,13 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   bool _isLoading;
   bool remainingResults;
   List<User> memberList;
+  List<User> allMemberList;
+  List<User> requestingMemberList;
+  List<User> blockingMemberList;
   String curSearchString;
   int curResultPage;
   int _selectedTab;
+  List tabItems;
   int _selectedMemberType;
   final _currentUser = UserManager.currentUser;
 
@@ -68,12 +61,10 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     curSearchString = "";
     _isLoading = true;
     curResultPage = 1;
+    tabItems = widget.tabItems;
+    _selectedTab = widget.selectedTab;
     remainingResults = true;
     memberList = List();
-
-    if(widget.defaultList != null)
-      memberList = widget.defaultList;
-//    else _findMember();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -86,45 +77,42 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     });
   }
 
+  void parseResponse(List<User> responseObject){
+    responseObject.forEach((element) {
+      if(element.teamMemberType.index < 4){
+        allMemberList.add(element);
+      }
+      if(element.teamMemberType.index == 4){
+        requestingMemberList.add(element);
+      }
+      if(element.teamMemberType.index == 5){
+        blockingMemberList.add(element);
+      }
+    });
+  }
+
 
   void _findMember() async {
-    if(_selectedMemberType == 0){
-      _findMemberAndAdmin();
-    } else {
-      _findMemberByType();
-    }
-  }
-
-  void _findMemberAndAdmin() async {
     if(!remainingResults) return;
 
     remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamMemberRequest(curSearchString, curResultPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager.findTeamMemberRequest(widget.teamId,curSearchString, curResultPage, widget.resultPerPage);
 
     if(response.success && (response.object as List).isNotEmpty){
-      List<User> toAdd = response.object;
       setState(() {
-        memberList.addAll(toAdd);
+        parseResponse(response.object);
+        _onSelectTabItem(_selectedTab);
         remainingResults = true;
         curResultPage += 1;
       });
     }
   }
 
-  void _findMemberByType() async {
-    if(!remainingResults) return;
-
-    remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamMemberByTypeRequest(curSearchString,_selectedMemberType, curResultPage, widget.resultPerPage);
-
-    if(response.success && (response.object as List).isNotEmpty){
-      List<User> toAdd = response.object;
-      setState(() {
-        memberList.addAll(toAdd);
-        remainingResults = true;
-        curResultPage += 1;
-      });
-    }
+  void clearMemberLists(){
+    memberList = List();
+    allMemberList = List();
+    requestingMemberList = List();
+    blockingMemberList = List();
   }
 
   void _onSubmittedFunction(data) {
@@ -135,8 +123,8 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     setState(() {
       _isLoading = !_isLoading;
       curSearchString = data.toString();
-      memberList.clear();
-      curResultPage = 0;
+      clearMemberLists();
+      curResultPage = 1;
       remainingResults = true;
     });
 
@@ -148,24 +136,35 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     setState(() {
       _isLoading = !_isLoading;
     });
+  }
 
-    // [Demo] Enter searching content => Render "SearchedTeams" by setState
-//    List<dynamic> newList = List<dynamic>();
-//    Future.delayed(Duration(milliseconds: 1000), () {
-//      newList.addAll(teamList.getRange(2, 7));
-//    }).then((val) {
-//      setState(() {
-//        _isLoading = !_isLoading;
-//        teamList = newList;
-//      });
-//    });
+  void _onSelectTabItem(index){
+    if (index == _selectedTab) return;
+    _selectedTab = index;
+    switch(index){
+      case 0:
+        setState(() {
+          memberList = allMemberList;
+        });
+        break;
+      case 1:
+        setState(() {
+          memberList = requestingMemberList;
+        });
+        break;
+      case 2:
+        setState(() {
+          memberList = blockingMemberList;
+        });
+        break;
+    }
   }
 
   void _onChangedFunction(data) {
     // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
       setState(() {
-        memberList = widget.defaultList;
+        memberList = List();
       });
     }
   }
@@ -219,6 +218,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
                 String teamName = memberList[index].name;
                 String location = memberList[index].province.toString();
                 int memberUserId = memberList[index].userId;
+                int teamMemberType = memberList[index].teamMemberType.index - 1;
 
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -261,7 +261,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
                           centerVerticalSuffix: true,
                           enablePopupMenuButton: (memberUserId == _currentUser.userId) ?false:true,
                           customPopupMenu: CustomPopupMenu(
-                            items: widget.member_options.cast<CustomPopupItem>(),
+                            items: widget.options[teamMemberType],
                             onSelected: (index) {
                               null;
                             },
@@ -283,6 +283,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 
     @override
     Widget build(BuildContext context) {
+      FocusScope.of(context).requestFocus(new FocusNode());
       Widget _buildElement = Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: R.colors.appBackground,
@@ -320,8 +321,21 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
             onChangedFunction: _onChangedFunction,
           ),
         ),
-        body: (_isLoading ? LoadingIndicator() : _renderUserList()),
-      );
+
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+          // TabBar
+          CustomTabBarStyle03(
+          items: tabItems,
+          selectedTabIndex: _selectedTab,
+          pressTab: _onSelectTabItem,
+        ),
+          // All contents
+          Expanded(
+            child: (_isLoading ? LoadingIndicator() : _renderList()),
+          ),
+      ]));
 
       return NotificationListener<OverscrollIndicatorNotification>(
           child: _buildElement,
@@ -330,4 +344,156 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
             return false;
           });
     }
+
+  Widget _renderList() {
+    return AnimationLimiter(
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: memberList.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == memberList.length - 1) {
+              _findMember();
+            }
+
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 400),
+              child: SlideAnimation(
+                verticalOffset: 100.0,
+                child: FadeInAnimation(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+                      bottom: R.appRatio.appSpacing15,
+                      left: R.appRatio.appSpacing15,
+                      right: R.appRatio.appSpacing15,
+                    ),
+                    child: _renderCustomCell(index),
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget _renderCustomCell(index) {
+    int listMemberTypeIndex = memberList[index].teamMemberType.index - 1;
+    String avatarImageURL = memberList[index].avatar;
+    String supportImageURL = memberList[index].avatar;
+    String name = memberList[index].name;
+    String location = memberList[index].province.toString();
+    String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
+
+
+    switch (_selectedTab) {
+      case 0: // All
+        return CustomCell(
+          avatarView: AvatarView(
+            avatarImageURL: avatarImageURL,
+            avatarImageSize: R.appRatio.appWidth60,
+            avatarBoxBorder: Border.all(
+              width: 1,
+              color: R.colors.majorOrange,
+            ),
+            supportImageURL: supportImageURL,
+//            pressAvatarImage: () => _pressAvatar(index),
+          ),
+          // Content
+          title: name,
+          titleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize16,
+            color: R.colors.contentText,
+            fontWeight: FontWeight.w500,
+          ),
+          enableAddedContent: false,
+          subTitle: listTeamMemberType,
+          subTitleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize14,
+            color: R.colors.contentText,
+          ),
+//          pressInfo: () => _pressUserInfo(index),
+          centerVerticalSuffix: true,
+          enablePopupMenuButton: true,
+          customPopupMenu:
+          CustomPopupMenu(
+            items: widget.options[listMemberTypeIndex],
+            onSelected: (index) {
+//              _onSelectMemberOption(index);
+            },
+            popupImage: Image.asset(
+              R.myIcons.popupMenuIconByTheme,
+              width: R.appRatio.appIconSize15,
+              height: R.appRatio.appIconSize15,
+              fit: BoxFit.contain,
+            ),
+          ),
+        );
+      case 1: // Requesting
+        return CustomCell(
+          avatarView: AvatarView(
+            avatarImageURL: avatarImageURL,
+            avatarImageSize: R.appRatio.appWidth60,
+            avatarBoxBorder: Border.all(
+              width: 1,
+              color: R.colors.majorOrange,
+            ),
+            supportImageURL: supportImageURL,
+//            pressAvatarImage: () => _pressAvatar(index),
+          ),
+          // Content
+          title: name,
+          titleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize16,
+            color: R.colors.contentText,
+            fontWeight: FontWeight.w500,
+          ),
+          enableAddedContent: false,
+          subTitle: location,
+          subTitleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize14,
+            color: R.colors.contentText,
+          ),
+//          pressInfo: () => _pressUserInfo(index),
+          centerVerticalSuffix: true,
+          enableCloseButton: true,
+//          pressCloseButton: () => _pressCloseBtn(index),
+          enableCheckButton: true,
+//          pressCheckButton: () => _pressCheckBtn(index),
+        );
+      case 2: // Blocking
+        return CustomCell(
+          avatarView: AvatarView(
+            avatarImageURL: avatarImageURL,
+            avatarImageSize: R.appRatio.appWidth60,
+            avatarBoxBorder: Border.all(
+              width: 1,
+              color: R.colors.majorOrange,
+            ),
+            supportImageURL: supportImageURL,
+//            pressAvatarImage: () => _pressAvatar(index),
+          ),
+          // Content
+          title: name,
+          titleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize16,
+            color: R.colors.contentText,
+            fontWeight: FontWeight.w500,
+          ),
+          enableAddedContent: false,
+          subTitle: location,
+          subTitleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize14,
+            color: R.colors.contentText,
+          ),
+//          pressInfo: () => _pressUserInfo(index),
+          centerVerticalSuffix: true,
+          enableCloseButton: true,
+//          pressCloseButton: () => _releaseFromBlock(index),
+        );
+      default:
+        return Container();
+    }
+  }
 }

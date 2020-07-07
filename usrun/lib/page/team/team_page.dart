@@ -142,7 +142,7 @@ class _TeamPageState extends State<TeamPage> {
                 enableScrollBackgroundColor: true,
                 pressItemFunction: (teamItem) {
                   // TODO: Test
-                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId));
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId)).then((e) {reloadTeamList();});
                   print(
                       "[YourTeams] This team with id ${teamItem.teamId} is pressed");
                 },
@@ -157,7 +157,7 @@ class _TeamPageState extends State<TeamPage> {
                 enableScrollBackgroundColor: true,
                 enableSplitListToTwo: false,
                 pressItemFunction: (teamItem) {
-                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId));
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId)).then((e) {reloadTeamList();});
                   print(
                       "[WeSuggestYou] This team with id ${teamItem.teamId} is pressed");
                 },
@@ -177,7 +177,7 @@ class _TeamPageState extends State<TeamPage> {
                   pushPage(
                     context,
                     TeamSearchPage(autoFocusInput: false,defaultList: _teamSuggestionList),
-                  );
+                  ).then((e) {reloadTeamList();});
                 },
               ),
             ],
