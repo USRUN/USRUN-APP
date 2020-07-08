@@ -76,6 +76,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if(response.success && response.object != null){
       mapTeamInfo(response.object);
       _userRole = response.object.teamMemberType;
+      print("role: $_userRole");
     }
   }
 
@@ -361,7 +362,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                 child: ExpandableText(_teamDescription),
               ),
               // Join button
-              (_userRole > 3 && _userRole != 5
+              (_userRole > 3 && _userRole  != 5
                   ? Padding(
                 padding: EdgeInsets.only(
                   left: R.appRatio.appSpacing15,

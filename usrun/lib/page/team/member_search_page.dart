@@ -89,6 +89,18 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
         blockingMemberList.add(element);
       }
     });
+
+    switch(_selectedTab){
+      case 0:
+          memberList = allMemberList;
+        break;
+      case 1:
+          memberList = requestingMemberList;
+        break;
+      case 2:
+          memberList = blockingMemberList;
+        break;
+    }
   }
 
 
@@ -99,9 +111,9 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     Response<dynamic> response = await TeamManager.findTeamMemberRequest(widget.teamId,curSearchString, curResultPage, widget.resultPerPage);
 
     if(response.success && (response.object as List).isNotEmpty){
+
       setState(() {
         parseResponse(response.object);
-        _onSelectTabItem(_selectedTab);
         remainingResults = true;
         curResultPage += 1;
       });
@@ -161,12 +173,6 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   }
 
   void _onChangedFunction(data) {
-    // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
-    if (data.toString().length == 0) {
-      setState(() {
-        memberList = List();
-      });
-    }
   }
 
   bool _isEmptyList() {
