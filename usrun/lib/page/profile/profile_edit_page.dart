@@ -25,26 +25,21 @@ class EditProfilePage extends StatelessWidget {
     DropDownObject<Gender>(value: Gender.Female, text: 'Female')
   ];
 
-  List<DropDownObject<int>> _dropdownCities = [];
-
-  void _setUpValue(){
+  List<DropDownObject<int>> _setUpValue() {
     _nameController.text = UserManager.currentUser.name;
-    if (UserManager.currentUser.height!=null)
-      {
-        _heightController.text = UserManager.currentUser.height.toString();
-      }
-    if (UserManager.currentUser.weight!=null)
-    {
+    if (UserManager.currentUser.height != null) {
+      _heightController.text = UserManager.currentUser.height.toString();
+    }
+    if (UserManager.currentUser.weight != null) {
       _weightController.text = UserManager.currentUser.weight.toString();
     }
+
+    List<DropDownObject<int>> _dropdownCities = List();
     R.strings.provinces.asMap().forEach((index, value) {
       _dropdownCities.add(DropDownObject<int>(value: index, text: value));
-      print(_dropdownCities[index].value);
-      print(_dropdownCities[index].text);
     });
+    return _dropdownCities;
   }
-
-
 
   void _getDOBFunction(DateTime picker) {
     print("Birthday/DOB: ${picker.day}/${picker.month}/${picker.year}");
@@ -63,14 +58,13 @@ class EditProfilePage extends StatelessWidget {
 
   void _updateProfile(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-
     // TODO: Function for updating changes of profile
   }
 
   @override
   Widget build(BuildContext context) {
     editUser.copy(UserManager.currentUser);
-    _setUpValue();
+    List<DropDownObject<int>> _dropdownCities = _setUpValue();
     FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
@@ -126,23 +120,23 @@ class EditProfilePage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 Align(
-                alignment: Alignment.center,
-                child: AvatarView(
-                    avatarImageURL: UserManager.currentUser.avatar,
-                    avatarImageSize: R.appRatio.appAvatarSize150,
-                    enableSquareAvatarImage: false,
-                    pressAvatarImage: () {
-                      // TODO: A function for doing something
-                      // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                      print(R.strings.nothingToShow);
-                    },
-                    avatarBoxBorder: Border.all(
-                      color: R.colors.majorOrange,
-                      width: 2,
-                    ),
-                    supportImageURL: editUser.hcmus?R.myIcons.hcmusLogo:null,
-                  )
-                ),
+                    alignment: Alignment.center,
+                    child: AvatarView(
+                      avatarImageURL: UserManager.currentUser.avatar,
+                      avatarImageSize: R.appRatio.appAvatarSize150,
+                      enableSquareAvatarImage: false,
+                      pressAvatarImage: () {
+                        // TODO: A function for doing something
+                        // Example: Click to change avatar of my profile or my teams, or direct to other pages.
+                        print(R.strings.nothingToShow);
+                      },
+                      avatarBoxBorder: Border.all(
+                        color: R.colors.majorOrange,
+                        width: 2,
+                      ),
+                      supportImageURL:
+                          editUser.hcmus ? R.myIcons.hcmusLogo : null,
+                    )),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
@@ -182,14 +176,18 @@ class EditProfilePage extends StatelessWidget {
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
-                DropDownMenu(
-                  errorEmptyData: R.strings.nothingToShow,
-                  labelTitle: R.strings.city,
-                  hintText: R.strings.city,
-                  enableHorizontalLabelTitle: false,
-                  onChanged: this._getSelectedDropDownCities,
-                  items: this._dropdownCities,
-                  initialValue: 0,
+                Container(
+                  width: 300,
+                  height: 100,
+                  child: DropDownMenu(
+                    errorEmptyData: R.strings.nothingToShow,
+                    labelTitle: R.strings.city,
+                    hintText: R.strings.city,
+                    enableHorizontalLabelTitle: false,
+                    onChanged: this._getSelectedDropDownCities,
+                    items: _dropdownCities,
+                    initialValue: _dropdownCities[0].value,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -201,7 +199,9 @@ class EditProfilePage extends StatelessWidget {
                       width: R.appRatio.appWidth181,
                       child: InputCalendar(
                         labelTitle: R.strings.birthday,
-                        defaultDay: editUser.birthday!=null?'${editUser.birthday.day}/${editUser.birthday.month}/${editUser.birthday.year}':'dd/mm/yyyyy',
+                        defaultDay: editUser.birthday != null
+                            ? '${editUser.birthday.day}/${editUser.birthday.month}/${editUser.birthday.year}'
+                            : 'dd/mm/yyyyy',
                         enableFullWidth: false,
                         getDOBFunc: this._getDOBFunction,
                       ),
@@ -214,7 +214,9 @@ class EditProfilePage extends StatelessWidget {
                       enableHorizontalLabelTitle: false,
                       onChanged: this._getSelectedDropDownGender,
                       items: this._dropdownGender,
-                      initialValue: _dropdownGender[UserManager.currentUser.gender.index].value,
+                      initialValue:
+                          _dropdownGender[UserManager.currentUser.gender.index]
+                              .value,
                     ),
                   ],
                 ),
