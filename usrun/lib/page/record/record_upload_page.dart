@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
 import 'package:usrun/page/record/record_bloc.dart';
@@ -14,6 +17,8 @@ import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
+import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
@@ -212,6 +217,30 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     }
   }
 
+
+  void _getSelectedDropDownMenuItem<T>(T value) {
+    print("Select event with id: $value");
+    widget.activity.recordData.eventId = value as int;
+  }
+
+  _buildEventDropDown(){
+
+    List<DropDownObject<int>> dropDowMenuList = [];
+    EventManager.userEvents.forEach((event) {
+      dropDowMenuList.add(DropDownObject<int>(value: event.eventId, text: event.eventName));
+    });
+    return DropDownMenu(
+      errorEmptyData: R.strings.nothingToShow,
+      enableFullWidth: true,
+      labelTitle: R.strings.events,
+      hintText: R.strings.events,
+      enableHorizontalLabelTitle: false,
+      onChanged: this._getSelectedDropDownMenuItem,
+      items: dropDowMenuList,
+      initialValue: dropDowMenuList.isEmpty?'': dropDowMenuList[0].value,
+    );
+  }
+
   _buildPhotoPicker() {
     return Padding(
         padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
@@ -313,10 +342,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   _uploadActivity() async {
-    Map<String, dynamic> content =
-        RecordHelper.toJSON(this.widget.bloc.recordData);
-    await RecordHelper.saveFile(content);
-    await RecordHelper.loadFromFile();
+    this.widget.activity.recordData = await RecordHelper.loadFromFile();
     Response<ActivityData> response = await upload();
     if (response.success) {
       print("Uploaded");
@@ -342,7 +368,9 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
-    var params = RecordHelper.generateParamsForRequest(widget.activity);
+    String requestTime = DateTime.now().millisecondsSinceEpoch.toString();
+    widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
+    var params = RecordHelper.generateParamsForRequest(widget.activity, requestTime);
     Response<Map<String, dynamic>> response =
         await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
             '/activity/createUserActivity', params);
@@ -413,6 +441,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                         ),
                         _buildDescription(),
                         SizedBox(
+                          height: R.appRatio.appSpacing25,
+                        ),
+                        _buildEventDropDown(),
+                          SizedBox(
                           height: R.appRatio.appSpacing25,
                         ),
                         _buildPhotoPicker(),

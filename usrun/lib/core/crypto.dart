@@ -8,10 +8,10 @@ const TRACK_SECRET_KEY = 'trackusrun1620';
 
 class UsrunCrypto{
 
-  static String buildActivitySig(){
+  static String buildActivitySig(String requestTime){
 
     List<int> secretBytes = utf8.encode(ACTIVITY_SECRET_KEY);
-    List<int> messageBytes = utf8.encode(UserManager.currentUser.userId.toString());
+    List<int> messageBytes = utf8.encode("${UserManager.currentUser.userId.toString()}|$requestTime");
     
     var hmac = new Hmac(sha256, secretBytes);
     Digest sha256Result = hmac.convert(messageBytes);
