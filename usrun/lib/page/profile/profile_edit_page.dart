@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,19 +8,29 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/input_field.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
+
+  @override
+  _EditProfilePage createState() => _EditProfilePage();
+}
+
+class _EditProfilePage extends State<EditProfilePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   User editUser = new User();
+
 
   final _dropdownGender = [
     DropDownObject<Gender>(value: Gender.Male, text: 'Male'),
@@ -56,14 +68,80 @@ class EditProfilePage extends StatelessWidget {
     editUser.province = value as int;
   }
 
-  void _updateProfile(BuildContext context) {
+  void showInvalidFieldDialog(BuildContext context, String field){
+    showCustomAlertDialog(context,
+        title: R.strings.notice,
+        content: 'Invalid $field',
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          pop(this.context);
+        });
+  }
+
+  Future<void> _updateProfile(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    // TODO: Function for updating changes of profile
+    editUser.name = _nameController.text;
+    try{
+      editUser.weight = double.parse(_weightController.text);
+    }
+    catch(e){
+      showInvalidFieldDialog(context, R.strings.weight);
+    }
+    try{
+      editUser.height = double.parse(_heightController.text);
+    }
+    catch(e){
+      showInvalidFieldDialog(context, R.strings.height);
+    }
+
+    Map<String,dynamic> params = new Map<String,dynamic>();
+    params = editUser.toMap();
+
+    Response<User> res = await UserManager.updateProfile(params);
+    if (res.success)
+      {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: 'Successfully updated profile!',
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+      }
+    else
+      {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: 'Fail to update profile! Please try again later!',
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+      }
+
+  }
+
+  Future<void> openSelectPhoto(BuildContext context) async {
+    try {
+      var image = await pickImage(context);
+      if (image != null) {
+        setState(() {
+          editUser.avatar = base64Encode(image.readAsBytesSync());
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    editUser.copy(UserManager.currentUser);
   }
 
   @override
   Widget build(BuildContext context) {
-    editUser.copy(UserManager.currentUser);
     List<DropDownObject<int>> _dropdownCities = _setUpValue();
     FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
@@ -122,13 +200,11 @@ class EditProfilePage extends StatelessWidget {
                 Align(
                     alignment: Alignment.center,
                     child: AvatarView(
-                      avatarImageURL: UserManager.currentUser.avatar,
+                      avatarImageURL: editUser.avatar,
                       avatarImageSize: R.appRatio.appAvatarSize150,
                       enableSquareAvatarImage: false,
                       pressAvatarImage: () {
-                        // TODO: A function for doing something
-                        // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                        print(R.strings.nothingToShow);
+                        openSelectPhoto(context,);
                       },
                       avatarBoxBorder: Border.all(
                         color: R.colors.majorOrange,
@@ -176,18 +252,14 @@ class EditProfilePage extends StatelessWidget {
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),
-                Container(
-                  width: 300,
-                  height: 100,
-                  child: DropDownMenu(
-                    errorEmptyData: R.strings.nothingToShow,
-                    labelTitle: R.strings.city,
-                    hintText: R.strings.city,
-                    enableHorizontalLabelTitle: false,
-                    onChanged: this._getSelectedDropDownCities,
-                    items: _dropdownCities,
-                    initialValue: _dropdownCities[0].value,
-                  ),
+                DropDownMenu(
+                  errorEmptyData: R.strings.nothingToShow,
+                  labelTitle: R.strings.city,
+                  hintText: R.strings.city,
+                  enableHorizontalLabelTitle: false,
+                  onChanged: this._getSelectedDropDownCities,
+                  items: _dropdownCities,
+                  initialValue: _dropdownCities[0].value,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -200,8 +272,8 @@ class EditProfilePage extends StatelessWidget {
                       child: InputCalendar(
                         labelTitle: R.strings.birthday,
                         defaultDay: editUser.birthday != null
-                            ? '${editUser.birthday.day}/${editUser.birthday.month}/${editUser.birthday.year}'
-                            : 'dd/mm/yyyyy',
+                            ? formatDateTime(editUser.birthday)
+                            : formatDateConst,
                         enableFullWidth: false,
                         getDOBFunc: this._getDOBFunction,
                       ),

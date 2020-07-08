@@ -112,7 +112,6 @@ class UserManager {
     return result;
   }
 
-
    static Future<Response<User>> check(Map<String, dynamic> params) async {
     Response<Map<String, dynamic>> res = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/check', params);
 
@@ -138,18 +137,29 @@ class UserManager {
     return res;
   }
 
-  static Future<Response<User>> updateProfile(
-      Map<String, dynamic> params) async {
+  static Future<Response<User>> updateProfile(Map<String, dynamic> params) async {
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
 
-    Response<User> response =
-        await Client.nPost<User, User>('/user/update', params);
+    Response<Map<String, dynamic>> response =
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/update', params);
+
+    Response<User> result = Response();
+
     if (response.success) {
       // save data
-      UserManager.saveUser(response.object);
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
     }
-    return response;
+    else
+      {
+        result.success = false;
+        result.errorCode = response.errorCode;
+        result.errorMessage = response.errorMessage;
+      }
+    return result;
   }
 
   static void sendDeviceToken() async {
