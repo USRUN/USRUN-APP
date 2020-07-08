@@ -45,7 +45,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = widget.initialValue;
+    _selectedValue = widget.items[0].value;
     _initUnderlineWidget();
   }
 

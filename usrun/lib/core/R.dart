@@ -820,6 +820,8 @@ class Strings {
   String follow;
   String unFollow;
 
+  List<String> provinces;
+
   String inviteNewMember;
   String inviteNewMemberContent;
   String invite;
