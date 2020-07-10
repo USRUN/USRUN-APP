@@ -32,6 +32,22 @@ class TeamMemberPage extends StatefulWidget {
     R.strings.blocking,
   ];
 
+  final popUpMenu = [
+    PopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15 + 1,
+      title: R.strings.inviteNewMember,
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackCloseIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.kickAMember,
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackBlockIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.blockAPerson,
+    ),
   final tabBarItems = [
     R.strings.all
   ];
@@ -370,8 +386,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
-                child: ImageCacheManager.getImage(
-                  url: R.myIcons.appBarSearchBtn,
+              child: CustomPopupMenu(
+                items: widget.popUpMenu,
+                onSelected: (index) {
+                  _showCustomDialog(index);
+                },
+                popupIcon: Image.asset(
+                  R.myIcons.appBarPopupMenuIcon,
                   width: R.appRatio.appAppBarIconSize,
                   height: R.appRatio.appAppBarIconSize,
                   color: Colors.white,
