@@ -32,11 +32,11 @@ class TeamMemberPage extends StatefulWidget {
     R.strings.blocking,
   ];
 
-  final popUpMenu = [
+  static final popUpMenu = [
     PopupItem(
-      iconURL: R.myIcons.blackAddIcon02,
+      iconURL: R.myIcons.blackRunnerIcon,
       iconSize: R.appRatio.appIconSize15 + 1,
-      title: R.strings.inviteNewMember,
+      title: R.strings.follow,
     ),
     PopupItem(
       iconURL: R.myIcons.blackCloseIcon,
@@ -48,69 +48,33 @@ class TeamMemberPage extends StatefulWidget {
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.blockAPerson,
     ),
+  ];
+
   final tabBarItems = [
     R.strings.all
   ];
 
-  static final Map<String,dynamic> follow = {
-    "iconURL": R.myIcons.peopleIconByTheme,
-    "iconSize": R.appRatio.appIconSize15,
-    "title": "Follow/Unfollow",
-  };
-
-  static final Map<String,dynamic> block = {
-    "iconURL": R.myIcons.peopleIconByTheme,
-    "iconSize": R.appRatio.appIconSize15,
-    "title": "Block from team",
-  };
-
-  static final Map<String,dynamic> promote = {
-      "iconURL": R.myIcons.starIconByTheme,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Promote to admin",
-  };
-
-  static final Map<String,dynamic> demote = {
-    "iconURL": R.myIcons.peopleIconByTheme,
-    "iconSize": R.appRatio.appIconSize15,
-    "title": "Demote from Admin",
-  };
-
-
-
-  final member_options = [
-    new CustomPopupItem.from(follow)
+  final List<List<PopupItem>> member_options = [
+    [popUpMenu[0]]
   ];
 
-  final admin_options = [
+  final List<List<PopupItem>> admin_options = [
     [
-      new CustomPopupItem.from(follow)
+      popUpMenu[0]
     ],
     [
-      new CustomPopupItem.from(follow)
+      popUpMenu[0]
     ],
     [
-      new CustomPopupItem.from(follow),
-      new CustomPopupItem.from(block)
+      popUpMenu[0],
+      popUpMenu[2]
     ]
   ];
 
-  final owner_options = [
-    [
-      new CustomPopupItem.from(follow)
-    ],
-
-    [
-      new CustomPopupItem.from(follow),
-      new CustomPopupItem.from(demote),
-      new CustomPopupItem.from(block)
-    ],
-
-    [
-      new CustomPopupItem.from(follow),
-      new CustomPopupItem.from(promote),
-      new CustomPopupItem.from(block)
-    ]
+  final List<List<PopupItem>> owner_options = [
+    [popUpMenu[0]],
+      popUpMenu,
+      popUpMenu
   ];
 
   final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
@@ -152,7 +116,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     switch(widget.teamMemberType){
       case 1:
-        options = List();
+        options = List<List<PopupItem>>();
         options = widget.owner_options;
         break;
       case 2:
@@ -386,17 +350,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
-              child: CustomPopupMenu(
-                items: widget.popUpMenu,
-                onSelected: (index) {
-                  _showCustomDialog(index);
-                },
-                popupIcon: Image.asset(
-                  R.myIcons.appBarPopupMenuIcon,
-                  width: R.appRatio.appAppBarIconSize,
-                  height: R.appRatio.appAppBarIconSize,
-                  color: Colors.white,
-                ),
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.appBarSearchBtn,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,)
             ),
           ),
         ],
@@ -503,7 +461,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             onSelected: (optionIndex) {
               _onSelectMemberOption(index,optionIndex);
             },
-            popupImage: Image.asset(
+            popupIcon: Image.asset(
               R.myIcons.popupMenuIconByTheme,
               width: R.appRatio.appIconSize15,
               height: R.appRatio.appIconSize15,

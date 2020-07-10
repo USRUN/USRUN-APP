@@ -73,7 +73,7 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   void _getMyTeamList(int userId) async {
-    Response<List<Team>> response = await TeamManager.getMyTeam();
+    Response<dynamic> response = await TeamManager.getMyTeam();
     if (response.success && (response.object).isNotEmpty) {
       List<TeamItem> toAdd = List();
       response.object.forEach((element) {
@@ -88,7 +88,7 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   void _getSuggestionList(int howMany) async {
-    Response<List<Team>> response = await TeamManager.getTeamSuggestion(howMany);
+    Response<dynamic> response = await TeamManager.getTeamSuggestion(howMany);
     if (response.success && (response.object).isNotEmpty) {
       List<TeamItem> toAdd = List();
 

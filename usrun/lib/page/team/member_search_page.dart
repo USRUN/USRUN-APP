@@ -201,92 +201,6 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     );
   }
 
-  Widget _renderUserList() {
-    return AnimationLimiter(
-      child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
-              if(remainingResults)
-                _findMember();
-            }
-            return true; // just to clear a warning
-          },
-          child: _isEmptyList()?
-          _buildEmptyList():
-          ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount:(memberList!=null)?memberList.length:0,
-              itemBuilder: (BuildContext ctxt, int index) {
-                String avatarImageURL = memberList[index].avatar;
-                String supportImageURL = memberList[index].avatar;
-                String teamName = memberList[index].name;
-                String location = memberList[index].province.toString();
-                int memberUserId = memberList[index].userId;
-                int teamMemberType = memberList[index].teamMemberType.index - 1;
-
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 400),
-                  child: SlideAnimation(
-                    verticalOffset: 100.0,
-                    child: FadeInAnimation(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: (index == 0 ? R.appRatio.appSpacing20 : 0),
-                          bottom: R.appRatio.appSpacing20,
-                          left: R.appRatio.appSpacing15,
-                          right: R.appRatio.appSpacing15,
-                        ),
-                        child: CustomCell(
-                          avatarView: AvatarView(
-                            avatarImageURL: avatarImageURL,
-                            avatarImageSize: R.appRatio.appWidth60,
-                            avatarBoxBorder: Border.all(
-                              width: 1,
-                              color: R.colors.majorOrange,
-                            ),
-                            supportImageURL: supportImageURL,
-                            pressAvatarImage: () => null,
-                          ),
-                          // Content
-                          title: teamName,
-                          titleStyle: TextStyle(
-                            fontSize: R.appRatio.appFontSize16,
-                            color: R.colors.contentText,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          enableAddedContent: false,
-                          subTitle: location,
-                          subTitleStyle: TextStyle(
-                            fontSize: R.appRatio.appFontSize14,
-                            color: R.colors.contentText,
-                          ),
-                          pressInfo: () => null,
-                          centerVerticalSuffix: true,
-                          enablePopupMenuButton: (memberUserId == _currentUser.userId) ?false:true,
-                          customPopupMenu: CustomPopupMenu(
-                            items: widget.options[teamMemberType],
-                            onSelected: (index) {
-                              null;
-                            },
-                            popupImage: Image.asset(
-                              R.myIcons.popupMenuIconByTheme,
-                              width: R.appRatio.appIconSize15,
-                              height: R.appRatio.appIconSize15,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              })),
-    );
-  }
-
     @override
     Widget build(BuildContext context) {
       FocusScope.of(context).requestFocus(new FocusNode());
@@ -356,7 +270,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
       child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: memberList.length,
+          itemCount: (memberList==null)?0:memberList.length,
           itemBuilder: (BuildContext context, int index) {
             if (index == memberList.length - 1) {
               _findMember();
@@ -428,7 +342,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
             onSelected: (index) {
 //              _onSelectMemberOption(index);
             },
-            popupImage: Image.asset(
+            popupIcon: Image.asset(
               R.myIcons.popupMenuIconByTheme,
               width: R.appRatio.appIconSize15,
               height: R.appRatio.appIconSize15,

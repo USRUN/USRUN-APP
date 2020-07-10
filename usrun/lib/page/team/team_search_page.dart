@@ -14,6 +14,7 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:usrun/widget/team_list/team_item.dart';
 
 class TeamSearchPage extends StatefulWidget {
   final bool autoFocusInput;
@@ -33,7 +34,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
   bool remainingResults;
-  List<Team> teamList;
+  List<TeamItem> teamList;
   String curSearchString;
   int curResultPage;
 
@@ -69,7 +70,10 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     Response<dynamic> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
 
     if(response.success && (response.object as List).isNotEmpty){
-      List<Team> toAdd = response.object;
+      List<TeamItem> toAdd = List();
+      response.object.forEach((element) {
+        toAdd.add(new TeamItem.from(element));
+      });
       setState(() {
         teamList.addAll(toAdd);
         remainingResults = true;
@@ -154,12 +158,12 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           shrinkWrap: true,
           itemCount:(teamList!=null)?teamList.length:0,
           itemBuilder: (BuildContext ctxt, int index) {
-            String avatarImageURL = teamList[index].thumbnail;
-            String supportImageURL = teamList[index].thumbnail;
-            String teamName = teamList[index].teamName;
+            String avatarImageURL = teamList[index].avatarImageURL;
+            String supportImageURL = teamList[index].avatarImageURL;
+            String teamName = teamList[index].name;
             String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(teamList[index].totalMember);
-            String location = teamList[index].province.toString();
+                .format(teamList[index].athleteQuantity);
+            String location = teamList[index].location.toString();
 
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -202,7 +206,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           secondAddedTitleIconSize: R.appRatio.appIconSize15,
                           pressInfo: () {
                             print("Pressing info");
-                            pushPage(context, TeamInfoPage(teamId: teamList[index].id));
+                            pushPage(context, TeamInfoPage(teamId: teamList[index].teamId));
                           },
                         ),
                       ),
