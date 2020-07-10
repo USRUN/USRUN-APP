@@ -37,16 +37,31 @@ class TeamMemberPage extends StatefulWidget {
       iconURL: R.myIcons.blackRunnerIcon,
       iconSize: R.appRatio.appIconSize15 + 1,
       title: R.strings.follow,
+      value: "Follow"
     ),
     PopupItem(
       iconURL: R.myIcons.blackCloseIcon,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.kickAMember,
+      value: "Kick"
     ),
     PopupItem(
       iconURL: R.myIcons.blackBlockIcon,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.blockAPerson,
+      value: "Block"
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Promote to admin",
+      value: "Promote"
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Demote to member",
+      value: "Demote"
     ),
   ];
 
@@ -67,14 +82,15 @@ class TeamMemberPage extends StatefulWidget {
     ],
     [
       popUpMenu[0],
+      popUpMenu[1],
       popUpMenu[2]
     ]
   ];
 
   final List<List<PopupItem>> owner_options = [
-    [popUpMenu[0]],
-      popUpMenu,
-      popUpMenu
+      [popUpMenu[0]],
+      [popUpMenu[0],popUpMenu[1],popUpMenu[2],popUpMenu[4]],
+      popUpMenu.sublist(0,4),
   ];
 
   final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
@@ -98,12 +114,21 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   List tabItems;
   List options = List();
 
-  final TextEditingController _nameController = TextEditingController();
+  static final TextEditingController _nameController = TextEditingController();
+
+  static final InputField _inviteField = InputField(
+    controller: _nameController,
+    enableFullWidth: false,
+    labelTitle: R.strings.name,
+  );
+  final List<InputField> _inviteInputFields = List.filled(1,_inviteField);
+
   final String _nameLabel = R.strings.name;
 
   @override
   void initState() {
     super.initState();
+
     _selectedTabIndex = 0;
     _curPage = 1;
     _remainingResults = true;
@@ -131,6 +156,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _loadSuitableData(_selectedTabIndex));
+  }
+
+  void _inviteMember(dynamic data){
+    // TODO: IMPLEMENT INVITATION
   }
 
   void _getAllMembers() async {
@@ -212,7 +241,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   _onSelectItem(int tabIndex) {
-    if (_selectedTabIndex == tabIndex) return;
+//    if (_selectedTabIndex == tabIndex) return;
     setState(() {
       _isLoading = true;
       items = List();
@@ -223,7 +252,22 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     });
   }
 
-  _onSelectMemberOption(int memberIndex, int optionIndex){
+  _onSelectMemberOption(int index, String value){
+    switch(value){
+    case "Follow":
+      break;
+    case "Block":
+      changeMemberRole(index, 5);
+      break;
+    case "Kick":
+      break;
+    case "Promote":
+      changeMemberRole(index, 2);
+      break;
+    case "Demote":
+      changeMemberRole(index, 3);
+      break;
+  }
   }
 
   _pressAvatar(index) {
@@ -234,11 +278,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   _pressUserInfo(index) {
     // TODO: Implement function here
     print("Pressing info");
-  }
-
-  _pressFollowBtn(index) {
-    // TODO: Implement function here
-    print("Pressing FOLLOWING button on this person");
   }
 
   _pressCloseBtn(index) {
@@ -274,7 +313,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(widget.teamId, items[index].userId, newMemberType);
     if(response.success){
       setState(() {
-        items.removeAt(index);
+        _onSelectItem(_selectedTabIndex);
         _isLoading= false;
       });
     } else {
@@ -321,11 +360,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             child: FlatButton(
               onPressed: () {
                 print("Open member invitation page");
-                // push page
-//                pushPage(
-//                  context,
-//                  // TODO: INVITE MEMBER PAGE
-//                );
+                showComplexCustomDialog(
+                    headerContent: R.strings.inviteNewMember,
+                    context: context,
+                    descriptionContent: R.strings.inviteNewMemberContent,
+                    submitBtnContent: R.strings.inviteNewMember,
+                    submitBtnFunction: _inviteMember,
+                    inputFieldList: _inviteInputFields);
                 },
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -458,8 +499,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           customPopupMenu:
           CustomPopupMenu(
             items: options[listMemberTypeIndex],
-            onSelected: (optionIndex) {
-              _onSelectMemberOption(index,optionIndex);
+            onSelected: (option) {
+              _onSelectMemberOption(index,option);
             },
             popupIcon: Image.asset(
               R.myIcons.popupMenuIconByTheme,
