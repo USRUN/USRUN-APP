@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
@@ -183,6 +184,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<User> toAdd = response.object;
+
+      UserRole queryMemberType =  UserRole.values[memberType];
+      toAdd.forEach((element) {
+        element.teamMemberType = queryMemberType;
+      });
+
       setState(() {
         items.addAll(toAdd);
         _remainingResults = true;
