@@ -11,6 +11,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
@@ -33,7 +34,7 @@ class MemberSearchPage extends StatefulWidget {
     @required this.tabItems,
     @required this.selectedTab,
     @required this.teamId,
-    @required this.options
+    @required this.options,
   });
 
   @override
@@ -48,19 +49,17 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   List<User> allMemberList;
   List<User> requestingMemberList;
   List<User> blockingMemberList;
-  String curSearchString;
-  int curResultPage;
+  String _curSearchString;
+  int _curResultPage;
   int _selectedTab;
   List tabItems;
-  int _selectedMemberType;
-  final _currentUser = UserManager.currentUser;
 
   @override
   void initState() {
     super.initState();
-    curSearchString = "";
+    _curSearchString = "";
     _isLoading = true;
-    curResultPage = 1;
+    _curResultPage = 1;
     tabItems = widget.tabItems;
     _selectedTab = widget.selectedTab;
     remainingResults = true;
@@ -108,14 +107,14 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     if(!remainingResults) return;
 
     remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamMemberRequest(widget.teamId,curSearchString, curResultPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager.findTeamMemberRequest(widget.teamId,_curSearchString, _curResultPage, widget.resultPerPage);
 
     if(response.success && (response.object as List).isNotEmpty){
 
       setState(() {
         parseResponse(response.object);
         remainingResults = true;
-        curResultPage += 1;
+        _curResultPage += 1;
       });
     }
   }
@@ -134,9 +133,9 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 
     setState(() {
       _isLoading = !_isLoading;
-      curSearchString = data.toString();
+      _curSearchString = data.toString();
       clearMemberLists();
-      curResultPage = 1;
+      _curResultPage = 1;
       remainingResults = true;
     });
 
@@ -175,13 +174,118 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   void _onChangedFunction(data) {
   }
 
+  _pressCloseBtn(index) {
+    // TODO: Implement function here
+    // Decline join request
+
+    print("Decline ${memberList[index].userId} join request");
+
+    changeMemberRole(index, 5);
+  }
+
+  _pressCheckBtn(index) {
+    // TODO: Implement function here
+    // Approve join request
+
+    print("Approve ${memberList[index].userId} join request");
+
+    changeMemberRole(index, 3);
+  }
+
+  _releaseFromBlock(index){
+    // Remove from block list
+    print("Remove ${memberList[index].userId} from block list");
+
+    changeMemberRole(index,4);
+  }
+
+  _onSelectMemberOption(int index, String value){
+    switch(value){
+      case "Follow":
+        break;
+      case "Block":
+        changeMemberRole(index, 5);
+        break;
+      case "Kick":
+        break;
+      case "Promote":
+        changeMemberRole(index, 2);
+        break;
+      case "Demote":
+        changeMemberRole(index, 3);
+        break;
+    }
+  }
+
+  void changeMemberRole(int index, int newMemberType) async{
+    setState(() {
+      _isLoading= true;
+    });
+
+    Response<dynamic> response = await TeamManager.updateTeamMemberRole(widget.teamId, memberList[index].userId, newMemberType);
+    if(response.success){
+      setState(() {
+        clearMemberLists();
+        _onSubmittedFunction(_curSearchString);
+        _isLoading= false;
+      });
+    } else {
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          });
+      setState(() {
+        _isLoading= false;
+      });
+    }
+  }
+
   bool _isEmptyList() {
     return ((this.memberList == null || this.memberList.length == 0) ? true : false);
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        "No result available";
+    String noResult = R.strings.noResult;
+    String noResultSubtitle = R.strings.noResultSubtitle;
+    String startSearch = R.strings.startSearch;
+    String startSearchSubtitle = R.strings.startSearchSubtitle;
+
+    if(_curSearchString.isEmpty){
+      return Center(
+        child: Container(
+            padding: EdgeInsets.only(
+              left: R.appRatio.appSpacing25,
+              right: R.appRatio.appSpacing25,
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    startSearch,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      color: R.colors.contentText,
+                      fontSize: R.appRatio.appFontSize18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    startSearchSubtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: R.colors.contentText,
+                      fontSize: R.appRatio.appFontSize14,
+                    ),
+                  ),
+                ])
+        ),
+      );
+
+    }
 
     return Center(
       child: Container(
@@ -189,14 +293,28 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
           left: R.appRatio.appSpacing25,
           right: R.appRatio.appSpacing25,
         ),
-        child: Text(
-          systemNoti,
-          textAlign: TextAlign.justify,
-          style: TextStyle(
-            color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            noResult,
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              color: R.colors.contentText,
+              fontSize: R.appRatio.appFontSize18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+          Text(
+            noResultSubtitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: R.colors.contentText,
+              fontSize: R.appRatio.appFontSize14,
+            ),
+          ),
+        ])
       ),
     );
   }
@@ -266,6 +384,10 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     }
 
   Widget _renderList() {
+    if(_isEmptyList()){
+      return _buildEmptyList();
+    }
+
     return AnimationLimiter(
       child: ListView.builder(
           scrollDirection: Axis.vertical,
@@ -339,8 +461,8 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
           customPopupMenu:
           CustomPopupMenu(
             items: widget.options[listMemberTypeIndex],
-            onSelected: (index) {
-//              _onSelectMemberOption(index);
+            onSelected: (option) {
+              _onSelectMemberOption(index,option);
             },
             popupIcon: Image.asset(
               R.myIcons.popupMenuIconByTheme,
@@ -378,9 +500,9 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 //          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableCloseButton: true,
-//          pressCloseButton: () => _pressCloseBtn(index),
+          pressCloseButton: () => _pressCloseBtn(index),
           enableCheckButton: true,
-//          pressCheckButton: () => _pressCheckBtn(index),
+          pressCheckButton: () => _pressCheckBtn(index),
         );
       case 2: // Blocking
         return CustomCell(
@@ -410,7 +532,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 //          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enableCloseButton: true,
-//          pressCloseButton: () => _releaseFromBlock(index),
+          pressCloseButton: () => _releaseFromBlock(index),
         );
       default:
         return Container();

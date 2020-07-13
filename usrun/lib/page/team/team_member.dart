@@ -386,7 +386,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 pushPage(
                   context,
                   //MEMBER SEARCH PAGE
-                  MemberSearchPage(autoFocusInput: true,tabItems: tabItems,selectedTab:_selectedTabIndex,teamId: widget.teamId,options: options,),
+                  MemberSearchPage(autoFocusInput: true,tabItems: tabItems,selectedTab:_selectedTabIndex,teamId: widget.teamId,options: options),
                 );},
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,

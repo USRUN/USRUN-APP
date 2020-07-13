@@ -106,6 +106,38 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     print("Pressing share team info");
   }
 
+  _changeTeamPrivacy(bool privacy) async {
+      Map<String,dynamic> reqParam = {
+        "privacy": privacy == true?0:1,
+        "teamId": widget.teamId
+      };
+
+      if (_userRole > 2) {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: "You are not authorized to change this team's privacy",
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+        return;
+      }
+      print("Changing $_teamName privacy");
+
+      Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
+
+      if(!updatedTeam.success){
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: updatedTeam.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+        return;
+      }
+  }
+
   _changeTeamImage(String fieldToChange) async{
     Map<String,dynamic> reqParam = Map();
 
@@ -122,7 +154,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     print("Changing $fieldToChange image");
 
     try {
-      var image = await pickImage(context);
+      var image = await pickRectangleImage(context);
       if (image != null) {
         // call API update Team
         List<int> imageBytes = image.readAsBytesSync();
@@ -203,25 +235,27 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     }
   }
 
-  _makeTeamPublic(status) {
-    // TODO: Code here
-    print("Making team public with status $status");
-  }
+//  _makeTeamPublic(status) {
+//    // TODO: Code here
+//    print("Making team public with status $status");
+//
+//
+//  }
 
-  _moderateNewPosts(status) {
-    // TODO: Code here
-    print("Moderating new posts with status $status");
-  }
-
-  _createNewTeamPlan() {
-    // TODO: Code here
-    print("Creating new team plan");
-  }
-
-  _grantRoleToMember() {
-    // TODO: Code here
-    print("Granting role to member");
-  }
+//  _moderateNewPosts(status) {
+//    // TODO: Code here
+//    print("Moderating new posts with status $status");
+//  }
+//
+//  _createNewTeamPlan() {
+//    // TODO: Code here
+//    print("Creating new team plan");
+//  }
+//
+//  _grantRoleToMember() {
+//    // TODO: Code here
+//    print("Granting role to member");
+//  }
 
   _transferOwnership() {
     // TODO: Code here
@@ -584,7 +618,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
               ),
               // Tool zone
               // TODO: Pass teamId to pushPage!!!
-              (_userRole > 2
+              (_userRole > 1
                   ? Container()
                   : Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -617,11 +651,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                       R.strings.makeTeamPublicSubtitle,
                       enableBottomUnderline: true,
                       enableSwitchButton: true,
-                      initSwitchStatus: false,
+                      initSwitchStatus: _teamPublicStatus,
                       switchButtonOffTitle: "Off",
                       switchButtonOnTitle: "On",
                       switchFunction: (status) =>
-                          _makeTeamPublic(status),
+                          _changeTeamPrivacy(status),
                     ),
                   )
                       : Container()),

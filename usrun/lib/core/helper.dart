@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -265,6 +266,78 @@ void hideLoading(BuildContext context) {
   }
 }
 
+Future<File> pickRectangleImage(BuildContext context, {int maxWidth = 800, int maxHeight = 600, int quality = 80}) async {
+  Widget w = Material(
+    type: MaterialType.transparency,
+    child: Column(
+      children: <Widget>[
+        Text(R.strings.chooseImage, style: R.styles.labelStyle),
+        Divider(color: R.colors.majorOrange, height: 24),
+        UIButton(
+          text: R.strings.gallery,
+          gradient: R.colors.uiGradient,
+          onTap: () async {
+            File photo = await ImagePicker.pickImage(
+                source: ImageSource.gallery);
+            if (photo == null) {
+              pop(context, object: null);
+            } else {
+              int initSize = (await photo.length() ~/ 1000);
+              print("Before crop: " + initSize.toString());
+              if(initSize < 500){
+                // image too small, do something
+              }
+              if(initSize > 5500){
+                // Image too large, abort
+              }
+              if(initSize > 3800){
+                quality = (6000 * 80) ~/ initSize;
+              }
+              File result = await ImageCropper.cropImage(sourcePath: photo.path,
+                  maxHeight: maxHeight,
+                  maxWidth: maxWidth,
+                  compressQuality: quality);
+              print("After crop: " + (result.lengthSync() / 1000).toString());
+              pop(context, object: result);
+            }
+          },
+        ),
+        SizedBox(height: 10),
+        UIButton(
+          text: R.strings.camera,
+          gradient: R.colors.uiGradient,
+          onTap: () async {
+            File photo = await ImagePicker.pickImage(
+              source: ImageSource.camera,
+            );
+            if (photo == null) {
+              pop(context, object: null);
+            } else {
+              print(photo.lengthSync() / 1000);
+              File result = await ImageCropper.cropImage(sourcePath: photo.path,
+                  maxHeight: maxHeight,
+                  maxWidth: maxWidth,
+                  compressQuality: quality);
+              pop(context, object: result);
+            }
+          },
+        ),
+        SizedBox(height: 30),
+        UIButton(
+          text: R.strings.cancel,
+          gradient: R.colors.uiGradient,
+          onTap: () => pop(context, object: null),
+        ),
+      ],
+    ),
+  );
+
+
+  File photo = await showActionSheet<File>(context, w, 350, []);
+
+  return photo;
+  }
+
 Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxHeight = 600, int quality = 80}) async {
 
   Widget w = Material(
@@ -280,11 +353,12 @@ Future<File> pickImage(BuildContext context, {double maxWidth = 800, double maxH
             File photo = await ImagePicker.pickImage(
                 source: ImageSource.gallery,
                 maxWidth: maxWidth,
-                maxHeight: maxHeight);
+                maxHeight: maxHeight,
+                imageQuality: quality);
             if (photo == null) {
               pop(context, object: null);
             } else {
-              //File result = await _cropImage(photo);
+//              File result = await ImageCropper.cropImage(sourcePath: photo.path,maxHeight: maxHeight.toInt(),maxWidth: maxWidth.toInt());
               pop(context, object: photo);
             }
           },

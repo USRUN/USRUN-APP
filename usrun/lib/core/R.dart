@@ -991,6 +991,10 @@ class Strings {
   String delete;
   String deleteTeamTitle;
   String deleteTeamSubtitle;
+  String noResult;
+  String noResultSubtitle;
+  String startSearch;
+  String startSearchSubtitle;
 
   String viewAllTeams;
   String yourTeams;
