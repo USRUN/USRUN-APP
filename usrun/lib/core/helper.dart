@@ -14,6 +14,7 @@ import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 import '../manager/data_manager.dart';
+import 'R.dart';
 
 // === MAIN === //
 Future<void> initialize(BuildContext context) async {
@@ -266,7 +267,31 @@ void hideLoading(BuildContext context) {
   }
 }
 
-Future<File> pickRectangleImage(BuildContext context, {int maxWidth = 800, int maxHeight = 600, int quality = 80}) async {
+Future<File> handleImagePicked(BuildContext context, CropStyle cropStyle, File photo, int maxWidth, int maxHeight, int quality) async {
+    int initSize = (await photo.length() ~/ 1000);
+
+    if(initSize > 5500){
+    // Image too large, abort
+      await showCustomAlertDialog(context, title: "Image upload failed", content: "The image is too large. Please choose another image to upload.", firstButtonText: R.strings.ok, firstButtonFunction: ()=>{pop(context,object: null)}, secondButtonText: "");
+      return null;
+    }
+    if(initSize > 3800){
+      quality = (4000 * 77) ~/ initSize;
+    }
+
+    File result = await ImageCropper.cropImage(sourcePath: photo.path,
+      maxHeight: maxHeight,
+      maxWidth: maxWidth,
+      cropStyle: cropStyle,
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: quality,
+      androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings
+    );
+
+    return result;
+  }
+
+Future<File> pickImageByShape(BuildContext context, CropStyle shape, {int maxWidth = 800, int maxHeight = 600, int quality = 80}) async {
   Widget w = Material(
     type: MaterialType.transparency,
     child: Column(
@@ -282,23 +307,7 @@ Future<File> pickRectangleImage(BuildContext context, {int maxWidth = 800, int m
             if (photo == null) {
               pop(context, object: null);
             } else {
-              int initSize = (await photo.length() ~/ 1000);
-              print("Before crop: " + initSize.toString());
-              if(initSize < 500){
-                // image too small, do something
-              }
-              if(initSize > 5500){
-                // Image too large, abort
-              }
-              if(initSize > 3800){
-                quality = (6000 * 80) ~/ initSize;
-              }
-              File result = await ImageCropper.cropImage(sourcePath: photo.path,
-                  maxHeight: maxHeight,
-                  maxWidth: maxWidth,
-                  compressQuality: quality);
-              print("After crop: " + (result.lengthSync() / 1000).toString());
-              pop(context, object: result);
+              pop(context, object: await handleImagePicked(context, shape, photo, maxWidth, maxHeight, quality));
             }
           },
         ),
@@ -313,12 +322,7 @@ Future<File> pickRectangleImage(BuildContext context, {int maxWidth = 800, int m
             if (photo == null) {
               pop(context, object: null);
             } else {
-              print(photo.lengthSync() / 1000);
-              File result = await ImageCropper.cropImage(sourcePath: photo.path,
-                  maxHeight: maxHeight,
-                  maxWidth: maxWidth,
-                  compressQuality: quality);
-              pop(context, object: result);
+              pop(context, object: await handleImagePicked(context, shape, photo, maxWidth, maxHeight, quality));
             }
           },
         ),

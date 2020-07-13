@@ -1,4 +1,7 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
@@ -10,6 +13,7 @@ class R {
   static _Styles styles = _Styles();
   static _AppRatio appRatio = _AppRatio();
   static _MyIcons myIcons = _MyIcons();
+  static _ImagePickerDefaults imagePickerDefaults = _ImagePickerDefaults();
   static String currentAppTheme = "Light";
   static String currentAppLanguage = "en";
 
@@ -1204,4 +1208,26 @@ class _Styles {
           color: R.colors.textShadow,
         ),
       ]);
+}
+
+
+class _ImagePickerDefaults {
+  // Sizes are in kilobytes
+  final int maxWidth = 800;
+  final int maxHeight = 600;
+  final int imageQuality = 80;
+  final int maxOutputSize = 75;
+  final int minInputSize = 500;
+  final int maxInputSize = 6000;
+  final int refSize = 4000;
+
+  AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
+    toolbarColor: R.colors.majorOrange,
+    showCropGrid: false,
+    dimmedLayerColor: R.colors.btnShadow,
+    toolbarTitle: "Image cropping",
+    toolbarWidgetColor: Colors.white,
+  );
+
+  IOSUiSettings defaultIOSSettings;
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/team.dart';
@@ -153,9 +154,14 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     }
     print("Changing $fieldToChange image");
 
-    try {
-      var image = await pickRectangleImage(context);
-      if (image != null) {
+    try{
+      var image = null;
+
+      if(fieldToChange == 'banner')
+        image = await pickImageByShape(context,CropStyle.rectangle);
+      else image = image = await pickImageByShape(context,CropStyle.circle);
+
+    if (image != null) {
         // call API update Team
         List<int> imageBytes = image.readAsBytesSync();
         String base64Image = "data:image/${image.path.split('.').last};base64,${Base64Codec().encode(imageBytes)}";
