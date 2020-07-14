@@ -999,6 +999,11 @@ class Strings {
   String noResultSubtitle;
   String startSearch;
   String startSearchSubtitle;
+  String notAuthorizedTeamChange;
+  String demoteAPerson;
+  String promoteAPerson;
+  String inviteTeamListTitle;
+  String requestTeamListTitle;
 
   String viewAllTeams;
   String yourTeams;

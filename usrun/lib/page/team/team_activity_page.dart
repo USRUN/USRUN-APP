@@ -5,18 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
-import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
-import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
-
-import 'package:usrun/widget/photo_list.dart';
-
-// Demo data
-import 'package:usrun/demo_data.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class TeamActivityPage extends StatefulWidget {
 

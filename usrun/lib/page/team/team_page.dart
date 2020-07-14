@@ -7,7 +7,6 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -26,6 +25,8 @@ class TeamPage extends StatefulWidget {
 class _TeamPageState extends State<TeamPage> {
   bool _isLoading;
   List<TeamItem> _myTeamList;
+  List<TeamItem> _requestingTeamList;
+  List<TeamItem> _invitedTeamList;
   List<TeamItem> _teamSuggestionList;
 
   @override
@@ -76,6 +77,8 @@ class _TeamPageState extends State<TeamPage> {
     Response<dynamic> response = await TeamManager.getMyTeam();
     if (response.success && (response.object).isNotEmpty) {
       List<TeamItem> toAdd = List();
+      List<TeamItem> requestMyList = List();
+      List<TeamItem> inviteMyList = List();
       response.object.forEach((element) {
         toAdd.add(new TeamItem.from(element));
       });

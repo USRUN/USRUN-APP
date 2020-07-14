@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/team.dart';
@@ -13,6 +14,7 @@ import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_rank.dart';
+import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -74,12 +76,25 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void _getTeamInfo() async{
-    Response<Team> response = await TeamManager.getTeamById(widget.teamId);
-    if(response.success && response.object != null){
-      mapTeamInfo(response.object);
-      _userRole = response.object.teamMemberType;
-      print("role: $_userRole");
+    Response<Team> infoResponse = await TeamManager.getTeamById(widget.teamId);
+    if(infoResponse.success && infoResponse.object != null){
+      mapTeamInfo(infoResponse.object);
+      _userRole = infoResponse.object.teamMemberType;
     }
+
+    Response<TeamStatItem> statResponse = await TeamManager.getTeamStatById(widget.teamId);
+    if(statResponse.success && statResponse.object != null){
+      mapTeamStat(statResponse.object);
+    }
+  }
+
+  void mapTeamStat(TeamStatItem toMap){
+    _teamTotalDistance = toMap.totalDistance;
+    _teamLeadingDistance = toMap.maxDistance;
+    _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
+    _teamActivities = toMap.totalActivity;
+    _teamRank = toMap.rank;
+    _teamNewMemThisWeek = toMap.memInWeek;
   }
 
   void mapTeamInfo(Team toMap){
@@ -117,7 +132,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       if (_userRole > 2) {
         showCustomAlertDialog(context,
             title: R.strings.notice,
-            content: "You are not authorized to change this team's privacy",
+            content: R.strings.notAuthorizedTeamChange,
             firstButtonText: R.strings.ok.toUpperCase(),
             firstButtonFunction: () {
               pop(this.context);
@@ -146,7 +161,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (_userRole > 2) {
       showCustomAlertDialog(context,
           title: R.strings.notice,
-          content: "You are not authorized to change $fieldToChange",
+          content: R.strings.notAuthorizedTeamChange,
           firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () {
             pop(this.context);

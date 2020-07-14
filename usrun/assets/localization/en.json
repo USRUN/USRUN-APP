@@ -163,6 +163,11 @@
     "noResultSubtitle": "Please make sure that you typed the name correctly and try again.",
     "startSearch": "Start searching",
     "startSearchSubtitle": "Try enter any name into the field above.",
+    "notAuthorizedTeamChange": "You are not authorized to change this information.",
+    "promoteAPerson": "Promote to admin",
+    "demoteAPerson": "Demote to user",
+    "requestTeamListTitle": "You are requesting to join",
+    "inviteTeamListTitle": "You are invited to",
 
     "viewAllTeams": "View All Teams",
     "yourTeams": "Your Teams",

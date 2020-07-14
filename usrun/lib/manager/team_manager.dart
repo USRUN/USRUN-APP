@@ -17,6 +17,7 @@ import 'package:usrun/core/net/client.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
+import 'package:usrun/page/team/team_stat_item.dart';
 
 class TeamManager{
   // static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
@@ -280,5 +281,28 @@ class TeamManager{
 
     return response;
   }
+
+
+  static Future<Response> getTeamStatById(int teamId) async {
+    Map<String,dynamic> params = {
+      'teamId': teamId
+    };
+
+    Response<dynamic> res = await Client.post('/team/getTeamStat',params);
+
+    if(!res.success || (res.object as List).isEmpty) return res;
+
+    List<TeamStatItem> teamStat = (res.object as List)
+        .map((item)=> MapperObject.create<TeamStatItem>(item)).toList();
+
+    Response<List<TeamStatItem>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teamStat
+    );
+
+    return response;
+  }
+
 
 }

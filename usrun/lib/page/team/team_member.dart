@@ -54,13 +54,13 @@ class TeamMemberPage extends StatefulWidget {
     PopupItem(
       iconURL: R.myIcons.blackAddIcon02,
       iconSize: R.appRatio.appIconSize15,
-      title: "Promote to admin",
+      title: R.strings.promoteAPerson,
       value: "Promote"
     ),
     PopupItem(
       iconURL: R.myIcons.blackAddIcon02,
       iconSize: R.appRatio.appIconSize15,
-      title: "Demote to member",
+      title: R.strings.demoteAPerson,
       value: "Demote"
     ),
   ];
