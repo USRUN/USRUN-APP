@@ -8,6 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/team.dart';
+import 'package:usrun/page/team/team_activity_page.dart';
 import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
 import 'package:usrun/model/response.dart';
@@ -263,7 +264,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 //    print("Granting role to member");
 //  }
 
-  _transferOwnership() {
+  _transferOwnership(){
     // TODO: Code here
     print("Transferring ownership");
   }
@@ -554,6 +555,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           boxSize: R.appRatio.appWidth100,
                           dataLine: _teamActivities.toString(),
                           secondTitleLine: R.strings.activities,
+                          pressBox: (id) {
+                            // TODO: Pass teamId to pushPage!!!
+                            pushPage(context, TeamActivityPage(teamId: widget.teamId));
+                          },
                         ),
                       ],
                     ),

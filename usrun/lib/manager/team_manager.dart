@@ -14,6 +14,7 @@ import 'package:usrun/model/team.dart';
 import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 
@@ -256,4 +257,28 @@ class TeamManager{
 
     return response;
   }
+
+  static Future<Response> getTeamActivityByTeamId(int teamId, int pageNum, int perPage) async {
+    Map<String,dynamic> params = {
+      'teamId': teamId,
+      'offset': pageNum,
+      'count': perPage
+    };
+
+    Response<dynamic> res = await Client.post('/activity/getActivitiesByTeam',params);
+
+    if(!res.success || (res.object as List).isEmpty) return res;
+
+    List<TeamActivityItem> teamActivities = (res.object as List)
+        .map((item)=> MapperObject.create<TeamActivityItem>(item)).toList();
+
+    Response<List<TeamActivityItem>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teamActivities
+    );
+
+    return response;
+  }
+
 }
