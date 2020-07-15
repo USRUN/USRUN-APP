@@ -67,4 +67,17 @@ class NetworkDetector {
       return !netStatus;
     });
   }
+
+  static void checkNetworkAndAlert(BuildContext context) async{
+    bool connection = await NetworkDetector.isNetworkConnected();
+    if(!connection){
+      await showCustomAlertDialog(
+          context,
+          title: R.strings.caution,
+          content: R.strings.errorNoInternetAccess,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () => {if(context != null)pop(context)},
+    );
+    }
+  }
 }

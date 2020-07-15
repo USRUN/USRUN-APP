@@ -20,11 +20,6 @@ import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 
 class TeamManager{
-  // static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
-
-  // test tạm thời
-  static User currentUser = new User();
-  // ----------
 
   static Future<Response> getTeamById(int teamId) async {
     Map<String,dynamic> params = {'teamId':teamId};

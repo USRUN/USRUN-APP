@@ -16,6 +16,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/core/helper.dart';
@@ -76,13 +77,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void _getTeamInfo() async{
-    Response<Team> infoResponse = await TeamManager.getTeamById(widget.teamId);
-    if(infoResponse.success && infoResponse.object != null){
+    Response<dynamic> infoResponse = await TeamManager.getTeamById(widget.teamId);
+    if(infoResponse.success && infoResponse.object != null) {
       mapTeamInfo(infoResponse.object);
       _userRole = infoResponse.object.teamMemberType;
     }
 
-    Response<TeamStatItem> statResponse = await TeamManager.getTeamStatById(widget.teamId);
+    Response<dynamic> statResponse = await TeamManager.getTeamStatById(widget.teamId);
     if(statResponse.success && statResponse.object != null){
       mapTeamStat(statResponse.object);
     }

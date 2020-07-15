@@ -10,6 +10,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
@@ -180,6 +181,8 @@ Future<T> pushPage<T>(BuildContext context, Widget page) {
     showSystemMessage(context);
     return null;
   }
+
+  NetworkDetector.checkNetworkAndAlert(context);
 
   hideLoading(context);
 
