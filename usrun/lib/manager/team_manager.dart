@@ -18,6 +18,7 @@ import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
+import 'package:usrun/page/team/teamstat_rank_item.dart';
 
 class TeamManager{
 
@@ -299,5 +300,25 @@ class TeamManager{
     return response;
   }
 
+  static Future<Response> getTeamStatRank(int teamId) async {
+    Map<String,dynamic> params = {
+      'teamId': teamId
+    };
+
+    Response<dynamic> res = await Client.post('/team/getTeamLeaderboard',params);
+
+    if(!res.success || (res.object as List).isEmpty) return res;
+
+    List<TeamStatRankItem> teamRank = (res.object as List)
+        .map((item)=> MapperObject.create<TeamStatRankItem>(item)).toList();
+
+    Response<List<TeamStatRankItem>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teamRank
+    );
+
+    return response;
+  }
 
 }

@@ -439,7 +439,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
               width: 1,
               color: R.colors.majorOrange,
             ),
-            supportImageURL: supportImageURL,
+//            supportImageURL: supportImageURL,
 //            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content
@@ -481,7 +481,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
               width: 1,
               color: R.colors.majorOrange,
             ),
-            supportImageURL: supportImageURL,
+//            supportImageURL: supportImageURL,
 //            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content
@@ -513,7 +513,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
               width: 1,
               color: R.colors.majorOrange,
             ),
-            supportImageURL: supportImageURL,
+//            supportImageURL: supportImageURL,
 //            pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/page/setting/about_us.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
@@ -20,6 +22,9 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+
+  User currentUser = UserManager.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +69,8 @@ class _SettingPageState extends State<SettingPage> {
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),
+              // No password to be changed if user signed up using social networks
+              (currentUser.type == LoginChannel.UsRun)?
               LineButton(
                 mainText: R.strings.changePassword,
                 mainTextFontSize: R.appRatio.appFontSize18,
@@ -72,7 +79,7 @@ class _SettingPageState extends State<SettingPage> {
                 lineFunction: () {
                   pushPage(context, ChangePasswordPage());
                 },
-              ),
+              ):Container(),
               SizedBox(
                 height: R.appRatio.appSpacing15,
               ),

@@ -34,31 +34,31 @@ class TeamMemberPage extends StatefulWidget {
 
   static final popUpMenu = [
     PopupItem(
-      iconURL: R.myIcons.blackRunnerIcon,
+      iconURL: R.myIcons.runnerIconByTheme,
       iconSize: R.appRatio.appIconSize15 + 1,
       title: R.strings.follow,
       value: "Follow"
     ),
     PopupItem(
-      iconURL: R.myIcons.blackCloseIcon,
+      iconURL: R.myIcons.closeIconByTheme,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.kickAMember,
       value: "Kick"
     ),
     PopupItem(
-      iconURL: R.myIcons.blackBlockIcon,
+      iconURL: R.myIcons.blockIconByTheme,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.blockAPerson,
       value: "Block"
     ),
     PopupItem(
-      iconURL: R.myIcons.blackAddIcon02,
+      iconURL: R.myIcons.starIconByTheme,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.promoteAPerson,
       value: "Promote"
     ),
     PopupItem(
-      iconURL: R.myIcons.blackAddIcon02,
+      iconURL: R.myIcons.caloriesStatsIconByTheme,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.demoteAPerson,
       value: "Demote"
@@ -70,7 +70,7 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final List<List<PopupItem>> member_options = [
-    [popUpMenu[0]]
+    [popUpMenu[0]],[popUpMenu[0]],[popUpMenu[0]],
   ];
 
   final List<List<PopupItem>> admin_options = [

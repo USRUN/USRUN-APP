@@ -40,7 +40,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
   }
 
   void _getLeaderBoard() async {
-    Response<List<TeamLeaderboard>> teamLeaderboard =
+    Response<dynamic> teamLeaderboard =
         await TeamManager.getTeamLeaderBoard(widget.teamId);
     if (teamLeaderboard.success && teamLeaderboard.object != null) {
       items = List();
