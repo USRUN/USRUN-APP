@@ -286,18 +286,11 @@ class TeamManager{
 
     Response<dynamic> res = await Client.post('/team/getTeamStat',params);
 
-    if(!res.success || (res.object as List).isEmpty) return res;
+    if(res.success && res.object != null){
+      res.object = MapperObject.create<TeamStatItem>(res.object);
+    }
 
-    List<TeamStatItem> teamStat = (res.object as List)
-        .map((item)=> MapperObject.create<TeamStatItem>(item)).toList();
-
-    Response<List<TeamStatItem>> response = new Response(
-        errorCode: res.errorCode,
-        success: res.success,
-        object: teamStat
-    );
-
-    return response;
+    return res;
   }
 
   static Future<Response> getTeamStatRank(int teamId) async {
@@ -305,7 +298,7 @@ class TeamManager{
       'teamId': teamId
     };
 
-    Response<dynamic> res = await Client.post('/team/getTeamLeaderboard',params);
+    Response<dynamic> res = await Client.post('/team/getTeamLeaderBoard',params);
 
     if(!res.success || (res.object as List).isEmpty) return res;
 

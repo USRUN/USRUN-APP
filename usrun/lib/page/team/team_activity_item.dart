@@ -26,8 +26,8 @@ class TeamActivityItem extends MapperObject{
   TeamActivityItem({
     this.userId = -1,
     this.userActivityId = -1,
-    this.title = "",
-    this.description = "",
+    this.title = "No title",
+    this.description = "No description",
     this.processed = false,
     this.totalDistance = 0,
     this.totalTime = 0,

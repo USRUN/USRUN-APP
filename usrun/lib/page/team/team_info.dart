@@ -560,7 +560,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           dataLine: _teamRank.toString(),
                           secondTitleLine: R.strings.rank,
                           pressBox: (id) {
-                            pushPage(context, TeamRank());
+                            pushPage(context, TeamRank(teamId: widget.teamId,));
                           },
                         ),
                         SizedBox(

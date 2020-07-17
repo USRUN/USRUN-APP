@@ -225,14 +225,14 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
 
   Widget _renderActivityTimeline(TeamActivityItem item) {
     return ActivityTimeline(
-      activityID: item.userActivityId.toString(),
-      dateTime: DateFormat("dd/MM/yyyy hh:mm").format(item.createTime),
+      activityID: customToString(item.userActivityId),
+      dateTime: DateFormat("dd/mm/yyyy hh:mm:ss").format(item.createTime),
       title: item.title,
-      calories: item.calories.toString(),
+      calories: customToString(item.calories),
       distance: (_isKM ? item.totalDistance.toDouble() : (item.totalDistance * 1000)),
       isKM: _isKM,
-      elevation: item.elevGain.toString(),
-      pace: item.avgPace.toString(),
+      elevation: customToString(item.elevGain),
+      pace: customToString(item.avgPace),
       time: item.totalTime.toString(),
       isLoved: false,
       loveNumber: item.totalLove,
@@ -243,5 +243,12 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
       pressShareFunction: this._pressShareFunction,
       pressInteractionFunction: this._pressInteractionFunction,
     );
+  }
+
+  String customToString(dynamic input){
+    if(input == -1 || input == ""){
+      return "N/A";
+    }
+    return input.toString();
   }
 }

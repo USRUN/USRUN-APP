@@ -6,7 +6,6 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_info.dart';
@@ -32,7 +31,7 @@ class _TeamRankState extends State<TeamRank> {
   List<TeamStatRankItem> items;
 
   /*
-    + Structure of the "items" variable: 
+    + Structure of the "items" variable:
     [
       {
         "avatarImageURL":
@@ -47,7 +46,10 @@ class _TeamRankState extends State<TeamRank> {
   @override
   void initState() {
     super.initState();
+    items = [];
     _isLoading = true;
+
+    getTeamRank();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
@@ -57,7 +59,7 @@ class _TeamRankState extends State<TeamRank> {
     if(teamRank.success && (teamRank.object as List).isNotEmpty){
       items = teamRank.object;
     } else {
-      showCustomAlertDialog(context, title: R.strings.error, content: teamRank.errorMessage, firstButtonText: null, firstButtonFunction: null,secondButtonFunction: null);
+      showCustomAlertDialog(context, title: R.strings.error, content: teamRank.errorMessage, firstButtonText: null, firstButtonFunction: null,secondButtonText: null);
     }
   }
 
