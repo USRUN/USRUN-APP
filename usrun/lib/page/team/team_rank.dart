@@ -216,7 +216,7 @@ class _TeamRankState extends State<TeamRank> {
                                 // TODO: Implement here
                                 print(
                                     "Pressing info with index $index, no. ${index + 1}");
-                                    pushPage(context, TeamInfoPage(teamId: widget.teamId,));
+                                    pushPage(context, TeamInfoPage(teamId: teamId));
                               },
                             ),
                           ),

@@ -573,7 +573,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                           secondTitleLine: R.strings.activities,
                           pressBox: (id) {
                             // TODO: Pass teamId to pushPage!!!
-                            pushPage(context, TeamActivityPage(teamId: widget.teamId));
+                            pushPage(context, TeamActivityPage(teamId: widget.teamId, totalActivity: _teamActivities));
                           },
                         ),
                       ],

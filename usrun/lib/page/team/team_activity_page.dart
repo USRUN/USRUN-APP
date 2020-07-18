@@ -15,8 +15,9 @@ class TeamActivityPage extends StatefulWidget {
 
   final int perPage = 10;
   final int teamId;
+  final int totalActivity;
 
-  TeamActivityPage({@required this.teamId});
+  TeamActivityPage({@required this.teamId, @required this.totalActivity});
 
   @override
   _TeamActivityPageState createState() => _TeamActivityPageState();
@@ -169,7 +170,7 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
           alignment: Alignment.centerLeft,
           child: Text(
             R.strings.personalActivities +
-                ": ${_activityTimelineList.length}",
+                ": ${widget.totalActivity}",
             style: R.styles.shadowLabelStyle,
           ),
         ),
