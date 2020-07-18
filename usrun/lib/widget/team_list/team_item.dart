@@ -9,6 +9,7 @@ class TeamItem {
   String supportImageURL;
   String bannerImageURL;
   String location;
+  int teamMemberType;
 
   TeamItem({
     this.value,
@@ -32,5 +33,6 @@ class TeamItem {
     supportImageURL = null;
     bannerImageURL = t.banner;
     location = t.province.toString();
+    teamMemberType = t.teamMemberType;
   }
 }

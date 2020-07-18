@@ -28,6 +28,8 @@ class _TeamPageState extends State<TeamPage> {
   List<TeamItem> _requestingTeamList;
   List<TeamItem> _invitedTeamList;
   List<TeamItem> _teamSuggestionList;
+  List<TeamItem> _myInvitedTeamList;
+  List<TeamItem> _myRequestingTeamList;
 
   @override
   void initState() {
@@ -76,17 +78,33 @@ class _TeamPageState extends State<TeamPage> {
   void _getMyTeamList(int userId) async {
     Response<dynamic> response = await TeamManager.getMyTeam();
     if (response.success && (response.object).isNotEmpty) {
-      List<TeamItem> toAdd = List();
-      List<TeamItem> requestMyList = List();
-      List<TeamItem> inviteMyList = List();
-      response.object.forEach((element) {
-        toAdd.add(new TeamItem.from(element));
+      List<TeamItem> _toMyTeamList = List();
+      List<TeamItem> _toMyInvitedTeamList = List();
+      List<TeamItem> _toMyRequestingTeamList = List();
+
+
+      response.object.forEach((Team element) {
+        switch (element.teamMemberType){
+          case 5:
+            _toMyInvitedTeamList.add(new TeamItem.from(element));
+            break;
+          case 4:
+            _toMyRequestingTeamList.add(new TeamItem.from(element));
+            break;
+          default:
+            _toMyTeamList.add(new TeamItem.from(element));
+            break;
+        }
       });
       setState(() {
-        _myTeamList = toAdd;
+        _myTeamList = _toMyTeamList;
+        _myRequestingTeamList = _toMyRequestingTeamList;
+        _myInvitedTeamList = _toMyInvitedTeamList;
       });
     } else {
       _myTeamList = null;
+      _myRequestingTeamList = null;
+      _myInvitedTeamList = null;
     }
   }
 
@@ -150,6 +168,40 @@ class _TeamPageState extends State<TeamPage> {
                       "[YourTeams] This team with id ${teamItem.teamId} is pressed");
                 },
               ),
+              (_myInvitedTeamList.isEmpty?Container():
+              SizedBox(
+                height: R.appRatio.appSpacing20,
+              )),
+              (_myInvitedTeamList.isEmpty?Container():
+              TeamList(
+                items: _myInvitedTeamList,
+                labelTitle: "You are invited to join ",
+                enableLabelShadow: true,
+                enableScrollBackgroundColor: true,
+                enableSplitListToTwo: false,
+                pressItemFunction: (teamItem) {
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId)).then((e) {reloadTeamList();});
+                  print(
+                      "[Invited] This team with id ${teamItem.teamId} is pressed");
+                },
+              )),
+              (_myRequestingTeamList.isEmpty?Container():
+              SizedBox(
+                height: R.appRatio.appSpacing20,
+              )),
+              (_myRequestingTeamList.isEmpty?Container():
+              TeamList(
+                items: _myRequestingTeamList,
+                labelTitle: "Requesting teams",
+                enableLabelShadow: true,
+                enableScrollBackgroundColor: true,
+                enableSplitListToTwo: false,
+                pressItemFunction: (teamItem) {
+                  pushPage(context, TeamInfoPage(teamId: teamItem.teamId)).then((e) {reloadTeamList();});
+                  print(
+                      "[Requested] This team with id ${teamItem.teamId} is pressed");
+                },
+              )),
               SizedBox(
                 height: R.appRatio.appSpacing20,
               ),
