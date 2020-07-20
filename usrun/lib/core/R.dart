@@ -968,6 +968,7 @@ class Strings {
   String private;
   String join;
   String cancelJoin;
+  String acceptInvitation;
   String symbol;
   String verifiedByUsrun;
   String teamStats;
@@ -1004,6 +1005,8 @@ class Strings {
   String promoteAPerson;
   String inviteTeamListTitle;
   String requestTeamListTitle;
+  String emptyMemberList;
+  String emptyMemberListSubtitle;
 
   String viewAllTeams;
   String yourTeams;
@@ -1020,6 +1023,8 @@ class Strings {
   String requesting;
   String blocking;
   String reporting;
+  String loading;
+  String loadingTeamInfo;
 
   String settings;
   String changePassword;

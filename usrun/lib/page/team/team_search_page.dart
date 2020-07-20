@@ -120,7 +120,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
   Widget _buildEmptyList() {
     String systemNoti =
-        "No result";
+        R.strings.noResult;
 
     return Center(
       child: Container(

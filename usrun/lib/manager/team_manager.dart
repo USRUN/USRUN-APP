@@ -1,22 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:sprintf/sprintf.dart';
-import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
-import 'package:usrun/core/helper.dart';
-import 'package:usrun/manager/data_manager.dart';
-import 'package:usrun/manager/login/login_adapter.dart';
-import 'package:usrun/model/team_member.dart';
-import 'package:usrun/model/event.dart';
+import 'package:usrun/core/net/client.dart';
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/core/net/client.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
-import 'package:usrun/page/team/team_rank.dart';
-import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/page/team/teamstat_rank_item.dart';
 
@@ -312,6 +300,16 @@ class TeamManager{
     );
 
     return response;
+  }
+
+  static Future<Response> inviteNewMember(int teamId, int toInviteId) async{
+    Map<String,dynamic> params = {
+      'teamId': teamId,
+      'userId': toInviteId
+    };
+    Response<dynamic> res = await Client.post('/team/inviteNewMember',params);
+
+    return res;
   }
 
 }

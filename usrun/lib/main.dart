@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -61,23 +63,23 @@ class _UsRunAppState extends State<UsRunApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en'), // English
-        const Locale('vi'), // Vietnamese
-      ],
-      title: 'USRUN',
-      key: key,
-      theme: ThemeData(
-        primaryColor: Color(0xFFFD632C),
-      ),
-      home: SplashPage(),
-    );
+          navigatorKey: navigatorKey,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en'), // English
+            const Locale('vi'), // Vietnamese
+          ],
+          title: 'USRUN',
+          key: key,
+          theme: ThemeData(
+            primaryColor: Color(0xFFFD632C),
+          ),
+          home: SplashPage(),
+        );
   }
 }
 
@@ -105,7 +107,8 @@ class _SplashPageState extends State<StatefulWidget> {
       Duration(milliseconds: 2000),
       () => initialize(context),
     ).then((_) {
-      WidgetsBinding.instance.addObserver(NetworkObserver(context: navigatorKey.currentState.overlay.context));
+      WidgetsBinding.instance.addObserver(
+          NetworkObserver(context: navigatorKey.currentState.overlay.context));
       if (UserManager.currentUser.userId == null) {
         showPage(context, WelcomePage());
       } else {

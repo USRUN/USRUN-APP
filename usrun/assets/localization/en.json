@@ -131,7 +131,8 @@
     "public": "Public",
     "private": "Private",
     "join": "Join",
-    "cancelJoin": "Cancel join request",
+    "cancelJoin": "Cancel Join Request",
+    "acceptInvitation": "Accept The Invitation",
     "symbol": "Symbol",
     "verifiedByUsrun": "Verified by USRUN",
     "teamStats": "Team Stats",
@@ -168,6 +169,8 @@
     "demoteAPerson": "Demote to user",
     "requestTeamListTitle": "You are requesting to join",
     "inviteTeamListTitle": "You are invited to",
+    "emptyMemberList": "There is no member in this list",
+    "emptyMemberListSubtitle": "Try reloading the page or invite more members",
 
     "viewAllTeams": "View All Teams",
     "yourTeams": "Your Teams",
@@ -184,6 +187,8 @@
     "requesting": "Requesting",
     "blocking": "Blocking",
     "reporting": "Reporting",
+    "loading": "Loading...",
+    "loadingTeamInfo": "Loading team info...",
 
     "settings": "Settings",
     "changePassword": "Change Password",

@@ -11,6 +11,7 @@ import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team_member.dart';
 import 'package:usrun/model/user.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -113,13 +114,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   bool _remainingResults;
   List tabItems;
   List options = List();
-
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
   static final TextEditingController _nameController = TextEditingController();
 
   static final InputField _inviteField = InputField(
     controller: _nameController,
     enableFullWidth: false,
     labelTitle: R.strings.name,
+    autoFocus: true,
   );
   final List<InputField> _inviteInputFields = List.filled(1,_inviteField);
 
@@ -158,8 +160,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         .addPostFrameCallback((_) => _loadSuitableData(_selectedTabIndex));
   }
 
-  void _inviteMember(dynamic data){
-    // TODO: IMPLEMENT INVITATION
+  void _inviteMember(dynamic data) async {
+    Response<dynamic> res = await TeamManager.inviteNewMember(widget.teamId,data);
+    if(res.success){
+      showCustomAlertDialog(context, title: R.strings.notice, content: "Invitation sent", firstButtonText: R.strings.ok, firstButtonFunction: ()=>pop(this.context),secondButtonText: null);
+    } else {
+      showCustomAlertDialog(context, title: R.strings.error, content: res.errorMessage, firstButtonText: R.strings.ok, firstButtonFunction: ()=>pop(this.context),secondButtonText: null);
+    }
   }
 
   void _getAllMembers() async {
@@ -241,7 +248,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   _onSelectItem(int tabIndex) {
-//    if (_selectedTabIndex == tabIndex) return;
+    if (_selectedTabIndex == tabIndex) return;
     setState(() {
       _isLoading = true;
       items = List();
@@ -250,6 +257,16 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       _selectedTabIndex = tabIndex;
       _loadSuitableData(tabIndex);
     });
+  }
+  
+  _reloadItems(int tabIndex){
+    _isLoading = true;
+    items = List();
+    _curPage = 1;
+    _remainingResults = true;
+    _selectedTabIndex = tabIndex;
+    _loadSuitableData(tabIndex);
+    _refreshController.refreshCompleted();
   }
 
   _onSelectMemberOption(int index, String value){
@@ -329,6 +346,43 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       });
     }
   }
+
+  Widget _buildEmptyList() {
+    String noResult = R.strings.emptyMemberList;
+    String noResultSubtitle = R.strings.emptyMemberListSubtitle;
+
+    return Center(
+      child: Container(
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
+          ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  noResult,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  noResultSubtitle,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize14,
+                  ),
+                ),
+              ])
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -411,7 +465,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           // All contents
           Expanded(
-            child: (_isLoading ? LoadingIndicator() : _renderList()),
+            child:
+            (items.isEmpty? _buildEmptyList():
+            (_isLoading ? LoadingIndicator() : _renderList())),
           ),
         ],
       ),
@@ -427,6 +483,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
   Widget _renderList() {
     return AnimationLimiter(
+    child:
+                  RefreshConfiguration(
+              maxOverScrollExtent: 50,
+              headerTriggerDistance: 50,
+              child: SmartRefresher(
+                enablePullDown: true,
+                controller: _refreshController,
+                onRefresh: () => {_reloadItems(_selectedTabIndex)},
       child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
@@ -455,7 +519,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               ),
             );
           }),
-    );
+    )));
   }
 
   Widget _renderCustomCell(index) {
@@ -477,7 +541,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               width: 1,
               color: R.colors.majorOrange,
             ),
-            supportImageURL: supportImageURL,
             pressAvatarImage: () => _pressAvatar(index),
           ),
           // Content

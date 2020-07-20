@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_activity_page.dart';
@@ -43,19 +45,20 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   String _teamBanner = R.images.drawerBackgroundDarker;
   String _teamAvatar = R.images.avatar;
   String _teamSymbol = R.images.avatarQuocTK;
-  String _teamName = "Trường Đại học Khoa học Tự nhiên";
+  String _teamName = R.strings.loading;
   bool _teamPublicStatus = true;
-  String _teamLocation = "Ho Chi Minh City, Viet Nam";
+  String _teamLocation = R.strings.loading;
   String _teamDescription =
-      "Dành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\nDành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\nDành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\nDành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\nDành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\nDành cho những bạn yêu thích môn chạy bộ và mong muốn phát triển phong trào chạy bộ ở Việt Nam. Hãy để niềm cảm hứng với chạy bộ được lan tỏa!\n";
-  int _teamRank = 1024;
-  int _teamActivities = 82859;
-  int _teamTotalDistance = 1839284;
-  String _teamLeadingTime = "12:49:32";
-  int _teamLeadingDistance = 285;
-  int _teamNewMemThisWeek = 492;
-  int _teamMembers = 29472;
-  int _userRole = 4;
+      R.strings.loadingTeamInfo;
+  int _teamRank = -1;
+  int _teamActivities = -1;
+  int _teamTotalDistance = -1;
+  String _teamLeadingTime = "00:00:00";
+  int _teamLeadingDistance = -1;
+  int _teamNewMemThisWeek = -1;
+  int _teamMembers = -1;
+  int _userRole = 6;
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   /*
     + userRole:
@@ -87,6 +90,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if(statResponse.success && statResponse.object != null){
       mapTeamStat(statResponse.object);
     }
+
+    _refreshController.refreshCompleted();
   }
 
   void mapTeamStat(TeamStatItem toMap){
@@ -154,6 +159,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
             });
         return;
       }
+      _teamPublicStatus = privacy;
   }
 
   _changeTeamImage(String fieldToChange) async{
@@ -221,7 +227,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   _joinTeamFunction() async {
-    if(_userRole == 6){
+    int roleEnum = _userRole - 1;
+
+    if(roleEnum == UserRole.Guest.index){
     print("Joining team");
     Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);
 
@@ -238,13 +246,32 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
             pop(this.context);
           });
     }}
-    else {
+
+    if(roleEnum == UserRole.Invited.index){
+      print("Accept invitation");
+      Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);
+
+      if(response.success){
+        setState(() {
+          _userRole = 4;
+        });
+      } else {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: response.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+      }}
+
+    if(roleEnum == UserRole.Pending.index) {
       print("Cancel join team");
       Response<dynamic> response = await TeamManager.cancelJoinTeam(widget.teamId);
 
       if(response.success){
         setState(() {
-          _userRole = 6;
+          _userRole = 7;
         });
       } else {
         showCustomAlertDialog(context,
@@ -258,27 +285,36 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     }
   }
 
-//  _makeTeamPublic(status) {
-//    // TODO: Code here
-//    print("Making team public with status $status");
-//
-//
-//  }
+  Widget _renderJoinButton(){
+    int roleEnum = _userRole - 1;
+    if(roleEnum <= UserRole.Member.index) return null;
 
-//  _moderateNewPosts(status) {
-//    // TODO: Code here
-//    print("Moderating new posts with status $status");
-//  }
-//
-//  _createNewTeamPlan() {
-//    // TODO: Code here
-//    print("Creating new team plan");
-//  }
-//
-//  _grantRoleToMember() {
-//    // TODO: Code here
-//    print("Granting role to member");
-//  }
+    String toDisplay;
+    if(roleEnum == UserRole.Guest.index){
+      toDisplay = R.strings.join;
+    }
+    if(roleEnum == UserRole.Invited.index){
+      toDisplay = R.strings.acceptInvitation;
+    }
+    if(roleEnum == UserRole.Pending.index){
+      toDisplay = R.strings.cancelJoin;
+    }
+
+    return UIButton(
+    width: R.appRatio.appWidth381,
+    height: R.appRatio.appHeight50,
+    gradient: R.colors.uiGradient,
+    text: toDisplay,
+    textSize: R.appRatio.appFontSize20,
+    onTap: () => _joinTeamFunction());
+  }
+
+  String numberDisplayAdapter(dynamic toDisplay){
+    if(toDisplay == -1){
+      return R.strings.na;
+    } else
+      return toDisplay.toString();
+  }
 
   _transferOwnership(){
     // TODO: Code here
@@ -311,18 +347,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
             style: TextStyle(
                 color: Colors.white, fontSize: R.appRatio.appFontSize22),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Image.asset(
-                R.myIcons.appBarShareBtn,
-                width: R.appRatio.appAppBarIconSize,
-              ),
-              onPressed: () => _shareTeamInfo(),
-            ),
-          ],
+//          actions: <Widget>[
+//            IconButton(
+//              icon: Image.asset(
+//                R.myIcons.appBarShareBtn,
+//                width: R.appRatio.appAppBarIconSize,
+//              ),
+//              onPressed: () => _shareTeamInfo(),
+//            ),
+//          ],
         ),
-        body: (_isLoading
-            ? LoadingDot()
+        body: RefreshConfiguration(
+        maxOverScrollExtent: 50,
+        headerTriggerDistance: 50,
+        child: SmartRefresher(
+            enablePullDown: true,
+            controller: _refreshController,
+            onRefresh: () => {_getTeamInfo()},
+            child:
+        (_isLoading
+            ? LoadingIndicator()
             : SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -426,13 +470,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                   right: R.appRatio.appSpacing15,
                   bottom: R.appRatio.appSpacing25,
                 ),
-                child: UIButton(
-                    width: R.appRatio.appWidth381,
-                    height: R.appRatio.appHeight50,
-                    gradient: R.colors.uiGradient,
-                    text: _userRole == 6 ? R.strings.join: R.strings.cancelJoin,
-                    textSize: R.appRatio.appFontSize20,
-                    onTap: () => _joinTeamFunction()),
+                child: _renderJoinButton(),
               )
                   : Container()),
               // Symbol
@@ -484,15 +522,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               fontSize: R.appRatio.appFontSize14,
                               fontStyle: FontStyle.italic,
                             ),),
-//                          (_userRole > 3 && _userRole != 5?
-//                            UIButton(
-//                                width: R.appRatio.appWidth381,
-//                                height: R.appRatio.appHeight50,
-//                                gradient: R.colors.uiGradient,
-//                                text: _userRole == 6 ? R.strings.join: R.strings.cancelJoin,
-//                                textSize: R.appRatio.appFontSize20,
-//                                onTap: () => _joinTeamFunction()
-//                            ):Container()),
                         ],
                       ),
                     ),
@@ -557,7 +586,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "0",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamRank.toString(),
+                          dataLine: numberDisplayAdapter(_teamRank),
                           secondTitleLine: R.strings.rank,
                           pressBox: (id) {
                             pushPage(context, TeamRank(teamId: widget.teamId,));
@@ -569,7 +598,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "1",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamActivities.toString(),
+                          dataLine: numberDisplayAdapter(_teamActivities),
                           secondTitleLine: R.strings.activities,
                           pressBox: (id) {
                             // TODO: Pass teamId to pushPage!!!
@@ -588,7 +617,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "2",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamTotalDistance.toString(),
+                          dataLine: numberDisplayAdapter(_teamTotalDistance),
                           secondTitleLine: "KM",
                         ),
                         SizedBox(
@@ -607,7 +636,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "4",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamLeadingDistance.toString(),
+                          dataLine: numberDisplayAdapter(_teamLeadingDistance),
                           secondTitleLine: "KM\n" + R.strings.leadingDist,
                         ),
                       ],
@@ -622,7 +651,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "5",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamNewMemThisWeek.toString(),
+                          dataLine: numberDisplayAdapter(_teamNewMemThisWeek),
                           secondTitleLine: R.strings.newMemThisWeek,
                         ),
                         SizedBox(
@@ -631,7 +660,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         NormalInfoBox(
                           id: "6",
                           boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamMembers.toString(),
+                          dataLine: numberDisplayAdapter(_teamMembers),
                           secondTitleLine: R.strings.members,
                           pressBox: (id) {
                             // TODO: Pass teamId to pushPage!!!
@@ -686,64 +715,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                     ),
                   )
                       : Container()),
-                  // Moderate post
-//                  Padding(
-//                    padding: EdgeInsets.only(
-//                      bottom: R.appRatio.appSpacing15,
-//                    ),
-//                    child: LineButton(
-//                      mainText: R.strings.moderateNewPostsTitle,
-//                      mainTextFontSize: R.appRatio.appFontSize18,
-//                      subTextFontSize: R.appRatio.appFontSize14,
-//                      subText: R.strings.moderateNewPostsSubtitle,
-//                      enableBottomUnderline: true,
-//                      enableSwitchButton: true,
-//                      switchButtonOffTitle: "Off",
-//                      switchButtonOnTitle: "On",
-//                      initSwitchStatus: false,
-//                      switchFunction: (status) =>
-//                          _moderateNewPosts(status),
-//                    ),
-//                  ),
-//                  // Create new team plan
-//                  Padding(
-//                    padding: EdgeInsets.only(
-//                      bottom: R.appRatio.appSpacing15,
-//                    ),
-//                    child: LineButton(
-//                      mainText: R.strings.createNewTeamPlanTitle,
-//                      mainTextFontSize: R.appRatio.appFontSize18,
-//                      subTextFontSize: R.appRatio.appFontSize14,
-//                      subText: R.strings.createNewTeamPlanSubtitle,
-//                      enableBottomUnderline: true,
-//                      enableBoxButton: true,
-//                      boxButtonTitle: R.strings.create,
-//                      boxButtonFuction: () => _createNewTeamPlan(),
-//                    ),
-//                  ),
-//                  // Grant role to mantember
-//                  (_userRole < 3
-//                      ? Padding(
-//                    padding: EdgeInsets.only(
-//                      bottom: R.appRatio.appSpacing15,
-//                    ),
-//                    child: LineButton(
-//                      mainText:
-//                      R.strings.grantRoleToMemberTitle,
-//                      mainTextFontSize:
-//                      R.appRatio.appFontSize18,
-//                      subTextFontSize:
-//                      R.appRatio.appFontSize14,
-//                      subText:
-//                      R.strings.grantRoleToMemberSubtitle,
-//                      enableBottomUnderline: true,
-//                      enableBoxButton: true,
-//                      boxButtonTitle: R.strings.grant,
-//                      boxButtonFuction: () =>
-//                          _grantRoleToMember(),
-//                    ),
-//                  )
-//                      : Container()),
                   // Transfer ownership
                   (_userRole == 1
                       ? Padding(
@@ -785,7 +756,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
               )),
             ],
           ),
-        )));
+        ))),));
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
