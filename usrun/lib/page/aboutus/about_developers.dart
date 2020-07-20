@@ -48,9 +48,11 @@ class AboutDevelopers extends StatelessWidget {
                 ),
                 // -----
                 // DEVELOPER 1
-                AvatarView(
-                  avatarImageURL: R.images.avatarQuocTK,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarQuocTK,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
