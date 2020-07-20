@@ -286,6 +286,9 @@ Future<File> handleImagePicked(BuildContext context, CropStyle cropStyle, File p
       maxHeight: maxHeight,
       maxWidth: maxWidth,
       cropStyle: cropStyle,
+      aspectRatio: (cropStyle==CropStyle.circle)?
+        CropAspectRatio(ratioX: 1,ratioY: 1):
+        CropAspectRatio(ratioX: 4,ratioY: 3),
       compressFormat: ImageCompressFormat.jpg,
       compressQuality: quality,
       androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings

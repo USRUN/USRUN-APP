@@ -35,12 +35,6 @@ class TeamMemberPage extends StatefulWidget {
 
   static final popUpMenu = [
     PopupItem(
-      iconURL: R.myIcons.runnerIconByTheme,
-      iconSize: R.appRatio.appIconSize15 + 1,
-      title: R.strings.follow,
-      value: "Follow"
-    ),
-    PopupItem(
       iconURL: R.myIcons.closeIconByTheme,
       iconSize: R.appRatio.appIconSize15,
       title: R.strings.kickAMember,
@@ -70,28 +64,21 @@ class TeamMemberPage extends StatefulWidget {
     R.strings.all
   ];
 
-  final List<List<PopupItem>> member_options = [
-    [popUpMenu[0]],[popUpMenu[0]],[popUpMenu[0]],
-  ];
+  final List<List<PopupItem>> member_options = [];
 
   final List<List<PopupItem>> admin_options = [
-    [
-      popUpMenu[0]
-    ],
-    [
-      popUpMenu[0]
-    ],
+    [],
+    [],
     [
       popUpMenu[0],
-      popUpMenu[1],
-      popUpMenu[2]
+      popUpMenu[1]
     ]
   ];
 
   final List<List<PopupItem>> owner_options = [
-      [popUpMenu[0]],
-      [popUpMenu[0],popUpMenu[1],popUpMenu[2],popUpMenu[4]],
-      popUpMenu.sublist(0,4),
+      [],
+      [popUpMenu[0],popUpMenu[1],popUpMenu[3]],
+      popUpMenu.sublist(0,3),
   ];
 
   final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
@@ -173,18 +160,19 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     if(!_remainingResults) return;
       _remainingResults = false;
 
-    Response<dynamic> response =
-        await TeamManager.getAllTeamMemberPaged(
-            widget.teamId, _curPage, widget.resultPerPage);
-
+    TeamManager.getAllTeamMemberPaged(
+            widget.teamId, _curPage, widget.resultPerPage)
+        .then((response) => {
     if (response.success && (response.object as List).isNotEmpty) {
-      List<User> toAdd = response.object;
-      setState(() {
-        items.addAll(toAdd);
+        setState(() {
+          items.addAll(response.object);
           _curPage += 1;
-        _remainingResults = true;
-        });
-      }
+          _remainingResults = true;
+    })
+    }}
+    );
+
+
 
     setState(() {
       _isLoading = false;
@@ -558,7 +546,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
           pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
-          enablePopupMenuButton: true,
+          enablePopupMenuButton: options[listMemberTypeIndex].isNotEmpty,
           customPopupMenu:
           CustomPopupMenu(
             items: options[listMemberTypeIndex],

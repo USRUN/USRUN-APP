@@ -1234,9 +1234,10 @@ class _ImagePickerDefaults {
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
     toolbarColor: R.colors.majorOrange,
     showCropGrid: false,
-    dimmedLayerColor: R.colors.btnShadow,
-    toolbarTitle: "Image cropping",
+    toolbarTitle: "Crop Your Image",
     toolbarWidgetColor: Colors.white,
+    cropFrameColor: R.colors.majorOrange,
+    dimmedLayerColor: R.colors.blurMajorOrange
   );
 
   IOSUiSettings defaultIOSSettings;
