@@ -7,38 +7,52 @@ class AvatarView extends StatelessWidget {
   final BoxShadow avatarBoxShadow;
   final BoxBorder avatarBoxBorder;
   final bool enableSquareAvatarImage;
+  final double avatarSquareWidth;
+  final double avatarSquareHeight;
   final double radiusSquareBorder;
   final Function pressAvatarImage;
   final String supportImageURL;
 
   AvatarView({
     @required this.avatarImageURL,
-    @required this.avatarImageSize,
+    this.avatarImageSize = 0.0,
     this.avatarBoxShadow,
     this.avatarBoxBorder,
     this.enableSquareAvatarImage = false,
+    this.avatarSquareWidth = 0.0,
+    this.avatarSquareHeight = 0.0,
     this.radiusSquareBorder = 5,
     this.pressAvatarImage,
     this.supportImageURL,
-  });
+  }) : assert(avatarImageSize != null &&
+      avatarImageSize >= 0.0 &&
+      avatarSquareWidth != null &&
+      avatarSquareWidth >= 0.0 &&
+      avatarSquareHeight != null &&
+      avatarSquareHeight >= 0.0);
 
   @override
   Widget build(BuildContext context) {
     double _supportImageSize = this.avatarImageSize / 4;
+    double avatarWidth = avatarImageSize;
+    double avatarHeight = avatarImageSize;
+    if (enableSquareAvatarImage) {
+      if (avatarSquareWidth != 0.0) avatarWidth = avatarSquareWidth;
+      if (avatarSquareHeight != 0.0) avatarHeight = avatarSquareHeight;
+    }
 
     return Container(
-      width: this.avatarImageSize,
-      height: this.avatarImageSize,
+      width: avatarWidth,
+      height: avatarHeight,
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: (this.enableSquareAvatarImage
             ? BorderRadius.all(Radius.circular(this.radiusSquareBorder))
             : BorderRadius.all(Radius.circular(this.avatarImageSize / 2))),
         border: this.avatarBoxBorder,
         boxShadow: (this.avatarBoxShadow != null
             ? [
-                this.avatarBoxShadow,
-              ]
+          this.avatarBoxShadow,
+        ]
             : null),
       ),
       child: GestureDetector(
@@ -54,30 +68,30 @@ class AvatarView extends StatelessWidget {
               borderRadius: (this.enableSquareAvatarImage
                   ? BorderRadius.all(Radius.circular(this.radiusSquareBorder))
                   : BorderRadius.all(
-                      Radius.circular(this.avatarImageSize / 2))),
+                  Radius.circular(this.avatarImageSize / 2))),
               child: ImageCacheManager.getImage(
                 url: this.avatarImageURL,
-                height: this.avatarImageSize,
-                width: this.avatarImageSize,
+                height: avatarHeight,
+                width: avatarWidth,
                 fit: BoxFit.cover,
               ),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: (this.supportImageURL == null ||
-                      this.supportImageURL.length == 0
+                  this.supportImageURL.length == 0
                   ? null
                   : ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(_supportImageSize / 2),
-                      ),
-                      child: ImageCacheManager.getImage(
-                        url: this.supportImageURL,
-                        height: _supportImageSize,
-                        width: _supportImageSize,
-                        fit: BoxFit.cover,
-                      ),
-                    )),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(_supportImageSize / 2),
+                ),
+                child: ImageCacheManager.getImage(
+                  url: this.supportImageURL,
+                  height: _supportImageSize,
+                  width: _supportImageSize,
+                  fit: BoxFit.cover,
+                ),
+              )),
             ),
           ],
         ),
