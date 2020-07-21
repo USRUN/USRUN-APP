@@ -15,8 +15,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
-import 'package:usrun/widget/custom_dialog/complex_custom_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
@@ -408,14 +408,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             width: R.appRatio.appWidth40,
             child: FlatButton(
               onPressed: () {
-                showComplexCustomDialog(
-                  headerContent: R.strings.inviteNewMember,
-                  context: context,
-                  descriptionContent: R.strings.inviteNewMemberContent,
-                  submitBtnContent: R.strings.inviteNewMember,
-                  submitBtnFunction: _inviteMember,
-                  inputFieldList: _inviteInputFields,
-                );
+//                showCustomComplexDialog(
+//                  headerContent: R.strings.inviteNewMember,
+//                  context: context,
+//                  descriptionContent: R.strings.inviteNewMemberContent,
+//                  submitBtnContent: R.strings.inviteNewMember,
+//                  submitBtnFunction: _inviteMember,
+//                  inputFieldList: _inviteInputFields,
+//                );
               },
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -635,6 +635,79 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         );
       default:
         return Container();
+    }
+  }
+
+  void _showCustomDialog(index) async {
+    switch (index) {
+      case 0: // Invite
+        await showCustomComplexDialog(
+          context: context,
+          headerContent: R.strings.inviteNewMember,
+          descriptionContent: R.strings.inviteNewMemberContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          firstButtonText: R.strings.invite.toUpperCase(),
+          firstButtonFunction: () {
+            // TODO: Implement function here
+            print("Invite new member");
+          },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
+        );
+        break;
+      case 1: // Kick
+        await showCustomComplexDialog(
+          context: context,
+          headerContent: R.strings.kickAMember,
+          descriptionContent: R.strings.kickAMemberContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          firstButtonText: R.strings.kick.toUpperCase(),
+          firstButtonFunction: () {
+            // TODO: Implement function here
+            print("Kick a member");
+          },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
+        );
+        break;
+      case 2: // Block
+        await showCustomComplexDialog(
+          context: context,
+          headerContent: R.strings.blockAPerson,
+          descriptionContent: R.strings.blockAPersonContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: false,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+            ),
+          ],
+          firstButtonText: R.strings.block.toUpperCase(),
+          firstButtonFunction: () {
+            // TODO: Implement function here
+            print("Block a person");
+          },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () => pop(context),
+        );
+        break;
+      default:
+        break;
     }
   }
 }
