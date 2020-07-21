@@ -58,7 +58,11 @@ class TeamMemberPage extends StatefulWidget {
 
   final tabBarItems = [R.strings.all];
 
-  final List<List<PopupItem>> member_options = [];
+  final List<List<PopupItem>> member_options = [
+    [],
+    [],
+    []
+  ];
 
   final List<List<PopupItem>> admin_options = [
     [],
