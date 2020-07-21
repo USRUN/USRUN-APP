@@ -402,13 +402,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
         actions: <Widget>[
-          // TODO: Test
-          CustomPopupMenu<String>(
-            items: TeamMemberPage.popUpMenu,
-            onSelected: (index) {
-              print("Index: $index");
-            },
-          ),
           Container(
             width: R.appRatio.appWidth40,
             child: FlatButton(

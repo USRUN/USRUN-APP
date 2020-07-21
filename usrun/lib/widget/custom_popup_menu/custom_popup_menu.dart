@@ -68,7 +68,7 @@ class _CustomPopupMenuState<T> extends State<CustomPopupMenu> {
             leftIcon = Container(
               width: iconSize,
               height: iconSize,
-              margin: element.padding,
+              margin: element.iconPadding,
               alignment: Alignment.centerLeft,
               child: ImageCacheManager.getImage(
                 url: element.iconURL,
