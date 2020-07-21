@@ -63,23 +63,23 @@ class _UsRunAppState extends State<UsRunApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          navigatorKey: navigatorKey,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en'), // English
-            const Locale('vi'), // Vietnamese
-          ],
-          title: 'USRUN',
-          key: key,
-          theme: ThemeData(
-            primaryColor: Color(0xFFFD632C),
-          ),
-          home: SplashPage(),
-        );
+      navigatorKey: navigatorKey,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'), // English
+        const Locale('vi'), // Vietnamese
+      ],
+      title: 'USRUN',
+      key: key,
+      theme: ThemeData(
+        primaryColor: Color(0xFFFD632C),
+      ),
+      home: SplashPage(),
+    );
   }
 }
 

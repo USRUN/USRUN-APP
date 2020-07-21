@@ -11,7 +11,7 @@ class _CustomDialog extends StatefulWidget {
   final List<String> checkBoxList;
   final Function getCheckBoxResult;
   final String submitBtnContent;
-  final Function submitBtnFuction;
+  final Function submitBtnFunction;
 
   _CustomDialog({
     @required this.headerContent,
@@ -21,7 +21,7 @@ class _CustomDialog extends StatefulWidget {
     this.checkBoxList,
     this.getCheckBoxResult(List<bool> value),
     this.submitBtnContent = "Ok",
-    this.submitBtnFuction,
+    this.submitBtnFunction,
   }) : assert(headerContent != null);
 
   @override
@@ -258,8 +258,8 @@ class _CustomDialogState extends State<_CustomDialog> {
             textSize: R.appRatio.appFontSize16,
             fontWeight: FontWeight.bold,
             onTap: () {
-              if (widget.submitBtnFuction != null) {
-                widget.submitBtnFuction();
+              if (widget.submitBtnFunction != null) {
+                widget.submitBtnFunction();
               }
             },
           ),
@@ -313,7 +313,7 @@ Future<void> showComplexCustomDialog({
             checkBoxList: checkBoxList,
             getCheckBoxResult: getCheckBoxResult,
             submitBtnContent: submitBtnContent,
-            submitBtnFuction: submitBtnFunction,
+            submitBtnFunction: submitBtnFunction,
           ),
         ),
       );
