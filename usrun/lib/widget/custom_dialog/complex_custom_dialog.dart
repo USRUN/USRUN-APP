@@ -31,7 +31,9 @@ class _CustomDialog extends StatefulWidget {
 class _CustomDialogState extends State<_CustomDialog> {
   List<bool> boxList = List<bool>();
 
-  static double radius = 2;
+  final double _radius = 10;
+  final double _spacing = 15.0;
+  final double _buttonHeight = 50.0;
 
   @override
   void initState() {
@@ -48,11 +50,16 @@ class _CustomDialogState extends State<_CustomDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildElement = SingleChildScrollView(
-      child: Container(
+    Widget _buildElement = Container(
+      constraints: BoxConstraints(maxWidth: 320),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+        color: Colors.white,
+      ),
+      child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // Header
@@ -61,8 +68,8 @@ class _CustomDialogState extends State<_CustomDialog> {
               decoration: BoxDecoration(
                 gradient: R.colors.uiGradient,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(radius),
-                  topRight: Radius.circular(radius),
+                  topLeft: Radius.circular(_radius),
+                  topRight: Radius.circular(_radius),
                 ),
               ),
               alignment: Alignment.center,
@@ -113,6 +120,12 @@ class _CustomDialogState extends State<_CustomDialog> {
               ),
             // CheckBoxList
             (this.boxList.length != 0 ? _renderBoxList() : Container()),
+            // Horizontal divider
+            Divider(
+              color: R.colors.blurMajorOrange,
+              height: 1,
+              thickness: 1.0,
+            ),
             // Button (Discard & Submit)
             _renderButtons()
           ],
@@ -228,43 +241,76 @@ class _CustomDialogState extends State<_CustomDialog> {
   }
 
   Widget _renderButtons() {
-    return Container(
-      padding: EdgeInsets.only(
-        top: R.appRatio.appSpacing15,
-        left: R.appRatio.appSpacing15,
-        right: R.appRatio.appSpacing15,
-        bottom: R.appRatio.appSpacing25,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          // Cancel btn
-          UIButton(
-            width: R.appRatio.appWidth130,
-            height: R.appRatio.appHeight50,
-            color: R.colors.gray515151,
-            text: R.strings.cancel.toUpperCase(),
-            textSize: R.appRatio.appFontSize16,
-            fontWeight: FontWeight.bold,
-            onTap: _handleCancel,
+    return Row(
+      children: <Widget>[
+        // Second button
+        Expanded(
+          child: Container(
+            height: _buttonHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(_radius),
+              ),
+              color: Colors.white,
+            ),
+            child: FlatButton(
+              onPressed: _handleCancel,
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: Text(
+                R.strings.cancel.toUpperCase(),
+                textScaleFactor: 1.0,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: R.colors.gray515151,
+                ),
+              ),
+            ),
           ),
-          // Submit btn
-          UIButton(
-            width: R.appRatio.appWidth130,
-            height: R.appRatio.appHeight50,
-            gradient: R.colors.uiGradient,
-            text: widget.submitBtnContent.toUpperCase(),
-            textSize: R.appRatio.appFontSize16,
-            fontWeight: FontWeight.bold,
-            onTap: () {
-              if (widget.submitBtnFunction != null) {
-                widget.submitBtnFunction();
-              }
-            },
+        ),
+        // Vertical Divider
+        Container(
+          width: 1,
+          height: _buttonHeight,
+          child: VerticalDivider(
+            color: R.colors.blurMajorOrange,
+            thickness: 1.0,
           ),
-        ],
-      ),
+        ),
+        // First button
+        Expanded(
+          child: Container(
+            height: _buttonHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(_radius),
+              ),
+              color: Colors.white,
+            ),
+            child: FlatButton(
+              onPressed: () {
+                if (widget.submitBtnFunction != null) {
+                  widget.submitBtnFunction();
+                }
+              },
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: Text(
+                widget.submitBtnContent.toUpperCase(),
+                textScaleFactor: 1.0,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: R.colors.majorOrange,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
