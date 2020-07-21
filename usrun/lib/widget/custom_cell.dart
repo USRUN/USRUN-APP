@@ -23,6 +23,7 @@ class CustomCell extends StatelessWidget {
   final Function pressInfo;
   final EdgeInsets padding;
   final ShapeBorder shape;
+  final bool enableSplashColor;
 
   // Avatar view
   final AvatarView avatarView;
@@ -64,6 +65,7 @@ class CustomCell extends StatelessWidget {
     this.pressInfo,
     this.padding = const EdgeInsets.all(0),
     this.shape,
+    this.enableSplashColor = true,
     @required this.avatarView,
     this.centerVerticalSuffix = false,
     this.enableFFButton = false,
@@ -301,8 +303,11 @@ class CustomCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      splashColor: R.colors.lightBlurMajorOrange,
-      textColor: Colors.white,
+      splashColor: (enableSplashColor
+          ? R.colors.lightBlurMajorOrange
+          : Colors.transparent),
+      textColor: (enableSplashColor ? Colors.white : Colors.transparent),
+      highlightColor: (enableSplashColor ? null : Colors.transparent),
       padding: this.padding,
       onPressed: () {
         if (this.pressInfo != null) {

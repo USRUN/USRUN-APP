@@ -47,8 +47,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   String _teamName = R.strings.loading;
   bool _teamPublicStatus = true;
   String _teamLocation = R.strings.loading;
-  String _teamDescription =
-      R.strings.loadingTeamInfo;
+  String _teamDescription = R.strings.loadingTeamInfo;
   int _teamRank = -1;
   int _teamActivities = -1;
   int _teamTotalDistance = -1;
@@ -57,7 +56,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
   int _userRole = 6;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   /*
     + userRole:
@@ -78,22 +78,24 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
-  void _getTeamInfo() async{
-    Response<dynamic> infoResponse = await TeamManager.getTeamById(widget.teamId);
-    if(infoResponse.success && infoResponse.object != null) {
+  void _getTeamInfo() async {
+    Response<dynamic> infoResponse =
+        await TeamManager.getTeamById(widget.teamId);
+    if (infoResponse.success && infoResponse.object != null) {
       mapTeamInfo(infoResponse.object);
       _userRole = infoResponse.object.teamMemberType;
     }
 
-    Response<dynamic> statResponse = await TeamManager.getTeamStatById(widget.teamId);
-    if(statResponse.success && statResponse.object != null){
+    Response<dynamic> statResponse =
+        await TeamManager.getTeamStatById(widget.teamId);
+    if (statResponse.success && statResponse.object != null) {
       mapTeamStat(statResponse.object);
     }
 
     _refreshController.refreshCompleted();
   }
 
-  void mapTeamStat(TeamStatItem toMap){
+  void mapTeamStat(TeamStatItem toMap) {
     _teamTotalDistance = toMap.totalDistance;
     _teamLeadingDistance = toMap.maxDistance;
     _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
@@ -102,10 +104,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     _teamNewMemThisWeek = toMap.memInWeek;
   }
 
-  void mapTeamInfo(Team toMap){
+  void mapTeamInfo(Team toMap) {
     setState(() {
       _teamDescription =
-      toMap.description == null ? R.strings.description : toMap.description;
+          toMap.description == null ? R.strings.description : toMap.description;
       _teamName = toMap.teamName;
       _teamBanner = toMap.banner;
       _teamMembers = toMap.totalMember;
@@ -129,78 +131,77 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   _changeTeamPrivacy(bool privacy) async {
-      Map<String,dynamic> reqParam = {
-        "privacy": privacy == true?0:1,
-        "teamId": widget.teamId
-      };
-
-      if (_userRole > 2) {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: R.strings.notAuthorizedTeamChange,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-              pop(this.context);
-            });
-        return;
-      }
-      print("Changing $_teamName privacy");
-
-      Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
-
-      if(!updatedTeam.success){
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: updatedTeam.errorMessage,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-              pop(this.context);
-            });
-        return;
-      }
-      _teamPublicStatus = privacy;
-  }
-
-  _changeTeamImage(String fieldToChange) async{
-    Map<String,dynamic> reqParam = Map();
+    Map<String, dynamic> reqParam = {
+      "privacy": privacy == true ? 0 : 1,
+      "teamId": widget.teamId
+    };
 
     if (_userRole > 2) {
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: R.strings.notAuthorizedTeamChange,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () {
-            pop(this.context);
-          });
+          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
+        pop(this.context);
+      });
+      return;
+    }
+    print("Changing $_teamName privacy");
+
+    Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
+
+    if (!updatedTeam.success) {
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: updatedTeam.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
+        pop(this.context);
+      });
+      return;
+    }
+    _teamPublicStatus = privacy;
+  }
+
+  _changeTeamImage(String fieldToChange) async {
+    Map<String, dynamic> reqParam = Map();
+
+    if (_userRole > 2) {
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: R.strings.notAuthorizedTeamChange,
+          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
+        pop(this.context);
+      });
       return;
     }
     print("Changing $fieldToChange image");
 
-    try{
+    try {
       var image = null;
 
-      if(fieldToChange == 'banner')
-        image = await pickImageByShape(context,CropStyle.rectangle);
-      else image = image = await pickImageByShape(context,CropStyle.circle);
+      if (fieldToChange == 'banner')
+        image = await pickImageByShape(context, CropStyle.rectangle);
+      else
+        image = image = await pickImageByShape(context, CropStyle.circle);
 
-    if (image != null) {
+      if (image != null) {
         // call API update Team
         List<int> imageBytes = image.readAsBytesSync();
-        String base64Image = "data:image/${image.path.split('.').last};base64,${Base64Codec().encode(imageBytes)}";
+        String base64Image =
+            "data:image/${image.path.split('.').last};base64,${Base64Codec().encode(imageBytes)}";
         reqParam[fieldToChange] = base64Image;
         reqParam['teamId'] = widget.teamId;
         Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
 
-        if(updatedTeam.success && updatedTeam.object != null) {
+        if (updatedTeam.success && updatedTeam.object != null) {
           mapTeamInfo(updatedTeam.object);
-        } else{
+        } else {
           showCustomAlertDialog(context,
               title: R.strings.notice,
               content: updatedTeam.errorMessage,
               firstButtonText: R.strings.ok.toUpperCase(),
               firstButtonFunction: () {
-                pop(this.context);
-              });
+            pop(this.context);
+          });
         }
       }
     } catch (error) {
@@ -208,49 +209,31 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: error.toString(),
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () {
-            pop(this.context);
-          });
+          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
+        pop(this.context);
+      });
     }
   }
 
-  _changeTeamBanner() async{
-    if(_userRole > 2) return;
+  _changeTeamBanner() async {
+    if (_userRole > 2) return;
     _changeTeamImage("banner");
   }
 
   _changeTeamAvatar() async {
-    if(_userRole > 2) return;
+    if (_userRole > 2) return;
     _changeTeamImage("thumbnail");
   }
 
   _joinTeamFunction() async {
     int roleEnum = _userRole - 1;
 
-    if(roleEnum == UserRole.Guest.index){
-    print("Joining team");
-    Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);
+    if (roleEnum == UserRole.Guest.index) {
+      print("Joining team");
+      Response<dynamic> response =
+          await TeamManager.requestJoinTeam(widget.teamId);
 
-    if(response.success){
-      setState(() {
-        _userRole = 4;
-      });
-    } else {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () {
-            pop(this.context);
-          });
-    }}
-
-    if(roleEnum == UserRole.Invited.index){
-      print("Accept invitation");
-      Response<dynamic> response = await TeamManager.requestJoinTeam(widget.teamId);
-
-      if(response.success){
+      if (response.success) {
         setState(() {
           _userRole = 4;
         });
@@ -260,15 +243,37 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
             content: response.errorMessage,
             firstButtonText: R.strings.ok.toUpperCase(),
             firstButtonFunction: () {
-              pop(this.context);
-            });
-      }}
+          pop(this.context);
+        });
+      }
+    }
 
-    if(roleEnum == UserRole.Pending.index) {
+    if (roleEnum == UserRole.Invited.index) {
+      print("Accept invitation");
+      Response<dynamic> response =
+          await TeamManager.requestJoinTeam(widget.teamId);
+
+      if (response.success) {
+        setState(() {
+          _userRole = 4;
+        });
+      } else {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: response.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+          pop(this.context);
+        });
+      }
+    }
+
+    if (roleEnum == UserRole.Pending.index) {
       print("Cancel join team");
-      Response<dynamic> response = await TeamManager.cancelJoinTeam(widget.teamId);
+      Response<dynamic> response =
+          await TeamManager.cancelJoinTeam(widget.teamId);
 
-      if(response.success){
+      if (response.success) {
         setState(() {
           _userRole = 7;
         });
@@ -278,44 +283,44 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
             content: response.errorMessage,
             firstButtonText: R.strings.ok.toUpperCase(),
             firstButtonFunction: () {
-              pop(this.context);
+          pop(this.context);
         });
       }
     }
   }
 
-  Widget _renderJoinButton(){
+  Widget _renderJoinButton() {
     int roleEnum = _userRole - 1;
-    if(roleEnum <= UserRole.Member.index) return null;
+    if (roleEnum <= UserRole.Member.index) return null;
 
     String toDisplay;
-    if(roleEnum == UserRole.Guest.index){
+    if (roleEnum == UserRole.Guest.index) {
       toDisplay = R.strings.join;
     }
-    if(roleEnum == UserRole.Invited.index){
+    if (roleEnum == UserRole.Invited.index) {
       toDisplay = R.strings.acceptInvitation;
     }
-    if(roleEnum == UserRole.Pending.index){
+    if (roleEnum == UserRole.Pending.index) {
       toDisplay = R.strings.cancelJoin;
     }
 
     return UIButton(
-    width: R.appRatio.appWidth381,
-    height: R.appRatio.appHeight50,
-    gradient: R.colors.uiGradient,
-    text: toDisplay,
-    textSize: R.appRatio.appFontSize20,
-    onTap: () => _joinTeamFunction());
+        width: R.appRatio.appWidth381,
+        height: R.appRatio.appHeight50,
+        gradient: R.colors.uiGradient,
+        text: toDisplay,
+        textSize: R.appRatio.appFontSize20,
+        onTap: () => _joinTeamFunction());
   }
 
-  String numberDisplayAdapter(dynamic toDisplay){
-    if(toDisplay == -1){
+  String numberDisplayAdapter(dynamic toDisplay) {
+    if (toDisplay == -1) {
       return R.strings.na;
     } else
       return toDisplay.toString();
   }
 
-  _transferOwnership(){
+  _transferOwnership() {
     // TODO: Code here
     print("Transferring ownership");
   }
@@ -329,23 +334,27 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: R.colors.appBackground,
-        appBar: GradientAppBar(
-          leading: new IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarBackBtn,
-              width: R.appRatio.appAppBarIconSize,
-            ),
-            onPressed: () => pop(context),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: R.colors.appBackground,
+      appBar: GradientAppBar(
+        leading: FlatButton(
+          onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
           ),
-          gradient: R.colors.uiGradient,
-          centerTitle: true,
-          title: Text(
-            R.strings.team,
-            style: TextStyle(
-                color: Colors.white, fontSize: R.appRatio.appFontSize22),
-          ),
+        ),
+        gradient: R.colors.uiGradient,
+        centerTitle: true,
+        title: Text(
+          R.strings.team,
+          style: TextStyle(
+              color: Colors.white, fontSize: R.appRatio.appFontSize22),
+        ),
 //          actions: <Widget>[
 //            IconButton(
 //              icon: Image.asset(
@@ -355,412 +364,440 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 //              onPressed: () => _shareTeamInfo(),
 //            ),
 //          ],
-        ),
-        body: RefreshConfiguration(
+      ),
+      body: RefreshConfiguration(
         maxOverScrollExtent: 50,
         headerTriggerDistance: 50,
         child: SmartRefresher(
-            enablePullDown: true,
-            controller: _refreshController,
-            onRefresh: () => {_getTeamInfo()},
-            child:
-        (_isLoading
-            ? LoadingIndicator()
-            : SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // Banner
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: <Widget>[
-                  ImageCacheManager.getImage(
-                    url: _teamBanner,
-                    width: R.appRatio.deviceWidth,
-                    height: R.appRatio.appHeight250,
-                    fit: BoxFit.cover,
-                  ),
-                  (_userRole > 2
-                      ? Container()
-                      : GestureDetector(
-                    onTap: () => _changeTeamBanner(),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        right: R.appRatio.appSpacing15,
-                        bottom: R.appRatio.appSpacing15,
-                      ),
-                      child: Container(
-                        width: R.appRatio.appIconSize30,
-                        height: R.appRatio.appIconSize30,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
+          enablePullDown: true,
+          controller: _refreshController,
+          onRefresh: () => {_getTeamInfo()},
+          child: (_isLoading
+              ? LoadingIndicator()
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      // Banner
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: <Widget>[
+                          ImageCacheManager.getImage(
+                            url: _teamBanner,
+                            width: R.appRatio.deviceWidth,
+                            height: R.appRatio.appHeight250,
+                            fit: BoxFit.cover,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 2.0,
-                              offset: Offset(0.0, 0.0),
+                          (_userRole > 2
+                              ? Container()
+                              : GestureDetector(
+                                  onTap: () => _changeTeamBanner(),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: R.appRatio.appSpacing15,
+                                      bottom: R.appRatio.appSpacing15,
+                                    ),
+                                    child: Container(
+                                      width: R.appRatio.appIconSize30,
+                                      height: R.appRatio.appIconSize30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(30),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 2.0,
+                                            offset: Offset(0.0, 0.0),
+                                            color: R.colors.majorOrange,
+                                          ),
+                                        ],
+                                      ),
+                                      child: ImageCacheManager.getImage(
+                                        url: R.myIcons.colorEditIcon,
+                                        fit: BoxFit.cover,
+                                        width: R.appRatio.appIconSize15,
+                                        height: R.appRatio.appIconSize15,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing25,
+                      ),
+                      // Custom cell
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: R.appRatio.appSpacing15,
+                          right: R.appRatio.appSpacing15,
+                          bottom: R.appRatio.appSpacing25,
+                        ),
+                        child: CustomCell(
+                          enableSplashColor: false,
+                          avatarView: AvatarView(
+                            avatarImageURL: _teamAvatar,
+                            avatarImageSize: R.appRatio.appWidth80,
+                            avatarBoxBorder: Border.all(
+                              width: 1,
                               color: R.colors.majorOrange,
+                            ),
+                            supportImageURL: (_userRole > 2
+                                ? null
+                                : R.myIcons.colorEditIconOrangeBg),
+                            pressAvatarImage: () => _changeTeamAvatar(),
+                          ),
+                          title: _teamName,
+                          enableAddedContent: true,
+                          firstAddedTitle: (_teamPublicStatus
+                              ? R.strings.public
+                              : R.strings.private),
+                          firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
+                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
+                          secondAddedTitle: _teamLocation,
+                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
+                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
+                        ),
+                      ),
+                      // Description
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: R.appRatio.appSpacing15,
+                          right: R.appRatio.appSpacing15,
+                          bottom: R.appRatio.appSpacing25,
+                        ),
+                        child: ExpandableText(_teamDescription),
+                      ),
+                      // Join button
+                      (_userRole > 3 && _userRole != 5
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: R.appRatio.appSpacing15,
+                                right: R.appRatio.appSpacing15,
+                                bottom: R.appRatio.appSpacing25,
+                              ),
+                              child: _renderJoinButton(),
+                            )
+                          : Container()),
+                      // Symbol
+                      (_teamSymbol.length != 0
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                bottom: R.appRatio.appSpacing25,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: R.appRatio.appSpacing15,
+                                      bottom: R.appRatio.appSpacing15,
+                                    ),
+                                    child: Text(
+                                      R.strings.symbol,
+                                      style: R.styles.shadowLabelStyle,
+                                    ),
+                                  ),
+                                  Container(
+                                    color: R.colors.sectionBackgroundLayer,
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.only(
+                                      top: R.appRatio.appSpacing10,
+                                      bottom: R.appRatio.appSpacing10,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        // Symbol image
+                                        ImageCacheManager.getImage(
+                                          url: _teamSymbol,
+                                          fit: BoxFit.cover,
+                                          width: R.appRatio.appWidth50,
+                                          height: R.appRatio.appWidth50,
+                                        ),
+                                        SizedBox(
+                                            height: R.appRatio.appSpacing10),
+                                        // "Verified" string
+                                        Text(
+                                          R.strings.verifiedByUsrun,
+                                          style: TextStyle(
+                                            color: R.colors.contentText,
+                                            fontSize: R.appRatio.appFontSize14,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container),
+                      // Team stats
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: R.appRatio.appSpacing15,
+                          right: R.appRatio.appSpacing15,
+                          bottom: R.appRatio.appSpacing25,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: R.appRatio.appSpacing15,
+                              ),
+                              child: Text(
+                                R.strings.teamStats,
+                                style: R.styles.shadowLabelStyle,
+                              ),
+                            ),
+                            GestureDetector(
+                              // TODO: Pass teamId to pushPage!!!
+                              onTap: () => pushPage(context,
+                                  TeamLeaderBoardPage(teamId: widget.teamId)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  ImageCacheManager.getImage(
+                                    url: R.myIcons.starIconByTheme,
+                                    width: R.appRatio.appIconSize18,
+                                    height: R.appRatio.appIconSize18,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                    width: R.appRatio.appSpacing10,
+                                  ),
+                                  Text(
+                                    R.strings.leaderboard,
+                                    style: TextStyle(
+                                      color: R.colors.contentText,
+                                      fontSize: R.appRatio.appFontSize16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: R.appRatio.appSpacing15,
+                            ),
+                            // Rank & Activities
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                NormalInfoBox(
+                                  id: "0",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine: numberDisplayAdapter(_teamRank),
+                                  secondTitleLine: R.strings.rank,
+                                  pressBox: (id) {
+                                    pushPage(
+                                        context,
+                                        TeamRank(
+                                          teamId: widget.teamId,
+                                        ));
+                                  },
+                                ),
+                                SizedBox(
+                                  width: R.appRatio.appSpacing15,
+                                ),
+                                NormalInfoBox(
+                                  id: "1",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine:
+                                      numberDisplayAdapter(_teamActivities),
+                                  secondTitleLine: R.strings.activities,
+                                  pressBox: (id) {
+                                    // TODO: Pass teamId to pushPage!!!
+                                    pushPage(
+                                        context,
+                                        TeamActivityPage(
+                                            teamId: widget.teamId,
+                                            totalActivity: _teamActivities));
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: R.appRatio.appSpacing15,
+                            ),
+                            // Distance, Leading time & Leading distance
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                NormalInfoBox(
+                                  id: "2",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine:
+                                      numberDisplayAdapter(_teamTotalDistance),
+                                  secondTitleLine: "KM",
+                                ),
+                                SizedBox(
+                                  width: R.appRatio.appSpacing15,
+                                ),
+                                NormalInfoBox(
+                                  id: "3",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine: _teamLeadingTime,
+                                  secondTitleLine:
+                                      "HH:MM:SS\n" + R.strings.leadingTime,
+                                ),
+                                SizedBox(
+                                  width: R.appRatio.appSpacing15,
+                                ),
+                                NormalInfoBox(
+                                  id: "4",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine: numberDisplayAdapter(
+                                      _teamLeadingDistance),
+                                  secondTitleLine:
+                                      "KM\n" + R.strings.leadingDist,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: R.appRatio.appSpacing15,
+                            ),
+                            // New members this week & Members
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                NormalInfoBox(
+                                  id: "5",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine:
+                                      numberDisplayAdapter(_teamNewMemThisWeek),
+                                  secondTitleLine: R.strings.newMemThisWeek,
+                                ),
+                                SizedBox(
+                                  width: R.appRatio.appSpacing15,
+                                ),
+                                NormalInfoBox(
+                                  id: "6",
+                                  boxSize: R.appRatio.appWidth100,
+                                  dataLine: numberDisplayAdapter(_teamMembers),
+                                  secondTitleLine: R.strings.members,
+                                  pressBox: (id) {
+                                    // TODO: Pass teamId to pushPage!!!
+                                    pushPage(
+                                        context,
+                                        TeamMemberPage(
+                                          teamId: widget.teamId,
+                                          teamMemberType: _userRole,
+                                        ));
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        child: ImageCacheManager.getImage(
-                          url: R.myIcons.colorEditIcon,
-                          fit: BoxFit.cover,
-                          width: R.appRatio.appIconSize15,
-                          height: R.appRatio.appIconSize15,
-                        ),
                       ),
-                    ),
-                  )),
-                ],
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              // Custom cell
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                  right: R.appRatio.appSpacing15,
-                  bottom: R.appRatio.appSpacing25,
-                ),
-                child: CustomCell(
-                  avatarView: AvatarView(
-                    avatarImageURL: _teamAvatar,
-                    avatarImageSize: R.appRatio.appWidth80,
-                    avatarBoxBorder: Border.all(
-                      width: 1,
-                      color: R.colors.majorOrange,
-                    ),
-                    supportImageURL: (_userRole > 2
-                        ? null
-                        : R.myIcons.colorEditIconOrangeBg),
-                    pressAvatarImage: () => _changeTeamAvatar(),
-                  ),
-                  title: _teamName,
-                  enableAddedContent: true,
-                  firstAddedTitle: (_teamPublicStatus
-                      ? R.strings.public
-                      : R.strings.private),
-                  firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
-                  firstAddedTitleIconSize: R.appRatio.appIconSize15,
-                  secondAddedTitle: _teamLocation,
-                  secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
-                  secondAddedTitleIconSize: R.appRatio.appIconSize15,
-                ),
-              ),
-              // Description
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                  right: R.appRatio.appSpacing15,
-                  bottom: R.appRatio.appSpacing25,
-                ),
-                child: ExpandableText(_teamDescription),
-              ),
-              // Join button
-              (_userRole > 3 && _userRole  != 5
-                  ? Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                  right: R.appRatio.appSpacing15,
-                  bottom: R.appRatio.appSpacing25,
-                ),
-                child: _renderJoinButton(),
-              )
-                  : Container()),
-              // Symbol
-              (_teamSymbol.length != 0
-                  ? Padding(
-                padding: EdgeInsets.only(
-                  bottom: R.appRatio.appSpacing25,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: R.appRatio.appSpacing15,
-                        bottom: R.appRatio.appSpacing15,
-                      ),
-                      child: Text(
-                        R.strings.symbol,
-                        style: R.styles.shadowLabelStyle,
-                      ),
-                    ),
-                    Container(
-                      color: R.colors.sectionBackgroundLayer,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing10,
-                        bottom: R.appRatio.appSpacing10,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.center,
-                        children: <Widget>[
-                          // Symbol image
-                          ImageCacheManager.getImage(
-                            url: _teamSymbol,
-                            fit: BoxFit.cover,
-                            width: R.appRatio.appWidth50,
-                            height: R.appRatio.appWidth50,
-                          ),
-                          SizedBox(height: R.appRatio.appSpacing10),
-                          // "Verified" string
-                          Text(
-                            R.strings.verifiedByUsrun,
-                            style: TextStyle(
-                              color: R.colors.contentText,
-                              fontSize: R.appRatio.appFontSize14,
-                              fontStyle: FontStyle.italic,
-                            ),),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-                  : Container),
-              // Team stats
-              Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
-                  right: R.appRatio.appSpacing15,
-                  bottom: R.appRatio.appSpacing25,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: R.appRatio.appSpacing15,
-                      ),
-                      child: Text(
-                        R.strings.teamStats,
-                        style: R.styles.shadowLabelStyle,
-                      ),
-                    ),
-                    GestureDetector(
+                      // Tool zone
                       // TODO: Pass teamId to pushPage!!!
-                      onTap: () => pushPage(context, TeamLeaderBoardPage(teamId:widget.teamId)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ImageCacheManager.getImage(
-                            url: R.myIcons.starIconByTheme,
-                            width: R.appRatio.appIconSize18,
-                            height: R.appRatio.appIconSize18,
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(
-                            width: R.appRatio.appSpacing10,
-                          ),
-                          Text(
-                            R.strings.leaderboard,
-                            style: TextStyle(
-                              color: R.colors.contentText,
-                              fontSize: R.appRatio.appFontSize16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing15,
-                    ),
-                    // Rank & Activities
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        NormalInfoBox(
-                          id: "0",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamRank),
-                          secondTitleLine: R.strings.rank,
-                          pressBox: (id) {
-                            pushPage(context, TeamRank(teamId: widget.teamId,));
-                          },
-                        ),
-                        SizedBox(
-                          width: R.appRatio.appSpacing15,
-                        ),
-                        NormalInfoBox(
-                          id: "1",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamActivities),
-                          secondTitleLine: R.strings.activities,
-                          pressBox: (id) {
-                            // TODO: Pass teamId to pushPage!!!
-                            pushPage(context, TeamActivityPage(teamId: widget.teamId, totalActivity: _teamActivities));
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing15,
-                    ),
-                    // Distance, Leading time & Leading distance
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        NormalInfoBox(
-                          id: "2",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamTotalDistance),
-                          secondTitleLine: "KM",
-                        ),
-                        SizedBox(
-                          width: R.appRatio.appSpacing15,
-                        ),
-                        NormalInfoBox(
-                          id: "3",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: _teamLeadingTime,
-                          secondTitleLine:
-                          "HH:MM:SS\n" + R.strings.leadingTime,
-                        ),
-                        SizedBox(
-                          width: R.appRatio.appSpacing15,
-                        ),
-                        NormalInfoBox(
-                          id: "4",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamLeadingDistance),
-                          secondTitleLine: "KM\n" + R.strings.leadingDist,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing15,
-                    ),
-                    // New members this week & Members
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        NormalInfoBox(
-                          id: "5",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamNewMemThisWeek),
-                          secondTitleLine: R.strings.newMemThisWeek,
-                        ),
-                        SizedBox(
-                          width: R.appRatio.appSpacing15,
-                        ),
-                        NormalInfoBox(
-                          id: "6",
-                          boxSize: R.appRatio.appWidth100,
-                          dataLine: numberDisplayAdapter(_teamMembers),
-                          secondTitleLine: R.strings.members,
-                          pressBox: (id) {
-                            // TODO: Pass teamId to pushPage!!!
-                            pushPage(context, TeamMemberPage(teamId: widget.teamId, teamMemberType: _userRole,));
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // Tool zone
-              // TODO: Pass teamId to pushPage!!!
-              (_userRole > 1
-                  ? Container()
-                  : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: R.appRatio.appSpacing15,
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: Text(
-                      R.strings.toolZone,
-                      style: R.styles.shadowLabelStyle,
-                    ),
+                      (_userRole > 1
+                          ? Container()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: R.appRatio.appSpacing15,
+                                    bottom: R.appRatio.appSpacing15,
+                                  ),
+                                  child: Text(
+                                    R.strings.toolZone,
+                                    style: R.styles.shadowLabelStyle,
+                                  ),
+                                ),
+                                // Make team public
+                                (_userRole == 1
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: R.appRatio.appSpacing15,
+                                        ),
+                                        child: LineButton(
+                                          mainText:
+                                              R.strings.makeTeamPublicTitle,
+                                          mainTextFontSize:
+                                              R.appRatio.appFontSize18,
+                                          subTextFontSize:
+                                              R.appRatio.appFontSize14,
+                                          subText:
+                                              R.strings.makeTeamPublicSubtitle,
+                                          enableBottomUnderline: true,
+                                          enableSwitchButton: true,
+                                          initSwitchStatus: _teamPublicStatus,
+                                          switchButtonOffTitle: "Off",
+                                          switchButtonOnTitle: "On",
+                                          switchFunction: (status) =>
+                                              _changeTeamPrivacy(status),
+                                        ),
+                                      )
+                                    : Container()),
+                                // Transfer ownership
+                                (_userRole == 1
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: R.appRatio.appSpacing15,
+                                        ),
+                                        child: LineButton(
+                                          mainText:
+                                              R.strings.transferOwnershipTitle,
+                                          mainTextFontSize:
+                                              R.appRatio.appFontSize18,
+                                          subTextFontSize:
+                                              R.appRatio.appFontSize14,
+                                          subText: R.strings
+                                              .transferOwnershipSubtitle,
+                                          enableBottomUnderline: true,
+                                          enableBoxButton: true,
+                                          boxButtonTitle: R.strings.transfer,
+                                          boxButtonFuction: () =>
+                                              _transferOwnership(),
+                                        ),
+                                      )
+                                    : Container()),
+                                // Delete team
+                                (_userRole == 1
+                                    ? LineButton(
+                                        mainText: R.strings.deleteTeamTitle,
+                                        mainTextFontSize:
+                                            R.appRatio.appFontSize18,
+                                        subTextFontSize:
+                                            R.appRatio.appFontSize14,
+                                        subText: R.strings.deleteTeamSubtitle,
+                                        enableBottomUnderline: true,
+                                        enableBoxButton: true,
+                                        boxButtonTitle: R.strings.delete,
+                                        boxButtonFuction: () => _deleteTeam(),
+                                      )
+                                    : Container()),
+                              ],
+                            )),
+                    ],
                   ),
-                  // Make team public
-                  (_userRole == 1
-                      ? Padding(
-                    padding: EdgeInsets.only(
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: LineButton(
-                      mainText: R.strings.makeTeamPublicTitle,
-                      mainTextFontSize:
-                      R.appRatio.appFontSize18,
-                      subTextFontSize:
-                      R.appRatio.appFontSize14,
-                      subText:
-                      R.strings.makeTeamPublicSubtitle,
-                      enableBottomUnderline: true,
-                      enableSwitchButton: true,
-                      initSwitchStatus: _teamPublicStatus,
-                      switchButtonOffTitle: "Off",
-                      switchButtonOnTitle: "On",
-                      switchFunction: (status) =>
-                          _changeTeamPrivacy(status),
-                    ),
-                  )
-                      : Container()),
-                  // Transfer ownership
-                  (_userRole == 1
-                      ? Padding(
-                    padding: EdgeInsets.only(
-                      bottom: R.appRatio.appSpacing15,
-                    ),
-                    child: LineButton(
-                      mainText:
-                      R.strings.transferOwnershipTitle,
-                      mainTextFontSize:
-                      R.appRatio.appFontSize18,
-                      subTextFontSize:
-                      R.appRatio.appFontSize14,
-                      subText:
-                      R.strings.transferOwnershipSubtitle,
-                      enableBottomUnderline: true,
-                      enableBoxButton: true,
-                      boxButtonTitle: R.strings.transfer,
-                      boxButtonFuction: () =>
-                          _transferOwnership(),
-                    ),
-                  )
-                      : Container()),
-                  // Delete team
-                  (_userRole == 1
-                      ? LineButton(
-                    mainText: R.strings.deleteTeamTitle,
-                    mainTextFontSize:
-                    R.appRatio.appFontSize18,
-                    subTextFontSize: R.appRatio.appFontSize14,
-                    subText: R.strings.deleteTeamSubtitle,
-                    enableBottomUnderline: true,
-                    enableBoxButton: true,
-                    boxButtonTitle: R.strings.delete,
-                    boxButtonFuction: () => _deleteTeam(),
-                  )
-                      : Container()),
-                ],
-              )),
-            ],
-          ),
-        ))),));
+                )),
+        ),
+      ),
+    );
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }
