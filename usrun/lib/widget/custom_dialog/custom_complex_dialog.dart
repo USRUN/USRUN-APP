@@ -99,7 +99,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
   }
 
   Widget _renderInputFields() {
-    if (widget.inputFieldList == null) {
+    if (widget.inputFieldList == null || widget.inputFieldList.length == 0) {
       return Container();
     }
 
@@ -240,19 +240,18 @@ class _ComplexDialogState extends State<_ComplexDialog> {
         // Second button
         (_existSecondButton
             ? Expanded(
-                child: Container(
+                child: SizedBox(
                   height: _buttonHeight,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(radius),
-                    ),
-                    color: Colors.white,
-                  ),
                   child: FlatButton(
                     onPressed: () => widget.secondButtonFunction(),
                     padding: EdgeInsets.all(0.0),
                     splashColor: R.colors.lightBlurMajorOrange,
                     textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(radius),
+                      ),
+                    ),
                     child: Text(
                       widget.secondButtonText,
                       textScaleFactor: 1.0,
@@ -279,22 +278,21 @@ class _ComplexDialogState extends State<_ComplexDialog> {
             : Container()),
         // First button
         Expanded(
-          child: Container(
+          child: SizedBox(
             height: _buttonHeight,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: (!_existSecondButton
-                    ? Radius.circular(radius)
-                    : Radius.circular(0.0)),
-                bottomRight: Radius.circular(radius),
-              ),
-              color: Colors.white,
-            ),
             child: FlatButton(
               onPressed: () => widget.firstButtonFunction(),
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: (!_existSecondButton
+                      ? Radius.circular(radius)
+                      : Radius.circular(0.0)),
+                  bottomRight: Radius.circular(radius),
+                ),
+              ),
               child: Text(
                 widget.firstButtonText,
                 textScaleFactor: 1.0,
@@ -312,25 +310,24 @@ class _ComplexDialogState extends State<_ComplexDialog> {
   }
 
   Widget _renderContent() {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // Description
-          _renderDescription(),
-          // InputField
-          _renderInputFields(),
-          // CheckBox
-          _renderCheckBoxes(),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // Description
+        _renderDescription(),
+        // InputField
+        _renderInputFields(),
+        // CheckBox
+        _renderCheckBoxes(),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus();
     Widget _buildElement = Container(
       constraints: BoxConstraints(
         maxWidth: widget.maxWidth,
@@ -361,7 +358,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
               thickness: 1.0,
             ),
             // Button (Discard & Submit)
-            _renderButtons()
+            _renderButtons(),
           ],
         ),
       ),

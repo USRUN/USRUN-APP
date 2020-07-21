@@ -21,16 +21,14 @@ class TeamSearchPage extends StatefulWidget {
   final int resultPerPage = 15;
   final List defaultList;
 
-  TeamSearchPage({
-    this.autoFocusInput = false,
-    @required this.defaultList
-  });
+  TeamSearchPage({this.autoFocusInput = false, @required this.defaultList});
 
   @override
   _TeamSearchPageState createState() => _TeamSearchPageState();
 }
 
 class _TeamSearchPageState extends State<TeamSearchPage> {
+  final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
   bool remainingResults;
@@ -47,9 +45,10 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     remainingResults = true;
     teamList = List();
 
-    if(widget.defaultList != null)
+    if (widget.defaultList != null)
       teamList = widget.defaultList;
-    else _findTeamByName();
+    else
+      _findTeamByName();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -62,14 +61,14 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     });
   }
 
-
   void _findTeamByName() async {
-    if(!remainingResults) return;
+    if (!remainingResults) return;
 
     remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamRequest(curSearchString, curResultPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager.findTeamRequest(
+        curSearchString, curResultPage, widget.resultPerPage);
 
-    if(response.success && (response.object as List).isNotEmpty){
+    if (response.success && (response.object as List).isNotEmpty) {
       List<TeamItem> toAdd = List();
       response.object.forEach((element) {
         toAdd.add(new TeamItem.from(element));
@@ -115,12 +114,13 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   }
 
   bool _isEmptyList() {
-    return ((this.teamList == null || this.teamList.length == 0) ? true : false);
+    return ((this.teamList == null || this.teamList.length == 0)
+        ? true
+        : false);
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        R.strings.noResult;
+    String systemNoti = R.strings.noResult;
 
     return Center(
       child: Container(
@@ -144,41 +144,38 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     return AnimationLimiter(
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-        if (scrollInfo.metrics.pixels ==
-            scrollInfo.metrics.maxScrollExtent) {
-          if(remainingResults)
-            _findTeamByName();
-        }
-        return true; // just to clear a warning
-      },
-      child: _isEmptyList()?
-      _buildEmptyList():
-      ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount:(teamList!=null)?teamList.length:0,
-          itemBuilder: (BuildContext ctxt, int index) {
-            String avatarImageURL = teamList[index].avatarImageURL;
-            String supportImageURL = teamList[index].avatarImageURL;
-            String teamName = teamList[index].name;
-            String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(teamList[index].athleteQuantity);
-            String location = teamList[index].location.toString();
+          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            if (remainingResults) _findTeamByName();
+          }
+          return true; // just to clear a warning
+        },
+        child: _isEmptyList()
+            ? _buildEmptyList()
+            : ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: (teamList != null) ? teamList.length : 0,
+                itemBuilder: (BuildContext context, int index) {
+                  String avatarImageURL = teamList[index].avatarImageURL;
+                  String supportImageURL = teamList[index].avatarImageURL;
+                  String teamName = teamList[index].name;
+                  String athleteQuantity = NumberFormat("#,##0", "en_US")
+                      .format(teamList[index].athleteQuantity);
+                  String location = teamList[index].location.toString();
 
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 400),
-                  child: SlideAnimation(
-                    verticalOffset: 100.0,
-                    child: FadeInAnimation(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: (index == 0 ? R.appRatio.appSpacing20 : 0),
-                          bottom: R.appRatio.appSpacing20,
-                          left: R.appRatio.appSpacing15,
-                          right: R.appRatio.appSpacing15,
-                        ),
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 400),
+                    child: SlideAnimation(
+                      verticalOffset: 100.0,
+                      child: FadeInAnimation(
                         child: CustomCell(
+                          padding: EdgeInsets.only(
+                            top: R.appRatio.appSpacing15 - 2,
+                            bottom: R.appRatio.appSpacing15 - 2,
+                            left: R.appRatio.appSpacing15,
+                            right: R.appRatio.appSpacing15,
+                          ),
                           avatarView: AvatarView(
                             avatarImageURL: avatarImageURL,
                             avatarImageSize: R.appRatio.appWidth60,
@@ -186,9 +183,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                               width: 1,
                               color: R.colors.majorOrange,
                             ),
-                            pressAvatarImage: () {
-                              print("Pressing avatar image");
-                            },
                           ),
                           // Content
                           title: teamName,
@@ -204,15 +198,20 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
                           secondAddedTitleIconSize: R.appRatio.appIconSize15,
                           pressInfo: () {
-                            print("Pressing info");
-                            pushPage(context, TeamInfoPage(teamId: teamList[index].teamId));
+                            pushPage(
+                              context,
+                              TeamInfoPage(
+                                teamId: teamList[index].teamId,
+                              ),
+                            );
                           },
                         ),
                       ),
                     ),
-                  ),
-                );
-              })),
+                  );
+                },
+              ),
+      ),
     );
   }
 
@@ -232,6 +231,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         gradient: R.colors.uiGradient,
         title: InputField(
           controller: _textSearchController,
+          focusNode: _searchFocusNode,
           hintText: R.strings.search,
           hintStyle: TextStyle(
             fontSize: R.appRatio.appFontSize18,
@@ -256,8 +256,9 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

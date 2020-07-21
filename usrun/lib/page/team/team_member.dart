@@ -58,11 +58,7 @@ class TeamMemberPage extends StatefulWidget {
 
   final tabBarItems = [R.strings.all];
 
-  final List<List<PopupItem>> member_options = [
-    [],
-    [],
-    []
-  ];
+  final List<List<PopupItem>> member_options = [[], [], []];
 
   final List<List<PopupItem>> admin_options = [
     [],
@@ -106,7 +102,6 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final TextEditingController _nameController = TextEditingController();
-
 
   final String _nameLabel = "User Code or Email";
 
@@ -407,7 +402,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             width: R.appRatio.appWidth40,
             child: FlatButton(
               onPressed: () {
-              _showCustomDialog(0);
+                _showCustomDialog(0);
               },
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -630,6 +625,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     }
   }
 
+  // TODO: Test focusnode
+  final FocusNode _testInvite = FocusNode();
+
   void _showCustomDialog(index) async {
     switch (index) {
       case 0: // Invite
@@ -638,11 +636,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           headerContent: R.strings.inviteNewMember,
           descriptionContent: R.strings.inviteNewMemberContent,
           inputFieldList: [
-            new InputField(
+            InputField(
               controller: _nameController,
               enableFullWidth: true,
               labelTitle: _nameLabel,
               hintText: _nameLabel,
+              focusNode: _testInvite,
             ),
           ],
           firstButtonText: R.strings.invite.toUpperCase(),

@@ -21,22 +21,28 @@ class CustomCell extends StatelessWidget {
   final String secondAddedTitleIconURL;
   final double secondAddedTitleIconSize;
   final Function pressInfo;
+  final EdgeInsets padding;
+  final ShapeBorder shape;
 
   // Avatar view
   final AvatarView avatarView;
 
   // Suffix actions
   final bool centerVerticalSuffix;
+
   // + FF button
   final bool enableFFButton;
   final bool isFollowButton;
   final Function pressFFButton;
+
   // + 3 dots
   final bool enablePopupMenuButton;
   final CustomPopupMenu customPopupMenu;
+
   // + Close button
   final bool enableCloseButton;
   final Function pressCloseButton;
+
   // + Check button
   final bool enableCheckButton;
   final Function pressCheckButton;
@@ -56,6 +62,8 @@ class CustomCell extends StatelessWidget {
     this.secondAddedTitleIconURL = "",
     this.secondAddedTitleIconSize = 12,
     this.pressInfo,
+    this.padding = const EdgeInsets.all(0),
+    this.shape,
     @required this.avatarView,
     this.centerVerticalSuffix = false,
     this.enableFFButton = false,
@@ -67,7 +75,7 @@ class CustomCell extends StatelessWidget {
     this.pressCloseButton,
     this.enableCheckButton = false,
     this.pressCheckButton,
-  })  : assert(avatarView != null && title != null),
+  })  : assert(avatarView != null && title != null && padding != null),
         assert(title.length != 0);
 
   Widget _renderFFButton() {
@@ -190,68 +198,89 @@ class CustomCell extends StatelessWidget {
   }
 
   Widget _renderContent() {
-    return Container(
-      width: 60, // test
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          // Title
-          Text(
-            this.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: (this.titleStyle ??
-                TextStyle(
-                  fontSize: R.appRatio.appFontSize18,
-                  color: R.colors.contentText,
-                  fontWeight: FontWeight.bold,
-                )),
-          ),
-          // Subtitle
-          (this.subTitle != null && this.subTitle.length != 0
-              ? Container(
-                  padding: EdgeInsets.only(
-                    top: R.appRatio.appSpacing5 + 2,
-                  ),
-                  child: Text(
-                    this.subTitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: (this.subTitleStyle ??
-                        TextStyle(
-                          fontSize: R.appRatio.appFontSize14,
-                          color: R.colors.contentText,
-                        )),
-                  ),
-                )
-              : Container()),
-          // First & second added title
-          (this.enableAddedContent
-              ? Container(
-                  padding: EdgeInsets.only(
-                    top: R.appRatio.appSpacing10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // First added title
-                      ImageCacheManager.getImage(
-                        url: this.firstAddedTitleIconURL,
-                        width: this.firstAddedTitleIconSize,
-                        height: this.firstAddedTitleIconSize,
-                        fit: BoxFit.contain,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        // Title
+        Text(
+          this.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: (this.titleStyle ??
+              TextStyle(
+                fontSize: R.appRatio.appFontSize18,
+                color: R.colors.contentText,
+                fontWeight: FontWeight.bold,
+              )),
+        ),
+        // Subtitle
+        (this.subTitle != null && this.subTitle.length != 0
+            ? Container(
+                padding: EdgeInsets.only(
+                  top: R.appRatio.appSpacing5 + 2,
+                ),
+                child: Text(
+                  this.subTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: (this.subTitleStyle ??
+                      TextStyle(
+                        fontSize: R.appRatio.appFontSize14,
+                        color: R.colors.contentText,
+                      )),
+                ),
+              )
+            : Container()),
+        // First & second added title
+        (this.enableAddedContent
+            ? Container(
+                padding: EdgeInsets.only(
+                  top: R.appRatio.appSpacing10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // First added title
+                    ImageCacheManager.getImage(
+                      url: this.firstAddedTitleIconURL,
+                      width: this.firstAddedTitleIconSize,
+                      height: this.firstAddedTitleIconSize,
+                      fit: BoxFit.contain,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: R.appRatio.appSpacing5,
+                        right: R.appRatio.appSpacing10,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
+                      constraints:
+                          BoxConstraints(maxWidth: R.appRatio.appWidth120),
+                      child: Text(
+                        this.firstAddedTitle,
+                        overflow: TextOverflow.ellipsis,
+                        style: (this.firstAddedTitleStyle ??
+                            TextStyle(
+                              fontSize: R.appRatio.appFontSize12,
+                              color: R.colors.contentText,
+                            )),
+                      ),
+                    ),
+                    // Second added title
+                    ImageCacheManager.getImage(
+                      url: this.secondAddedTitleIconURL,
+                      width: this.secondAddedTitleIconSize,
+                      height: this.secondAddedTitleIconSize,
+                      fit: BoxFit.contain,
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(
                           left: R.appRatio.appSpacing5,
-                          right: R.appRatio.appSpacing10,
                         ),
-                        constraints: BoxConstraints(maxWidth: R.appRatio.appWidth120),
                         child: Text(
-                          this.firstAddedTitle,
+                          this.secondAddedTitle,
                           overflow: TextOverflow.ellipsis,
                           style: (this.firstAddedTitleStyle ??
                               TextStyle(
@@ -260,75 +289,56 @@ class CustomCell extends StatelessWidget {
                               )),
                         ),
                       ),
-                      // Second added title
-                      ImageCacheManager.getImage(
-                        url: this.secondAddedTitleIconURL,
-                        width: this.secondAddedTitleIconSize,
-                        height: this.secondAddedTitleIconSize,
-                        fit: BoxFit.contain,
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            left: R.appRatio.appSpacing5,
-                          ),
-                          child: Text(
-                            this.secondAddedTitle,
-                            overflow: TextOverflow.ellipsis,
-                            style: (this.firstAddedTitleStyle ??
-                                TextStyle(
-                                  fontSize: R.appRatio.appFontSize12,
-                                  color: R.colors.contentText,
-                                )),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Container()),
-        ],
-      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container()),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          // Avatar view
-          (this.avatarView ?? Container()),
-          SizedBox(
-            width: R.appRatio.appSpacing15,
-          ),
-          // Content
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (this.pressInfo != null) {
-                  this.pressInfo();
-                }
-              },
+    return FlatButton(
+      splashColor: R.colors.lightBlurMajorOrange,
+      textColor: Colors.white,
+      padding: this.padding,
+      onPressed: () {
+        if (this.pressInfo != null) {
+          this.pressInfo();
+        }
+      },
+      shape: shape,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            // Avatar view
+            (this.avatarView ?? Container()),
+            SizedBox(
+              width: R.appRatio.appSpacing15,
+            ),
+            // Content
+            Expanded(
               child: this._renderContent(),
             ),
-          ),
-          // Suffix actions
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: (centerVerticalSuffix
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start),
-            children: <Widget>[
-              this._renderFFButton(),
-              this._renderPopupMenuButton(),
-              this._renderCloseButton(),
-              this._renderCheckButton(),
-            ],
-          ),
-        ],
+            // Suffix actions
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: (centerVerticalSuffix
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start),
+              children: <Widget>[
+                this._renderFFButton(),
+                this._renderPopupMenuButton(),
+                this._renderCloseButton(),
+                this._renderCheckButton(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
