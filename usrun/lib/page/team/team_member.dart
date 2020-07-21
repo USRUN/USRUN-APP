@@ -105,17 +105,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   List options = List();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  static final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
-  static final InputField _inviteField = InputField(
-    controller: _nameController,
-    enableFullWidth: false,
-    labelTitle: R.strings.name,
-    autoFocus: true,
-  );
-  final List<InputField> _inviteInputFields = List.filled(1, _inviteField);
 
-  final String _nameLabel = R.strings.name;
+  final String _nameLabel = "User Code or Email";
 
   @override
   void initState() {
@@ -154,6 +147,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     Response<dynamic> res =
         await TeamManager.inviteNewMember(widget.teamId, data);
     if (res.success) {
+      pop(this.context);
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: "Invitation sent",
@@ -161,6 +155,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           firstButtonFunction: () => pop(this.context),
           secondButtonText: null);
     } else {
+      pop(this.context);
       showCustomAlertDialog(context,
           title: R.strings.error,
           content: res.errorMessage,
@@ -412,14 +407,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             width: R.appRatio.appWidth40,
             child: FlatButton(
               onPressed: () {
-//                showCustomComplexDialog(
-//                  headerContent: R.strings.inviteNewMember,
-//                  context: context,
-//                  descriptionContent: R.strings.inviteNewMemberContent,
-//                  submitBtnContent: R.strings.inviteNewMember,
-//                  submitBtnFunction: _inviteMember,
-//                  inputFieldList: _inviteInputFields,
-//                );
+              _showCustomDialog(0);
               },
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -650,9 +638,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           headerContent: R.strings.inviteNewMember,
           descriptionContent: R.strings.inviteNewMemberContent,
           inputFieldList: [
-            InputField(
+            new InputField(
               controller: _nameController,
-              enableFullWidth: false,
+              enableFullWidth: true,
               labelTitle: _nameLabel,
               hintText: _nameLabel,
             ),
@@ -661,6 +649,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           firstButtonFunction: () {
             // TODO: Implement function here
             print("Invite new member");
+            _inviteMember(_nameController.text);
           },
           secondButtonText: R.strings.cancel.toUpperCase(),
           secondButtonFunction: () => pop(context),

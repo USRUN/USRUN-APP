@@ -11,6 +11,7 @@ import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/web_inapp_page.dart';
 
@@ -22,6 +23,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
 
   User currentUser = UserManager.currentUser;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +152,18 @@ class _SettingPageState extends State<SettingPage> {
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
+                  showCustomComplexDialog(
+                    context: context,
+                    headerContent: R.strings.kickAMember,
+                    descriptionContent: R.strings.kickAMemberContent,
+                    firstButtonText: R.strings.kick.toUpperCase(),
+                    firstButtonFunction: () {
+                      // TODO: Implement function here
+                      print("Kick a member");
+                    },
+                    secondButtonText: R.strings.cancel.toUpperCase(),
+                    secondButtonFunction: () => pop(context),
+                  );
                 },
               ),
               SizedBox(

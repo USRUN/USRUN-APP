@@ -186,7 +186,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                               width: 1,
                               color: R.colors.majorOrange,
                             ),
-                            supportImageURL: supportImageURL,
                             pressAvatarImage: () {
                               print("Pressing avatar image");
                             },

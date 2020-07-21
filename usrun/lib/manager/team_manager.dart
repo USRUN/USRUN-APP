@@ -307,7 +307,7 @@ class TeamManager{
       'teamId': teamId,
       'userId': toInviteId
     };
-    Response<dynamic> res = await Client.post('/team/inviteNewMember',params);
+    Response<dynamic> res = await Client.post('/team/invite',params);
 
     return res;
   }
