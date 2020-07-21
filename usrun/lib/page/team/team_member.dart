@@ -35,25 +35,29 @@ class TeamMemberPage extends StatefulWidget {
 
   static final popUpMenu = [
     PopupItem(
-        iconURL: R.myIcons.closeIconByTheme,
-        iconSize: R.appRatio.appIconSize15,
-        title: R.strings.kickAMember,
-        value: "Kick"),
+      iconURL: R.myIcons.closeIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.kickAMember,
+      value: "Kick",
+    ),
     PopupItem(
-        iconURL: R.myIcons.blockIconByTheme,
-        iconSize: R.appRatio.appIconSize15,
-        title: R.strings.blockAPerson,
-        value: "Block"),
+      iconURL: R.myIcons.blockIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.blockAPerson,
+      value: "Block",
+    ),
     PopupItem(
-        iconURL: R.myIcons.starIconByTheme,
-        iconSize: R.appRatio.appIconSize15,
-        title: R.strings.promoteAPerson,
-        value: "Promote"),
+      iconURL: R.myIcons.starIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.promoteAPerson,
+      value: "Promote",
+    ),
     PopupItem(
-        iconURL: R.myIcons.caloriesStatsIconByTheme,
-        iconSize: R.appRatio.appIconSize15,
-        title: R.strings.demoteAPerson,
-        value: "Demote"),
+      iconURL: R.myIcons.caloriesStatsIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.demoteAPerson,
+      value: "Demote",
+    ),
   ];
 
   final tabBarItems = [R.strings.all];
@@ -398,6 +402,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
         actions: <Widget>[
+          // TODO: Test
+          CustomPopupMenu<String>(
+            items: TeamMemberPage.popUpMenu,
+            onSelected: (index) {
+              print("Index: $index");
+            },
+          ),
           Container(
             width: R.appRatio.appWidth40,
             child: FlatButton(
