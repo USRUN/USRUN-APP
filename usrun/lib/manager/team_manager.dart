@@ -302,7 +302,7 @@ class TeamManager{
     return response;
   }
 
-  static Future<Response> inviteNewMember(int teamId, int toInviteId) async{
+  static Future<Response> inviteNewMember(int teamId, dynamic toInviteId) async{
     Map<String,dynamic> params = {
       'teamId': teamId,
       'userId': toInviteId

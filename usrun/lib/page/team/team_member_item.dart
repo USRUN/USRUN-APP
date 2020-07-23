@@ -8,7 +8,7 @@ class TeamMemberItem {
   String location;
   bool isFollowing;
   int userId;
-  UserRole teamMemberType;
+  TeamMemberType teamMemberType;
 
   TeamMemberItem({
     this.avatarImageURL = "",
@@ -16,7 +16,7 @@ class TeamMemberItem {
     this.name = "",
     this.location = "",
     this.isFollowing = false,
-    this.teamMemberType = UserRole.Guest,
+    this.teamMemberType = TeamMemberType.Guest,
     this.userId = -1
   }) : assert(
             avatarImageURL != null &&

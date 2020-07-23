@@ -49,7 +49,7 @@ class User extends MapperObject {
 
   List<int> notifications;
 
-  UserRole teamMemberType;
+  TeamMemberType teamMemberType;
 
   @override
   bool operator == (other) {

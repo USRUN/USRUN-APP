@@ -13,6 +13,7 @@ import 'package:usrun/model/team_member.dart';
 import 'package:usrun/model/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/page/team/team_member_item.dart';
+import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -86,7 +87,7 @@ class TeamMemberPage extends StatefulWidget {
   ];
 
   final int teamId;
-  final int teamMemberType;
+  final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
 
   TeamMemberPage({@required this.teamId, @required this.teamMemberType});
@@ -117,21 +118,21 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _curPage = 1;
     _remainingResults = true;
 
-    if (widget.teamMemberType < 3) {
+    if (TeamMemberUtil.authorizeHigherLevel(TeamMemberType.Admin, widget.teamMemberType)) {
       tabItems = widget.adminTabBarItems;
     } else {
       tabItems = widget.tabBarItems;
     }
 
     switch (widget.teamMemberType) {
-      case 1:
+      case TeamMemberType.Owner:
         options = List<List<PopupItem>>();
         options = widget.owner_options;
         break;
-      case 2:
+      case TeamMemberType.Admin:
         options = widget.admin_options;
         break;
-      case 3:
+      default:
         options = widget.member_options;
         break;
     }
@@ -152,7 +153,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           content: "Invitation sent",
           firstButtonText: R.strings.ok,
           firstButtonFunction: () => pop(this.context),
-          secondButtonText: null);
+          secondButtonText: "");
     } else {
       pop(this.context);
       showCustomAlertDialog(context,
@@ -160,7 +161,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           content: res.errorMessage,
           firstButtonText: R.strings.ok,
           firstButtonFunction: () => pop(this.context),
-          secondButtonText: null);
+          secondButtonText: "");
     }
   }
 
@@ -196,7 +197,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     if (response.success && (response.object as List).isNotEmpty) {
       List<User> toAdd = response.object;
 
-      UserRole queryMemberType = UserRole.values[memberType];
+      TeamMemberType queryMemberType = TeamMemberType.values[memberType];
       toAdd.forEach((element) {
         element.teamMemberType = queryMemberType;
       });

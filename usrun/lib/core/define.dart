@@ -99,7 +99,7 @@ enum LoginChannel {
 enum EventType { League, Team, User }
 
 @reflector
-enum UserRole { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
+enum TeamMemberType { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
 
 @reflector
 enum TeamVerifyStatus {
