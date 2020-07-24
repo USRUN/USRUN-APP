@@ -20,9 +20,9 @@ class RecordButton extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("GPS not found"),
-          content: Text("GPS not detected. Please activate it."),
-        ));
+              title: Text("GPS not found"),
+              content: Text("GPS not detected. Please activate it."),
+            ));
   }
 
   void showRequestServiceDialog() {
@@ -30,13 +30,13 @@ class RecordButton extends StatelessWidget {
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: '${R.strings.gpsServiceUnavailable}. ${R.strings.enableGPS}',
-          secondButtonText: R.strings.ok,
-          secondButtonFunction: () async {
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () async {
             await this.bloc.requestService();
             pop(this.context);
           },
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () {
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () {
             pop(this.context);
           });
   }
@@ -63,8 +63,8 @@ class RecordButton extends StatelessWidget {
               title: R.strings.notice,
               content: R.strings.gpsNotFound,
               firstButtonText: R.strings.ok, firstButtonFunction: () {
-                pop(this.context);
-              });
+            pop(this.context);
+          });
         }
       }
     } catch (error) {}
@@ -101,8 +101,8 @@ class RecordButton extends StatelessWidget {
             title: R.strings.notice,
             content: R.strings.gpsNotFound,
             firstButtonText: R.strings.ok, firstButtonFunction: () {
-              pop(this.context);
-            }, secondButtonText: "", secondButtonFunction: null);
+          pop(this.context);
+        }, secondButtonText: "", secondButtonFunction: null);
       }
     }
   }
@@ -236,7 +236,6 @@ class RecordButton extends StatelessWidget {
         });
   }
 
-
   _buildLayoutForStateNone(BuildContext context) {
     return Align(
         alignment: Alignment.bottomCenter,
@@ -263,14 +262,14 @@ class RecordButton extends StatelessWidget {
                                     icon: R.myIcons.icStartRecord,
                                     size: R.appRatio.deviceWidth / 5.5,
                                     onPress: snapshot.data == null ||
-                                        snapshot.data !=
-                                            GPSSignalStatus.READY
+                                            snapshot.data !=
+                                                GPSSignalStatus.READY
                                         ? () {
-                                      showRequestServiceDialog();
-                                    }
+                                            showRequestServiceDialog();
+                                          }
                                         : () {
-                                      onStartButtonTap();
-                                    }),
+                                            onStartButtonTap();
+                                          }),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
                                 ),
@@ -329,6 +328,7 @@ class ChooseEventButton extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ChooseEventButtonState();
   final Function onPress;
+
   ChooseEventButton(this.onPress);
 }
 
