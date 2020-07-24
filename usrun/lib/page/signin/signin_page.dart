@@ -23,7 +23,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    return Scaffold(
+    Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
@@ -46,75 +46,85 @@ class SignInPage extends StatelessWidget {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
       ),
-      body: CustomScrollView(slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Container(
-            padding: EdgeInsets.only(
-              left: R.appRatio.appSpacing15,
-              right: R.appRatio.appSpacing15,
-            ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
             child: Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    InputField(
-                      controller: _emailController,
-                      enableFullWidth: true,
-                      labelTitle: R.strings.email,
-                      hintText: R.strings.emailHint,
-                      textInputType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing25,
-                    ),
-                    InputField(
-                      controller: _passwordController,
-                      enableFullWidth: true,
-                      labelTitle: R.strings.password,
-                      hintText: R.strings.passwordHint,
-                      obscureText: true,
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing40,
-                    ),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () => pushPage(context, ResetPasswordPage()),
-                        child: Text(
-                          R.strings.forgotPassword,
-                          style: R.styles.shadowLabelStyle,
-                        ),
+              padding: EdgeInsets.only(
+                left: R.appRatio.appSpacing15,
+                right: R.appRatio.appSpacing15,
+              ),
+              child: Container(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
                       ),
-                    )
-                  ]),
+                      InputField(
+                        controller: _emailController,
+                        enableFullWidth: true,
+                        labelTitle: R.strings.email,
+                        hintText: R.strings.emailHint,
+                        textInputType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing25,
+                      ),
+                      InputField(
+                        controller: _passwordController,
+                        enableFullWidth: true,
+                        labelTitle: R.strings.password,
+                        hintText: R.strings.passwordHint,
+                        obscureText: true,
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing40,
+                      ),
+                      Center(
+                        child: GestureDetector(
+                          onTap: () => pushPage(context, ResetPasswordPage()),
+                          child: Text(
+                            R.strings.forgotPassword,
+                            style: R.styles.shadowLabelStyle,
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
             ),
           ),
-        ),
-        SliverFillRemaining(
-          hasScrollBody: false,
-          fillOverscroll: false,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: R.appRatio.appSpacing25,
-                bottom: R.appRatio.appSpacing25,
-              ),
-              child: UIButton(
+          SliverFillRemaining(
+            hasScrollBody: false,
+            fillOverscroll: false,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: R.appRatio.appSpacing25,
+                  bottom: R.appRatio.appSpacing25,
+                ),
+                child: UIButton(
                   width: R.appRatio.appWidth381,
                   height: R.appRatio.appHeight60,
                   gradient: R.colors.uiGradient,
                   text: R.strings.signIn,
                   textSize: R.appRatio.appFontSize22,
-                  onTap: () => _getSignInInfo(context)),
+                  onTap: () => _getSignInInfo(context),
+                ),
+              ),
             ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        });
   }
 
   _signIn(BuildContext context, LoginChannel channel,
