@@ -182,7 +182,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                         if (details.delta.dy >= -10.0) return;
                         if (_allowLoadMore) {
                           _allowLoadMore = false;
-                          _loadMoreActivityTimelineItems();
+                            _loadMoreActivityTimelineItems();
                         }
                       },
                       child: _renderActivityTimeline(item),

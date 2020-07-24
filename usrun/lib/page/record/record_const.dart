@@ -11,6 +11,11 @@ enum ReportVisibility {
   Gone
 }
 
+enum EventVisibility {
+  Visible,
+  Gone
+}
+
 enum GPSSignalStatus {
   CHECKING,
   READY,

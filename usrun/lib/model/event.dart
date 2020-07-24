@@ -8,18 +8,17 @@ import 'package:usrun/model/mapper_object.dart';
 @reflector
 class Event extends MapperObject {
   int eventId;
-  String name;
-  SportType sportType;
-  String description;
-  DateTime startDate;
-  DateTime endDate;
-  DateTime updateDate;
-  EventType type;
-  String img;
-  String logo;
-  bool isActive;
-  int memberCount;
-  int teamCount;
-  num distance;
-  UserRole userType;
+  int status;
+  DateTime createTime;
+  String eventName;
+  String subtitle;
+  String thumbnail;
+  String poster;
+  String banner;
+  int totalDistance;
+  int totalTeamParticipant;
+  int totalParticipant;
+  DateTime startTime;
+  DateTime endTime;
+  String sponsorName;
 }

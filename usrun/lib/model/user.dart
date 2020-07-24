@@ -12,15 +12,14 @@ class User extends MapperObject {
   LoginChannel type;
   String code;
   String email;
-  String img;
+  String avatar;
   String name;
   String nameSlug;
   bool isActive;
   String deviceToken;
   DateTime birthday;
   String phone;
-  String country;
-  String city;
+  int province;
   Gender gender;
   num weight;
   num height;
@@ -30,10 +29,9 @@ class User extends MapperObject {
   DateTime lastLogin;
 
   DateTime addDate;
-  DateTime updateDate;
+  DateTime updateTime;
 
-  int mainTeam;
-  DateTime switchTeamDate;
+  bool hcmus;
 
   int followerCount;
   int followingCount;
@@ -51,7 +49,7 @@ class User extends MapperObject {
 
   List<int> notifications;
 
-  UserRole teamRole;
+  TeamMemberType teamMemberType;
 
   @override
   bool operator == (other) {

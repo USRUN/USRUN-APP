@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/my_date_picker/my_horizontal_month_list.dart';
 import 'package:usrun/widget/my_date_picker/my_week_list.dart';
 import 'package:usrun/widget/my_date_picker/my_year_list.dart';

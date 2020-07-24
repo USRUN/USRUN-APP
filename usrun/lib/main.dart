@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -8,6 +10,7 @@ import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter/services.dart';
+import 'package:usrun/util/lifecycle_handler.dart';
 import 'main.reflectable.dart';
 
 void main() {
@@ -21,6 +24,7 @@ void main() {
 }
 
 GlobalKey<_UsRunAppState> _appGlobalkey = GlobalKey();
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class UsRunApp extends StatefulWidget {
   final Widget child;
@@ -59,6 +63,7 @@ class _UsRunAppState extends State<UsRunApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -102,6 +107,8 @@ class _SplashPageState extends State<StatefulWidget> {
       Duration(milliseconds: 2000),
       () => initialize(context),
     ).then((_) {
+      WidgetsBinding.instance.addObserver(
+          NetworkObserver(context: navigatorKey.currentState.overlay.context));
       if (UserManager.currentUser.userId == null) {
         showPage(context, WelcomePage());
       } else {

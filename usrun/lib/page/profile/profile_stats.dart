@@ -2,9 +2,9 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/week_date_time.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
@@ -270,7 +270,7 @@ class _ProfileStatsState extends State<ProfileStats> {
 
           if (datePick != null && datePick != _selectedWeek) {
             setState(() {
-              _selectedWeek = datePick;
+              _selectedWeek = datePick as WeekDateTime;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
             _getProfileStatsData();

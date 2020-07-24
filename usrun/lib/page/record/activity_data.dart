@@ -31,7 +31,7 @@ class ActivityData{
     this.deleted = 0;
     this.showMap = true;
     this.privacy = ActivityPrivacyMode.Public;
-    this.sig = UsrunCrypto.buildActivitySig();
+    this.sig = "";
     this.photos = [];
     this.recordData = data;
   }
