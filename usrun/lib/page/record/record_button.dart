@@ -119,7 +119,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icResumeRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onResumeButtonTap();
                   }),
@@ -129,7 +129,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icStopRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onFinishButtonTap(context);
                   }),
@@ -164,7 +164,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icPauseRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onPauseButtonTap();
                   }),
@@ -194,7 +194,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icStatisticWhite,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateReportVisibility(ReportVisibility.Visible),
             );
@@ -202,7 +202,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icStatisticColor,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateReportVisibility(ReportVisibility.Gone),
             );
@@ -220,7 +220,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icRecordEventWhite,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateEventVisibility(EventVisibility.Visible),
             );
@@ -228,7 +228,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icRecordEventColor,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateEventVisibility(EventVisibility.Gone),
             );
@@ -261,7 +261,7 @@ class RecordButton extends StatelessWidget {
                                 StateButton(
                                     disabled: false,
                                     icon: R.myIcons.icStartRecord,
-                                    size: R.appRatio.deviceWidth / 5,
+                                    size: R.appRatio.deviceWidth / 5.5,
                                     onPress: snapshot.data == null ||
                                         snapshot.data !=
                                             GPSSignalStatus.READY
@@ -341,7 +341,7 @@ class _ChooseEventButtonState extends State<ChooseEventButton> {
     return StateButton(
         disabled: false,
         icon: icon,
-        size: R.appRatio.deviceWidth / 7,
+        size: R.appRatio.deviceWidth / 7.5,
         onPress: () {
           setState(() {
             if (isPressed)
