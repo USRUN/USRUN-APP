@@ -645,32 +645,32 @@ class DemoData {
   ];
 
   final popupMenuList01 = [
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackAttachmentIcon02,
       iconSize: R.appRatio.appIconSize15,
       title: "Pin (Unpin) post",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackNewsFeedIcon,
       iconSize: R.appRatio.appIconSize18,
       title: "Report post",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackPostIcon,
       iconSize: R.appRatio.appIconSize18,
       title: "Turn off comment",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackEditIcon,
       iconSize: R.appRatio.appIconSize15,
       title: "Edit post",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackBlockIcon,
       iconSize: R.appRatio.appIconSize18,
       title: "Hide post",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackCloseIcon,
       iconSize: R.appRatio.appIconSize15,
       title: "Delete post",
@@ -678,17 +678,17 @@ class DemoData {
   ];
 
   final popupMenuList02 = [
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackAddIcon02,
       iconSize: R.appRatio.appIconSize15 + 1,
       title: "Invite new member",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackCloseIcon,
       iconSize: R.appRatio.appIconSize15,
       title: "Kick a member",
     ),
-    CustomPopupItem(
+    PopupItem(
       iconURL: R.myIcons.blackBlockIcon,
       iconSize: R.appRatio.appIconSize15,
       title: "Block a person",
