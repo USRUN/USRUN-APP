@@ -23,21 +23,21 @@ class ChangePasswordPage extends StatelessWidget {
 
     if(newPassword.isEmpty|| oldPassword.isEmpty || retypeNewPassword.isEmpty){
       showCustomAlertDialog(context,
-          title: R.strings.error, content: "Please fill all the fields",
+          title: R.strings.error, content: R.strings.settingsCPEmptyField,
           firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
       return;
     }
 
     if(newPassword != retypeNewPassword){
       showCustomAlertDialog(context,
-          title: R.strings.error, content: "Password confirmation doesn't match",
+          title: R.strings.error, content: R.strings.settingsCPPwdNotMatch,
           firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
       return;
     }
 
     if(newPassword == oldPassword){
       showCustomAlertDialog(context,
-          title: R.strings.error, content: "New password must be different from the old password",
+          title: R.strings.error, content: R.strings.settingsCPNewPwdDifferent,
           firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
       return;
     }
@@ -46,8 +46,8 @@ class ChangePasswordPage extends StatelessWidget {
 
     if(changePasswordRequest.success){
       showCustomAlertDialog(context,
-      title: R.strings.error, content: "Password changed successfully",
-      firstButtonText: "Back to login page", firstButtonFunction: ()=>pop(context));
+      title: R.strings.error, content: R.strings.settingsChangePasswordSuccessful,
+      firstButtonText: R.strings.settingsBackToLogin, firstButtonFunction: ()=>pop(context));
     } else {
       showCustomAlertDialog(context,
       title: R.strings.error, content: changePasswordRequest.errorMessage,
@@ -85,9 +85,7 @@ class ChangePasswordPage extends StatelessWidget {
             width: R.appRatio.appWidth60,
             child: FlatButton(
               onPressed: () {
-                // TODO: Function for changing password
                 FocusScope.of(context).requestFocus(new FocusNode());
-                // _yourFunction('yourParameter'),
                 changePassword(context);
               },
               padding: EdgeInsets.all(0.0),

@@ -972,6 +972,8 @@ class Strings {
   String chooseImage;
   String gallery;
   String camera;
+  String imageTooLarge;
+  String imageUploadFailed;
 
   String uFeed;
 
@@ -1137,6 +1139,11 @@ class Strings {
   String settingsSOLegalTitle;
   String settingsSOAboutUsTitle;
   String settingsSOLogOutTitle;
+  String settingsChangePasswordSuccessful;
+  String settingsBackToLogin;
+  String settingsCPEmptyField;
+  String settingsCPPwdNotMatch;
+  String settingsCPNewPwdDifferent;
 
   String aboutUsUSRUNTitle;
   String aboutUsUSRUNSubtitle;

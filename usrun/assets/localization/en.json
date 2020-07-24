@@ -285,6 +285,11 @@
     "settingsSOLegalTitle": "Legal",
     "settingsSOAboutUsTitle": "About Us",
     "settingsSOLogOutTitle": "Log Out",
+    "settingsChangePasswordSuccessful": "Password changed successfully",
+    "settingsCPEmptyField": "Please fill all the fields",
+    "settingsCPPwdNotMatch": "Password confirmation doesn't match",
+    "settingsCPNewPwdDifferent": "New password must be different from the old password",
+    "settingsCPBackToLogin": "Back to login page",
 
     "aboutUsUSRUNTitle": "About USRUN",
     "aboutUsUSRUNSubtitle": "Both you and USRUN are flawless!",
@@ -355,6 +360,8 @@
     "chooseImage": "Choose Image",
     "gallery": "Gallery",
     "camera": "Camera",
+    "imageUploadFailed": "Image Upload Failed",
+    "imageTooLarge": "The image is too large. Please choose another image to upload.",
 
     "search": "Search",
 
