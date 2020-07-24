@@ -1,18 +1,17 @@
-
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:usrun/core/crypto.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/page/welcome/choose_language_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
-import 'main.reflectable.dart';
 import 'package:flutter/services.dart';
+import 'package:usrun/util/lifecycle_handler.dart';
+import 'main.reflectable.dart';
 
 void main() {
   ErrorWidget.builder = (FlutterErrorDetails details) => Container();
@@ -25,42 +24,26 @@ void main() {
 }
 
 GlobalKey<_UsRunAppState> _appGlobalkey = GlobalKey();
-bool _needInit = true;
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class UsRunApp extends StatefulWidget {
   final Widget child;
+
   UsRunApp({this.child}) : super(key: _appGlobalkey);
 
   static restartApp(int errorCode) async {
-    if (errorCode == 0) {
-      _restart();
-    } else {
-      if (errorCode == ACCESS_DENY) {
-        //await UserManager.logout();
-        //_resetUserConnectCheck();
+    switch (errorCode) {
+      case 0:
         _restart();
         return;
-      }
-
-      //update deviceToken to ""
-      Map<String, String> newData = {
-        'deviceToken': "",
-        'os': getPlatform().toString()
-      };
-      //Response response = await UserManager.updateProfile(newData);
-
-      // if (response.success) {
-      //   await UserManager.logout();
-      //   _resetUserConnectCheck();
-      //   _restart();
-      // } else {
-      //   showAlert(_appGlobalKey.currentState.context, R.strings.errorTitle, R.strings.errorLogoutFail, null);
-      // }
+      case ACCESS_DENY:
+        await UserManager.logout();
+        _restart();
+        return;
     }
   }
 
   static _restart() {
-    _needInit = true;
     _appGlobalkey.currentState.restart();
   }
 
@@ -80,6 +63,16 @@ class _UsRunAppState extends State<UsRunApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'), // English
+        const Locale('vi'), // Vietnamese
+      ],
       title: 'USRUN',
       key: key,
       theme: ThemeData(
@@ -111,16 +104,16 @@ class _SplashPageState extends State<StatefulWidget> {
 
   Future<void> _initApp() {
     return Future.delayed(
-            Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
-        .then((_) {
-          if (UserManager.currentUser.userId == null) {
-            // show welcome
-            showPage(context, WelcomePage());
-          }
-          else
-            {
-              showPage(context, AppPage());
-            }
-        }); // Raw: WelcomePage()
+      Duration(milliseconds: 2000),
+      () => initialize(context),
+    ).then((_) {
+      WidgetsBinding.instance.addObserver(
+          NetworkObserver(context: navigatorKey.currentState.overlay.context));
+      if (UserManager.currentUser.userId == null) {
+        showPage(context, WelcomePage());
+      } else {
+        showPage(context, AppPage());
+      }
+    }); // Raw: WelcomePage()
   }
 }

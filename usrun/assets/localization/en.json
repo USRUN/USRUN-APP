@@ -19,6 +19,7 @@
     "city": "City",
     "district": "District",
     "whatYourJob": "What's Your Job",
+    "whatYourJobHint": "Your Job",
     "birthday": "Birthday",
     "gender": "Gender",
     "height": "Height",
@@ -27,6 +28,21 @@
     "biographyHint": "Share something about yourself...",
     "follow": "Follow",
     "unFollow": "Unfollow",
+
+    "inviteNewMember": "Invite new member",
+    "inviteNewMemberContent": "You can send an invitation to anyone as long as they are not a member in this team. In “User Info” field, you can find them by their User Code or Name or Email.",
+    "invite": "Invite",
+    "kickAMember": "Kick a member",
+    "kickAMemberContent": "You can kick anyone as long as that person is a member in your team and the role is lower than you. Noting that, they can request to join your team again.",
+    "kick": "Kick",
+    "blockAPerson": "Block a person",
+    "blockAPersonContent": "You can block anyone as long as that person is a member in your team and the role is lower than you. After blocking, they will be kicked off of your team and can not request to join this team anymore. Noting that, they can still see your team’s information.",
+    "block": "Block",
+
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": " Year",
 
     "yearPicker": "YEAR PICKER",
     "monthPicker": "MONTH PICKER",
@@ -72,6 +88,12 @@
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
 
+    "caution": "Caution",
+    "exitApp": "Do you want to exit USRUN app?",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+
     "profile": "Profile",
     "editProfile": "Edit Profile",
 
@@ -104,9 +126,69 @@
     "events": "Events",
 
     "teams": "Teams",
+    "team": "Team",
+
+    "public": "Public",
+    "private": "Private",
+    "join": "Join",
+    "cancelJoin": "Cancel Join Request",
+    "acceptInvitation": "Accept The Invitation",
+    "symbol": "Symbol",
+    "verifiedByUsrun": "Verified by USRUN",
+    "teamStats": "Team Stats",
+    "leaderboard": "Leaderboard",
+    "rank": "Rank",
+    "activities": "Activities",
+    "members": "Members",
+    "leadingTime": "Leading Time",
+    "leadingDist": "Leading Dist",
+    "newMemThisWeek": "New Mem This Week",
+    "toolZone": "Tool Zone",
+    "makeTeamPublicTitle": "Make this team public",
+    "makeTeamPublicSubtitle": "Make this team visible to everyone",
+    "moderateNewPostsTitle": "Moderate new posts",
+    "moderateNewPostsSubtitle": "You can enable or disable this feature for moderating (approve or deny) a new post",
+    "create": "Create",
+    "createNewTeamPlanTitle": "Create a new team plan",
+    "createNewTeamPlanSubtitle": "Create a new team plan for everyone in your team to run together",
+    "grant": "Grant",
+    "grantRoleToMemberTitle": "Grant role to team members",
+    "grantRoleToMemberSubtitle": "You can grant role of a member to an admin and vice versa",
+    "transfer": "Transfer",
+    "transferOwnershipTitle": "Transfer ownership",
+    "transferOwnershipSubtitle": "Your transference needs the acceptance from the USRUN Administrator (UA). You’ll receive the response from the UA soon",
+    "delete": "Delete",
+    "deleteTeamTitle": "Delete this team",
+    "deleteTeamSubtitle": "Your team’ll be deleted after your deletion is confirmed and you receive the acceptance from the UA. There is no going back, please be certain",
+    "noResult": "We couldn't find any result.",
+    "noResultSubtitle": "Please make sure that you typed the name correctly and try again.",
+    "startSearch": "Start searching",
+    "startSearchSubtitle": "Try enter any name into the field above.",
+    "notAuthorizedTeamChange": "You are not authorized to change this information.",
+    "promoteAPerson": "Promote to admin",
+    "demoteAPerson": "Demote to user",
+    "requestTeamListTitle": "You are requesting to join",
+    "inviteTeamListTitle": "You are invited to",
+    "emptyMemberList": "There is no member in this list",
+    "emptyMemberListSubtitle": "Try reloading the page or invite more members",
+
     "viewAllTeams": "View All Teams",
     "yourTeams": "Your Teams",
     "weSuggestYou": "We Suggest You",
+    "teamLeaderboard": "Team Leaderboard",
+    "teamRank": "Team Rank",
+    "numberOrder": "No.",
+    "name": "Name",
+    "distanceKm": "Distance (KM)",
+    "distanceM": "Distance (M)",
+    "teamMember": "Team Member",
+    "all": "All",
+    "hiding": "Hiding",
+    "requesting": "Requesting",
+    "blocking": "Blocking",
+    "reporting": "Reporting",
+    "loading": "Loading...",
+    "loadingTeamInfo": "Loading team info...",
 
     "settings": "Settings",
     "changePassword": "Change Password",
@@ -116,7 +198,7 @@
     "hotContact": "Hot Contact",
     "legal": "Legal",
     "faqs": "FAQs",
-    
+
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",
     "notiActReactionSubtitle": "Notify me when someone sends me reaction",
@@ -203,7 +285,7 @@
     "settingsSOLegalTitle": "Legal",
     "settingsSOAboutUsTitle": "About Us",
     "settingsSOLogOutTitle": "Log Out",
-    
+
     "aboutUsUSRUNTitle": "About USRUN",
     "aboutUsUSRUNSubtitle": "Both you and USRUN are flawless!",
     "aboutUsDevelopersTitle": "Developers",
@@ -234,7 +316,7 @@
     "aboutUSRUN_7": "If you have any questions, please feel free to contact us at: usrun.hcmus@gmail.com.",
 
     "record": "Record",
-    "gpsAcquiring":"GPS Acquiring", 
+    "gpsAcquiring":"GPS Acquiring",
     "gpsReady":"GPS Ready",
     "gpsNotFound": "GPS Not Found",
     "gpsServiceUnavailable": "GPS service is not avalable",
@@ -264,12 +346,11 @@
     "afternoonRun": "Afternoon Run",
     "eveningRun": "Evening Run",
     "nightRun": "Night Run",
-    
+
     "pause": "Pause",
     "discard": "Discard",
     "upload": "Upload",
     "na": "N/A",
-    "cancle": "Cancle",
 
     "chooseImage": "Choose Image",
     "gallery": "Gallery",
@@ -309,14 +390,14 @@
         "-1": "UNKNOWN",
         "101": "System under maintenance. Please try again later!",
         "102": "New version available. Please update app to continue!",
-    
+
         "1000": "Field required",
         "1001": "Access denied",
         "1002": "Update fail",
         "1003": "Image invalid",
         "1004": "OTP invalid",
         "1005": "Your OTP is expired",
-    
+
         "2000": "User not found",
         "2001": "User cannot join",
         "2002": "User joined",
@@ -337,20 +418,20 @@
         "2022": "Reset password failed. Please try again!",
         "2023": "This email has not been used. Do you want to create an account with this email?",
         "2024": "The account related to this email does not have password to reset because it is logged in using Facebook/Google",
-    
+
         "3000": "Team not found",
         "3001": "Team cannot be created",
-    
-    
+
+
         "4000": "Event not found",
         "4001": "EVENT_EVENT_EXIT",
         "4002": "EVENT_UN_ACTIVE",
-    
+
         "5000": "Activity not found",
         "5001": "Activity add failed",
-    
+
         "6000": "Fund not found",
-    
+
         "7000": "Leaderboard not found",
         "7001": "Leaderboard create fail",
         "7002": "Leaderboard not support",

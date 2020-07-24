@@ -12,26 +12,26 @@ class User extends MapperObject {
   LoginChannel type;
   String code;
   String email;
-  String img;
+  String avatar;
   String name;
   String nameSlug;
   bool isActive;
   String deviceToken;
   DateTime birthday;
   String phone;
-  String country;
-  String city;
+  int province;
   Gender gender;
   num weight;
   num height;
-  String accessToken;
+  // test tạm thời
+  String accessToken = "Bearer  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNTg1ODEwNDE5LCJleHAiOjE1ODY0MTUyMTl9.CSIQmHZgpde8TVX6PKZxpqBujqgKQ2Hsy5j4HSTPZvA";
+  // --------------
   DateTime lastLogin;
 
   DateTime addDate;
-  DateTime updateDate;
+  DateTime updateTime;
 
-  int mainTeam;
-  DateTime switchTeamDate;
+  bool hcmus;
 
   int followerCount;
   int followingCount;
@@ -49,9 +49,7 @@ class User extends MapperObject {
 
   List<int> notifications;
 
-  UserRole teamRole;
-
-
+  TeamMemberType teamMemberType;
 
   @override
   bool operator == (other) {

@@ -1,13 +1,9 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart';
-import 'package:usrun/widget/loading_dot.dart';
-
-// Demo data
-import 'package:usrun/demo_data.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/my_info_box/simple_info_box.dart';
-import 'package:usrun/widget/stats_section.dart';
+import 'package:usrun/widget/stats_section/stats_section.dart';
 
 /*
   ---------
@@ -16,9 +12,13 @@ import 'package:usrun/widget/stats_section.dart';
 */
 class ProfileStatsWeek extends StatefulWidget {
   final WeekDateTime weekDateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsWeek({
     @required this.weekDateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -26,34 +26,15 @@ class ProfileStatsWeek extends StatefulWidget {
 }
 
 class _ProfileStatsWeekState extends State<ProfileStatsWeek> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 0,
-            dateTime: widget.weekDateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 0,
+      dateTime: widget.weekDateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -64,9 +45,13 @@ class _ProfileStatsWeekState extends State<ProfileStatsWeek> {
 */
 class ProfileStatsMonth extends StatefulWidget {
   final DateTime dateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsMonth({
     @required this.dateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -74,34 +59,15 @@ class ProfileStatsMonth extends StatefulWidget {
 }
 
 class _ProfileStatsMonthState extends State<ProfileStatsMonth> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 1,
-            dateTime: widget.dateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 1,
+      dateTime: widget.dateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -112,9 +78,13 @@ class _ProfileStatsMonthState extends State<ProfileStatsMonth> {
 */
 class ProfileStatsYear extends StatefulWidget {
   final DateTime dateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsYear({
     @required this.dateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -122,34 +92,15 @@ class ProfileStatsYear extends StatefulWidget {
 }
 
 class _ProfileStatsYearState extends State<ProfileStatsYear> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 2,
-            dateTime: widget.dateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 2,
+      dateTime: widget.dateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -234,7 +185,10 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   Widget _renderEmptyList() {
     String systemNoti = "Nothing to show";
 
-    return Center(
+    return Padding(
+      padding: EdgeInsets.only(
+        left: R.appRatio.appSpacing15,
+      ),
       child: Text(
         systemNoti,
         style: TextStyle(
@@ -337,8 +291,8 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
               dataTitle: dataTitle,
               subTitle: subTitle,
               unitTitle: unitTitle,
-              boxHeight: R.appRatio.appHeight80,
-              boxWidth: R.appRatio.appHeight120,
+              boxHeight: R.appRatio.appHeight90,
+              boxWidth: R.appRatio.appWidth140,
               pressBox: _pressBox,
             ),
           );

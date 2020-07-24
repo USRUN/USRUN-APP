@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/ui_button.dart';
-import 'package:usrun/widget/lite_rolling_switch.dart';
+
+import 'lite_rolling_switch/big_lite_rolling_switch.dart';
 
 class LineButton extends StatelessWidget {
   final String mainText;
@@ -194,7 +195,7 @@ class LineButton extends StatelessWidget {
                               padding: EdgeInsets.only(
                                 left: R.appRatio.appSpacing15,
                               ),
-                              child: LiteRollingSwitch(
+                              child: BigLiteRollingSwitch(
                                 value: this.initSwitchStatus,
                                 textOn: this.switchButtonOnTitle,
                                 textOff: this.switchButtonOffTitle,

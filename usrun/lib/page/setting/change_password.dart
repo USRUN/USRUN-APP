@@ -1,15 +1,59 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _currentPWController = TextEditingController();
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _retypePWController = TextEditingController();
+
+  void changePassword(BuildContext context) async{
+    String newPassword = _newPWController.text.trim();
+    String oldPassword = _currentPWController.text.trim();
+    String retypeNewPassword = _retypePWController.text.trim();
+
+    if(newPassword.isEmpty|| oldPassword.isEmpty || retypeNewPassword.isEmpty){
+      showCustomAlertDialog(context,
+          title: R.strings.error, content: "Please fill all the fields",
+          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+      return;
+    }
+
+    if(newPassword != retypeNewPassword){
+      showCustomAlertDialog(context,
+          title: R.strings.error, content: "Password confirmation doesn't match",
+          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+      return;
+    }
+
+    if(newPassword == oldPassword){
+      showCustomAlertDialog(context,
+          title: R.strings.error, content: "New password must be different from the old password",
+          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+      return;
+    }
+
+    Response<dynamic> changePasswordRequest = await UserManager.changePassword(oldPassword, newPassword);
+
+    if(changePasswordRequest.success){
+      showCustomAlertDialog(context,
+      title: R.strings.error, content: "Password changed successfully",
+      firstButtonText: "Back to login page", firstButtonFunction: ()=>pop(context));
+    } else {
+      showCustomAlertDialog(context,
+      title: R.strings.error, content: changePasswordRequest.errorMessage,
+      firstButtonText: R.strings.ok, firstButtonFunction: ()=> pop(context));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +62,16 @@ class ChangePasswordPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -33,16 +81,25 @@ class ChangePasswordPage extends StatelessWidget {
               color: Colors.white, fontSize: R.appRatio.appFontSize22),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset(
-              R.myIcons.appBarCheckBtn,
-              width: R.appRatio.appAppBarIconSize,
+          Container(
+            width: R.appRatio.appWidth60,
+            child: FlatButton(
+              onPressed: () {
+                // TODO: Function for changing password
+                FocusScope.of(context).requestFocus(new FocusNode());
+                // _yourFunction('yourParameter'),
+                changePassword(context);
+              },
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.appBarCheckBtn,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,
+              ),
             ),
-            // TODO: Function for changing password
-            onPressed: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-              // _yourFunction('yourParameter'),
-            },
           ),
         ],
       ),
@@ -108,8 +165,9 @@ class ChangePasswordPage extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

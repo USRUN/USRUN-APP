@@ -7,9 +7,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_components.dart';
 import 'package:usrun/page/record/record_upload_page.dart';
-import 'package:usrun/widget/custom_dialog.dart';
-
-import 'package:usrun/widget/my_drop_down/drop_down_menu.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
 class RecordButton extends StatelessWidget {
   RecordBloc bloc;
@@ -22,9 +20,9 @@ class RecordButton extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("GPS not found"),
-              content: Text("GPS not detected. Please activate it."),
-            ));
+          title: Text("GPS not found"),
+          content: Text("GPS not detected. Please activate it."),
+        ));
   }
 
   void showRequestServiceDialog() {
@@ -65,8 +63,8 @@ class RecordButton extends StatelessWidget {
               title: R.strings.notice,
               content: R.strings.gpsNotFound,
               firstButtonText: R.strings.ok, firstButtonFunction: () {
-            pop(this.context);
-          });
+                pop(this.context);
+              });
         }
       }
     } catch (error) {}
@@ -103,8 +101,8 @@ class RecordButton extends StatelessWidget {
             title: R.strings.notice,
             content: R.strings.gpsNotFound,
             firstButtonText: R.strings.ok, firstButtonFunction: () {
-          pop(this.context);
-        }, secondButtonText: "", secondButtonFunction: null);
+              pop(this.context);
+            }, secondButtonText: "", secondButtonFunction: null);
       }
     }
   }
@@ -238,52 +236,6 @@ class RecordButton extends StatelessWidget {
         });
   }
 
-  _buildEventPicker() {
-    final _dropDownMenuItemList = [
-      {'value': '0', 'text': 'Move Vietnam'},
-      {'value': '1', 'text': 'Uprace'},
-      {'value': '2', 'text': 'Attack Covid'},
-      {'value': '3', 'text': 'Just run'},
-    ];
-
-    _getSelectedDropDownMenuItem(String newValue) {
-      dynamic object = _dropDownMenuItemList[0];
-
-      for (int i = 0; i < _dropDownMenuItemList.length; ++i) {
-        if (_dropDownMenuItemList[i]['value'].compareTo(newValue) == 0) {
-          object = _dropDownMenuItemList[i];
-          break;
-        }
-      }
-
-      print("Selected drop down menu item: ${object.toString()}");
-      this.bloc.recordData.eventId = object.id;
-    }
-
-    return StreamBuilder<EventVisibility>(
-        stream: this.bloc.streamEventVisibility,
-        initialData: this.bloc.getEventVisibilityValue,
-        builder: (context, snapshot) {
-          print(snapshot.data);
-          if (snapshot.data == EventVisibility.Visible)
-            return Container(
-              height: 100,
-              child: DropDownMenu(
-                errorEmptyData: R.strings.nothingToShow,
-                enableFullWidth: true,
-                maxHeightBox: R.appRatio.appHeight320,
-                labelTitle: R.strings.events,
-                hintText: R.strings.events,
-                enableHorizontalLabelTitle: false,
-                onChanged: _getSelectedDropDownMenuItem,
-                items: _dropDownMenuItemList,
-              ),
-            );
-          else {
-            return Container(height: 100);
-          }
-        });
-  }
 
   _buildLayoutForStateNone(BuildContext context) {
     return Align(
@@ -299,7 +251,6 @@ class RecordButton extends StatelessWidget {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            _buildEventPicker(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -312,14 +263,14 @@ class RecordButton extends StatelessWidget {
                                     icon: R.myIcons.icStartRecord,
                                     size: R.appRatio.deviceWidth / 5,
                                     onPress: snapshot.data == null ||
-                                            snapshot.data !=
-                                                GPSSignalStatus.READY
+                                        snapshot.data !=
+                                            GPSSignalStatus.READY
                                         ? () {
-                                            showRequestServiceDialog();
-                                          }
+                                      showRequestServiceDialog();
+                                    }
                                         : () {
-                                            onStartButtonTap();
-                                          }),
+                                      onStartButtonTap();
+                                    }),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
                                 ),

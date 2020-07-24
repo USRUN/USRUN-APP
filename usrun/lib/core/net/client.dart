@@ -194,9 +194,9 @@ class Client {
 
       String reply = await response.transform(utf8.decoder).join();
 
-      print("get url: $url");
-      print(params);
-      print(reply);
+      // print("get url: $url");
+      // print(params);
+      // print(reply);
       //104385113951232765836 - quangthequyen@gmail.com
 
       return _handleResponse<T, E>(response, reply);

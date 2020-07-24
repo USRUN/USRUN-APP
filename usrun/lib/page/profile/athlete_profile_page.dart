@@ -4,15 +4,15 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
-import 'package:usrun/widget/event_badge_list.dart';
-import 'package:usrun/widget/event_list.dart';
-import 'package:usrun/widget/follower_following_list.dart';
+import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
+import 'package:usrun/widget/event_list/event_list.dart';
+import 'package:usrun/widget/follower_following_list/follower_following_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/photo_list.dart';
-import 'package:usrun/widget/stats_section.dart';
-import 'package:usrun/widget/team_list.dart';
-import 'package:usrun/widget/team_plan_list.dart';
+import 'package:usrun/widget/stats_section/stats_section.dart';
+import 'package:usrun/widget/team_list/team_list.dart';
 import 'package:usrun/widget/ui_button.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 // Demo data
 import 'package:usrun/demo_data.dart';
@@ -90,24 +90,24 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     });
   }
 
-  void _pressProfileFunction(userCode) {
+  void _pressProfileFunction(data) {
     // TODO: Implement function here
-    print("[FFWidget] Direct to this athlete profile with user code $userCode");
+    print("[FFWidget] Direct to this athlete profile with data $data");
   }
 
-  void _pressEventItemFunction(eventID) {
+  void _pressEventItemFunction(data) {
     // TODO: Implement function here
-    print("[EventWidget] Press event with id $eventID");
+    print("[EventWidget] Press event with data $data");
   }
 
-  void _pressTeamItemFunction(teamID) {
+  void _pressTeamItemFunction(data) {
     // TODO: Implement function here
-    print("[TeamWidget] Press team with id $teamID");
+    print("[TeamWidget] Press team with data $data");
   }
 
-  void _pressTeamPlanItemFunction(planID) {
+  void _pressTeamPlanItemFunction(data) {
     // TODO: Implement function here
-    print("[TeamPlanWidget] Press team plan with id $planID");
+    print("[TeamPlanWidget] Press team plan with data $data");
   }
 
   void _pressFFButton(String userCode) {
@@ -153,9 +153,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     });
   }
 
-  void _pressEventBadge(eventID) {
+  void _pressEventBadge(data) {
     // TODO: Implement function here
-    print("[EventBadgesWidget] This is pressed by event id $eventID");
+    print("[EventBadgesWidget] This is pressed with data $data");
   }
 
   void _pressActivityFunction(actID) {
@@ -194,12 +194,16 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -210,7 +214,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
         ),
       ),
       body: (_isLoading
-          ? LoadingDotStyle02()
+          ? LoadingIndicator()
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
@@ -339,7 +343,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       labelTitle: R.strings.athleteBadges,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressEventBadge,
+                      pressItemFunction: _pressEventBadge,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
@@ -390,7 +394,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       labelTitle: R.strings.athleteEvents,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressEventItemFunction,
+                      pressItemFunction: _pressEventItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
@@ -401,22 +405,27 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       labelTitle: R.strings.athleteTeams,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressTeamItemFunction,
+                      pressItemFunction: _pressTeamItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
                     ),
                     // Team plans
+                    /*
+                    =======
+                    UNUSED
+                    =======
                     TeamPlanList(
                       items: DemoData().teamPlanList,
                       labelTitle: R.strings.athleteTeamPlans,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressTeamPlanItemFunction,
+                      pressItemFunction: _pressTeamPlanItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
                     ),
+                    */
                     // Statistics in this year
                     Container(
                       padding: EdgeInsets.only(
@@ -483,8 +492,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

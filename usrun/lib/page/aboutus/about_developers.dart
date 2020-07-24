@@ -5,6 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class AboutDevelopers extends StatelessWidget {
   @override
@@ -13,12 +14,16 @@ class AboutDevelopers extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -43,9 +48,11 @@ class AboutDevelopers extends StatelessWidget {
                 ),
                 // -----
                 // DEVELOPER 1
-                AvatarView(
-                  avatarImageURL: R.images.avatarQuocTK,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarQuocTK,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -212,8 +219,9 @@ class AboutDevelopers extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }
