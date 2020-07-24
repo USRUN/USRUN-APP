@@ -1016,6 +1016,8 @@ class Strings {
   String deleteTeamSubtitle;
   String noResult;
   String noResultSubtitle;
+  String memberOnly;
+  String memberOnlySubtitle;
   String startSearch;
   String startSearchSubtitle;
   String notAuthorizedTeamChange;
