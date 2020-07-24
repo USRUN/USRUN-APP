@@ -280,7 +280,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         mainTextStyle: R.styles.labelStyle,
         subText: R.strings.viewMapDescription,
         subTextFontSize: R.appRatio.appFontSize14,
-        spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+        textPadding: EdgeInsets.all(15),
         enableSwitchButton: true,
         switchButtonOnTitle: "On",
         switchButtonOffTitle: "Off",
