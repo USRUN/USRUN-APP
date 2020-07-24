@@ -16,7 +16,8 @@ class ImageSourcePicker extends StatelessWidget {
       this.shape,
       this.maxWidth,
       this.maxHeight,
-      this.quality});
+      this.quality, this.parentContext});
+  final BuildContext parentContext;
   final CropStyle shape;
   final dynamic ratioX;
   final dynamic ratioY;
@@ -24,21 +25,23 @@ class ImageSourcePicker extends StatelessWidget {
   final dynamic maxHeight;
   final dynamic quality;
 
-  void onChooseImageSource(BuildContext context, ImageSource chosen) async {
+
+  void onChooseImageSource( ImageSource chosen) async {
     File photo = await ImagePicker.pickImage(source: chosen);
     if (photo == null) {
-      pop(context, object: null);
+      pop(parentContext, object: null);
     } else {
       pop(
-        context,
-        object: await handleImagePicked(context, shape, ratioX, ratioY, photo,
+        parentContext,
+        object: await handleImagePicked(shape, ratioX, ratioY, photo,
             maxWidth, maxHeight, quality),
       );
     }
   }
 
+
+
   Future<File> handleImagePicked(
-      BuildContext context,
       CropStyle cropStyle,
       double customRatioX,
       double customRatioY,
@@ -52,11 +55,11 @@ class ImageSourcePicker extends StatelessWidget {
     int refDefaultSize = 4000;
 
     if (initSize > sizeMax) {
-      await showCustomAlertDialog(context,
+      await showCustomAlertDialog(parentContext,
           title: R.strings.imageUploadFailed,
           content: R.strings.imageTooLarge,
           firstButtonText: R.strings.ok,
-          firstButtonFunction: () => {pop(context, object: null)},
+          firstButtonFunction: () => {pop(parentContext, object: null)},
           secondButtonText: "");
       return null;
     }
@@ -108,7 +111,7 @@ class ImageSourcePicker extends StatelessWidget {
             height: 40,
             gradient: R.colors.uiGradient,
             onTap: () async {
-              onChooseImageSource(context, ImageSource.gallery);
+              onChooseImageSource(ImageSource.gallery);
             },
           ),
           SizedBox(height: R.appRatio.appSpacing15),
@@ -119,7 +122,7 @@ class ImageSourcePicker extends StatelessWidget {
             fontWeight: FontWeight.w700,
             height: 40,
             onTap: () async {
-              onChooseImageSource(context, ImageSource.camera);
+              onChooseImageSource(ImageSource.camera);
             },
           ),
           SizedBox(height: R.appRatio.appSpacing15),

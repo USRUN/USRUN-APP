@@ -395,8 +395,11 @@
 
     "errorMessages": {
         "-1": "UNKNOWN",
+
         "101": "System under maintenance. Please try again later!",
         "102": "New version available. Please update app to continue!",
+
+        "500": "Something went wrong",
 
         "1000": "Field required",
         "1001": "Access denied",
@@ -404,6 +407,9 @@
         "1003": "Image invalid",
         "1004": "OTP invalid",
         "1005": "Your OTP is expired",
+        "1006": "An OTP has already been sent.",
+        "1007": "Invalid input.",
+        "1008": "Image size is invalid. Try resizing smaller or try a different image.",
 
         "2000": "User not found",
         "2001": "User cannot join",
@@ -425,17 +431,31 @@
         "2022": "Reset password failed. Please try again!",
         "2023": "This email has not been used. Do you want to create an account with this email?",
         "2024": "The account related to this email does not have password to reset because it is logged in using Facebook/Google",
+        "2025": "The account is already verified.",
+        "2026": "This email address is not an education email.",
+        "2027": "Invalid OAUTH token",
+        "2028": "This type of OAUTH is not supported",
 
         "3000": "Team not found",
         "3001": "Team cannot be created",
-
+        "3002": "A team with these info has already existed",
+        "3003": "Could not change the member's role. Please try again!",
+        "3004": "Invalid team member type",
+        "3005": "User is already a member",
 
         "4000": "Event not found",
         "4001": "EVENT_EVENT_EXIT",
         "4002": "EVENT_UN_ACTIVE",
+        "4003": "Can not create event",
+        "4004": "Event does not exist",
+        "4005": "Event has not started yet",
+        "4006": "USER_NOT_JOIN_EVENT",
 
         "5000": "Activity not found",
         "5001": "Activity add failed",
+        "5002": "Duplicated activity info",
+        "5003": "Invalid request time",
+        "5004": "Invalid activity signature",
 
         "6000": "Fund not found",
 
@@ -443,6 +463,11 @@
         "7001": "Leaderboard create fail",
         "7002": "Leaderboard not support",
         "7003": "Leaderboard access denied",
-        "7004": "Leaderboard delete failed"
+        "7004": "Leaderboard delete failed",
+
+        "8000": "No track could be found",
+        "8001": "This track does not belong to you",
+        "8002": "Track timed out",
+        "8003": "Invalid track signature"
       }
 }

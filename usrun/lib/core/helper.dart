@@ -287,6 +287,7 @@ Future<String> pickImageByShape(BuildContext context, CropStyle shape,
   }
 
   Widget imageSourcePicker = ImageSourcePicker(
+      parentContext: context,
       shape: shape,
       ratioX: ratioX,
       ratioY: ratioY,
@@ -302,6 +303,8 @@ Future<String> pickImageByShape(BuildContext context, CropStyle shape,
     EdgeInsets.fromLTRB(R.appRatio.appSpacing15, R.appRatio.appSpacing15,
         R.appRatio.appSpacing15, 0),
   );
+
+//  handleImagePicked(context, shape, ratioX, ratioY, photo, maxWidth, maxHeight, quality);
 
   if (photo == null) return null;
 
