@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/profile/profile_activity.dart';
 import 'package:usrun/page/profile/profile_info.dart';
 import 'package:usrun/page/profile/profile_stats.dart';
@@ -8,15 +9,9 @@ import 'package:usrun/widget/custom_tab_bar.dart';
 
 class ProfilePage extends StatefulWidget {
   final tabBarItems = [
-    {
-      "iconURL": R.myIcons.whiteStatisticsIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteShoeIcon,
-    },
-    {
-      "iconURL": R.myIcons.whiteInfoIcon,
-    }
+    R.myIcons.whiteStatisticsIcon,
+    R.myIcons.whiteShoeIcon,
+    R.myIcons.whiteInfoIcon,
   ];
 
   @override
@@ -25,10 +20,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int _selectedTabIndex = 0;
-  String _avatarImageURL = R.images.avatarQuocTK;
-  String _supportImageURL = R.images.avatarHuyTA;
-  String _fullName = "Quốc Trần Kiến";
-  String _userCode = "USR9381852";
+  String _avatarImageURL = UserManager.currentUser.avatar;
+  String _supportImageURL = UserManager.currentUser.hcmus?R.myIcons.hcmusLogo:null;
+  String _fullName = UserManager.currentUser.name;
+  String _userCode = UserManager.currentUser.code==null?"USRUN${UserManager.currentUser.userId}":UserManager.currentUser.code;
 
   dynamic _getContentItemWidget(int tabIndex) {
     Widget widget;
@@ -70,13 +65,16 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: R.appRatio.appSpacing25,
             ),
-            AvatarView(
-              avatarImageURL: _avatarImageURL,
-              avatarImageSize: R.appRatio.appAvatarSize130,
-              supportImageURL: _supportImageURL,
-              avatarBoxBorder: Border.all(
-                color: R.colors.majorOrange,
-                width: 2,
+            Align(
+              alignment: Alignment.center,
+              child: AvatarView(
+                avatarImageURL: _avatarImageURL,
+                avatarImageSize: R.appRatio.appAvatarSize130,
+                supportImageURL: _supportImageURL,
+                avatarBoxBorder: Border.all(
+                  color: R.colors.majorOrange,
+                  width: 2,
+                ),
               ),
             ),
             SizedBox(

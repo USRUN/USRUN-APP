@@ -99,6 +99,11 @@ class _CustomAlertDialog extends StatelessWidget {
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(_radius),
+                ),
+              ),
               child: Text(
                 this.secondButtonText,
                 textScaleFactor: 1.0,
@@ -141,6 +146,14 @@ class _CustomAlertDialog extends StatelessWidget {
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
               textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: (!_existSecondButton
+                      ? Radius.circular(_radius)
+                      : Radius.circular(0.0)),
+                  bottomRight: Radius.circular(_radius),
+                ),
+              ),
               child: Text(
                 this.firstButtonText,
                 textScaleFactor: 1.0,

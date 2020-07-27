@@ -1,62 +1,72 @@
+import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/page/team/team_member_item.dart';
+import 'package:usrun/page/team/team_rank_item.dart';
+import 'package:usrun/page/team/team_search_item.dart';
+import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
+import 'package:usrun/widget/event_badge_list/event_badge_item.dart';
+import 'package:usrun/widget/event_list/event_item.dart';
+import 'package:usrun/widget/follower_following_list/follower_following_item.dart';
+import 'package:usrun/widget/team_list/team_item.dart';
+import 'package:usrun/widget/team_plan_list/team_plan_item.dart';
 
 class DemoData {
   final eventBadgeList = [
-    {
-      'eventID': '0',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '1',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '2',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '3',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '4',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '5',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '6',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '7',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '8',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '9',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'eventID': '10',
-      'badgeImageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg'
-    }
+    EventBadgeItem(
+      value: '0',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '1',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '2',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '3',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '4',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '5',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '6',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '7',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '8',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '9',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
+    EventBadgeItem(
+      value: '10',
+      imageURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+    ),
   ];
 
   final photoItemList = [
@@ -129,200 +139,200 @@ class DemoData {
   ];
 
   final ffItemList = [
-    {
-      "userCode": "0",
-      "avatarImageURL":
+    FollowerFollowingItem(
+      value: "0",
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "fullName": "Trần Kiến Quốc",
-      "cityName": "Ho Chi Minh",
-    },
-    {
-      "userCode": "1",
-      "avatarImageURL":
+      fullName: "Trần Kiến Quốc",
+      cityName: "Ho Chi Minh",
+    ),
+    FollowerFollowingItem(
+      value: "1",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Võ Thị Thanh Ngọc",
-      "cityName": "Bà Rịa - Vũng Tàu",
-    },
-    {
-      "userCode": "2",
-      "avatarImageURL":
+      fullName: "Võ Thị Thanh Ngọc",
+      cityName: "Bà Rịa - Vũng Tàu",
+    ),
+    FollowerFollowingItem(
+      value: "2",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Trần Minh Kha",
-      "cityName": "Mã Pí Lèng",
-    },
-    {
-      "userCode": "3",
-      "avatarImageURL":
+      fullName: "Trần Minh Kha",
+      cityName: "Mã Pí Lèng",
+    ),
+    FollowerFollowingItem(
+      value: "3",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Quách Ngọc Trang",
-      "cityName": "Ha Noi",
-    },
-    {
-      "userCode": "4",
-      "avatarImageURL":
+      fullName: "Quách Ngọc Trang",
+      cityName: "Ha Noi",
+    ),
+    FollowerFollowingItem(
+      value: "4",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Trần Hải Âu Dương",
-      "cityName": "Thừa Thiên Huế",
-    },
-    {
-      "userCode": "5",
-      "avatarImageURL":
+      fullName: "Trần Hải Âu Dương",
+      cityName: "Thừa Thiên Huế",
+    ),
+    FollowerFollowingItem(
+      value: "5",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Lê Trương Phú Đạt",
-      "cityName": "Phía Bắc Việt Nam",
-    },
-    {
-      "userCode": "6",
-      "avatarImageURL":
+      fullName: "Lê Trương Phú Đạt",
+      cityName: "Phía Bắc Việt Nam",
+    ),
+    FollowerFollowingItem(
+      value: "6",
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "fullName": "Tôn Công Nữ Chính",
-      "cityName": "Đảo Cà Mau Việt Nam",
-    }
+      fullName: "Tôn Công Nữ Chính",
+      cityName: "Đảo Cà Mau Việt Nam",
+    ),
   ];
 
   final eventList = [
-    {
-      "id": "0",
-      "name": "UpRace - Move Viet Nam",
-      "athleteQuantity": 44284,
-      "isFinished": true,
-      "bannerImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg"
-    },
-    {
-      "id": "1",
-      "name": "VietNam Mountain Marathon 2019",
-      "athleteQuantity": 1231231,
-      "isFinished": true,
-      "bannerImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg"
-    },
-    {
-      "id": "2",
-      "name": "Let's Run Everybody",
-      "athleteQuantity": 89105,
-      "isFinished": false,
-      "bannerImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg"
-    },
-    {
-      "id": "3",
-      "name": "Chạy Vì Cộng Đồng Trẻ Mồ Côi",
-      "athleteQuantity": 48105,
-      "isFinished": false,
-      "bannerImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg"
-    },
-    {
-      "id": "4",
-      "name": "US-Run-Event-2020",
-      "athleteQuantity": 5156,
-      "isFinished": true,
-      "bannerImageURL":
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg"
-    }
+    EventItem(
+      value: "0",
+      name: "UpRace - Move Viet Nam",
+      athleteQuantity: 44284,
+      isFinished: true,
+      bannerImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+    ),
+    EventItem(
+      value: "1",
+      name: "VietNam Mountain Marathon 2019",
+      athleteQuantity: 1231231,
+      isFinished: true,
+      bannerImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+    ),
+    EventItem(
+      value: "2",
+      name: "Let's Run Everybody",
+      athleteQuantity: 89105,
+      isFinished: false,
+      bannerImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+    ),
+    EventItem(
+      value: "3",
+      name: "Chạy Vì Cộng Đồng Trẻ Mồ Côi",
+      athleteQuantity: 48105,
+      isFinished: false,
+      bannerImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+    ),
+    EventItem(
+      value: "4",
+      name: "US-Run-Event-2020",
+      athleteQuantity: 5156,
+      isFinished: true,
+      bannerImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+    ),
   ];
 
   final teamList = [
-    {
-      "id": "0",
-      "name": "Trường Đại học Khoa học Tự nhiên 123 123 123",
-      "athleteQuantity": 44284,
-      "avatarImageURL":
+    TeamItem(
+      value: "0",
+      name: "Trường Đại học Khoa học Tự nhiên 123 123 123",
+      athleteQuantity: 44284,
+      avatarImageURL:
           "https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png",
-      "supportImageURL":
-          "https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg"
-    },
-    {
-      "id": "1",
-      "name": "Cửa hàng Ecoshop",
-      "athleteQuantity": 195724,
-      "avatarImageURL": R.images.avatarHuyTA,
-      "supportImageURL": R.images.avatar
-    },
-    {
-      "id": "2",
-      "name": "Techcombank",
-      "athleteQuantity": 2000000,
-      "avatarImageURL": R.images.avatarNgocVTT,
-      "supportImageURL": R.images.avatar
-    },
-    {
-      "id": "3",
-      "name": "Run Club Marvel Forever Be Young, Yay! 1 2 3 4 5",
-      "athleteQuantity": 516,
-      "avatarImageURL": R.images.avatarKhaTM,
-      "supportImageURL": R.images.avatar
-    },
-    {
-      "id": "4",
-      "name": "Lý Luận Chạy",
-      "athleteQuantity": 5276,
-      "avatarImageURL": R.images.avatarPhucTT,
-      "supportImageURL": R.images.avatar
-    },
+      supportImageURL:
+          "https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg",
+    ),
+    TeamItem(
+      value: "1",
+      name: "Cửa hàng Ecoshop",
+      athleteQuantity: 195724,
+      avatarImageURL: R.images.avatarHuyTA,
+      supportImageURL: R.images.avatar,
+    ),
+    TeamItem(
+      value: "2",
+      name: "Techcombank",
+      athleteQuantity: 2000000,
+      avatarImageURL: R.images.avatarNgocVTT,
+      supportImageURL: R.images.avatar,
+    ),
+    TeamItem(
+      value: "3",
+      name: "Run Club Marvel Forever Be Young, Yay! 1 2 3 4 5",
+      athleteQuantity: 516,
+      avatarImageURL: R.images.avatarKhaTM,
+      supportImageURL: R.images.avatar,
+    ),
+    TeamItem(
+      value: "4",
+      name: "Lý Luận Chạy",
+      athleteQuantity: 5276,
+      avatarImageURL: R.images.avatarPhucTT,
+      supportImageURL: R.images.avatar,
+    ),
   ];
 
   final teamPlanList = [
-    {
-      "planID": "0",
-      "dateTime": "10/01/2020 18:30",
-      "isFinished": true,
-      "mapImageURL":
+    TeamPlanItem(
+      value: "0",
+      dateTime: DateFormat("dd/MM/yyyy hh:mm").parse("10/01/2020 18:30"),
+      isFinished: true,
+      mapImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "planName": "Time to train, get high friends, oh yay go go go 123 123!",
-      "teamName": "Trường Đại học Khoa học Tự nhiên",
-    },
-    {
-      "planID": "1",
-      "dateTime": "05/3/2020 5:30",
-      "isFinished": true,
-      "mapImageURL":
+      planName: "Time to train, get high friends, oh yay go go go 123 123!",
+      teamName: "Trường Đại học Khoa học Tự nhiên",
+    ),
+    TeamPlanItem(
+      value: "1",
+      dateTime: DateFormat("dd/MM/yyyy hh:mm").parse("05/3/2020 5:30"),
+      isFinished: true,
+      mapImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "planName": "Move Your Body Move Your Body Move Your Body Move Your Body",
-      "teamName": "Ngân hàng Techcombank",
-    },
-    {
-      "planID": "2",
-      "dateTime": "28/02/2020 6:30",
-      "isFinished": false,
-      "mapImageURL":
+      planName: "Move Your Body Move Your Body Move Your Body Move Your Body",
+      teamName: "Ngân hàng Techcombank",
+    ),
+    TeamPlanItem(
+      value: "2",
+      dateTime: DateFormat("dd/MM/yyyy hh:mm").parse("28/02/2020 6:30"),
+      isFinished: false,
+      mapImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "planName": "Everyone is so boring :D",
-      "teamName": "Cửa hàng EcoShop",
-    },
-    {
-      "planID": "3",
-      "dateTime": "31/05/2020 15:50",
-      "isFinished": false,
-      "mapImageURL":
+      planName: "Everyone is so boring :D",
+      teamName: "Cửa hàng EcoShop",
+    ),
+    TeamPlanItem(
+      value: "3",
+      dateTime: DateFormat("dd/MM/yyyy hh:mm").parse("31/05/2020 15:50"),
+      isFinished: false,
+      mapImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "planName": "Let's race, Let's run, Let's move",
-      "teamName": "RUN-CLUB-ENERY",
-    },
-    {
-      "planID": "4",
-      "dateTime": "02/09/2020 00:00",
-      "isFinished": true,
-      "mapImageURL":
+      planName: "Let's race, Let's run, Let's move",
+      teamName: "RUN-CLUB-ENERY",
+    ),
+    TeamPlanItem(
+      value: "4",
+      dateTime: DateFormat("dd/MM/yyyy hh:mm").parse("02/09/2020 00:00"),
+      isFinished: true,
+      mapImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "planName": "Lễ Quốc Khánh, sợ gì, chạy ngay đi ^^",
-      "teamName": "Câu lạc bộ Chạy bộ miền Nam Việt Nam",
-    },
+      planName: "Lễ Quốc Khánh, sợ gì, chạy ngay đi ^^",
+      teamName: "Câu lạc bộ Chạy bộ miền Nam Việt Nam",
+    ),
   ];
 
   final activityTimelineList = [
@@ -627,512 +637,497 @@ class DemoData {
   ];
 
   final bannerList = [
-    {
-      'imageURL':
-          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
-    },
-    {
-      'imageURL':
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
-    },
-    {
-      'imageURL':
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
-    },
-    {
-      'imageURL':
-          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
-    },
-    {
-      'imageURL':
-          'https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg',
-    },
+    'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+    'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
+    'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+    'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+    'https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg',
   ];
 
   final popupMenuList01 = [
-    {
-      "iconURL": R.myIcons.blackAttachmentIcon02,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Pin (Unpin) post",
-    },
-    {
-      "iconURL": R.myIcons.blackNewsFeedIcon,
-      "iconSize": R.appRatio.appIconSize18,
-      "title": "Report post",
-    },
-    {
-      "iconURL": R.myIcons.blackPostIcon,
-      "iconSize": R.appRatio.appIconSize18,
-      "title": "Turn off comment",
-    },
-    {
-      "iconURL": R.myIcons.blackEditIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Edit post",
-    },
-    {
-      "iconURL": R.myIcons.blackBlockIcon,
-      "iconSize": R.appRatio.appIconSize18,
-      "title": "Hide post",
-    },
-    {
-      "iconURL": R.myIcons.blackCloseIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Delete post",
-    }
+    PopupItem(
+      iconURL: R.myIcons.blackAttachmentIcon02,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Pin (Unpin) post",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackNewsFeedIcon,
+      iconSize: R.appRatio.appIconSize18,
+      title: "Report post",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackPostIcon,
+      iconSize: R.appRatio.appIconSize18,
+      title: "Turn off comment",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackEditIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Edit post",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackBlockIcon,
+      iconSize: R.appRatio.appIconSize18,
+      title: "Hide post",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackCloseIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Delete post",
+    ),
   ];
 
   final popupMenuList02 = [
-    {
-      "iconURL": R.myIcons.blackAddIcon02,
-      "iconSize": R.appRatio.appIconSize15 + 1,
-      "title": "Invite new member",
-    },
-    {
-      "iconURL": R.myIcons.blackCloseIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Kick a member",
-    },
-    {
-      "iconURL": R.myIcons.blackBlockIcon,
-      "iconSize": R.appRatio.appIconSize15,
-      "title": "Block a person",
-    },
+    PopupItem(
+      iconURL: R.myIcons.blackAddIcon02,
+      iconSize: R.appRatio.appIconSize15 + 1,
+      title: "Invite new member",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackCloseIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Kick a member",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blackBlockIcon,
+      iconSize: R.appRatio.appIconSize15,
+      title: "Block a person",
+    ),
   ];
 
   final suggestedTeamList = [
-    {
-      "avatarImageURL":
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "teamName": "Trường Đại học Khoa học Tự nhiên TP. HCM",
-      "athleteQuantity": 67842,
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      teamName: "Trường Đại học Khoa học Tự nhiên TP. HCM",
+      athleteQuantity: 67842,
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Trường Đại học Bách Khoa Hà Nội",
-      "athleteQuantity": 58192,
-      "location": "Ha Noi City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      teamName: "Trường Đại học Bách Khoa Hà Nội",
+      athleteQuantity: 58192,
+      location: "Ha Noi City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Viện John Von Neumann Institute",
-      "athleteQuantity": 18592,
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      teamName: "Viện John Von Neumann Institute",
+      athleteQuantity: 18592,
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Trường Đại học Khoa học Tự nhiên Thành phố Đà Nẵng",
-      "athleteQuantity": 67842,
-      "location": "Đa Nang City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      supportImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
-          "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Câu lạc bộ chạy bộ đông đảo quốc gia Việt Nam",
-      "athleteQuantity": 1829572,
-      "location": "Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      teamName: "Trường Đại học Khoa học Tự nhiên Thành phố Đà Nẵng",
+      athleteQuantity: 67842,
+      location: "Đa Nang City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Học Viện Bưu Chính Viễn Thông Việt Nam",
-      "athleteQuantity": 9938,
-      "location": "Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      teamName: "Câu lạc bộ chạy bộ đông đảo quốc gia Việt Nam",
+      athleteQuantity: 1829572,
+      location: "Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-      "supportImageURL":
+      supportImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      teamName: "Học Viện Bưu Chính Viễn Thông Việt Nam",
+      athleteQuantity: 9938,
+      location: "Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      supportImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "teamName": "Công ty Trách nhiệm Hữu hạn Minh Âu",
-      "athleteQuantity": 671982,
-      "location": "Hai Phong City, Viet Nam",
-    },
-    {
-      'avatarImageURL':
-          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      'supportImageURL':
+      teamName: "Công ty Trách nhiệm Hữu hạn Minh Âu",
+      athleteQuantity: 671982,
+      location: "Hai Phong City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
           'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
-      "teamName": "Run Club Quận 7",
-      "athleteQuantity": 6571,
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      'avatarImageURL':
+      supportImageURL:
           'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
-      'supportImageURL':
+      teamName: "Run Club Quận 7",
+      athleteQuantity: 6571,
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamSearchItem(
+      avatarImageURL:
+          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "teamName": "DECKIA RUNNING SPORT CLUB",
-      "athleteQuantity": 18592,
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
+      teamName: "DECKIA RUNNING SPORT CLUB",
+      athleteQuantity: 18592,
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
   ];
 
   final teamRankLead = [
-    {
-      "avatarImageURL":
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến",
-      "distance": 421.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến",
+      distance: 421.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Võ Thị Thanh Ngọc",
-      "distance": 358.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Võ Thị Thanh Ngọc",
+      distance: 358.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Trọng Phúc",
-      "distance": 285.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Trọng Phúc",
+      distance: 285.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Minh Kha",
-      "distance": 246.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Minh Kha",
+      distance: 246.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Nguyễn Anh Huy",
-      "distance": 218.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Nguyễn Anh Huy",
+      distance: 218.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Ngô Hải Âu",
-      "distance": 195.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Ngô Hải Âu",
+      distance: 195.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Đặng Huyền Mỹ",
-      "distance": 175.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Đặng Huyền Mỹ",
+      distance: 175.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Quách Ngọc Trang",
-      "distance": 125.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Quách Ngọc Trang",
+      distance: 125.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trân Quách Gia",
-      "distance": 119.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Trân Quách Gia",
+      distance: 119.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Võ Minh Tú",
-      "distance": 98.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Võ Minh Tú",
+      distance: 98.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Thiên Địa Tú Linh",
-      "distance": 63.34,
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      distance: 63.34,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "La Thành Ái",
-      "distance": 38.51,
-    },
-    {
-      "avatarImageURL":
+      name: "La Thành Ái",
+      distance: 38.51,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Tô Thành Nghĩa",
-      "distance": 28.41,
-    },
-    {
-      "avatarImageURL":
+      name: "Tô Thành Nghĩa",
+      distance: 28.41,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Quang Hưng",
-      "distance": 24.51,
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Quang Hưng",
+      distance: 24.51,
+    ),
+    TeamRankItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Lý Diệp Gia",
-      "distance": 18.52,
-    },
+      name: "Lý Diệp Gia",
+      distance: 18.52,
+    ),
   ];
 
   final allTeamMember = [
-    {
-      "avatarImageURL":
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Quốc Trần Kiến",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": true,
-    },
-    {
-      "avatarImageURL":
+      name: "Quốc Trần Kiến",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: true,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Võ Thị Thanh Ngọc",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": true,
-    },
-    {
-      "avatarImageURL":
+      name: "Võ Thị Thanh Ngọc",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: true,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Trọng Phúc",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Trọng Phúc",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Minh Kha",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Minh Kha",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Nguyễn Anh Huy",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Nguyễn Anh Huy",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Ngô Hải Âu",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": true,
-    },
-    {
-      "avatarImageURL":
+      name: "Ngô Hải Âu",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: true,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Đặng Huyền Mỹ",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Đặng Huyền Mỹ",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Quách Ngọc Trang",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Quách Ngọc Trang",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trân Quách Gia",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
-    {
-      "avatarImageURL":
+      name: "Trân Quách Gia",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Võ Minh Tú",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-      "isFollowing": false,
-    },
+      name: "Võ Minh Tú",
+      location: "Ho Chi Minh City, Viet Nam",
+      isFollowing: false,
+    ),
   ];
 
   final requestingTeamMember = [
-    {
-      "avatarImageURL":
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Thiên Địa Tú Linh",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "La Thành Ái",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Tô Thành Nghĩa",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Tô Thành Nghĩa",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Quang Hưng",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Quang Hưng",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Lý Diệp Gia",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Lý Diệp Gia",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Thiên Địa Tú Linh",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "La Thành Ái",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Tô Thành Nghĩa",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Lý Diệp Gia",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Quang Hưng",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Lý Diệp Gia",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
   ];
 
   final blockingTeamMember = [
-    {
-      "avatarImageURL":
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Tô Thành Nghĩa",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Quang Hưng",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Lý Diệp Gia",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Tô Thành Nghĩa",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Thiên Địa Tú Linh",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Trần Quang Hưng",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "La Thành Ái",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Lý Diệp Gia",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Tô Thành Nghĩa",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Trần Quang Hưng",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Lý Diệp Gia",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Lý Diệp Gia",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "Thiên Địa Tú Linh",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
-    {
-      "avatarImageURL":
+      name: "Thiên Địa Tú Linh",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
+    TeamMemberItem(
+      avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
-      "name": "La Thành Ái",
-      'supportImageURL':
+      supportImageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      "location": "Ho Chi Minh City, Viet Nam",
-    },
+      name: "La Thành Ái",
+      location: "Ho Chi Minh City, Viet Nam",
+    ),
   ];
 }
