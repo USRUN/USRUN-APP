@@ -8,6 +8,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -15,16 +16,16 @@ import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-class TeamLeaderBoard extends StatefulWidget {
+class TeamLeaderBoardPage extends StatefulWidget {
   final int teamId;
 
-  TeamLeaderBoard({@required this.teamId});
+  TeamLeaderBoardPage({@required this.teamId});
 
   @override
-  _TeamLeaderBoardState createState() => _TeamLeaderBoardState();
+  _TeamLeaderBoardPageState createState() => _TeamLeaderBoardPageState();
 }
 
-class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
+class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
   bool _isLoading;
   List<TeamRankItem> items;
 
@@ -39,11 +40,13 @@ class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
   }
 
   void _getLeaderBoard() async {
-    Response<List<TeamRankItem>> teamLeaderboard =
+    Response<dynamic> teamLeaderboard =
         await TeamManager.getTeamLeaderBoard(widget.teamId);
-    if (teamLeaderboard.success && teamLeaderboard.object.length != 0) {
-      items = teamLeaderboard.object;
+    if (teamLeaderboard.success && teamLeaderboard.object != null) {
+      items = List();
+      teamLeaderboard.object.forEach((element) {items.add(TeamRankItem.from(element));});
     }
+    else items = null;
   }
 
   void _updateLoading() {

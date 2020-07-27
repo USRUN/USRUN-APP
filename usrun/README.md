@@ -5,10 +5,7 @@
 appID: 148274109786625
 appSecret: 9491347aff49bf0278881afe7ce21ed0
 
-## Setup
-
-### Setup reflectable
-
+# setup
 flutter packages pub run build_runner build DIR
 
 ### Full command (debug)

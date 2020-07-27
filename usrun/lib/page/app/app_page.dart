@@ -242,7 +242,7 @@ class _AppPageState extends State<AppPage> {
                     height: R.appRatio.appSpacing20,
                   ),
                   Text(
-                    _fullName,
+                    _fullName ?? "",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,

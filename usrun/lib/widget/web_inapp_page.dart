@@ -8,32 +8,58 @@ import 'package:usrun/util/image_cache_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebInAppPage extends StatefulWidget {
-  final Gradient appBarGradient;
+  final String webUrl;
+  final double webBodyRadius;
+  final BoxShadow webBodyBoxShadow;
+  final BoxBorder webBodyBoxBorder;
+  final Color webBodyColor;
+  final EdgeInsets webBodyMargin;
+  final EdgeInsets webBodyPadding;
+  final bool enableAppBar;
+  final Color appBarBackgroundColor;
   final String appBarTitle;
+  final bool appBarCenterTitle;
   final TextStyle appBarTextStyle;
   final Brightness appBarBrightness;
-  final bool centerTitle;
-  final String webUrl;
+  final Gradient appBarBackgroundGradient;
   final bool hasLoadingIndicator;
   final List<JavascriptChannel> jsChannels;
   final bool clearCacheWhenWebViewCreated;
+  final Color scaffoldBackgroundColor;
 
   WebInAppPage({
     Key key,
-    this.appBarGradient,
-    @required this.appBarTitle,
+    @required this.webUrl,
+    this.webBodyRadius = 0.0,
+    this.webBodyBoxShadow = const BoxShadow(
+      offset: Offset(0.0, 0.0),
+      blurRadius: 0.0,
+      color: Colors.transparent,
+    ),
+    this.webBodyBoxBorder,
+    this.webBodyColor,
+    this.webBodyMargin = const EdgeInsets.all(0),
+    this.webBodyPadding = const EdgeInsets.all(0),
+    this.enableAppBar = true,
+    this.appBarBackgroundColor,
+    this.appBarTitle = "",
+    this.appBarCenterTitle = true,
     this.appBarTextStyle,
     this.appBarBrightness,
-    this.centerTitle = true,
-    @required this.webUrl,
+    this.appBarBackgroundGradient,
     this.hasLoadingIndicator = true,
     this.jsChannels,
     this.clearCacheWhenWebViewCreated = false,
-  })  : assert(appBarTitle.length != 0 &&
-            centerTitle != null &&
+    this.scaffoldBackgroundColor = Colors.white,
+  })  : assert(appBarTitle != null &&
+            appBarCenterTitle != null &&
             webUrl.length != 0 &&
             hasLoadingIndicator != null &&
-            clearCacheWhenWebViewCreated != null),
+            clearCacheWhenWebViewCreated != null &&
+            enableAppBar != null &&
+            scaffoldBackgroundColor != null &&
+            webBodyRadius != null &&
+            webBodyRadius >= 0.0),
         super(key: key);
 
   @override
@@ -220,17 +246,54 @@ class _WebInAppPageState extends State<WebInAppPage> {
           url: R.myIcons.repeatIcon,
           width: R.appRatio.appAppBarIconSize - 1,
           height: R.appRatio.appAppBarIconSize - 1,
-          color: Colors.white,
         ),
       ),
     );
   }
 
   Widget _renderAppBar() {
-    return GradientAppBar(
-      gradient: widget.appBarGradient ?? R.colors.uiGradient,
-      centerTitle: widget.centerTitle,
-      brightness: widget.appBarBrightness ?? Brightness.dark,
+    if (!widget.enableAppBar) {
+      return PreferredSize(
+        preferredSize: Size(0, 0),
+        child: Container(),
+      );
+    }
+
+    if (widget.appBarBackgroundGradient != null) {
+      return GradientAppBar(
+        title: Text(
+          widget.appBarTitle,
+          textScaleFactor: 1.0,
+          style: widget.appBarTextStyle ??
+              TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        centerTitle: widget.appBarCenterTitle,
+        brightness: widget.appBarBrightness ?? Brightness.dark,
+        gradient: widget.appBarBackgroundGradient,
+        leading: FlatButton(
+          onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
+        ),
+        actions: <Widget>[
+          _renderWebBackButton(),
+          _renderWebForwardButton(),
+          _renderWebReloadButton(),
+        ],
+      );
+    }
+
+    return AppBar(
       title: Text(
         widget.appBarTitle,
         textScaleFactor: 1.0,
@@ -241,6 +304,9 @@ class _WebInAppPageState extends State<WebInAppPage> {
               fontWeight: FontWeight.bold,
             ),
       ),
+      centerTitle: widget.appBarCenterTitle,
+      brightness: widget.appBarBrightness ?? Brightness.dark,
+      backgroundColor: widget.appBarBackgroundColor ?? R.colors.majorOrange,
       leading: FlatButton(
         onPressed: () => pop(context),
         padding: EdgeInsets.all(0.0),
@@ -264,40 +330,56 @@ class _WebInAppPageState extends State<WebInAppPage> {
   Widget build(BuildContext context) {
     Widget _buildElement = Scaffold(
       appBar: _renderAppBar(),
-      backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          WebView(
-            initialUrl: widget.webUrl,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) async {
-              _wvController = webViewController;
-              if (widget.clearCacheWhenWebViewCreated) {
-                await clearCache();
-              }
-            },
-            onPageStarted: (url) {
-              _updateLoading(true);
-            },
-            onPageFinished: (value) async {
-              _updateLoading(false);
-              await _checkCanGoBackOrForward();
-            },
-            javascriptChannels:
-                (widget.jsChannels != null && widget.jsChannels.length != 0
-                    ? widget.jsChannels.toSet()
-                    : null),
-          ),
-          (_isLoading
-              ? LinearProgressIndicator(
-                  backgroundColor: R.colors.blurMajorOrange,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(R.colors.majorOrange),
-                  value: _loadingValue,
-                )
-              : Container()),
-        ],
+      backgroundColor: widget.scaffoldBackgroundColor,
+      body: Container(
+        margin: widget.webBodyMargin,
+        padding: widget.webBodyPadding,
+        decoration: BoxDecoration(
+          color: widget.webBodyColor,
+          border: widget.webBodyBoxBorder,
+          boxShadow: [widget.webBodyBoxShadow],
+          borderRadius: BorderRadius.all(Radius.circular(widget.webBodyRadius)),
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(widget.webBodyRadius),
+              ),
+              child: WebView(
+                initialUrl: widget.webUrl,
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController webViewController) async {
+                  _updateLoading(true);
+                  _wvController = webViewController;
+                  if (widget.clearCacheWhenWebViewCreated) {
+                    await clearCache();
+                  }
+                },
+                onPageStarted: (url) {
+                  _updateLoading(true);
+                },
+                onPageFinished: (value) async {
+                  _updateLoading(false);
+                  await _checkCanGoBackOrForward();
+                },
+                javascriptChannels:
+                    (widget.jsChannels != null && widget.jsChannels.length != 0
+                        ? widget.jsChannels.toSet()
+                        : null),
+              ),
+            ),
+            (_isLoading
+                ? LinearProgressIndicator(
+                    backgroundColor: R.colors.blurMajorOrange,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(R.colors.majorOrange),
+                    value: _loadingValue,
+                  )
+                : Container()),
+          ],
+        ),
       ),
     );
 

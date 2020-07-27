@@ -25,7 +25,7 @@ dependencies:
   flutter_map: ^0.8.2
   latlong: ^0.6.1
   geolocator: ^5.0.0
-  path: 1.7.0
+  path: 1.7.0 # Phiên bản 1.6.4 hoặc 1.7.0
   location:
     path: ./myLibs/location_plugin
   sensors: ^0.4.1+8
@@ -54,6 +54,7 @@ dependencies:
   flutter_staggered_animations: ^0.1.2
   webview_flutter: 0.3.21
   path_provider: ^1.2.0
+  pull_to_refresh: ^1.6.0
 
   flutter_localizations:
     sdk: flutter
