@@ -7,6 +7,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/aboutus/about_developers.dart';
 import 'package:usrun/page/aboutus/about_usrun.dart';
 import 'package:usrun/widget/aboutus_box.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class AboutUs extends StatelessWidget {
   @override
@@ -15,12 +16,16 @@ class AboutUs extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/edit_profile.dart';
@@ -13,6 +14,7 @@ import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class DrawerItem {
   String title;
@@ -52,11 +54,16 @@ final List<Widget> pages = [
 ];
 
 class _AppPageState extends State<AppPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int _selectedDrawerIndex = 0;
-  String _avatar = R.images.avatarQuocTK;
-  String _supportAvatar = R.images.avatar;
-  String _fullName = "We Are USRUN";
-  String _userCode = "USR9381852";
+  String _avatar = UserManager.currentUser.avatar;
+  String _supportAvatar =
+      UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;
+  String _fullName = UserManager.currentUser.name;
+  String _userCode = UserManager.currentUser.code == null
+      ? "USRUN${UserManager.currentUser.userId}"
+      : UserManager.currentUser.code;
 
   _onSelectItem(int index) {
     if (_selectedDrawerIndex == index) return;
@@ -69,7 +76,29 @@ class _AppPageState extends State<AppPage> {
     Navigator.of(context).pop();
   }
 
+  _openDrawer() {
+    _scaffoldKey.currentState.openDrawer();
+  }
+
   List<Widget> _appBarActionList() {
+    Widget wrapWidget(String iconUrl, Function func) {
+      return Container(
+        width: R.appRatio.appWidth60,
+        child: FlatButton(
+          onPressed: func,
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: iconUrl,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+
     List<Widget> list = List<Widget>();
     switch (_selectedDrawerIndex) {
       case 0: // Record page
@@ -82,29 +111,25 @@ class _AppPageState extends State<AppPage> {
         list.add(Container());
         break;
       case 3: // Team page
-        list.add(IconButton(
-          icon: Image.asset(
+        list.add(
+          wrapWidget(
             R.myIcons.appBarSearchBtn,
-            width: R.appRatio.appAppBarIconSize,
+            () {
+              pushPage(
+                context,
+                TeamSearchPage(autoFocusInput: true, defaultList: null),
+              );
+            },
           ),
-          onPressed: () {
-            pushPage(
-              context,
-              TeamSearchPage(autoFocusInput: true),
-            );
-          },
-        ));
+        );
         break;
       case 4: // Profile page
-        list.add(IconButton(
-          icon: Image.asset(
+        list.add(
+          wrapWidget(
             R.myIcons.appBarEditBtn,
-            width: R.appRatio.appAppBarIconSize,
+            () => pushPage(context, EditProfilePage()),
           ),
-          onPressed: () {
-            pushPage(context, EditProfilePage());
-          },
-        ));
+        );
         break;
       case 5: // Setting page
         list.add(Container());
@@ -158,7 +183,8 @@ class _AppPageState extends State<AppPage> {
       ));
     }
 
-    return Scaffold(
+    Widget _buildElement = Scaffold(
+      key: _scaffoldKey,
       appBar: GradientAppBar(
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -167,6 +193,17 @@ class _AppPageState extends State<AppPage> {
           style: TextStyle(
             color: Colors.white,
             fontSize: R.appRatio.appFontSize22,
+          ),
+        ),
+        leading: FlatButton(
+          onPressed: () => _openDrawer(),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.menuIcon,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
           ),
         ),
         actions: _appBarActionList(),
@@ -205,7 +242,7 @@ class _AppPageState extends State<AppPage> {
                     height: R.appRatio.appSpacing20,
                   ),
                   Text(
-                    _fullName,
+                    _fullName ?? "",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -254,16 +291,27 @@ class _AppPageState extends State<AppPage> {
         ),
       ),
       body: NotificationListener<OverscrollIndicatorNotification>(
-          child: WillPopScope(
-              child: IndexedStack(
-                index: _selectedDrawerIndex,
-                children: pages,
-              ),
-              onWillPop: () async => false),
+          child: IndexedStack(
+            index: _selectedDrawerIndex,
+            children: pages,
+          ),
           onNotification: (overScroll) {
             overScroll.disallowGlow();
             return false;
           }),
+    );
+
+    return WillPopScope(
+      child: _buildElement,
+      onWillPop: () async {
+        if (_scaffoldKey.currentState.isDrawerOpen) {
+          pop(context);
+          return false;
+        } else {
+          // TODO: return await showCustomExitDialog(context);
+          return false;
+        }
+      },
     );
   }
 }

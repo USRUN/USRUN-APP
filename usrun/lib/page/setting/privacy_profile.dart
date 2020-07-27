@@ -5,22 +5,27 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/line_button.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class PrivacyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
-    
+
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
+        leading: FlatButton(
           onPressed: () => pop(context),
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: R.myIcons.appBarBackBtn,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+          ),
         ),
         gradient: R.colors.uiGradient,
         centerTitle: true,
@@ -51,45 +56,36 @@ class PrivacyProfile extends StatelessWidget {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyFindEmailTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyFindUserCodeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyFindNameTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
@@ -99,7 +95,7 @@ class PrivacyProfile extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   PEOPLE FOLLOW YOU
               */
               Padding(
@@ -112,15 +108,12 @@ class PrivacyProfile extends StatelessWidget {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyFollowFeatureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.privacyFollowFeatureSubtitle,
                 subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
@@ -134,7 +127,7 @@ class PrivacyProfile extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   ACTIVITIES
               */
               Padding(
@@ -147,15 +140,12 @@ class PrivacyProfile extends StatelessWidget {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyActLimitPeopleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.privacyActLimitPeopleSubtitle,
                 subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
@@ -165,7 +155,7 @@ class PrivacyProfile extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   OTHER PERSONAL INFORMATION
               */
               Padding(
@@ -178,23 +168,17 @@ class PrivacyProfile extends StatelessWidget {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyOPISeeUserCodeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeDetailedInfoTitle,
@@ -203,128 +187,104 @@ class PrivacyProfile extends StatelessWidget {
                 subTextFontSize: R.appRatio.appFontSize14,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeFollowersTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeFollowingTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeePhotosTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeEventBadgesTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeEventsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeStatsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.privacyOPISeeTeamsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.privacyOPISeeTeamPlansTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
+                enableBottomUnderline: false,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");

@@ -40,45 +40,49 @@ class _RecordWidget extends StatelessWidget {
 
   BitmapDescriptor pinLocationIcon;
 
-
   Widget buildGPSInfoSignal() {
     return StreamBuilder<GPSSignalStatus>(
-      stream: this.bloc.streamGPSStatus,
-      builder: (context, snapshot) {
-        var textGPSStatus = R.strings.gpsAcquiring;
-        var colorBackground = R.colors.majorOrange;
-        if (snapshot.hasData) {
-          if (snapshot.data == GPSSignalStatus.READY) {
-            textGPSStatus = R.strings.gpsReady;
-            colorBackground = R.colors.majorOrange;
-          } else  if (snapshot.data == GPSSignalStatus.CHECKING) {
-            textGPSStatus = R.strings.gpsAcquiring;
-            colorBackground = Color(0xff8d1f17);
-          } else {
-            textGPSStatus =  R.strings.gpsNotFound;
-            colorBackground = Color(0xff8d1f17);
+        stream: this.bloc.streamGPSStatus,
+        builder: (context, snapshot) {
+          var textGPSStatus = R.strings.gpsAcquiring;
+          var colorBackground = R.colors.majorOrange;
+          if (snapshot.hasData) {
+            if (snapshot.data == GPSSignalStatus.READY) {
+              textGPSStatus = R.strings.gpsReady;
+              colorBackground = R.colors.majorOrange;
+            } else if (snapshot.data == GPSSignalStatus.CHECKING) {
+              textGPSStatus = R.strings.gpsAcquiring;
+              colorBackground = Color(0xff8d1f17);
+            } else {
+              textGPSStatus = R.strings.gpsNotFound;
+              colorBackground = Color(0xff8d1f17);
+            }
           }
-        }
-        var isGone = snapshot.data != null && snapshot.data == GPSSignalStatus.HIDE 
-        || (this.bloc.currentRecordState==RecordState.StatusStop && snapshot.data == GPSSignalStatus.READY);
-        return Offstage(
-          offstage: isGone,
-          child: Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(textGPSStatus, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white))
-                ]),
-            color: colorBackground,
-          ),
-        );
-      }
-    );
+          var isGone =
+              snapshot.data != null && snapshot.data == GPSSignalStatus.HIDE ||
+                  (this.bloc.currentRecordState == RecordState.StatusStop &&
+                      snapshot.data == GPSSignalStatus.READY);
+          return Offstage(
+            offstage: isGone,
+            child: Container(
+              padding: EdgeInsets.all(6),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(textGPSStatus,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white))
+                  ]),
+              color: colorBackground,
+            ),
+          );
+        });
   }
 
-    Widget buildRecordStateStatus() {
+  Widget buildRecordStateStatus() {
     return StreamBuilder<RecordState>(
         stream: this.bloc.streamRecordState,
         builder: (context, snapshot) {
@@ -91,15 +95,17 @@ class _RecordWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(R.strings.pause, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white))
+                    Text(R.strings.pause,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white))
                   ]),
               color: R.colors.majorOrange,
             ),
           );
-        }
-    );
+        });
   }
-  
 
   Widget buildMap(BuildContext context) {
     this.context = context;
@@ -110,70 +116,61 @@ class _RecordWidget extends StatelessWidget {
           var defaultBegin = LatLng(10.763106, 106.682214);
           return GestureDetector(
             child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: defaultBegin,
-                  zoom: 13
-                ),
-                markers: Set.of(bloc.mData),
-                onMapCreated: (controller) => bloc.onMapCreated(controller),
-                myLocationEnabled: false,
-                scrollGesturesEnabled: true,
-                myLocationButtonEnabled: false,
-                zoomControlsEnabled: false,
-                polylines: Set.of(bloc.lData),
-                ),
+              initialCameraPosition:
+                  CameraPosition(target: defaultBegin, zoom: 13),
+              markers: Set.of(bloc.mData),
+              onMapCreated: (controller) => bloc.onMapCreated(controller),
+              myLocationEnabled: false,
+              scrollGesturesEnabled: true,
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false,
+              polylines: Set.of(bloc.lData),
+            ),
           );
         });
   }
 
-   Widget buildReportView() {
-    return  Container (
+  Widget buildReportView() {
+    return Container(
       height: MediaQuery.of(context).size.height,
       alignment: Alignment.bottomLeft,
       padding: EdgeInsets.only(left: 20, bottom: 120),
       child: StreamBuilder<ReportVisibility>(
-        stream: this.bloc.streamReportVisibility,
-        initialData: ReportVisibility.Gone,
-        builder: (context, snapshot) {
-          print(snapshot.data);
-          return Offstage(
-            offstage: snapshot.data == ReportVisibility.Gone,
-            child: RecordReport(),
-                 
+          stream: this.bloc.streamReportVisibility,
+          initialData: ReportVisibility.Gone,
+          builder: (context, snapshot) {
+            print(snapshot.data);
+            return Offstage(
+              offstage: snapshot.data == ReportVisibility.Gone,
+              child: RecordReport(),
             );
-            } 
-          ),
+          }),
     );
-    }
-
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     this.bloc = BlocProvider.of(context);
-    return WillPopScope( 
-      onWillPop: ()async => false,
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            buildRecordStateStatus(),
-            Expanded(
-              child: Column(
-                children: <Widget>[
+    return Container(
+      child: Column(
+        children: <Widget>[
+          buildRecordStateStatus(),
+          Expanded(
+            child: Column(
+              children: <Widget>[
                 Expanded(
-                    child: Stack(
-                      children: <Widget>[
-                        buildMap(context),
-                        buildReportView(),
-                        buildGPSInfoSignal(),
-                        RecordButton(),
-                    ])
-                    )
-            ],),
-            )
-          ])
+                    child: Stack(children: <Widget>[
+                  buildMap(context),
+                  buildReportView(),
+                  buildGPSInfoSignal(),
+                  RecordButton(),
+                ]))
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
-
 }

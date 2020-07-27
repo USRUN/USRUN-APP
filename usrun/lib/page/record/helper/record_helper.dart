@@ -33,11 +33,13 @@ class RecordHelper{
       'trackID': data.trackId,
       'sig': data.trackRequest.sig,
       'createTime': data.trackRequest.createTime,
-      'routes': routes
+      'routes': routes,
+      'splitDistance': json.encode(data.splitData)
     };
 
 
     Map<String,dynamic> res = {
+      "eventId": data.eventId,
       'trackID': data.trackId,
       'totalTime': data.totalTime,
       'totalMovingTime': data.totalMovingTime,
@@ -60,7 +62,7 @@ class RecordHelper{
     return res;
   }
 
-  static Map<String,dynamic> generateParamsForRequest(ActivityData activityData){
+  static Map<String,dynamic> generateParamsForRequest(ActivityData activityData, String requestTime){
 
     RecordData data = activityData.recordData;
     List<List<Map<String,double>>> routes = [];
@@ -81,8 +83,15 @@ class RecordHelper{
       });
       routes.add(loc);
     });
-      
+
+    List<String> photos = [];
+    activityData.photos.forEach((p) {
+      String imageB64 = base64Encode(p.readAsBytesSync());
+      photos.add(imageB64);
+    });
+
     Map<String,dynamic> res = {
+      "eventId": data.eventId,
       "totalDistance": data.totalDistance,
       "totalTime": data.totalTime,
       "totalStep": data.totalStep,
@@ -92,7 +101,7 @@ class RecordHelper{
       "calories": data.calories,
       "elevGain": data.elevGain,
       "elevMax": data.elevMax,
-      "photo": null,
+      "photo": photos,
       "title": activityData.title,
       "description": activityData.description,
       "totalLove": activityData.totalLove,
@@ -103,8 +112,10 @@ class RecordHelper{
       "privacy": 0,
       "trackRequest":{
         "time": data.createTime,
-        "locations": routes
+        "locations": routes,
+        "splitDistance": data.splitData
       },
+      "time": requestTime,
       "sig": activityData.sig
     };
 
@@ -116,7 +127,7 @@ class RecordHelper{
     RecordCache recordCache = new RecordCache();
     if (!(await recordCache.recordDataFileExists()))
       return null;
-    
+
     Map<String,dynamic>  content = await recordCache.getRecordData();
     //Map<String,dynamic> data = jsonDecode(content);
 
@@ -126,7 +137,7 @@ class RecordHelper{
 
     List<dynamic> routes = content['trackRequest']['routes'];
 
-    
+
 
     routes.forEach((route) {
       RunningRoute runningRoute = new RunningRoute();
@@ -137,8 +148,8 @@ class RecordHelper{
       });
       r.add(runningRoute);
     });
-    
-    
+
+
 
 
     TrackRequest trackRequest = new TrackRequest();
@@ -151,6 +162,7 @@ class RecordHelper{
 
     RecordData data= new RecordData();
 
+    data.splitData = Map<String, double>.from(json.decode(content['trackRequest']['splitDistance']));
     data.trackId = content['trackId'];
     data.totalTime = content['totalTime'];
     data.totalMovingTime = content['totalMovingTime'];
@@ -170,13 +182,13 @@ class RecordHelper{
     data.trackRequest = trackRequest;
 
     print(data.trackRequest.routes.last.locations.toString());
-    
+
 
     return data;
   }
 
   static Future<void> saveFile(Map<String,dynamic> content) async{
-    
+
     RecordCache recordCache = new RecordCache();
     await recordCache.writeRecordData(content);
 

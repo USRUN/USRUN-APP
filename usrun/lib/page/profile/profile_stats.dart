@@ -2,32 +2,24 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/format_profile_stats.dart';
-import 'package:usrun/model/week_date_time.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_month_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_week_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_year_picker.dart';
+import 'package:usrun/widget/stats_section/format_profile_stats.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class ProfileStats extends StatefulWidget {
   final tabBarItems = [
-    {
-      "tabName": R.strings.day,
-    },
-    {
-      "tabName": R.strings.week,
-    },
-    {
-      "tabName": R.strings.month,
-    },
-    {
-      "tabName": R.strings.year,
-    }
+    R.strings.day,
+    R.strings.week,
+    R.strings.month,
+    R.strings.year,
   ];
 
   @override
@@ -155,12 +147,14 @@ class _ProfileStatsState extends State<ProfileStats> {
 
       await Future.wait(futures).then((resultList) {
         if (!mounted) return;
-        
+
         dynamic chartListResult = resultList[0];
         dynamic statsSectionListResult = resultList[1];
 
-        var newChartList = FormatProfileStats.formatChartObject(chartListResult);
-        var newStatsSectionList = FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
+        var newChartList =
+            FormatProfileStats.formatChartObject(chartListResult);
+        var newStatsSectionList =
+            FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
 
         setState(() {
           _chartItems = newChartList;
@@ -181,7 +175,7 @@ class _ProfileStatsState extends State<ProfileStats> {
     setState(() {
       _selectedTabIndex = tabIndex;
       _getProfileStatsData();
-      
+
       switch (tabIndex) {
         case 0: // Day
           _stringSelectedDate =
@@ -276,7 +270,7 @@ class _ProfileStatsState extends State<ProfileStats> {
 
           if (datePick != null && datePick != _selectedWeek) {
             setState(() {
-              _selectedWeek = datePick;
+              _selectedWeek = datePick as WeekDateTime;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
             _getProfileStatsData();
@@ -357,7 +351,7 @@ class _ProfileStatsState extends State<ProfileStats> {
           height: R.appRatio.appSpacing25,
         ),
         (_isLoading
-            ? LoadingDotStyle02()
+            ? LoadingIndicator()
             : _getContentItemWidget(_selectedTabIndex)),
       ],
     );

@@ -10,10 +10,12 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 import '../manager/data_manager.dart';
+import 'R.dart';
 
 // === MAIN === //
 Future<void> initialize(BuildContext context) async {
@@ -21,6 +23,30 @@ Future<void> initialize(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
   UserManager.initialize();
+}
+
+// === ALERT === //
+Future<T> showAlert<T>(
+    BuildContext context, String title, String message, List<Widget> actions) {
+  if (actions == null) {
+    actions = [
+      CupertinoButton(
+        child: Text(R.strings.ok),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      )
+    ];
+  }
+  return showCupertinoDialog<T>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: actions,
+        );
+      });
 }
 
 enum RouteType {
@@ -154,6 +180,8 @@ Future<T> pushPage<T>(BuildContext context, Widget page) {
     return null;
   }
 
+  NetworkDetector.checkNetworkAndAlert(context);
+
   hideLoading(context);
 
   Route<T> route = _FullPageRoute<T>(
@@ -240,8 +268,145 @@ void hideLoading(BuildContext context) {
   }
 }
 
-Future<File> pickImage(BuildContext context,
-    {double maxWidth = 1920, double maxHeight = 1920}) async {
+Future<File> handleImagePicked(BuildContext context, CropStyle cropStyle,
+    File photo, int maxWidth, int maxHeight, int quality) async {
+  int initSize = (await photo.length() ~/ 1000);
+
+  if (initSize > 5500) {
+    // Image too large, abort
+    await showCustomAlertDialog(context,
+        title: "Image upload failed",
+        content:
+            "The image is too large. Please choose another image to upload.",
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () => {pop(context, object: null)},
+        secondButtonText: "");
+    return null;
+  }
+  if (initSize > 3800) {
+    quality = (4000 * 77) ~/ initSize;
+  }
+
+  File result = await ImageCropper.cropImage(
+    sourcePath: photo.path,
+    maxHeight: maxHeight,
+    maxWidth: maxWidth,
+    cropStyle: cropStyle,
+    aspectRatio: (cropStyle == CropStyle.circle)
+        ? CropAspectRatio(ratioX: 1, ratioY: 1)
+        : CropAspectRatio(ratioX: 4, ratioY: 3),
+    compressFormat: ImageCompressFormat.jpg,
+    compressQuality: quality,
+    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+  );
+
+  return result;
+}
+
+Future<File> pickImageByShape(BuildContext context, CropStyle shape,
+    {int maxWidth = 800, int maxHeight = 600, int quality = 80}) async {
+  Widget widget = Material(
+    type: MaterialType.transparency,
+    child: Column(
+      children: <Widget>[
+        Container(
+          height: 30,
+          child: Text(
+            R.strings.chooseImage,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: R.appRatio.appFontSize18,
+              color: R.colors.labelText,
+            ),
+          ),
+        ),
+        Divider(
+          color: R.colors.majorOrange,
+          height: 1,
+        ),
+        SizedBox(height: R.appRatio.appSpacing20),
+        UIButton(
+          text: R.strings.gallery.toUpperCase(),
+          textSize: R.appRatio.appFontSize16,
+          fontWeight: FontWeight.w700,
+          height: 40,
+          gradient: R.colors.uiGradient,
+          onTap: () async {
+            File photo =
+                await ImagePicker.pickImage(source: ImageSource.gallery);
+            if (photo == null) {
+              pop(context, object: null);
+            } else {
+              pop(
+                context,
+                object: await handleImagePicked(
+                    context, shape, photo, maxWidth, maxHeight, quality),
+              );
+            }
+          },
+        ),
+        SizedBox(height: R.appRatio.appSpacing15),
+        UIButton(
+          text: R.strings.camera.toUpperCase(),
+          textSize: R.appRatio.appFontSize16,
+          gradient: R.colors.uiGradient,
+          fontWeight: FontWeight.w700,
+          height: 40,
+          onTap: () async {
+            File photo = await ImagePicker.pickImage(
+              source: ImageSource.camera,
+            );
+            if (photo == null) {
+              pop(context, object: null);
+            } else {
+              pop(
+                context,
+                object: await handleImagePicked(
+                  context,
+                  shape,
+                  photo,
+                  maxWidth,
+                  maxHeight,
+                  quality,
+                ),
+              );
+            }
+          },
+        ),
+        SizedBox(height: R.appRatio.appSpacing15),
+        UIButton(
+          text: R.strings.cancel.toUpperCase(),
+          textSize: R.appRatio.appFontSize16,
+          fontWeight: FontWeight.w700,
+          height: 40,
+          color: R.colors.grayABABAB,
+          onTap: () => pop(context, object: null),
+        ),
+      ],
+    ),
+  );
+
+  File photo = await showActionSheet<File>(
+    context,
+    widget,
+    240,
+    [],
+    EdgeInsets.fromLTRB(
+      R.appRatio.appSpacing15,
+      R.appRatio.appSpacing15,
+      R.appRatio.appSpacing15,
+      0
+    ),
+  );
+  return photo;
+}
+
+Future<File> pickImage(
+  BuildContext context, {
+  double maxWidth = 800,
+  double maxHeight = 600,
+  int quality = 80,
+}) async {
   Widget w = Material(
     type: MaterialType.transparency,
     child: Column(
@@ -255,11 +420,12 @@ Future<File> pickImage(BuildContext context,
             File photo = await ImagePicker.pickImage(
                 source: ImageSource.gallery,
                 maxWidth: maxWidth,
-                maxHeight: maxHeight);
+                maxHeight: maxHeight,
+                imageQuality: quality);
             if (photo == null) {
               pop(context, object: null);
             } else {
-              //File result = await _cropImage(photo);
+//              File result = await ImageCropper.cropImage(sourcePath: photo.path,maxHeight: maxHeight.toInt(),maxWidth: maxWidth.toInt());
               pop(context, object: photo);
             }
           },
@@ -272,7 +438,8 @@ Future<File> pickImage(BuildContext context,
             File photo = await ImagePicker.pickImage(
                 source: ImageSource.camera,
                 maxWidth: maxWidth,
-                maxHeight: maxHeight);
+                maxHeight: maxHeight,
+                imageQuality: quality);
             if (photo == null) {
               pop(context, object: null);
             } else {
@@ -296,12 +463,12 @@ Future<File> pickImage(BuildContext context,
   return photo;
 }
 
-Future<File> _cropImage(File imageFile) async {
-  File croppedFile = await ImageCropper.cropImage(
-    sourcePath: imageFile.path,
-  );
-  return croppedFile;
-}
+// Future<File> _cropImage(File imageFile) async {
+//   File croppedFile = await ImageCropper.cropImage(
+//     sourcePath: imageFile.path,
+//   );
+//   return croppedFile;
+// }
 
 class _IndicatorRoute<T> extends ModalRoute {
   _IndicatorRoute(
