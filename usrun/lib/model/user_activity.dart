@@ -1,8 +1,11 @@
 import 'package:usrun/model/mapper_object.dart';
 
-class UFeed extends MapperObject{
+class UserActivity extends MapperObject{
   int userActivityId;
   int userId;
+  String userDisplayName;
+  int eventId;
+  String eventName;
   DateTime createTime;
   int totalDistance;
   int totalTime;
@@ -19,7 +22,4 @@ class UFeed extends MapperObject{
   int totalLove;
   int totalComment;
   int totalShare;
-  bool processed;
-  int deleted;
-  int privacy;
 }
