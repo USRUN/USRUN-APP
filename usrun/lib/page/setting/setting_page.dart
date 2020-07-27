@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -24,6 +25,41 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   User currentUser = UserManager.currentUser;
+  List<String> possibleTab = [
+    R.strings.record,
+    R.strings.uFeed,
+    R.strings.events,
+    R.strings.teams,
+    R.strings.profile,
+    R.strings.settings,
+  ];
+  int currentDefaultTab = DataManager.getUserDefaultTab();
+
+  void handleChangeDefaultTab() async {
+    int selectedIndex = await showCustomSelectionDialog(
+      context,
+      [
+        ObjectFilter(name: R.strings.record, value: 0),
+        ObjectFilter(name: R.strings.uFeed, value: 1),
+        ObjectFilter(name: R.strings.events, value: 2),
+        ObjectFilter(name: R.strings.teams, value: 3),
+        ObjectFilter(name: R.strings.profile, value: 4),
+        ObjectFilter(name: R.strings.settings, value: 5),
+      ],
+      currentDefaultTab,
+      title: "Select default tab",
+      description:
+          "You can choose a default tab which will be displayed when the app opened",
+    );
+
+    if (selectedIndex != null) {
+      DataManager.setUserDefaultTab(selectedIndex);
+
+      setState(() {
+        currentDefaultTab = selectedIndex;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,28 +165,12 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayDefaultTabTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.uFeed,
+                resultText: possibleTab[currentDefaultTab],
                 resultTextFontSize: R.appRatio.appFontSize14,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () async {
-                  int selectedIndex = await showCustomSelectionDialog(
-                    context,
-                    [
-                      ObjectFilter(name: R.strings.record, value: 0),
-                      ObjectFilter(name: R.strings.uFeed, value: 1),
-                      ObjectFilter(name: R.strings.events, value: 2),
-                      ObjectFilter(name: R.strings.teams, value: 3),
-                      ObjectFilter(name: R.strings.profile, value: 4),
-                      ObjectFilter(name: R.strings.settings, value: 5),
-                    ],
-                    0,
-                    title: "Select default tab",
-                    description:
-                        "You can choose a default tab which will be displayed when the app opened",
-                  );
-
-                  print("Selected index: $selectedIndex");
+                  handleChangeDefaultTab();
                 },
               ),
               LineButton(
@@ -197,6 +217,9 @@ class _SettingPageState extends State<SettingPage> {
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
+                  String newLang = state?"en":"vi";
+                  DataManager.saveLanguage(newLang);
+                  setLanguage(newLang);
                 },
               ),
               SizedBox(

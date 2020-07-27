@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
