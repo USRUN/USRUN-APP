@@ -213,7 +213,7 @@ class _SettingPageState extends State<SettingPage> {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "En",
                 switchButtonOffTitle: "Vi",
-                initSwitchStatus: true,
+                initSwitchStatus: (DataManager.loadLanguage()=="en")?true:false,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
