@@ -118,7 +118,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _curPage = 1;
     _remainingResults = true;
 
-    if (TeamMemberUtil.authorizeHigherLevel(TeamMemberType.Admin, widget.teamMemberType)) {
+    if (TeamMemberUtil.authorizeHigherLevel(
+        TeamMemberType.Admin, widget.teamMemberType)) {
       tabItems = widget.adminTabBarItems;
     } else {
       tabItems = widget.tabBarItems;
@@ -344,8 +345,16 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   Widget _buildEmptyList() {
-    String noResult = R.strings.emptyMemberList;
-    String noResultSubtitle = R.strings.emptyMemberListSubtitle;
+    String emptyList;
+    String emptyListSubtitle;
+
+    if(TeamMemberUtil.authorizeHigherLevel(TeamMemberType.Member,widget.teamMemberType)){
+      emptyList = R.strings.noResult;
+      emptyListSubtitle = R.strings.noResultSubtitle;
+    }else{
+      emptyList = R.strings.memberOnly;
+      emptyListSubtitle = R.strings.memberOnlySubtitle;
+    }
 
     return Center(
       child: Container(
@@ -358,7 +367,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  noResult,
+                  emptyList,
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     color: R.colors.contentText,
@@ -367,7 +376,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   ),
                 ),
                 Text(
-                  noResultSubtitle,
+                  emptyListSubtitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: R.colors.contentText,
@@ -405,45 +414,51 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         actions: <Widget>[
           Container(
             width: R.appRatio.appWidth40,
-            child: FlatButton(
-              onPressed: () {
-                _showCustomDialog(0);
-              },
-              padding: EdgeInsets.all(0.0),
-              splashColor: R.colors.lightBlurMajorOrange,
-              textColor: Colors.white,
-              child: ImageCacheManager.getImage(
-                url: R.myIcons.addIcon02ByTheme,
-                width: R.appRatio.appAppBarIconSize,
-                height: R.appRatio.appAppBarIconSize,
-                color: Colors.white,
-              ),
-            ),
+            child: (TeamMemberUtil.authorizeHigherLevel(
+                    TeamMemberType.Member, widget.teamMemberType))
+                ? FlatButton(
+                    onPressed: () {
+                      _showCustomDialog(0);
+                    },
+                    padding: EdgeInsets.all(0.0),
+                    splashColor: R.colors.lightBlurMajorOrange,
+                    textColor: Colors.white,
+                    child: ImageCacheManager.getImage(
+                      url: R.myIcons.addIcon02ByTheme,
+                      width: R.appRatio.appAppBarIconSize,
+                      height: R.appRatio.appAppBarIconSize,
+                      color: Colors.white,
+                    ),
+                  )
+                : Container(),
           ),
           Container(
             width: R.appRatio.appWidth60,
-            child: FlatButton(
-                onPressed: () {
-                  pushPage(
-                    context,
-                    //MEMBER SEARCH PAGE
-                    MemberSearchPage(
-                        autoFocusInput: true,
-                        tabItems: tabItems,
-                        selectedTab: _selectedTabIndex,
-                        teamId: widget.teamId,
-                        options: options),
-                  );
-                },
-                padding: EdgeInsets.all(0.0),
-                splashColor: R.colors.lightBlurMajorOrange,
-                textColor: Colors.white,
-                child: ImageCacheManager.getImage(
-                  url: R.myIcons.appBarSearchBtn,
-                  width: R.appRatio.appAppBarIconSize,
-                  height: R.appRatio.appAppBarIconSize,
-                  color: Colors.white,
-                )),
+            child: (TeamMemberUtil.authorizeHigherLevel(
+                    TeamMemberType.Member, widget.teamMemberType))
+                ? FlatButton(
+                    onPressed: () {
+                      pushPage(
+                        context,
+                        //MEMBER SEARCH PAGE
+                        MemberSearchPage(
+                            autoFocusInput: true,
+                            tabItems: tabItems,
+                            selectedTab: _selectedTabIndex,
+                            teamId: widget.teamId,
+                            options: options),
+                      );
+                    },
+                    padding: EdgeInsets.all(0.0),
+                    splashColor: R.colors.lightBlurMajorOrange,
+                    textColor: Colors.white,
+                    child: ImageCacheManager.getImage(
+                      url: R.myIcons.appBarSearchBtn,
+                      width: R.appRatio.appAppBarIconSize,
+                      height: R.appRatio.appAppBarIconSize,
+                      color: Colors.white,
+                    ))
+                : Container(),
           ),
         ],
       ),

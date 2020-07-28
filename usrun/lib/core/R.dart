@@ -972,6 +972,8 @@ class Strings {
   String chooseImage;
   String gallery;
   String camera;
+  String imageTooLarge;
+  String imageUploadFailed;
 
   String uFeed;
 
@@ -1014,6 +1016,8 @@ class Strings {
   String deleteTeamSubtitle;
   String noResult;
   String noResultSubtitle;
+  String memberOnly;
+  String memberOnlySubtitle;
   String startSearch;
   String startSearchSubtitle;
   String notAuthorizedTeamChange;
@@ -1137,6 +1141,11 @@ class Strings {
   String settingsSOLegalTitle;
   String settingsSOAboutUsTitle;
   String settingsSOLogOutTitle;
+  String settingsChangePasswordSuccessful;
+  String settingsBackToLogin;
+  String settingsCPEmptyField;
+  String settingsCPPwdNotMatch;
+  String settingsCPNewPwdDifferent;
 
   String aboutUsUSRUNTitle;
   String aboutUsUSRUNSubtitle;
