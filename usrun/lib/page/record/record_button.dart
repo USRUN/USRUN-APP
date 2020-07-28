@@ -20,9 +20,9 @@ class RecordButton extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("GPS not found"),
-          content: Text("GPS not detected. Please activate it."),
-        ));
+              title: Text("GPS not found"),
+              content: Text("GPS not detected. Please activate it."),
+            ));
   }
 
   void showRequestServiceDialog() {
@@ -30,13 +30,13 @@ class RecordButton extends StatelessWidget {
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: '${R.strings.gpsServiceUnavailable}. ${R.strings.enableGPS}',
-          secondButtonText: R.strings.ok,
-          secondButtonFunction: () async {
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () async {
             await this.bloc.requestService();
             pop(this.context);
           },
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () {
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () {
             pop(this.context);
           });
   }
@@ -63,8 +63,8 @@ class RecordButton extends StatelessWidget {
               title: R.strings.notice,
               content: R.strings.gpsNotFound,
               firstButtonText: R.strings.ok, firstButtonFunction: () {
-                pop(this.context);
-              });
+            pop(this.context);
+          });
         }
       }
     } catch (error) {}
@@ -101,8 +101,8 @@ class RecordButton extends StatelessWidget {
             title: R.strings.notice,
             content: R.strings.gpsNotFound,
             firstButtonText: R.strings.ok, firstButtonFunction: () {
-              pop(this.context);
-            }, secondButtonText: "", secondButtonFunction: null);
+          pop(this.context);
+        }, secondButtonText: "", secondButtonFunction: null);
       }
     }
   }
@@ -119,7 +119,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icResumeRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onResumeButtonTap();
                   }),
@@ -129,7 +129,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icStopRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onFinishButtonTap(context);
                   }),
@@ -164,7 +164,7 @@ class RecordButton extends StatelessWidget {
               StateButton(
                   disabled: false,
                   icon: R.myIcons.icPauseRecord,
-                  size: R.appRatio.deviceWidth / 5,
+                  size: R.appRatio.deviceWidth / 5.5,
                   onPress: () {
                     onPauseButtonTap();
                   }),
@@ -194,7 +194,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icStatisticWhite,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateReportVisibility(ReportVisibility.Visible),
             );
@@ -202,7 +202,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icStatisticColor,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateReportVisibility(ReportVisibility.Gone),
             );
@@ -220,7 +220,7 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icRecordEventWhite,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateEventVisibility(EventVisibility.Visible),
             );
@@ -228,14 +228,13 @@ class RecordButton extends StatelessWidget {
             return StateButton(
               disabled: false,
               icon: R.myIcons.icRecordEventColor,
-              size: R.appRatio.deviceWidth / 7,
+              size: R.appRatio.deviceWidth / 7.5,
               onPress: () =>
                   this.bloc.updateEventVisibility(EventVisibility.Gone),
             );
           }
         });
   }
-
 
   _buildLayoutForStateNone(BuildContext context) {
     return Align(
@@ -261,16 +260,16 @@ class RecordButton extends StatelessWidget {
                                 StateButton(
                                     disabled: false,
                                     icon: R.myIcons.icStartRecord,
-                                    size: R.appRatio.deviceWidth / 5,
+                                    size: R.appRatio.deviceWidth / 5.5,
                                     onPress: snapshot.data == null ||
-                                        snapshot.data !=
-                                            GPSSignalStatus.READY
+                                            snapshot.data !=
+                                                GPSSignalStatus.READY
                                         ? () {
-                                      showRequestServiceDialog();
-                                    }
+                                            showRequestServiceDialog();
+                                          }
                                         : () {
-                                      onStartButtonTap();
-                                    }),
+                                            onStartButtonTap();
+                                          }),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
                                 ),
@@ -329,6 +328,7 @@ class ChooseEventButton extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ChooseEventButtonState();
   final Function onPress;
+
   ChooseEventButton(this.onPress);
 }
 
@@ -341,7 +341,7 @@ class _ChooseEventButtonState extends State<ChooseEventButton> {
     return StateButton(
         disabled: false,
         icon: icon,
-        size: R.appRatio.deviceWidth / 7,
+        size: R.appRatio.deviceWidth / 7.5,
         onPress: () {
           setState(() {
             if (isPressed)

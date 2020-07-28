@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
+import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/setting/about_us.dart';
@@ -12,6 +14,7 @@ import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/web_inapp_page.dart';
 
@@ -21,10 +24,42 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-
   User currentUser = UserManager.currentUser;
+  List<String> possibleTab = [
+    R.strings.record,
+    R.strings.uFeed,
+    R.strings.events,
+    R.strings.teams,
+    R.strings.profile,
+    R.strings.settings,
+  ];
+  int currentDefaultTab = DataManager.getUserDefaultTab();
 
+  void handleChangeDefaultTab() async {
+    int selectedIndex = await showCustomSelectionDialog(
+      context,
+      [
+        ObjectFilter(name: R.strings.record, value: 0),
+        ObjectFilter(name: R.strings.uFeed, value: 1),
+        ObjectFilter(name: R.strings.events, value: 2),
+        ObjectFilter(name: R.strings.teams, value: 3),
+        ObjectFilter(name: R.strings.profile, value: 4),
+        ObjectFilter(name: R.strings.settings, value: 5),
+      ],
+      currentDefaultTab,
+      title: "Select default tab",
+      description:
+          "You can choose a default tab which will be displayed when the app opened",
+    );
 
+    if (selectedIndex != null) {
+      DataManager.setUserDefaultTab(selectedIndex);
+
+      setState(() {
+        currentDefaultTab = selectedIndex;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +74,12 @@ class _SettingPageState extends State<SettingPage> {
               SizedBox(
                 height: R.appRatio.appSpacing20,
               ),
-              /* 
+              /*
                   ACCOUNT
               */
               Padding(
                 padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
+                  left: 15,
                 ),
                 child: Text(
                   R.strings.settingsAccountLabel,
@@ -52,72 +87,60 @@ class _SettingPageState extends State<SettingPage> {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsAccountTypeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.student,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               // No password to be changed if user signed up using social networks
-              (currentUser.type == LoginChannel.UsRun)?
-              LineButton(
-                mainText: R.strings.changePassword,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
-                lineFunction: () {
-                  pushPage(context, ChangePasswordPage());
-                },
-              ):Container(),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
+              (currentUser.type == LoginChannel.UsRun)
+                  ? LineButton(
+                      mainText: R.strings.changePassword,
+                      mainTextFontSize: R.appRatio.appFontSize18,
+                      enableBottomUnderline: true,
+                      textPadding: EdgeInsets.all(15),
+                      lineFunction: () {
+                        pushPage(context, ChangePasswordPage());
+                      },
+                    )
+                  : Container(),
               LineButton(
                 mainText: R.strings.settingsAccountPrivacyProfileTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   pushPage(context, PrivacyProfile());
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsAccountConnectGoogleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.connected,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
+                enableSplashColor: false,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsAccountConnectFacebookTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.disconnected,
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
+                enableSplashColor: false,
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
@@ -126,12 +149,12 @@ class _SettingPageState extends State<SettingPage> {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   DISPLAY
               */
               Padding(
                 padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
+                  left: 15,
                 ),
                 child: Text(
                   R.strings.settingsDisplayLabel,
@@ -139,41 +162,22 @@ class _SettingPageState extends State<SettingPage> {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsDisplayDefaultTabTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.uFeed,
+                resultText: possibleTab[currentDefaultTab],
                 resultTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                  showCustomComplexDialog(
-                    context: context,
-                    headerContent: R.strings.kickAMember,
-                    descriptionContent: R.strings.kickAMemberContent,
-                    firstButtonText: R.strings.kick.toUpperCase(),
-                    firstButtonFunction: () {
-                      // TODO: Implement function here
-                      print("Kick a member");
-                    },
-                    secondButtonText: R.strings.cancel.toUpperCase(),
-                    secondButtonFunction: () => pop(context),
-                  );
+                textPadding: EdgeInsets.all(15),
+                lineFunction: () async {
+                  handleChangeDefaultTab();
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsDisplayMeasureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 enableSwitchButton: true,
                 switchButtonOnTitle: "M",
                 switchButtonOffTitle: "Km",
@@ -183,14 +187,11 @@ class _SettingPageState extends State<SettingPage> {
                   print('Current State of SWITCH IS: $state');
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsDisplayThemeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
@@ -204,32 +205,32 @@ class _SettingPageState extends State<SettingPage> {
                   setState(() {});
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsDisplayLanguageTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 enableSwitchButton: true,
                 switchButtonOnTitle: "En",
                 switchButtonOffTitle: "Vi",
-                initSwitchStatus: true,
+                initSwitchStatus: (DataManager.loadLanguage()=="en")?true:false,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
+                  String newLang = state?"en":"vi";
+                  DataManager.saveLanguage(newLang);
+                  setLanguage(newLang);
                 },
               ),
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   NOTIFICATIONS
               */
               Padding(
                 padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
+                  left: 15,
                 ),
                 child: Text(
                   R.strings.settingsNotiLabel,
@@ -237,28 +238,22 @@ class _SettingPageState extends State<SettingPage> {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsNotiInAppTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   pushPage(context, InAppNotifications());
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsNotiEmailTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.settingsNotiEmailSubtitle,
                 subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
@@ -271,12 +266,12 @@ class _SettingPageState extends State<SettingPage> {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   SUPPORT & OTHERS
               */
               Padding(
                 padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing15,
+                  left: 15,
                 ),
                 child: Text(
                   R.strings.settingsSOLabel,
@@ -284,65 +279,50 @@ class _SettingPageState extends State<SettingPage> {
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsSOFAQsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsSOContactTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.settingsSOLegalTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   // TODO: Implement function here
                   print("Line function");
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsSOAboutUsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
                 enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   pushPage(context, AboutUs());
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.settingsSOLogOutTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
+                enableBottomUnderline: false,
+                textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   UserManager.logout();
                   showPage(
