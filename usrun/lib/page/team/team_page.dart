@@ -250,6 +250,7 @@ class _TeamPageState extends State<TeamPage> {
                           suffixIconSize: R.appRatio.appIconSize15,
                           suffixIconImageURL: R.myIcons.nextIconByTheme,
                           enableBottomUnderline: true,
+                          textPadding: EdgeInsets.all(15),
                           enableTopUnderline: true,
                           lineFunction: () {
                             pushPage(

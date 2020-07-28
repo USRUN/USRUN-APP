@@ -734,7 +734,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                         enableBottomUnderline: true,
                                         enableBoxButton: true,
                                         boxButtonTitle: R.strings.transfer,
-                                        boxButtonFuction: () =>
+                                        boxButtonFunction: () =>
                                             _transferOwnership(),
                                       ),
                                     ),
@@ -748,7 +748,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                       enableBottomUnderline: true,
                                       enableBoxButton: true,
                                       boxButtonTitle: R.strings.delete,
-                                      boxButtonFuction: () => _deleteTeam(),
+                                      boxButtonFunction: () => _deleteTeam(),
                                     )
                                   ],
                                 )

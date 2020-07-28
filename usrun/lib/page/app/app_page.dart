@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
@@ -56,7 +57,7 @@ final List<Widget> pages = [
 class _AppPageState extends State<AppPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedDrawerIndex = 0;
+  int _selectedDrawerIndex = DataManager.getUserDefaultTab();
   String _avatar = UserManager.currentUser.avatar;
   String _supportAvatar =
       UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;

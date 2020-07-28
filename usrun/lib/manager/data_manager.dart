@@ -16,9 +16,6 @@ class DataManager {
     _prefs = await SharedPreferences.getInstance();
   }
 
-
-
-
   static User loadUser() {
     String content = _prefs.getString(_PROFILE);
 
@@ -76,7 +73,6 @@ class DataManager {
     _prefs.remove(_LOGIN_CHANNEL);
   }
 
-
   static int getFeedSelectedTeamId() {
     return _prefs.getInt(_FEED_SELECTED_TEAM_ID);
   }
@@ -85,7 +81,6 @@ class DataManager {
     _prefs.setInt(_FEED_SELECTED_TEAM_ID, teamId);
   }
 
-
   static int getFeedSelectedEventId() {
     return _prefs.getInt(_EVENT_SELECTED_TEAM_ID);
   }
@@ -93,8 +88,6 @@ class DataManager {
   static void setFeedSelectedEventId(int teamId) {
     _prefs.setInt(_EVENT_SELECTED_TEAM_ID, teamId);
   }
-
-
 
   static void setMap(String key, Map data) {
     String val = json.encode(data);
@@ -105,7 +98,6 @@ class DataManager {
     String val = json.encode(data);
     await _prefs.setString(key, val);
   }
-
 
   static Map getMap(String key) {
     String val = _prefs.getString(key);
@@ -156,7 +148,9 @@ class DataManager {
     DateTime date = new DateTime.fromMillisecondsSinceEpoch(time);
     DateTime now = DateTime.now();
 
-    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return false;
     }
 
@@ -164,7 +158,8 @@ class DataManager {
   }
 
   static void setAskEventJoin() {
-    _prefs.setInt(_EVENT_SHOW_EVENT_JOIN_NOTIFY, DateTime.now().millisecondsSinceEpoch);
+    _prefs.setInt(
+        _EVENT_SHOW_EVENT_JOIN_NOTIFY, DateTime.now().millisecondsSinceEpoch);
   }
 
   static void clearAskEventJoin() {
@@ -215,11 +210,15 @@ class DataManager {
   }
 
   static void setUserConnectCheckCount(LoginChannel channel, int count) {
-    _prefs.setInt(sprintf(_USER_CONNECT_CHECK_COUNT, [channel.toString().replaceAll('LoginChannel.', '').toUpperCase()]), count);
+    _prefs.setInt(
+        sprintf(_USER_CONNECT_CHECK_COUNT,
+            [channel.toString().replaceAll('LoginChannel.', '').toUpperCase()]),
+        count);
   }
 
   static int getUserConnectCheckCount(LoginChannel channel) {
-    return _prefs.getInt(sprintf(_USER_CONNECT_CHECK_COUNT, [channel.toString().replaceAll('LoginChannel.', '').toUpperCase()]));
+    return _prefs.getInt(sprintf(_USER_CONNECT_CHECK_COUNT,
+        [channel.toString().replaceAll('LoginChannel.', '').toUpperCase()]));
   }
 
   static void setRefreshActivityTime(int time) {
@@ -238,15 +237,19 @@ class DataManager {
     return _prefs.getInt(key);
   }
 
-  static Future<void> saveActivityFromSync(String filename, int activityId, int startDate) async {
-      Map data = DataManager.getMap(_SYNC_IDS);
-      if (data == null) {
-        data = Map<String, Map<String, dynamic>>();
-      }
-      Map<String, dynamic> params = {"activityId": activityId, "startDate": startDate};
-      data[filename] = params;
-      await DataManager.setMapSync(_SYNC_IDS, data);
-      //print("uprace_app saveActivityFromSync $data");
+  static Future<void> saveActivityFromSync(
+      String filename, int activityId, int startDate) async {
+    Map data = DataManager.getMap(_SYNC_IDS);
+    if (data == null) {
+      data = Map<String, Map<String, dynamic>>();
+    }
+    Map<String, dynamic> params = {
+      "activityId": activityId,
+      "startDate": startDate
+    };
+    data[filename] = params;
+    await DataManager.setMapSync(_SYNC_IDS, data);
+    //print("uprace_app saveActivityFromSync $data");
   }
 
   static Map<String, dynamic> loadActivityFromSync(String filename) {
@@ -274,8 +277,15 @@ class DataManager {
     }
     return false;
   }
-}
 
+  static void setUserDefaultTab(int newDefault) {
+    _prefs.setInt(_USER_DEFAULT_TAB, newDefault);
+  }
+
+  static int getUserDefaultTab() {
+    return _prefs.getInt(_USER_DEFAULT_TAB) ?? 0;
+  }
+}
 
 const String _SYNC_IDS = "SYNC_IDS";
 const String _PROFILE = "PROFILE";
@@ -302,3 +312,5 @@ const String _USER_CONNECT_NOTICE_LIST = "USER_CONNECT_NOTICE_LIST";
 const String _USER_CONNECT_CHECK_TIME = "USER_CONNECT_CHECK_TIME";
 const String _USER_CONNECT_CHECK_COUNT = "%s_CONNECT_CHECK_COUNT";
 const String _REFRESH_ACTIVITY_CHECK_TIME = "REFRESH_ACTIVITY_CHECK_TIME";
+
+const String _USER_DEFAULT_TAB = "USER_DEFAULT_TAB";
