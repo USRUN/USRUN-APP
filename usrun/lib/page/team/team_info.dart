@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,19 +7,19 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_activity_page.dart';
 import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
-import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/expandable_text.dart';
 import 'package:usrun/widget/line_button.dart';
@@ -182,27 +180,22 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       if (fieldToChange == 'banner')
         image = await pickImageByShape(context, CropStyle.rectangle);
       else
-        image = image = await pickImageByShape(context, CropStyle.circle);
+        image = await pickImageByShape(context, CropStyle.circle);
 
-      if (image != null) {
-        List<int> imageBytes = image.readAsBytesSync();
-        String base64Image =
-            "data:image/${image.path.split('.').last};base64,${Base64Codec().encode(imageBytes)}";
-        reqParam[fieldToChange] = base64Image;
-        reqParam['teamId'] = widget.teamId;
-        Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
+      reqParam[fieldToChange] = image;
+      reqParam['teamId'] = widget.teamId;
+      Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
 
-        if (updatedTeam.success && updatedTeam.object != null) {
-          mapTeamInfo(updatedTeam.object);
-        } else {
-          showCustomAlertDialog(context,
-              title: R.strings.notice,
-              content: updatedTeam.errorMessage,
-              firstButtonText: R.strings.ok.toUpperCase(),
-              firstButtonFunction: () {
-            pop(this.context);
-          });
-        }
+      if (updatedTeam.success && updatedTeam.object != null) {
+        mapTeamInfo(updatedTeam.object);
+      } else {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: updatedTeam.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+          pop(this.context);
+        });
       }
     } catch (error) {
       showCustomAlertDialog(context,
