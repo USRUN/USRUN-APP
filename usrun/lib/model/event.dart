@@ -21,4 +21,5 @@ class Event extends MapperObject {
   DateTime startTime;
   DateTime endTime;
   String sponsorName;
+  bool joined;
 }

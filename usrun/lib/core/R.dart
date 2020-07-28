@@ -1055,6 +1055,8 @@ class Strings {
   String legal;
   String faqs;
 
+  List<String> eventStatus;
+
   String notiActLabel;
   String notiActReactionTitle;
   String notiActReactionSubtitle;
