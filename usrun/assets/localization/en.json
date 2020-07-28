@@ -358,6 +358,12 @@
 
     "search": "Search",
 
+    "chooseLanguageTitle": "Choose display language",
+    "chooseLanguageDescription": "Choose the application language you want to see",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "languageDescription": "The application can be restarted after changing the language",
+
     "nothingToShow": "Nothing to show",
     "errorTitle": "Error",
     "errorTitleIsRequired": "Title is required",

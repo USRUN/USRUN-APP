@@ -16,9 +16,6 @@ class DataManager {
     _prefs = await SharedPreferences.getInstance();
   }
 
-
-
-
   static User loadUser() {
     String content = _prefs.getString(_PROFILE);
 
@@ -60,8 +57,8 @@ class DataManager {
     return content;
   }
 
-  static void saveLanguage(String index) {
-    _prefs.setString(_LANGUAGE, index);
+  static void saveLanguage(String lang) {
+    _prefs.setString(_LANGUAGE, lang);
   }
 
   static LoginChannel getLoginChannel() {
@@ -275,7 +272,6 @@ class DataManager {
     return false;
   }
 }
-
 
 const String _SYNC_IDS = "SYNC_IDS";
 const String _PROFILE = "PROFILE";

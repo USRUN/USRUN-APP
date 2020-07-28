@@ -1169,6 +1169,12 @@ class Strings {
 
   String search;
 
+  String chooseLanguageTitle;
+  String chooseLanguageDescription;
+  String english;
+  String vietnamese;
+  String languageDescription;
+
   Map<String, dynamic> errorMessages;
 
   String nothingToShow;

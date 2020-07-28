@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -12,10 +13,9 @@ import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
-import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
-import 'package:usrun/widget/web_inapp_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -188,15 +188,16 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayLanguageTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.languageDescription,
+                subTextFontSize: R.appRatio.appFontSize14,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                enableSwitchButton: true,
-                switchButtonOnTitle: "En",
-                switchButtonOffTitle: "Vi",
-                initSwitchStatus: true,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
+                lineFunction: () async {
+                  String lang = await showCustomLanguageDialog<String>(context);
+                  if (lang != null) {
+                    DataManager.saveLanguage(lang);
+                    restartApp(0);
+                  }
                 },
               ),
               SizedBox(
