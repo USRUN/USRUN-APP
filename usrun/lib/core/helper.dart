@@ -134,13 +134,13 @@ bool _checkSystemStatus() {
   String message = "";
   switch (_errorCode) {
     case MAINTENANCE:
-      message = R.strings.errorMessages[MAINTENANCE];
+      message = R.strings.errorMessages["$MAINTENANCE"];
       break;
     case ACCESS_DENY:
-      message = R.strings.errorMessages[ACCESS_DENY];
+      message = R.strings.errorMessages["$ACCESS_DENY"];
       break;
     case FORCE_UPDATE:
-      message = R.strings.errorMessages[FORCE_UPDATE];
+      message = R.strings.errorMessages["$FORCE_UPDATE"];
       break;
     default:
       message = R.strings.errorOccurred;

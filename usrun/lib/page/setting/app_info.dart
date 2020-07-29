@@ -9,19 +9,19 @@ import 'package:usrun/page/aboutus/about_usrun.dart';
 import 'package:usrun/widget/aboutus_box.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
-class AboutUs extends StatelessWidget {
+class AppInfo extends StatelessWidget {
   final double _spacing = 25.0;
   final double _iconSize = 35.0;
 
   @override
   Widget build(BuildContext context) {
-    String versionNumber = R.strings.aboutUsVersionSubtitle;
+    String versionNumber = R.strings.appInfoVersionSubtitle;
     versionNumber = versionNumber.replaceFirst("###", R.versionNumber);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: CustomGradientAppBar(title: R.strings.aboutUs),
+      appBar: CustomGradientAppBar(title: R.strings.appInfo),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
@@ -38,8 +38,8 @@ class AboutUs extends StatelessWidget {
                 // About USRUN
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsUSRUN,
-                  subtitle: R.strings.aboutUsUSRUNSubtitle,
-                  title: R.strings.aboutUsUSRUNTitle,
+                  subtitle: R.strings.appInfoUSRUNSubtitle,
+                  title: R.strings.appInfoUSRUNTitle,
                   iconSize: _iconSize,
                   pressBox: () {
                     pushPage(context, AboutUSRUN());
@@ -51,8 +51,8 @@ class AboutUs extends StatelessWidget {
                 // Developers
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsDevelopers,
-                  subtitle: R.strings.aboutUsDevelopersSubtitle,
-                  title: R.strings.aboutUsDevelopersTitle,
+                  subtitle: R.strings.appInfoDevelopersSubtitle,
+                  title: R.strings.appInfoDevelopersTitle,
                   iconSize: _iconSize,
                   pressBox: () {
                     pushPage(context, AboutDevelopers());
@@ -65,7 +65,7 @@ class AboutUs extends StatelessWidget {
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsVersion,
                   subtitle: versionNumber,
-                  title: R.strings.aboutUsVersionTitle,
+                  title: R.strings.appInfoVersionTitle,
                   iconSize: _iconSize,
                   pressBox: () {},
                 ),
@@ -75,8 +75,8 @@ class AboutUs extends StatelessWidget {
                 // Rate app
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsRateApp,
-                  subtitle: R.strings.aboutUsRateAppSubtitle,
-                  title: R.strings.aboutUsRateAppTitle,
+                  subtitle: R.strings.appInfoRateAppSubtitle,
+                  title: R.strings.appInfoRateAppTitle,
                   iconSize: _iconSize,
                   pressBox: () {
                     StoreRedirect.redirect(

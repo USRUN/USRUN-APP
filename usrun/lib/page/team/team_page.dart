@@ -12,6 +12,7 @@ import 'package:usrun/model/team.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/team_list/team_item.dart';
@@ -184,12 +185,12 @@ class _TeamPageState extends State<TeamPage> {
                                 "[YourTeams] This team with id ${teamItem.teamId} is pressed");
                           },
                         ),
-                        (_myInvitedTeamList.isEmpty
+                        (checkListIsNullOrEmpty(_myInvitedTeamList)
                             ? Container()
                             : SizedBox(
                                 height: R.appRatio.appSpacing20,
                               )),
-                        (_myInvitedTeamList.isEmpty
+                        (checkListIsNullOrEmpty(_myInvitedTeamList)
                             ? Container()
                             : TeamList(
                                 items: _myInvitedTeamList,
@@ -204,12 +205,12 @@ class _TeamPageState extends State<TeamPage> {
                                       "[Invited] This team with id ${teamItem.teamId} is pressed");
                                 },
                               )),
-                        (_myRequestingTeamList.isEmpty
+                        (checkListIsNullOrEmpty(_myRequestingTeamList)
                             ? Container()
                             : SizedBox(
                                 height: R.appRatio.appSpacing20,
                               )),
-                        (_myRequestingTeamList.isEmpty
+                        (checkListIsNullOrEmpty(_myRequestingTeamList)
                             ? Container()
                             : TeamList(
                                 items: _myRequestingTeamList,

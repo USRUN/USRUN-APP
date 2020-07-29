@@ -8,11 +8,12 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/page/setting/about_us.dart';
+import 'package:usrun/page/setting/app_info.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
@@ -90,7 +91,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsAccountTypeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.student,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () {
@@ -123,7 +124,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsAccountConnectGoogleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.connected,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 enableSplashColor: false,
@@ -136,7 +137,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsAccountConnectFacebookTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.disconnected,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 enableSplashColor: false,
@@ -165,7 +166,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsDisplayDefaultTabTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: possibleTab[currentDefaultTab],
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () async {
@@ -208,7 +209,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsDisplayLanguageTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.languageDescription,
-                subTextFontSize: R.appRatio.appFontSize14,
+                subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () async {
@@ -248,7 +249,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainText: R.strings.settingsNotiEmailTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.settingsNotiEmailSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
+                subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 enableSwitchButton: true,
@@ -307,12 +308,12 @@ class _SettingPageState extends State<SettingPage> {
                 },
               ),
               LineButton(
-                mainText: R.strings.settingsSOAboutUsTitle,
+                mainText: R.strings.settingsSOAppInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () {
-                  pushPage(context, AboutUs());
+                  pushPage(context, AppInfo());
                 },
               ),
               LineButton(
@@ -320,7 +321,9 @@ class _SettingPageState extends State<SettingPage> {
                 mainTextFontSize: R.appRatio.appFontSize18,
                 enableBottomUnderline: false,
                 textPadding: EdgeInsets.all(15),
-                lineFunction: () {
+                lineFunction: () async {
+                  bool result = await showCustomExitDialog(context);
+                  if (!result) return;
                   UserManager.logout();
                   showPage(
                     context,

@@ -42,7 +42,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyFindEmailTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () {
@@ -54,7 +54,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyFindUserCodeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -66,7 +66,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyFindNameTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -94,7 +94,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyFollowFeatureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.privacyFollowFeatureSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
+                subTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
@@ -126,7 +126,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyActLimitPeopleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.privacyActLimitPeopleSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
+                subTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -154,7 +154,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeUserCodeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -166,9 +166,9 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeDetailedInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.privacyOPISeeDetailedInfoSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
+                subTextFontSize: R.appRatio.appFontSize16,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -180,7 +180,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeFollowersTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -192,7 +192,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeFollowingTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -204,7 +204,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeePhotosTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -216,7 +216,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeEventBadgesTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -228,7 +228,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeEventsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -240,7 +240,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeStatsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -252,7 +252,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeTeamsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 lineFunction: () {
@@ -264,7 +264,7 @@ class PrivacyProfile extends StatelessWidget {
                 mainText: R.strings.privacyOPISeeTeamPlansTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 resultText: R.strings.statusEveryone,
-                resultTextFontSize: R.appRatio.appFontSize14,
+                resultTextFontSize: R.appRatio.appFontSize16,
                 textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: false,
                 lineFunction: () {

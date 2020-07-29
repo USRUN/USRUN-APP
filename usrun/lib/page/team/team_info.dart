@@ -672,7 +672,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   child: LineButton(
                                     mainText: R.strings.makeTeamPublicTitle,
                                     mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize14,
+                                    subTextFontSize: R.appRatio.appFontSize16,
                                     subText: R.strings.makeTeamPublicSubtitle,
                                     enableBottomUnderline: true,
                                     textPadding: EdgeInsets.all(15),
@@ -692,7 +692,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   child: LineButton(
                                     mainText: R.strings.transferOwnershipTitle,
                                     mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize14,
+                                    subTextFontSize: R.appRatio.appFontSize16,
                                     subText:
                                         R.strings.transferOwnershipSubtitle,
                                     enableBottomUnderline: true,
@@ -706,7 +706,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 LineButton(
                                   mainText: R.strings.deleteTeamTitle,
                                   mainTextFontSize: R.appRatio.appFontSize18,
-                                  subTextFontSize: R.appRatio.appFontSize14,
+                                  subTextFontSize: R.appRatio.appFontSize16,
                                   subText: R.strings.deleteTeamSubtitle,
                                   enableBottomUnderline: true,
                                   textPadding: EdgeInsets.all(15),

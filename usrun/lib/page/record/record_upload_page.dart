@@ -280,7 +280,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         mainTextFontSize: R.appRatio.appFontSize18,
         mainTextStyle: R.styles.labelStyle,
         subText: R.strings.viewMapDescription,
-        subTextFontSize: R.appRatio.appFontSize14,
+        subTextFontSize: R.appRatio.appFontSize16,
         textPadding: EdgeInsets.all(15),
         enableSwitchButton: true,
         switchButtonOnTitle: "On",

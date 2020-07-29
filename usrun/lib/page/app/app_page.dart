@@ -15,6 +15,7 @@ import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {

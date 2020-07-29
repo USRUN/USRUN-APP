@@ -34,9 +34,22 @@ class UsRunApp extends StatefulWidget {
       case 0:
         _restart();
         return;
+      case LOGOUT_CODE:
+        await UserManager.logout();
+        _restart();
+        return;
       case ACCESS_DENY:
         await UserManager.logout();
         _restart();
+        return;
+      case MAINTENANCE:
+        _restart();
+        return;
+      case FORCE_UPDATE:
+        await UserManager.logout();
+        _restart();
+        return;
+      default:
         return;
     }
   }

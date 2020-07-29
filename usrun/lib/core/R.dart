@@ -25,8 +25,8 @@ class R {
   static String deviceId = "";
   static String versionNumber = "";
   static String buildNumber = "";
-  static String androidAppId = "com.example.usrun";
-  static String iOSAppId = "com.example.usrun";
+  static String androidAppId = "vn.hcmus.usrun";
+  static String iOSAppId = "vn.hcmus.usrun";
   static final Map<String, String> _modelAppleMapper = {
     "i386": "32-bit Simulator",
     "x86_64": "64-bit Simulator",
@@ -1219,7 +1219,7 @@ class Strings {
 
   String settings;
   String changePassword;
-  String aboutUs;
+  String appInfo;
   String inAppNotifications;
   String privacyProfile;
   String hotContact;
@@ -1312,7 +1312,7 @@ class Strings {
   String settingsSOFAQsTitle;
   String settingsSOContactTitle;
   String settingsSOLegalTitle;
-  String settingsSOAboutUsTitle;
+  String settingsSOAppInfoTitle;
   String settingsSOLogOutTitle;
   String settingsChangePasswordSuccessful;
   String settingsBackToLogin;
@@ -1320,14 +1320,14 @@ class Strings {
   String settingsCPPwdNotMatch;
   String settingsCPNewPwdDifferent;
 
-  String aboutUsUSRUNTitle;
-  String aboutUsUSRUNSubtitle;
-  String aboutUsDevelopersTitle;
-  String aboutUsDevelopersSubtitle;
-  String aboutUsVersionTitle;
-  String aboutUsVersionSubtitle;
-  String aboutUsRateAppTitle;
-  String aboutUsRateAppSubtitle;
+  String appInfoUSRUNTitle;
+  String appInfoUSRUNSubtitle;
+  String appInfoDevelopersTitle;
+  String appInfoDevelopersSubtitle;
+  String appInfoVersionTitle;
+  String appInfoVersionSubtitle;
+  String appInfoRateAppTitle;
+  String appInfoRateAppSubtitle;
 
   String aboutDevelopers;
   String aboutDevName_1;
@@ -1356,6 +1356,10 @@ class Strings {
   String english;
   String vietnamese;
   String languageDescription;
+
+  String takeAPhoto;
+  String openPhotoLibrary;
+  String clearSelectedFile;
 
   Map<String, dynamic> errorMessages;
 

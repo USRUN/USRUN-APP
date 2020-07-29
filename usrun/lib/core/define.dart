@@ -1,12 +1,7 @@
 import 'package:usrun/util/reflector.dart';
 
-const String STRAVA_CLIENT_ID = "26496";
-const String STRAVA_CLIENT_SECRET = "06db3de6b974347549b2d27e3c4794dd05e3f811";
-const String STRAVA_SCOPE = "profile:read_all,activity:read_all";
-
 const DEFAULT_LENGTH = 30;
 
-// Define error code
 const LOGOUT_CODE = 100;
 const MAINTENANCE = 101;
 const FORCE_UPDATE = 102;

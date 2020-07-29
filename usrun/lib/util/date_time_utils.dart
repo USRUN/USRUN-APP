@@ -1,8 +1,5 @@
-
 import 'dart:core';
-
 import 'package:intl/intl.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/util/validator.dart';
 
 const String formatDateConst = "dd/MM/yyyy";
@@ -11,6 +8,7 @@ const String formatTimeConst = "HH:mm";
 const String formatTimeDateConst = "HH:mm dd/MM/yyyy";
 const String formatTimeDateBreakLineConst = "HH:mm\ndd/MM";
 const String formatDateNoYearConst = "dd/MM";
+const String formatTimeDateNoYearConst = "HH:mm dd/MM";
 
 String formatDateTime(DateTime dateTime,
     {String formatDisplay = formatDateConst}) {
