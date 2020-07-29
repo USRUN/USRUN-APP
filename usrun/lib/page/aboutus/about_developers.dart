@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/avatar_view.dart';
-import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class AboutDevelopers extends StatelessWidget {
   @override
@@ -13,26 +11,7 @@ class AboutDevelopers extends StatelessWidget {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.aboutDevelopers,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.aboutDevelopers),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
@@ -82,9 +61,11 @@ class AboutDevelopers extends StatelessWidget {
                   height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 2
-                AvatarView(
-                  avatarImageURL: R.images.avatarPhucTT,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarPhucTT,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -114,9 +95,11 @@ class AboutDevelopers extends StatelessWidget {
                   height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 3
-                AvatarView(
-                  avatarImageURL: R.images.avatarNgocVTT,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarNgocVTT,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -146,9 +129,11 @@ class AboutDevelopers extends StatelessWidget {
                   height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 4
-                AvatarView(
-                  avatarImageURL: R.images.avatarKhaTM,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarKhaTM,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,
@@ -178,9 +163,11 @@ class AboutDevelopers extends StatelessWidget {
                   height: R.appRatio.appSpacing40,
                 ),
                 // DEVELOPER 5
-                AvatarView(
-                  avatarImageURL: R.images.avatarHuyTA,
-                  avatarImageSize: R.appRatio.appAvatarSize130,
+                Center(
+                  child: AvatarView(
+                    avatarImageURL: R.images.avatarHuyTA,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing10,

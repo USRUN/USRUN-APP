@@ -16,6 +16,10 @@ class DataManager {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  static void removeAllData() {
+    _prefs.clear();
+  }
+
   static User loadUser() {
     String content = _prefs.getString(_PROFILE);
 
@@ -59,6 +63,14 @@ class DataManager {
 
   static void saveLanguage(String lang) {
     _prefs.setString(_LANGUAGE, lang);
+  }
+
+  static bool loadSelectLanguageFirstTime() {
+    return _prefs.getBool(_SELECT_LANGUAGE_FIRST_TIME);
+  }
+
+  static void saveSelectLanguageFirstTime(bool isFirstTime) {
+    _prefs.setBool(_SELECT_LANGUAGE_FIRST_TIME, isFirstTime);
   }
 
   static LoginChannel getLoginChannel() {
@@ -277,6 +289,7 @@ const String _SYNC_IDS = "SYNC_IDS";
 const String _PROFILE = "PROFILE";
 const String _DEVICE_TOKEN = "UPRACE_DEVICE_TOKEN";
 const String _LAST_LOGIN_USER_ID = "LAST_LOGIN_USER_ID";
+const String _SELECT_LANGUAGE_FIRST_TIME = "SELECT_LANGUAGE_FIRST_TIME";
 const String _LANGUAGE = "LANGUAGE";
 const String _VERSION = "VERSION";
 const String _DEVICE_NAME = "DEVICE_NAME";

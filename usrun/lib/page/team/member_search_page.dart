@@ -1,23 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
-import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class MemberSearchPage extends StatefulWidget {
@@ -27,7 +23,14 @@ class MemberSearchPage extends StatefulWidget {
   final int selectedTab;
   final int teamId;
   final List options;
-  final List memberTypes = ['Owner','Admin','Member','Pending','Blocked','Guest'];
+  final List memberTypes = [
+    'Owner',
+    'Admin',
+    'Member',
+    'Pending',
+    'Blocked',
+    'Guest'
+  ];
 
   MemberSearchPage({
     this.autoFocusInput = false,
@@ -76,41 +79,40 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     });
   }
 
-  void parseResponse(List<User> responseObject){
+  void parseResponse(List<User> responseObject) {
     responseObject.forEach((element) {
-      if(element.teamMemberType.index < 4){
+      if (element.teamMemberType.index < 4) {
         allMemberList.add(element);
       }
-      if(element.teamMemberType.index == 4){
+      if (element.teamMemberType.index == 4) {
         requestingMemberList.add(element);
       }
-      if(element.teamMemberType.index == 5){
+      if (element.teamMemberType.index == 5) {
         blockingMemberList.add(element);
       }
     });
 
-    switch(_selectedTab){
+    switch (_selectedTab) {
       case 0:
-          memberList = allMemberList;
+        memberList = allMemberList;
         break;
       case 1:
-          memberList = requestingMemberList;
+        memberList = requestingMemberList;
         break;
       case 2:
-          memberList = blockingMemberList;
+        memberList = blockingMemberList;
         break;
     }
   }
 
-
   void _findMember() async {
-    if(!remainingResults) return;
+    if (!remainingResults) return;
 
     remainingResults = false;
-    Response<dynamic> response = await TeamManager.findTeamMemberRequest(widget.teamId,_curSearchString, _curResultPage, widget.resultPerPage);
+    Response<dynamic> response = await TeamManager.findTeamMemberRequest(
+        widget.teamId, _curSearchString, _curResultPage, widget.resultPerPage);
 
-    if(response.success && (response.object as List).isNotEmpty){
-
+    if (response.success && (response.object as List).isNotEmpty) {
       setState(() {
         parseResponse(response.object);
         remainingResults = true;
@@ -119,7 +121,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     }
   }
 
-  void clearMemberLists(){
+  void clearMemberLists() {
     memberList = List();
     allMemberList = List();
     requestingMemberList = List();
@@ -149,10 +151,10 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     });
   }
 
-  void _onSelectTabItem(index){
+  void _onSelectTabItem(index) {
     if (index == _selectedTab) return;
     _selectedTab = index;
-    switch(index){
+    switch (index) {
       case 0:
         setState(() {
           memberList = allMemberList;
@@ -171,8 +173,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     }
   }
 
-  void _onChangedFunction(data) {
-  }
+  void _onChangedFunction(data) {}
 
   _pressCloseBtn(index) {
     // TODO: Implement function here
@@ -192,15 +193,15 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     changeMemberRole(index, 3);
   }
 
-  _releaseFromBlock(index){
+  _releaseFromBlock(index) {
     // Remove from block list
     print("Remove ${memberList[index].userId} from block list");
 
-    changeMemberRole(index,4);
+    changeMemberRole(index, 4);
   }
 
-  _onSelectMemberOption(int index, String value){
-    switch(value){
+  _onSelectMemberOption(int index, String value) {
+    switch (value) {
       case "Follow":
         break;
       case "Block":
@@ -217,34 +218,36 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     }
   }
 
-  void changeMemberRole(int index, int newMemberType) async{
+  void changeMemberRole(int index, int newMemberType) async {
     setState(() {
-      _isLoading= true;
+      _isLoading = true;
     });
 
-    Response<dynamic> response = await TeamManager.updateTeamMemberRole(widget.teamId, memberList[index].userId, newMemberType);
-    if(response.success){
+    Response<dynamic> response = await TeamManager.updateTeamMemberRole(
+        widget.teamId, memberList[index].userId, newMemberType);
+    if (response.success) {
       setState(() {
         clearMemberLists();
         _onSubmittedFunction(_curSearchString);
-        _isLoading= false;
+        _isLoading = false;
       });
     } else {
       showCustomAlertDialog(context,
           title: R.strings.notice,
           content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () {
-            pop(this.context);
-          });
+          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
+        pop(this.context);
+      });
       setState(() {
-        _isLoading= false;
+        _isLoading = false;
       });
     }
   }
 
   bool _isEmptyList() {
-    return ((this.memberList == null || this.memberList.length == 0) ? true : false);
+    return ((this.memberList == null || this.memberList.length == 0)
+        ? true
+        : false);
   }
 
   Widget _buildEmptyList() {
@@ -253,7 +256,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     String startSearch = R.strings.startSearch;
     String startSearchSubtitle = R.strings.startSearchSubtitle;
 
-    if(_curSearchString.isEmpty){
+    if (_curSearchString.isEmpty) {
       return Center(
         child: Container(
             padding: EdgeInsets.only(
@@ -281,64 +284,49 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
                       fontSize: R.appRatio.appFontSize14,
                     ),
                   ),
-                ])
-        ),
+                ])),
       );
-
     }
 
     return Center(
       child: Container(
-        padding: EdgeInsets.only(
-          left: R.appRatio.appSpacing25,
-          right: R.appRatio.appSpacing25,
-        ),
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            noResult,
-            textAlign: TextAlign.justify,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontSize: R.appRatio.appFontSize18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            noResultSubtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontSize: R.appRatio.appFontSize14,
-            ),
-          ),
-        ])
-      ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  noResult,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  noResultSubtitle,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize14,
+                  ),
+                ),
+              ])),
     );
   }
 
-    @override
-    Widget build(BuildContext context) {
-      FocusScope.of(context).requestFocus(new FocusNode());
-      Widget _buildElement = Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    Widget _buildElement = Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: R.colors.appBackground,
-        appBar: GradientAppBar(
-          leading: FlatButton(
-            onPressed: () => pop(context),
-            padding: EdgeInsets.all(0.0),
-            splashColor: R.colors.lightBlurMajorOrange,
-            textColor: Colors.white,
-            child: ImageCacheManager.getImage(
-              url: R.myIcons.appBarBackBtn,
-              width: R.appRatio.appAppBarIconSize,
-              height: R.appRatio.appAppBarIconSize,
-            ),
-          ),
-          gradient: R.colors.uiGradient,
-          title: InputField(
+        appBar: CustomGradientAppBar(
+          titleWidget: InputField(
             controller: _textSearchController,
             hintText: R.strings.search,
             hintStyle: TextStyle(
@@ -359,32 +347,31 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
             onChangedFunction: _onChangedFunction,
           ),
         ),
-
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-          // TabBar
-          CustomTabBarStyle03(
-          items: tabItems,
-          selectedTabIndex: _selectedTab,
-          pressTab: _onSelectTabItem,
-        ),
-          // All contents
-          Expanded(
-            child: (_isLoading ? LoadingIndicator() : _renderList()),
-          ),
-      ]));
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // TabBar
+              CustomTabBarStyle03(
+                items: tabItems,
+                selectedTabIndex: _selectedTab,
+                pressTab: _onSelectTabItem,
+              ),
+              // All contents
+              Expanded(
+                child: (_isLoading ? LoadingIndicator() : _renderList()),
+              ),
+            ]));
 
-      return NotificationListener<OverscrollIndicatorNotification>(
-          child: _buildElement,
-          onNotification: (overScroll) {
-            overScroll.disallowGlow();
-            return false;
-          });
-    }
+    return NotificationListener<OverscrollIndicatorNotification>(
+        child: _buildElement,
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        });
+  }
 
   Widget _renderList() {
-    if(_isEmptyList()){
+    if (_isEmptyList()) {
       return _buildEmptyList();
     }
 
@@ -392,7 +379,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
       child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: (memberList==null)?0:memberList.length,
+          itemCount: (memberList == null) ? 0 : memberList.length,
           itemBuilder: (BuildContext context, int index) {
             if (index == memberList.length - 1) {
               _findMember();
@@ -428,7 +415,6 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     String location = memberList[index].province.toString();
     String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
 
-
     switch (_selectedTab) {
       case 0: // All
         return CustomCell(
@@ -456,11 +442,10 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 //          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
           enablePopupMenuButton: true,
-          customPopupMenu:
-          CustomPopupMenu(
+          customPopupMenu: CustomPopupMenu(
             items: widget.options[listMemberTypeIndex],
             onSelected: (option) {
-              _onSelectMemberOption(index,option);
+              _onSelectMemberOption(index, option);
             },
             popupIcon: Image.asset(
               R.myIcons.popupMenuIconByTheme,

@@ -12,6 +12,7 @@ import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/signin/signin_page.dart';
 import 'package:usrun/page/signup/signup_page.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -193,9 +194,9 @@ class _WelcomePageState extends State<WelcomePage>
 
   void _signUp(BuildContext context, LoginChannel channel,
       Map<String, String> params) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Response<User> response = await UserManager.signIn(params);
-    hideLoading(context);
+    pop(context);
 
     if (response.success) {
       // add user Type
@@ -240,9 +241,9 @@ class _WelcomePageState extends State<WelcomePage>
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
       BuildContext context) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Map loginParams = await UserManager.adapterLogin(channel, params);
-    hideLoading(context);
+    pop(context);
 
     if (loginParams == null) {
       showCustomAlertDialog(context,

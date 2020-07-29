@@ -21,6 +21,7 @@ import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/expandable_text.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -177,10 +178,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     try {
       var image;
 
-      if (fieldToChange == 'banner')
-        image = await pickImageByShape(context, CropStyle.rectangle);
-      else
-        image = await pickImageByShape(context, CropStyle.circle);
+//      TODO: Open these code below
+//      if (fieldToChange == 'banner')
+//        image = await pickImageByShape(context, CropStyle.rectangle);
+//      else
+//        image = await pickImageByShape(context, CropStyle.circle);
 
       reqParam[fieldToChange] = image;
       reqParam['teamId'] = widget.teamId;
@@ -301,26 +303,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.team,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.team),
       body: RefreshConfiguration(
           maxOverScrollExtent: 50,
           headerTriggerDistance: 50,

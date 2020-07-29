@@ -27,7 +27,7 @@ class NetworkDetector {
     await Future.doWhile(() async {
       await Future.delayed(
         Duration(milliseconds: 4000),
-            () async {
+        () async {
           bool status = await NetworkDetector.isNetworkConnected();
           if (status) netStatus = true;
         },
@@ -45,7 +45,7 @@ class NetworkDetector {
     await Future.doWhile(() async {
       await Future.delayed(
         Duration(milliseconds: 2000),
-            () async {
+        () async {
           bool status = await NetworkDetector.isNetworkConnected();
 
           if (status)
@@ -56,7 +56,7 @@ class NetworkDetector {
               title: R.strings.caution,
               content: R.strings.errorNoInternetAccess,
               firstButtonText: R.strings.ok,
-              firstButtonFunction: () => {if(context != null)pop(context)},
+              firstButtonFunction: () => {if (context != null) pop(context)},
             );
           }
         },
@@ -68,16 +68,19 @@ class NetworkDetector {
     });
   }
 
-  static void checkNetworkAndAlert(BuildContext context) async{
+  static Future<bool> checkNetworkAndAlert(BuildContext context) async {
     bool connection = await NetworkDetector.isNetworkConnected();
-    if(!connection){
+    if (!connection) {
       await showCustomAlertDialog(
-          context,
-          title: R.strings.caution,
-          content: R.strings.errorNoInternetAccess,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () => {if(context != null)pop(context)},
-    );
+        context,
+        title: R.strings.caution,
+        content: R.strings.errorNoInternetAccess,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          if (context != null) pop(context);
+        },
+      );
     }
+    return connection;
   }
 }

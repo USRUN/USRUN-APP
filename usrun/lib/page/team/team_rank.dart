@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
@@ -13,9 +12,9 @@ import 'package:usrun/page/team/teamstat_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamRank extends StatefulWidget {
   final int teamId;
@@ -54,12 +53,18 @@ class _TeamRankState extends State<TeamRank> {
   }
 
   void getTeamRank() async {
-    Response<dynamic> teamRank = await TeamManager.getTeamStatRank(widget.teamId);
+    Response<dynamic> teamRank =
+        await TeamManager.getTeamStatRank(widget.teamId);
 
-    if(teamRank.success && (teamRank.object as List).isNotEmpty){
+    if (teamRank.success && (teamRank.object as List).isNotEmpty) {
       items = teamRank.object;
     } else {
-      showCustomAlertDialog(context, title: R.strings.error, content: teamRank.errorMessage, firstButtonText: null, firstButtonFunction: null,secondButtonText: null);
+      showCustomAlertDialog(context,
+          title: R.strings.error,
+          content: teamRank.errorMessage,
+          firstButtonText: null,
+          firstButtonFunction: null,
+          secondButtonText: null);
     }
   }
 
@@ -76,26 +81,7 @@ class _TeamRankState extends State<TeamRank> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.teamRank,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.teamRank),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -183,7 +169,9 @@ class _TeamRankState extends State<TeamRank> {
                                 rank,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: (widget.teamId == teamId)?R.colors.orangeNoteText:R.colors.contentText,
+                                  color: (widget.teamId == teamId)
+                                      ? R.colors.orangeNoteText
+                                      : R.colors.contentText,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),
@@ -209,14 +197,16 @@ class _TeamRankState extends State<TeamRank> {
                               title: name,
                               titleStyle: TextStyle(
                                 fontSize: R.appRatio.appFontSize16,
-                                color: (widget.teamId == teamId)?R.colors.orangeNoteText:R.colors.contentText,
+                                color: (widget.teamId == teamId)
+                                    ? R.colors.orangeNoteText
+                                    : R.colors.contentText,
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
                                 // TODO: Implement here
                                 print(
                                     "Pressing info with index $index, no. ${index + 1}");
-                                    pushPage(context, TeamInfoPage(teamId: teamId));
+                                pushPage(context, TeamInfoPage(teamId: teamId));
                               },
                             ),
                           ),
@@ -229,7 +219,9 @@ class _TeamRankState extends State<TeamRank> {
                                 distance,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: (widget.teamId == teamId)?R.colors.orangeNoteText:R.colors.contentText,
+                                  color: (widget.teamId == teamId)
+                                      ? R.colors.orangeNoteText
+                                      : R.colors.contentText,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),

@@ -1,7 +1,10 @@
 import 'dart:core';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:package_info/package_info.dart';
 import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
@@ -16,8 +19,151 @@ class R {
   static _ImagePickerDefaults imagePickerDefaults = _ImagePickerDefaults();
   static String currentAppTheme = "Light";
   static String currentAppLanguage = "en";
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  static PackageInfo packageInfo;
+  static String modelName = "";
+  static String deviceId = "";
+  static String versionNumber = "";
+  static String buildNumber = "";
+  static String androidAppId = "com.example.usrun";
+  static String iOSAppId = "com.example.usrun";
+  static final Map<String, String> _modelAppleMapper = {
+    "i386": "32-bit Simulator",
+    "x86_64": "64-bit Simulator",
 
-  static void initLocalized(String lang, String jsonContent) {
+    // Output on an iPhone
+    "iPhone1,1": "iPhone",
+    "iPhone1,2": "iPhone 3G",
+    "iPhone2,1": "iPhone 3GS",
+    "iPhone3,1": "iPhone 4 (GSM)",
+    "iPhone3,3": "iPhone 4 (CDMA/Verizon/Sprint)",
+    "iPhone4,1": "iPhone 4S",
+    "iPhone5,1": "iPhone 5 (model A1428, AT&T/Canada)",
+    "iPhone5,2": "iPhone 5 (model A1429, everything else)",
+    "iPhone5,3": "iPhone 5c (model A1456, A1532 | GSM)",
+    "iPhone5,4":
+        "iPhone 5c (model A1507, A1516, A1526 (China), A1529 | Global)",
+    "iPhone6,1": "iPhone 5s (model A1433, A1533 | GSM)",
+    "iPhone6,2":
+        "iPhone 5s (model A1457, A1518, A1528 (China), A1530 | Global)",
+    "iPhone7,1": "iPhone 6 Plus",
+    "iPhone7,2": "iPhone 6",
+    "iPhone8,1": "iPhone 6S",
+    "iPhone8,2": "iPhone 6S Plus",
+    "iPhone8,4": "iPhone SE",
+    "iPhone9,1": "iPhone 7 (CDMA)",
+    "iPhone9,3": "iPhone 7 (GSM)",
+    "iPhone9,2": "iPhone 7 Plus (CDMA)",
+    "iPhone9,4": "iPhone 7 Plus (GSM)",
+    "iPhone10,1": "iPhone 8 (CDMA)",
+    "iPhone10,4": "iPhone 8 (GSM)",
+    "iPhone10,2": "iPhone 8 Plus (CDMA)",
+    "iPhone10,5": "iPhone 8 Plus (GSM)",
+    "iPhone10,3": "iPhone X (CDMA)",
+    "iPhone10,6": "iPhone X (GSM)",
+    "iPhone11,2": "iPhone XS",
+    "iPhone11,4": "iPhone XS Max",
+    "iPhone11,6": "iPhone XS Max China",
+    "iPhone11,8": "iPhone XR",
+    "iPhone12,1": "iPhone 11",
+    "iPhone12,3": "iPhone 11 Pro",
+    "iPhone12,5": "iPhone 11 Pro Max",
+
+    //iPad 1
+    "iPad1,1": "iPad - Wifi (model A1219)",
+    "iPad1,2": "iPad - Wifi + Cellular (model A1337)",
+
+    //iPad 2
+    "iPad2,1": "Wifi (model A1395)",
+    "iPad2,2": "GSM (model A1396)",
+    "iPad2,3": "3G (model A1397)",
+    "iPad2,4": "Wifi (model A1395)",
+
+    // iPad Mini
+    "iPad2,5": "Wifi (model A1432)",
+    "iPad2,6": "Wifi + Cellular (model  A1454)",
+    "iPad2,7": "Wifi + Cellular (model  A1455)",
+
+    //iPad 3
+    "iPad3,1": "Wifi (model A1416)",
+    "iPad3,2": "Wifi + Cellular (model  A1403)",
+    "iPad3,3": "Wifi + Cellular (model  A1430)",
+
+    //iPad 4
+    "iPad3,4": "Wifi (model A1458)",
+    "iPad3,5": "Wifi + Cellular (model  A1459)",
+    "iPad3,6": "Wifi + Cellular (model  A1460)",
+
+    //iPad AIR
+    "iPad4,1": "Wifi (model A1474)",
+    "iPad4,2": "Wifi + Cellular (model A1475)",
+    "iPad4,3": "Wifi + Cellular (model A1476)",
+
+    // iPad Mini 2
+    "iPad4,4": "Wifi (model A1489)",
+    "iPad4,5": "Wifi + Cellular (model A1490)",
+    "iPad4,6": "Wifi + Cellular (model A1491)",
+
+    // iPad Mini 3
+    "iPad4,7": "Wifi (model A1599)",
+    "iPad4,8": "Wifi + Cellular (model A1600)",
+    "iPad4,9": "Wifi + Cellular (model A1601)",
+
+    // iPad Mini 4
+    "iPad5,1": "Wifi (model A1538)",
+    "iPad5,2": "Wifi + Cellular (model A1550)",
+
+    //iPad AIR 2
+    "iPad5,3": "Wifi (model A1566)",
+    "iPad5,4": "Wifi + Cellular (model A1567)",
+
+    // iPad PRO 9.7"
+    "iPad6,3": "Wifi (model A1673)",
+    "iPad6,4": "Wifi + Cellular (model A1674)",
+    "iPad6,5": "Wifi + Cellular (model A1675)",
+
+    //iPad PRO 12.9"
+    "iPad6,7": "Wifi (model A1584)",
+    "iPad6,8": "Wifi + Cellular (model A1652)",
+
+    //iPad (5th generation)
+    "iPad6,11": "Wifi (model A1822)",
+    "iPad6,12": "Wifi + Cellular (model A1823)",
+
+    //iPad PRO 12.9" (2nd Gen)
+    "iPad7,1": "Wifi (model A1670)",
+    "iPad7,2": "Wifi + Cellular (model A1671)",
+    "iPad7,3": "Wifi + Cellular (model A1821)",
+
+    //iPad PRO 10.5"
+    "iPad7,4": "Wifi (model A1701)",
+    "iPad7,5": "Wifi + Cellular (model A1709)",
+
+    //iPod Touch
+    "iPod1,1": "iPod Touch",
+    "iPod2,1": "iPod Touch Second Generation",
+    "iPod3,1": "iPod Touch Third Generation",
+    "iPod4,1": "iPod Touch Fourth Generation",
+    "iPod7,1": "iPod Touch 6th Generation",
+
+    // Apple Watch
+    "Watch1,1": "Apple Watch 38mm case",
+    "Watch1,2": "Apple Watch 38mm case",
+    "Watch2,6": "Apple Watch Series 1 38mm case",
+    "Watch2,7": "Apple Watch Series 1 42mm case",
+    "Watch2,3": "Apple Watch Series 2 38mm case",
+    "Watch2,4": "Apple Watch Series 2 42mm case",
+    "Watch3,1": "Apple Watch Series 3 38mm case (GPS+Cellular)",
+    "Watch3,2": "Apple Watch Series 3 42mm case (GPS+Cellular)",
+    "Watch3,3": "Apple Watch Series 3 38mm case (GPS)",
+    "Watch3,4": "Apple Watch Series 3 42mm case (GPS)",
+    "Watch4,1": "Apple Watch Series 4 40mm case (GPS)",
+    "Watch4,2": "Apple Watch Series 4 44mm case (GPS)",
+    "Watch4,3": "Apple Watch Series 4 40mm case (GPS+Cellular)",
+    "Watch4,4": "Apple Watch Series 4 44mm case (GPS+Cellular)"
+  };
+
+  static void initLocalization(String lang, String jsonContent) {
     currentAppLanguage = lang;
     R.strings = MapperObject.create<Strings>(jsonContent);
   }
@@ -40,6 +186,24 @@ class R {
     myIcons.changeTheme(appTheme);
     colors.changeTheme(appTheme);
     styles = _Styles();
+  }
+
+  static Future<void> initPackageAndDeviceInfo() async {
+    packageInfo = await PackageInfo.fromPlatform();
+
+    if (Platform.isAndroid) {
+      var androidInfo = await deviceInfoPlugin.androidInfo;
+      modelName =
+          "${androidInfo.manufacturer.toUpperCase()} ${androidInfo.model}";
+      deviceId = androidInfo.androidId;
+    } else if (Platform.isIOS) {
+      var iOSInfo = await deviceInfoPlugin.iosInfo;
+      modelName = _modelAppleMapper[iOSInfo.utsname.machine] ?? "";
+      deviceId = iOSInfo.identifierForVendor;
+    }
+
+    buildNumber = packageInfo.buildNumber;
+    versionNumber = packageInfo.version;
   }
 }
 
@@ -537,6 +701,7 @@ class _Colors {
   Color majorOrange = Color(0xFFFD632C);
   Color lightBlurMajorOrange = Color.fromRGBO(253, 99, 44, 0.1);
   Color blurMajorOrange = Color.fromRGBO(253, 99, 44, 0.5);
+  Color grayF2F2F2 = Color(0xFFF2F2F2);
   Color grayABABAB = Color(0xFFABABAB);
   Color gray515151 = Color(0xFF515151);
   Color gray808080 = Color(0xFF808080);
@@ -641,6 +806,8 @@ class _MyIcons {
   final String icRecordEventColor =
       'assets/myicons/icon-color-record-events.png';
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
+  final String englishColor = 'assets/myicons/icon-color-en.png';
+  final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
 
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
@@ -784,28 +951,29 @@ class _Images {
   // Common images
   final String welcomeBanner = 'assets/images/welcome.png';
 
-  final String loginFacebookEnglish = 'assets/images/login_fb_en.png';
-  final String loginFacebookVietnam = 'assets/images/login_fb_vi.png';
-  final String loginGoogleEnglish = 'assets/images/login_gg_en.png';
-  final String loginGoogleVietnam = 'assets/images/login_gg_vi.png';
-  final String loginEmailEnglish = 'assets/images/login_email_en.png';
-  final String loginEmailVietnam = 'assets/images/login_email_vi.png';
-  final String orLine = 'assets/images/or_line.png';
+  final String loginFacebookEnglish = 'assets/images/login-fb-en.png';
+  final String loginFacebookVietnam = 'assets/images/login-fb-vi.png';
+  final String loginGoogleEnglish = 'assets/images/login-gg-en.png';
+  final String loginGoogleVietnam = 'assets/images/login-gg-vi.png';
+  final String loginEmailEnglish = 'assets/images/login-email-en.png';
+  final String loginEmailVietnam = 'assets/images/login-email-vi.png';
+  final String orLine = 'assets/images/or-line.png';
+  final String pageBackground = 'assets/images/page-background.png';
 
-  final String drawerBackground = 'assets/images/drawer_background.png';
+  final String drawerBackground = 'assets/images/drawer-background.png';
   final String drawerBackgroundDarker =
-      'assets/images/drawer_background_darker.png';
-  final String smallDefaultImage = 'assets/images/small_default_image.png';
-  final String staticStatsChart01 = 'assets/images/static_stats_chart_01.png';
-  final String staticStatsChart02 = 'assets/images/static_stats_chart_02.png';
-  final String staticStatsChart03 = 'assets/images/static_stats_chart_03.png';
+      'assets/images/drawer-background-darker.png';
+  final String smallDefaultImage = 'assets/images/small-default-image.png';
+  final String staticStatsChart01 = 'assets/images/static-stats-chart-01.png';
+  final String staticStatsChart02 = 'assets/images/static-stats-chart-02.png';
+  final String staticStatsChart03 = 'assets/images/static-stats-chart-03.png';
 
   final String avatar = 'assets/images/avatar.png';
-  final String avatarQuocTK = 'assets/images/avatar_quoctk.png';
-  final String avatarNgocVTT = 'assets/images/avatar_ngocvtt.png';
-  final String avatarHuyTA = 'assets/images/avatar_huyta.png';
-  final String avatarPhucTT = 'assets/images/avatar_phuctt.png';
-  final String avatarKhaTM = 'assets/images/avatar_khatm.png';
+  final String avatarQuocTK = 'assets/images/avatar-quoctk.png';
+  final String avatarNgocVTT = 'assets/images/avatar-ngocvtt.png';
+  final String avatarHuyTA = 'assets/images/avatar-huyta.png';
+  final String avatarPhucTT = 'assets/images/avatar-phuctt.png';
+  final String avatarKhaTM = 'assets/images/avatar-khatm.png';
 }
 
 @reflector
@@ -1043,6 +1211,7 @@ class Strings {
   String requesting;
   String blocking;
   String reporting;
+  String processing;
   String loading;
   String loadingTeamInfo;
 
@@ -1211,7 +1380,7 @@ class Strings {
   String errorNoInternetAccess;
   String errorUserNotFound;
   String errorEmailPassword;
-
+  String errorOccurred;
   String requestTimeOut;
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
@@ -15,26 +16,7 @@ class InAppNotifications extends StatelessWidget {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.inAppNotifications,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.inAppNotifications),
       body: SingleChildScrollView(
         child: Container(
           child: Column(

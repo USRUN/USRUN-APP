@@ -306,7 +306,7 @@ class _SettingPageState extends State<SettingPage> {
                   showPage(
                     context,
                     WelcomePage(),
-                    popAllRoutes: true,
+                    popUntilFirstRoutes: true,
                   );
                 },
               )

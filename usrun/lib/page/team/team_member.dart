@@ -2,22 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/demo_data.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/model/team_member.dart';
 import 'package:usrun/model/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:usrun/page/team/team_member_item.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
@@ -348,10 +345,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     String emptyList;
     String emptyListSubtitle;
 
-    if(TeamMemberUtil.authorizeHigherLevel(TeamMemberType.Member,widget.teamMemberType)){
+    if (TeamMemberUtil.authorizeHigherLevel(
+        TeamMemberType.Member, widget.teamMemberType)) {
       emptyList = R.strings.noResult;
       emptyListSubtitle = R.strings.noResultSubtitle;
-    }else{
+    } else {
       emptyList = R.strings.memberOnly;
       emptyListSubtitle = R.strings.memberOnlySubtitle;
     }
@@ -392,25 +390,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.teamMember,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
+      appBar: CustomGradientAppBar(
+        title: R.strings.teamMember,
         actions: <Widget>[
           Container(
             width: R.appRatio.appWidth40,

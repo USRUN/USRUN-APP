@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -10,10 +9,12 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -35,26 +36,7 @@ class SignUpPage extends StatelessWidget {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.signUp,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.signUp),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
@@ -83,6 +65,7 @@ class SignUpPage extends StatelessWidget {
                                 enableFullWidth: false,
                                 labelTitle: R.strings.firstName,
                                 hintText: R.strings.firstName,
+                                autoFocus: true,
                               ),
                             ),
                             Container(
@@ -178,9 +161,9 @@ class SignUpPage extends StatelessWidget {
 
   void _signUp(BuildContext context, LoginChannel channel,
       Map<String, String> params) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Response<User> response = await UserManager.create(params);
-    hideLoading(context);
+    pop(context);
 
     if (response.success) {
       // add user Type
@@ -265,9 +248,9 @@ class SignUpPage extends StatelessWidget {
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
       BuildContext context) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Map loginParams = await UserManager.adapterLogin(channel, params);
-    hideLoading(context);
+    pop(context);
 
     if (loginParams == null) {
       showCustomAlertDialog(

@@ -1,100 +1,92 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:store_redirect/store_redirect.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/aboutus/about_developers.dart';
 import 'package:usrun/page/aboutus/about_usrun.dart';
 import 'package:usrun/widget/aboutus_box.dart';
-import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class AboutUs extends StatelessWidget {
+  final double _spacing = 25.0;
+  final double _iconSize = 35.0;
+
   @override
   Widget build(BuildContext context) {
+    String versionNumber = R.strings.aboutUsVersionSubtitle;
+    versionNumber = versionNumber.replaceFirst("###", R.versionNumber);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.aboutUs,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.aboutUs),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
-            left: R.appRatio.appSpacing30,
-            right: R.appRatio.appSpacing30,
+            left: _spacing,
+            right: _spacing,
           ),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: _spacing,
                 ),
                 // About USRUN
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsUSRUN,
                   subtitle: R.strings.aboutUsUSRUNSubtitle,
                   title: R.strings.aboutUsUSRUNTitle,
-                  iconSize: R.appRatio.appIconSize40,
+                  iconSize: _iconSize,
                   pressBox: () {
                     pushPage(context, AboutUSRUN());
                   },
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: _spacing,
                 ),
                 // Developers
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsDevelopers,
                   subtitle: R.strings.aboutUsDevelopersSubtitle,
                   title: R.strings.aboutUsDevelopersTitle,
-                  iconSize: R.appRatio.appIconSize40,
+                  iconSize: _iconSize,
                   pressBox: () {
                     pushPage(context, AboutDevelopers());
                   },
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: _spacing,
                 ),
                 // Version
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsVersion,
-                  subtitle: R.strings.aboutUsVersionSubtitle,
+                  subtitle: versionNumber,
                   title: R.strings.aboutUsVersionTitle,
-                  iconSize: R.appRatio.appIconSize40,
-                  pressBox: null, // TODO: Implement this function here
+                  iconSize: _iconSize,
+                  pressBox: () {},
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: _spacing,
                 ),
                 // Rate app
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsRateApp,
                   subtitle: R.strings.aboutUsRateAppSubtitle,
                   title: R.strings.aboutUsRateAppTitle,
-                  iconSize: R.appRatio.appIconSize40 + 5,
-                  pressBox: null, // TODO: Implement this function here
+                  iconSize: _iconSize,
+                  pressBox: () {
+                    StoreRedirect.redirect(
+                      androidAppId: R.androidAppId,
+                      iOSAppId: R.iOSAppId,
+                    );
+                  },
                 ),
                 SizedBox(
-                  height: R.appRatio.appSpacing30,
+                  height: _spacing,
                 ),
               ],
             ),

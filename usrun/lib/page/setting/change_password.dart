@@ -1,12 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -16,70 +15,65 @@ class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _retypePWController = TextEditingController();
 
-  void changePassword(BuildContext context) async{
+  void changePassword(BuildContext context) async {
     String newPassword = _newPWController.text.trim();
     String oldPassword = _currentPWController.text.trim();
     String retypeNewPassword = _retypePWController.text.trim();
 
-    if(newPassword.isEmpty|| oldPassword.isEmpty || retypeNewPassword.isEmpty){
+    if (newPassword.isEmpty ||
+        oldPassword.isEmpty ||
+        retypeNewPassword.isEmpty) {
       showCustomAlertDialog(context,
-          title: R.strings.error, content: R.strings.settingsCPEmptyField,
-          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+          title: R.strings.error,
+          content: R.strings.settingsCPEmptyField,
+          firstButtonText: R.strings.cancel,
+          firstButtonFunction: () => pop(context));
       return;
     }
 
-    if(newPassword != retypeNewPassword){
+    if (newPassword != retypeNewPassword) {
       showCustomAlertDialog(context,
-          title: R.strings.error, content: R.strings.settingsCPPwdNotMatch,
-          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+          title: R.strings.error,
+          content: R.strings.settingsCPPwdNotMatch,
+          firstButtonText: R.strings.cancel,
+          firstButtonFunction: () => pop(context));
       return;
     }
 
-    if(newPassword == oldPassword){
+    if (newPassword == oldPassword) {
       showCustomAlertDialog(context,
-          title: R.strings.error, content: R.strings.settingsCPNewPwdDifferent,
-          firstButtonText: R.strings.cancel, firstButtonFunction: ()=> pop(context));
+          title: R.strings.error,
+          content: R.strings.settingsCPNewPwdDifferent,
+          firstButtonText: R.strings.cancel,
+          firstButtonFunction: () => pop(context));
       return;
     }
 
-    Response<dynamic> changePasswordRequest = await UserManager.changePassword(oldPassword, newPassword);
+    Response<dynamic> changePasswordRequest =
+        await UserManager.changePassword(oldPassword, newPassword);
 
-    if(changePasswordRequest.success){
+    if (changePasswordRequest.success) {
       showCustomAlertDialog(context,
-      title: R.strings.error, content: R.strings.settingsChangePasswordSuccessful,
-      firstButtonText: R.strings.settingsBackToLogin, firstButtonFunction: ()=>pop(context));
+          title: R.strings.error,
+          content: R.strings.settingsChangePasswordSuccessful,
+          firstButtonText: R.strings.settingsBackToLogin,
+          firstButtonFunction: () => pop(context));
     } else {
       showCustomAlertDialog(context,
-      title: R.strings.error, content: changePasswordRequest.errorMessage,
-      firstButtonText: R.strings.ok, firstButtonFunction: ()=> pop(context));
+          title: R.strings.error,
+          content: changePasswordRequest.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () => pop(context));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.changePassword,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
+      appBar: CustomGradientAppBar(
+        title: R.strings.changePassword,
         actions: <Widget>[
           Container(
             width: R.appRatio.appWidth60,
@@ -120,6 +114,7 @@ class ChangePasswordPage extends StatelessWidget {
                   obscureText: true,
                   labelTitle: R.strings.currentPassword,
                   hintText: R.strings.currentPassword,
+                  autoFocus: true,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

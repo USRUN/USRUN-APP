@@ -189,6 +189,7 @@
     "requesting": "Requesting",
     "blocking": "Blocking",
     "reporting": "Reporting",
+    "processing": "Processing...",
     "loading": "Loading...",
     "loadingTeamInfo": "Loading team info...",
 
@@ -298,7 +299,7 @@
     "aboutUsDevelopersTitle": "Developers",
     "aboutUsDevelopersSubtitle": "Who has USRUN been developed by?",
     "aboutUsVersionTitle": "Version",
-    "aboutUsVersionSubtitle": "USRUN Version 1.0.0",
+    "aboutUsVersionSubtitle": "USRUN Version ###",
     "aboutUsRateAppTitle": "Rate this app",
     "aboutUsRateAppSubtitle": "USRUN loves your stars ^^",
 
@@ -398,7 +399,7 @@
     "errorWeightIsRequired": "Weight is required",
     "errorUserNotFound": "User not found",
     "errorEmailPassword": "Email and password incorrect",
-
+    "errorOccurred": "Error occurred, please try again later!",
     "requestTimeOut": "Request time out",
 
     "errorMessages": {

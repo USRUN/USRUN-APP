@@ -17,6 +17,7 @@ import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -207,27 +208,27 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
-      var image = await pickImage(context);
-      if (image != null) {
-        widget.activity.addPhotoFile(image, indexPhoto);
-        this.widget.streamFile.add(image);
-      }
+//       TODO: Open this code
+//       var image = await pickImage(context);
+//      if (image != null) {
+//        widget.activity.addPhotoFile(image, indexPhoto);
+//        this.widget.streamFile.add(image);
+//      }
     } catch (error) {
       print(error);
     }
   }
-
 
   void _getSelectedDropDownMenuItem<T>(T value) {
     print("Select event with id: $value");
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown(){
-
+  _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
     EventManager.userEvents.forEach((event) {
-      dropDowMenuList.add(DropDownObject<int>(value: event.eventId, text: event.eventName));
+      dropDowMenuList.add(
+          DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
     return DropDownMenu(
       errorEmptyData: R.strings.nothingToShow,
@@ -237,7 +238,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       enableHorizontalLabelTitle: false,
       onChanged: this._getSelectedDropDownMenuItem,
       items: dropDowMenuList,
-      initialValue: dropDowMenuList.isEmpty?'': dropDowMenuList[0].value,
+      initialValue: dropDowMenuList.isEmpty ? '' : dropDowMenuList[0].value,
     );
   }
 
@@ -370,7 +371,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     //await this.widget.bloc.recordData.createTrack();
     String requestTime = DateTime.now().millisecondsSinceEpoch.toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
-    var params = RecordHelper.generateParamsForRequest(widget.activity, requestTime);
+    var params =
+        RecordHelper.generateParamsForRequest(widget.activity, requestTime);
     Response<Map<String, dynamic>> response =
         await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
             '/activity/createUserActivity', params);
@@ -388,29 +390,19 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = GradientAppBar(
-      leading: FlatButton(
-        onPressed: () {
-          this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
-          pop(context);
-        },
-        padding: EdgeInsets.all(0.0),
-        splashColor: R.colors.lightBlurMajorOrange,
-        textColor: Colors.white,
-        child: ImageCacheManager.getImage(
-          url: R.myIcons.appBarBackBtn,
-          width: R.appRatio.appAppBarIconSize,
-          height: R.appRatio.appAppBarIconSize,
-        ),
-      ),
-      title: Container(
+    var appBar = CustomGradientAppBar(
+      titleWidget: Container(
         margin: EdgeInsets.only(right: R.appRatio.appAppBarIconSize),
         child: Center(
           child: Text(R.strings.uploadActivity),
         ),
       ),
-      gradient: R.colors.uiGradient,
+      leadingFunction: () {
+        this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
+        pop(context);
+      },
     );
+
     return WillPopScope(
         onWillPop: () async {
           this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
@@ -444,7 +436,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                           height: R.appRatio.appSpacing25,
                         ),
                         _buildEventDropDown(),
-                          SizedBox(
+                        SizedBox(
                           height: R.appRatio.appSpacing25,
                         ),
                         _buildPhotoPicker(),

@@ -87,6 +87,7 @@ class _InputFieldState extends State<InputField> {
             obscureText: widget.obscureText,
             keyboardType: widget.textInputType,
             autofocus: widget.autoFocus,
+            cursorColor: R.colors.majorOrange,
             onSubmitted: (data) {
               if (widget.onSubmittedFunction != null) {
                 widget.onSubmittedFunction(data);

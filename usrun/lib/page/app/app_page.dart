@@ -15,6 +15,7 @@ import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {
   String title;
@@ -185,28 +186,17 @@ class _AppPageState extends State<AppPage> {
 
     Widget _buildElement = Scaffold(
       key: _scaffoldKey,
-      appBar: GradientAppBar(
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
+      appBar: CustomGradientAppBar(
+        leadingFunction: () => _openDrawer(),
+        leadingIconUrl: R.myIcons.menuIcon,
+        actions: _appBarActionList(),
+        titleWidget: Text(
           widget.drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
             color: Colors.white,
             fontSize: R.appRatio.appFontSize22,
           ),
         ),
-        leading: FlatButton(
-          onPressed: () => _openDrawer(),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.menuIcon,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        actions: _appBarActionList(),
       ),
       backgroundColor: R.colors.appBackground,
       drawer: Container(

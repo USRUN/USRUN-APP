@@ -9,6 +9,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamActivityPage extends StatefulWidget {
@@ -117,26 +118,7 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: R.colors.appBackground,
-        appBar: GradientAppBar(
-          leading: FlatButton(
-            onPressed: () => pop(context),
-            padding: EdgeInsets.all(0.0),
-            splashColor: R.colors.lightBlurMajorOrange,
-            textColor: Colors.white,
-            child: ImageCacheManager.getImage(
-              url: R.myIcons.appBarBackBtn,
-              width: R.appRatio.appAppBarIconSize,
-              height: R.appRatio.appAppBarIconSize,
-            ),
-          ),
-          gradient: R.colors.uiGradient,
-          centerTitle: true,
-          title: Text(
-            R.strings.activities,
-            style: TextStyle(
-                color: Colors.white, fontSize: R.appRatio.appFontSize22),
-          ),
-        ),
+        appBar: CustomGradientAppBar(title: R.strings.activities),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
