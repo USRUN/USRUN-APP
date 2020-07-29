@@ -53,6 +53,9 @@ class SignInPage extends StatelessWidget {
                       SizedBox(
                         height: R.appRatio.appSpacing25,
                       ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing25,
+                      ),
                       InputField(
                         controller: _passwordController,
                         enableFullWidth: true,
@@ -87,12 +90,13 @@ class SignInPage extends StatelessWidget {
                   bottom: R.appRatio.appSpacing25,
                 ),
                 child: UIButton(
-                    width: R.appRatio.appWidth381,
-                    height: R.appRatio.appHeight60,
-                    gradient: R.colors.uiGradient,
-                    text: R.strings.signIn,
-                    textSize: R.appRatio.appFontSize22,
-                    onTap: () => _getSignInInfo(context)),
+                  width: R.appRatio.appWidth381,
+                  height: R.appRatio.appHeight60,
+                  gradient: R.colors.uiGradient,
+                  text: R.strings.signIn,
+                  textSize: R.appRatio.appFontSize22,
+                  onTap: () => _getSignInInfo(context),
+                ),
               ),
             ),
           ),
