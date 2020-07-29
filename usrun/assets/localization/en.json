@@ -202,6 +202,12 @@
     "legal": "Legal",
     "faqs": "FAQs",
 
+    "eventStatus": [
+        "Opening",
+        "Ongoing",
+        "Ended"
+    ],
+
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",
     "notiActReactionSubtitle": "Notify me when someone sends me reaction",
