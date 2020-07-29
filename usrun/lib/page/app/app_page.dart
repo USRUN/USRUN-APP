@@ -9,7 +9,6 @@ import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/page/record/record_page.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';

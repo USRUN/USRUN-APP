@@ -180,7 +180,11 @@ class SignInPage extends StatelessWidget {
 
     // validate email
     String email = _emailController.text.trim();
-    message = validateEmail(email);
+    bool validate = validateEmail(email);
+    if (!validate) {
+      message = R.strings.errorEmailInvalid;
+    }
+
     if (message != null) {
       showCustomAlertDialog(
         context,
