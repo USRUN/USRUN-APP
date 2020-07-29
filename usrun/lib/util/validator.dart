@@ -1,12 +1,12 @@
 import 'package:usrun/core/R.dart';
 
-String validateEmail(String email) {
+bool validateEmail(String email) {
   String p =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   RegExp regExp = new RegExp(p);
 
-  return regExp.hasMatch(email) ? null : R.strings.errorEmailInvalid;
+  return regExp.hasMatch(email) ? true : false;
 }
 
 String validatePassword(String pass) {
@@ -21,7 +21,6 @@ String validatePassword(String pass) {
 
   return null;
 }
-
 
 bool checkStringNullOrEmpty(String src) {
   return src == null || src.isEmpty;

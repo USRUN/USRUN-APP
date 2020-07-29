@@ -85,6 +85,25 @@ class ImageCacheManager {
         filterQuality: filterQuality,
       );
     } else {
+      if (isBase64(url))
+        {
+          return Image.memory(
+            base64Decode(url),
+            semanticLabel: semanticLabel,
+            excludeFromSemantics: excludeFromSemantics,
+            width: width,
+            height: height,
+            color: color,
+            colorBlendMode: colorBlendMode,
+            fit: fit,
+            alignment: alignment,
+            repeat: repeat,
+            centerSlice: centerSlice,
+            matchTextDirection: matchTextDirection,
+            gaplessPlayback: gaplessPlayback,
+            filterQuality: filterQuality,
+          );
+        }
       if (url.length == 0) {
         return Image.asset(
           R.images.smallDefaultImage,
@@ -213,6 +232,10 @@ class ImageCacheManager {
 
   static bool isAssetImage(String image) {
     return image.startsWith("assets/");
+  }
+
+  static bool isBase64(String image) {
+    return image.length>300;
   }
 }
 

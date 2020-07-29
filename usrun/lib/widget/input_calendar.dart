@@ -8,10 +8,12 @@ class InputCalendar extends StatefulWidget {
   final bool enableLabelShadow;
   final bool enableFullWidth;
   final Function getDOBFunc;
+  final String defaultDay;
 
   InputCalendar({
     Key key,
     this.labelTitle = "",
+    this.defaultDay = 'dd/MM/yyyy',
     this.enableLabelShadow = false,
     this.enableFullWidth = true,
     this.getDOBFunc,
@@ -27,7 +29,7 @@ class _InputCalendarState extends State<InputCalendar> {
 
   @override
   void initState() {
-    _birthday = 'dd/MM/yyyy';
+    _birthday = widget.defaultDay;
     _dateTime = null;
     super.initState();
   }
