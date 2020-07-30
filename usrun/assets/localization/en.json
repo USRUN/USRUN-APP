@@ -283,7 +283,7 @@
     "settingsDisplayLabel": "Display",
     "settingsDisplayDefaultTabTitle": "Default Tab",
     "settingsDisplayMeasureTitle": "Units of Measure",
-    "settingsDisplayThemeTitle": "Dark Theme",
+    "settingsDisplayThemeTitle": "App Theme",
     "settingsDisplayLanguageTitle": "Language",
     "settingsNotiLabel": "Notifications",
     "settingsNotiInAppTitle": "In-app Notifications",
@@ -380,7 +380,13 @@
     "chooseLanguageDescription": "Choose the application language you want to see",
     "english": "English",
     "vietnamese": "Vietnamese",
-    "languageDescription": "The application can be restarted after changing the language",
+    "languageDescription": "The application will be restarted after changing the language",
+
+    "chooseAppThemeTitle": "Choose app theme",
+    "chooseAppThemeDescription": "Choose the application theme you want to display",
+    "lightTheme": "Light theme",
+    "darkTheme": "Dark theme",
+    "appThemeDescription": "The application will be restarted after changing the theme",
 
     "takeAPhoto": "Take a photo",
     "openPhotoLibrary": "Open photo library",

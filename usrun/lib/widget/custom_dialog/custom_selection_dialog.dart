@@ -207,6 +207,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
             ),
             child: FlatButton(
               onPressed: () {
+                if (_selectedIndex == widget.selectedIndex) return;
                 pop(context, object: _selectedIndex);
               },
               padding: EdgeInsets.all(0.0),

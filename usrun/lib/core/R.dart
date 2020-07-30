@@ -8,6 +8,8 @@ import 'package:package_info/package_info.dart';
 import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
+import 'define.dart';
+
 class R {
   static Strings strings = Strings();
   static final _Colors colors = _Colors();
@@ -17,7 +19,7 @@ class R {
   static _AppRatio appRatio = _AppRatio();
   static _MyIcons myIcons = _MyIcons();
   static _ImagePickerDefaults imagePickerDefaults = _ImagePickerDefaults();
-  static String currentAppTheme = "Light";
+  static AppTheme currentAppTheme = AppTheme.LIGHT;
   static String currentAppLanguage = "en";
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   static PackageInfo packageInfo;
@@ -177,11 +179,7 @@ class R {
         textScaleFactor, statusBarHeight);
   }
 
-  static void changeAppTheme(String appTheme) {
-    if (appTheme.compareTo('Light') != 0 && appTheme.compareTo('Black') != 0) {
-      appTheme = 'Light';
-    }
-
+  static void changeAppTheme(AppTheme appTheme) {
     currentAppTheme = appTheme;
     myIcons.changeTheme(appTheme);
     colors.changeTheme(appTheme);
@@ -728,8 +726,8 @@ class _Colors {
   Color notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
 
   // User need to change theme
-  void changeTheme(String theme) {
-    if (theme.compareTo('Light') == 0) {
+  void changeTheme(AppTheme theme) {
+    if (theme == AppTheme.LIGHT) {
       contentText = Color(0xFF000000);
       orangeNoteText = Color(0xFFFD632C);
       normalNoteText = Color(0xFF808080);
@@ -881,8 +879,8 @@ class _MyIcons {
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
 
   // User wants to change theme
-  void changeTheme(String theme) {
-    if (theme.compareTo('Light') == 0) {
+  void changeTheme(AppTheme theme) {
+    if (theme == AppTheme.LIGHT) {
       defaultIconByTheme = 'assets/myicons/icon-black-image-default.png';
       nextIconByTheme = 'assets/myicons/icon-black-next.png';
       peopleIconByTheme = 'assets/myicons/icon-black-people.png';
@@ -1358,6 +1356,12 @@ class Strings {
   String english;
   String vietnamese;
   String languageDescription;
+
+  String chooseAppThemeTitle;
+  String chooseAppThemeDescription;
+  String lightTheme;
+  String darkTheme;
+  String appThemeDescription;
 
   String takeAPhoto;
   String openPhotoLibrary;
