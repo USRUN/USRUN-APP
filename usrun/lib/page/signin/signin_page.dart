@@ -21,6 +21,9 @@ class SignInPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _passwordNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     Widget _buildElement = Scaffold(
@@ -43,6 +46,7 @@ class SignInPage extends StatelessWidget {
                         height: R.appRatio.appSpacing20,
                       ),
                       InputField(
+                        focusNode: _emailNode,
                         controller: _emailController,
                         enableFullWidth: true,
                         labelTitle: R.strings.email,
@@ -54,6 +58,7 @@ class SignInPage extends StatelessWidget {
                         height: R.appRatio.appSpacing25,
                       ),
                       InputField(
+                        focusNode: _passwordNode,
                         controller: _passwordController,
                         enableFullWidth: true,
                         labelTitle: R.strings.password,
@@ -135,16 +140,18 @@ class SignInPage extends StatelessWidget {
       }
     } else {
       // call channel logout with
-      showCustomLoadingDialog(context, text: R.strings.processing);
       UserManager.logout();
-      pop(context);
-
-      showCustomAlertDialog(
-        context,
-        title: R.strings.errorTitle,
-        content: response.errorMessage,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(context),
+      Future.delayed(
+        Duration(milliseconds: 600),
+        () {
+          showCustomAlertDialog(
+            context,
+            title: R.strings.error,
+            content: response.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () => pop(context),
+          );
+        },
       );
     }
   }
@@ -177,6 +184,9 @@ class SignInPage extends StatelessWidget {
   }
 
   _getSignInInfo(BuildContext context) {
+    _emailNode.unfocus();
+    _passwordNode.unfocus();
+
     String message;
 
     // validate email
@@ -189,7 +199,7 @@ class SignInPage extends StatelessWidget {
     if (message != null) {
       showCustomAlertDialog(
         context,
-        title: R.strings.errorTitle,
+        title: R.strings.error,
         content: message,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () => pop(context),
@@ -203,7 +213,7 @@ class SignInPage extends StatelessWidget {
     if (message != null) {
       showCustomAlertDialog(
         context,
-        title: R.strings.errorTitle,
+        title: R.strings.error,
         content: message,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () => pop(context),

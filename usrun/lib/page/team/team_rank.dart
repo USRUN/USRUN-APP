@@ -59,12 +59,13 @@ class _TeamRankState extends State<TeamRank> {
     if (teamRank.success && (teamRank.object as List).isNotEmpty) {
       items = teamRank.object;
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: teamRank.errorMessage,
-          firstButtonText: null,
-          firstButtonFunction: null,
-          secondButtonText: null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: teamRank.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     }
   }
 

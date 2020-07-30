@@ -326,20 +326,22 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   _clearRecordData() async {
-    showCustomAlertDialog(context,
-        title: R.strings.notice,
-        content: "Discard this activity?",
-        firstButtonText: R.strings.ok,
-        firstButtonFunction: () async {
-          pop(this.context);
-          await RecordHelper.removeFile();
-          this.widget.bloc.resetAll();
-          Navigator.pop(context);
-        },
-        secondButtonText: R.strings.cancel,
-        secondButtonFunction: () {
-          pop(this.context);
-        });
+    showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: "Discard this activity?",
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () async {
+        pop(this.context);
+        await RecordHelper.removeFile();
+        this.widget.bloc.resetAll();
+        Navigator.pop(context);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: () {
+        pop(this.context);
+      },
+    );
   }
 
   _uploadActivity() async {
@@ -349,21 +351,25 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       print("Uploaded");
       await RecordHelper.removeFile();
       this.widget.bloc.resetAll();
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: "Seccessfully uploaded!",
-          firstButtonText: R.strings.ok, firstButtonFunction: () async {
-        pop(this.context);
-        Navigator.pop(context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: "Seccessfully uploaded!",
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () async {
+          pop(this.context);
+          Navigator.pop(context);
+        },
+      );
     } else {
       print("Uploaded error");
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: "Fail to upload, please try again later",
-          firstButtonText: R.strings.ok, firstButtonFunction: () async {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: "Fail to upload, please try again later",
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     }
   }
 

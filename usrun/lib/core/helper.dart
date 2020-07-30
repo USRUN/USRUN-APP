@@ -1,24 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/image_source_picker.dart';
-import 'package:usrun/widget/ui_button.dart';
-
-import '../manager/data_manager.dart';
 import 'R.dart';
 
 // ================ PRIVATE VARIABLES ================
@@ -123,7 +115,7 @@ void setErrorCode(int code) {
   _errorCode = code;
 }
 
-bool _checkSystemStatus() {
+bool checkSystemStatus() {
   /*
     + True: It's fine
     + False: Not fine
@@ -161,7 +153,7 @@ bool _checkSystemStatus() {
 
 Future<T> showPage<T>(BuildContext context, Widget page,
     {bool popUntilFirstRoutes = false}) {
-  if (!_checkSystemStatus()) return null;
+  if (!checkSystemStatus()) return null;
   if (popUntilFirstRoutes) {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
@@ -171,7 +163,7 @@ Future<T> showPage<T>(BuildContext context, Widget page,
 
 Future<T> showPageWithRoute<T>(BuildContext context, Route<T> route,
     {bool popUntilFirstRoutes = false}) {
-  if (!_checkSystemStatus()) return null;
+  if (!checkSystemStatus()) return null;
   if (popUntilFirstRoutes) {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
@@ -184,13 +176,13 @@ Future<T> pushPageWithNavState<T>(Widget page) {
 }
 
 Future<T> pushPage<T>(BuildContext context, Widget page) {
-  if (!_checkSystemStatus()) return null;
+  if (!checkSystemStatus()) return null;
   Route route = SlidePageRoute(page: page);
   return Navigator.of(context).push(route);
 }
 
 Future<T> pushPageWithRoute<T>(BuildContext context, Route<T> route) {
-  if (!_checkSystemStatus()) return null;
+  if (!checkSystemStatus()) return null;
   return Navigator.of(context).push(route);
 }
 

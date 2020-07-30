@@ -217,6 +217,7 @@ Future<T> showCustomAlertDialog<T>(
       secondButtonText = "",
       secondButtonFunction,
     }) async {
+
   return await showGeneralDialog(
     context: context,
     barrierLabel: "Label",

@@ -238,12 +238,13 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
         _isLoading = false;
       });
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
 
       setState(() {
         _isLoading = false;

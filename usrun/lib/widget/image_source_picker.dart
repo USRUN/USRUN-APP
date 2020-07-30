@@ -16,7 +16,9 @@ class ImageSourcePicker extends StatelessWidget {
       this.shape,
       this.maxWidth,
       this.maxHeight,
-      this.quality, this.parentContext});
+      this.quality,
+      this.parentContext});
+
   final BuildContext parentContext;
   final CropStyle shape;
   final dynamic ratioX;
@@ -25,21 +27,18 @@ class ImageSourcePicker extends StatelessWidget {
   final dynamic maxHeight;
   final dynamic quality;
 
-
-  void onChooseImageSource( ImageSource chosen) async {
+  void onChooseImageSource(ImageSource chosen) async {
     File photo = await ImagePicker.pickImage(source: chosen);
     if (photo == null) {
       pop(parentContext, object: null);
     } else {
       pop(
         parentContext,
-        object: await handleImagePicked(shape, ratioX, ratioY, photo,
-            maxWidth, maxHeight, quality),
+        object: await handleImagePicked(
+            shape, ratioX, ratioY, photo, maxWidth, maxHeight, quality),
       );
     }
   }
-
-
 
   Future<File> handleImagePicked(
       CropStyle cropStyle,
@@ -55,12 +54,13 @@ class ImageSourcePicker extends StatelessWidget {
     int refDefaultSize = 4000;
 
     if (initSize > sizeMax) {
-      await showCustomAlertDialog(parentContext,
-          title: R.strings.imageUploadFailed,
-          content: R.strings.imageTooLarge,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () => {pop(parentContext, object: null)},
-          secondButtonText: "");
+      await showCustomAlertDialog(
+        parentContext,
+        title: R.strings.imageUploadFailed,
+        content: R.strings.imageTooLarge,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(parentContext),
+      );
       return null;
     }
 

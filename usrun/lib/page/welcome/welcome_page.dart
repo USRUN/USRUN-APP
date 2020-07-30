@@ -246,21 +246,23 @@ class _WelcomePageState extends State<WelcomePage>
     pop(context);
 
     if (loginParams == null) {
-      showCustomAlertDialog(context,
-          title: R.strings.errorLoginFail,
-          content: R.strings.errorLoginFail,
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () {
-            pop(this.context);
-          });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: R.strings.errorLoginFail,
+        firstButtonText: R.strings.cancel.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     } else if (loginParams['error'] != null) {
-      showCustomAlertDialog(context,
-          title: R.strings.errorLoginFail,
-          content: R.strings.errorLoginFail,
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () {
-            pop(this.context);
-          });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: R.strings.errorLoginFail,
+        firstButtonText: R.strings.cancel.toUpperCase(),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
+      );
     } else {
       _signUp(context, channel, loginParams);
     }

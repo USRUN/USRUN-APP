@@ -65,12 +65,15 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   void showInvalidFieldDialog(BuildContext context, String field) {
-    showCustomAlertDialog(context,
-        title: R.strings.notice,
-        content: 'Invalid $field',
-        firstButtonText: R.strings.ok, firstButtonFunction: () {
-      pop(this.context);
-    });
+    showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: 'Invalid $field',
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () {
+        pop(this.context);
+      },
+    );
   }
 
   Future<void> _updateProfile(BuildContext context) async {
@@ -92,19 +95,21 @@ class _EditProfilePage extends State<EditProfilePage> {
 
     Response<User> res = await UserManager.updateProfile(params);
     if (res.success) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: 'Successfully updated profile!',
-          firstButtonText: R.strings.ok, firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: 'Successfully updated profile!',
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: 'Fail to update profile! Please try again later!',
-          firstButtonText: R.strings.ok, firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: 'Fail to update profile! Please try again later!',
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     }
   }
 

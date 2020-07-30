@@ -138,24 +138,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
     if (!TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Admin, _teamMemberType)) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: R.strings.notAuthorizedTeamChange,
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: R.strings.notAuthorizedTeamChange,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
       return;
     }
 
     Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
 
     if (!updatedTeam.success) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: updatedTeam.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: updatedTeam.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
       return;
     }
     _teamPublicStatus = privacy;
@@ -166,12 +168,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
     if (!TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Admin, _teamMemberType)) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: R.strings.notAuthorizedTeamChange,
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: R.strings.notAuthorizedTeamChange,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
       return;
     }
 
@@ -191,13 +194,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       if (updatedTeam.success && updatedTeam.object != null) {
         mapTeamInfo(updatedTeam.object);
       } else {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: updatedTeam.errorMessage,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-          pop(this.context);
-        });
+        showCustomAlertDialog(
+          context,
+          title: R.strings.notice,
+          content: updatedTeam.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () => pop(this.context),
+        );
       }
     } catch (error) {
       showCustomAlertDialog(context,
@@ -221,13 +224,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           _teamMemberType = TeamMemberType.Guest;
         });
       } else {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: response.errorMessage,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-          pop(this.context);
-        }, secondButtonText: "");
+        showCustomAlertDialog(
+          context,
+          title: R.strings.notice,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () => pop(this.context),
+        );
       }
       return;
     }
@@ -250,10 +253,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           title: R.strings.notice,
           content: response.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () {
-            pop(this.context);
-          },
-          secondButtonText: "",
+          firstButtonFunction: () => pop(this.context),
         );
       }
     }

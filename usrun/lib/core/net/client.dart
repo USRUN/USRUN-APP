@@ -51,6 +51,7 @@ class Client {
         );
       }
 
+      setErrorCode(0);
       String reply = await response.transform(utf8.decoder).join();
       return _handleResponse<T, E>(response, reply);
     } on TimeoutException catch (_) {
@@ -67,9 +68,10 @@ class Client {
           object: null,
         );
       }
+
       return Response<T>(
         success: false,
-        errorMessage: R.strings.errorNetworkUnstable,
+        errorMessage: R.strings.errorMessages["$NO_INTERNET_ACCESS"],
         object: null,
       );
     }
@@ -118,6 +120,7 @@ class Client {
         );
       }
 
+      setErrorCode(0);
       String reply = await response.transform(utf8.decoder).join();
       return _handleResponse<T, E>(response, reply);
     } on TimeoutException catch (_) {
@@ -134,9 +137,10 @@ class Client {
           object: null,
         );
       }
+
       return Response<T>(
         success: false,
-        errorMessage: R.strings.errorNetworkUnstable,
+        errorMessage: R.strings.errorMessages["$NO_INTERNET_ACCESS"],
         object: null,
       );
     } on HttpException catch (_) {
@@ -172,7 +176,7 @@ class Client {
     Map<String, dynamic> body = json.decode(reply);
     Response<T> result = Response<T>();
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 200) {
       try {
         int code = body['code'];
         if (code == 0) {
@@ -196,7 +200,6 @@ class Client {
           result.object = null;
           result.errorCode = code;
           result.errorMessage = R.strings.errorMessages["$code"];
-
           switch (code) {
             case ACCESS_DENY:
             case MAINTENANCE:
@@ -212,7 +215,7 @@ class Client {
         result.success = false;
         result.object = null;
         result.errorCode = -1;
-        result.errorMessage = R.strings.errorNetworkUnstable;
+        result.errorMessage = R.strings.errorOccurred;
       }
     } else {
       result.success = false;

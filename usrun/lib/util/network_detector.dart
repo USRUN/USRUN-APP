@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
@@ -54,9 +55,11 @@ class NetworkDetector {
             await showCustomAlertDialog(
               context,
               title: R.strings.caution,
-              content: R.strings.errorNoInternetAccess,
-              firstButtonText: R.strings.ok,
-              firstButtonFunction: () => {if (context != null) pop(context)},
+              content: R.strings.errorMessages["$NO_INTERNET_ACCESS"],
+              firstButtonText: R.strings.ok.toUpperCase(),
+              firstButtonFunction: () => {
+                if (context != null) pop(context),
+              },
             );
           }
         },
@@ -74,8 +77,8 @@ class NetworkDetector {
       await showCustomAlertDialog(
         context,
         title: R.strings.caution,
-        content: R.strings.errorNoInternetAccess,
-        firstButtonText: R.strings.ok,
+        content: R.strings.errorMessages["$NO_INTERNET_ACCESS"],
+        firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () {
           if (context != null) pop(context);
         },

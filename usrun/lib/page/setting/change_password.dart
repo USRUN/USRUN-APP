@@ -49,7 +49,7 @@ class ChangePasswordPage extends StatelessWidget {
         context,
         title: R.strings.error,
         content: alertMsg,
-        firstButtonText: R.strings.cancel,
+        firstButtonText: R.strings.cancel.toUpperCase(),
         firstButtonFunction: () => pop(context),
       );
       return;
@@ -63,7 +63,7 @@ class ChangePasswordPage extends StatelessWidget {
         context,
         title: R.strings.error,
         content: R.strings.settingsChangePasswordSuccessful,
-        firstButtonText: R.strings.settingsCPReLogin,
+        firstButtonText: R.strings.settingsCPReLogin.toUpperCase(),
         firstButtonFunction: () => pop(context),
       );
     } else {
@@ -71,7 +71,7 @@ class ChangePasswordPage extends StatelessWidget {
         context,
         title: R.strings.error,
         content: changePasswordRequest.errorMessage,
-        firstButtonText: R.strings.ok,
+        firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () => pop(context),
       );
     }

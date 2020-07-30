@@ -79,7 +79,7 @@
     "saturday": "Saturday",
     "sunday": "Sunday",
 
-    "error": "error",
+    "error": "Error",
     "notice": "Notice",
     "ok": "OK",
     "cancel": "Cancel",
@@ -387,12 +387,10 @@
     "clearSelectedFile": "Clear selected file",
 
     "nothingToShow": "Nothing to show",
-    "errorTitle": "Error",
     "errorTitleIsRequired": "Title is required",
     "errorLoginFail": "Login failed",
     "errorLogoutFail": "Logout failed",
     "errorUserCancelledLogin": "User has cancelled login",
-    "errorNetworkUnstable": "Network unstable",
     "errorUserNotFoundCreateNew": "Account not found. Do you want to sign up a new account?",
     "errorNameIsRequired": "Name is required",
     "errorBirthday": "User should be over 12 years old",
@@ -405,7 +403,6 @@
     "errorLeaderBoardTypeIsRequired": "Leaderboard type is required",
     "errorSelectionEmpty": "Your selection is empty",
     "errorYouShouldAddPeople": "You should add people",
-    "errorNoInternetAccess":  "No Internet Access. Please check your internet connection.",
     "errorGenderIsRequired": "Gender is required",
     "errorHeightIsRequired": "Height is required",
     "errorWeightIsRequired": "Weight is required",
@@ -415,6 +412,8 @@
     "requestTimeOut": "Request time out",
 
     "errorMessages": {
+        "-100": "No Internet Access. Please check your internet connection",
+
         "-1": "UNKNOWN",
 
         "101": "System under maintenance. Please try again later!",

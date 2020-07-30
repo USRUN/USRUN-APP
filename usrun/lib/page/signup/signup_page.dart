@@ -219,7 +219,7 @@ class SignUpPage extends StatelessWidget {
     if (message != null) {
       showCustomAlertDialog(
         context,
-        title: R.strings.errorTitle,
+        title: R.strings.error,
         content: message,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () => pop(context),
@@ -233,7 +233,7 @@ class SignUpPage extends StatelessWidget {
     if (message != null) {
       showCustomAlertDialog(
         context,
-        title: R.strings.errorTitle,
+        title: R.strings.error,
         content: message,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () => pop(context),

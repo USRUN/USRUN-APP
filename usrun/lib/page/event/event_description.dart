@@ -64,7 +64,7 @@ class _EventDescriptionState extends State<EventDescriptionPage> {
           content: response.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () => pop(context),
-          secondButtonText: "");
+      );
     }
   }
 

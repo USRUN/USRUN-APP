@@ -66,7 +66,7 @@ class RecordButton extends StatelessWidget {
             context,
             title: R.strings.notice,
             content: R.strings.gpsNotFound,
-            firstButtonText: R.strings.ok,
+            firstButtonText: R.strings.ok.toUpperCase(),
             firstButtonFunction: () => pop(this.context),
           );
         }
@@ -105,10 +105,8 @@ class RecordButton extends StatelessWidget {
           context,
           title: R.strings.notice,
           content: R.strings.gpsNotFound,
-          firstButtonText: R.strings.ok,
+          firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () => pop(this.context),
-          secondButtonText: "",
-          secondButtonFunction: null,
         );
       }
     }

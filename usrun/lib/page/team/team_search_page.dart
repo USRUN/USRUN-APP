@@ -137,7 +137,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
           textAlign: TextAlign.justify,
           style: TextStyle(
             color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+            fontSize: R.appRatio.appFontSize16,
           ),
         ),
       ),

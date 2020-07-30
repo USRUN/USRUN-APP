@@ -1366,11 +1366,9 @@ class Strings {
   Map<String, dynamic> errorMessages;
 
   String nothingToShow;
-  String errorTitle;
   String errorLoginFail;
   String errorLogoutFail;
   String errorUserCancelledLogin;
-  String errorNetworkUnstable;
   String errorUserNotFoundCreateNew;
   String errorInvalidEmail;
   String errorEmptyPassword;
@@ -1387,7 +1385,6 @@ class Strings {
   String errorLeaderBoardTypeIsRequired;
   String errorSelectionEmpty;
   String errorYouShouldAddPeople;
-  String errorNoInternetAccess;
   String errorUserNotFound;
   String errorEmailPassword;
   String errorOccurred;

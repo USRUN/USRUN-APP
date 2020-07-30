@@ -31,7 +31,7 @@ class _EventPageState extends State<EventPage> {
   User currentUser = UserManager.currentUser;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -71,10 +71,10 @@ class _EventPageState extends State<EventPage> {
   _getMyTeam() async {
     Response<dynamic> response = await TeamManager.getMyTeam();
     if (response.success && (response.object as List).isNotEmpty) {
-      response.object.forEach((Team t) =>
-      {
-        _myTeamOptions.add(new DropDownObject(value: t.id, text: t.teamName))
-      });
+      response.object.forEach((Team t) => {
+            _myTeamOptions
+                .add(new DropDownObject(value: t.id, text: t.teamName))
+          });
     }
   }
 
@@ -83,7 +83,7 @@ class _EventPageState extends State<EventPage> {
     _hasMoreResult = false;
 
     Response<dynamic> response =
-    await EventManager.getAllEventsPaged(_curPage, widget.perPage);
+        await EventManager.getAllEventsPaged(_curPage, widget.perPage);
     if (response.success && (response.object as List).isNotEmpty) {
       List<EventListItem> toAdd = List();
       response.object
@@ -99,19 +99,20 @@ class _EventPageState extends State<EventPage> {
   }
 
   _handleLeave(int index) async {
-    Response<dynamic> response = await EventManager.leaveEvent(
-        _events[index].id, 0, currentUser.userId);
+    Response<dynamic> response =
+        await EventManager.leaveEvent(_events[index].id, 0, currentUser.userId);
 
     if (response.success) {
       setState(() {
         _events[index].joined = false;
       });
     } else {
-      await showCustomAlertDialog(context, title: R.strings.error,
+      await showCustomAlertDialog(context,
+          title: R.strings.error,
           content: response.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () => pop(context),
-          secondButtonText: "");
+      );
     }
   }
 
@@ -121,13 +122,15 @@ class _EventPageState extends State<EventPage> {
       // missing dropdown dialog
     } else {
       // confirm leave dialog
-      await showCustomAlertDialog(context,
-          title: "Confirmation",
-          content: "Are you sure you want to leave this event?",
-          firstButtonText: "LEAVE",
-          firstButtonFunction: _handleLeave(index),
-          secondButtonText: "Cancel",
-          secondButtonFunction: () => pop(context));
+      await showCustomAlertDialog(
+        context,
+        title: "Confirmation",
+        content: "Are you sure you want to leave this event?",
+        firstButtonText: "LEAVE",
+        firstButtonFunction: _handleLeave(index),
+        secondButtonText: "Cancel",
+        secondButtonFunction: () => pop(context),
+      );
     }
   }
 

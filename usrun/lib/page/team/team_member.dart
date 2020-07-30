@@ -146,20 +146,22 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         await TeamManager.inviteNewMember(widget.teamId, data);
     if (res.success) {
       pop(this.context);
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: "Invitation sent",
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () => pop(this.context),
-          secondButtonText: "");
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: "Invitation sent",
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     } else {
       pop(this.context);
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: res.errorMessage,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () => pop(this.context),
-          secondButtonText: "");
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: res.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     }
   }
 
@@ -170,7 +172,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     TeamManager.getAllTeamMemberPaged(
             widget.teamId, _curPage, widget.resultPerPage)
         .then((response) => {
-              if (mounted && response.success && (response.object as List).isNotEmpty)
+              if (mounted &&
+                  response.success &&
+                  (response.object as List).isNotEmpty)
                 {
                   setState(() {
                     items.addAll(response.object);
@@ -336,12 +340,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         _isLoading = false;
       });
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
 
       setState(() {
         _isLoading = false;

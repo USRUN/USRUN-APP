@@ -105,6 +105,7 @@ class UserManager {
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
       await logout();
     }
 

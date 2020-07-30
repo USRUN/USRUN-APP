@@ -334,13 +334,16 @@ class _SettingPageState extends State<SettingPage> {
                     firstButtonFunction: () {
                       UserManager.logout();
                       pop(context);
-                      Future.delayed(Duration(milliseconds: 600), () {
-                        showPageWithRoute(
-                          context,
-                          SlidePageRoute(page: WelcomePage()),
-                          popUntilFirstRoutes: true,
-                        );
-                      });
+                      Future.delayed(
+                        Duration(milliseconds: 600),
+                        () {
+                          showPageWithRoute(
+                            context,
+                            SlidePageRoute(page: WelcomePage()),
+                            popUntilFirstRoutes: true,
+                          );
+                        },
+                      );
                     },
                     secondButtonText: R.strings.no.toUpperCase(),
                     secondButtonFunction: () => pop(context),
