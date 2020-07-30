@@ -8,7 +8,7 @@ import 'package:usrun/model/mapper_object.dart';
 @reflector
 class Event extends MapperObject {
   int eventId;
-  int status;
+  EventStatus status;
   DateTime createTime;
   String eventName;
   String subtitle;

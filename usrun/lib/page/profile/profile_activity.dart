@@ -137,26 +137,26 @@ class _ProfileActivityState extends State<ProfileActivity> {
         : Column(
             children: <Widget>[
               // Event Badges
-              EventBadgeList(
-                items: DemoData().eventBadgeList,
-                labelTitle: R.strings.personalEventBadges,
-                enableLabelShadow: true,
-                enableScrollBackgroundColor: true,
-                pressItemFunction: _pressEventBadge,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
-              // Photo
-              PhotoList(
-                items: DemoData().photoItemList,
-                labelTitle: R.strings.personalPhotos,
-                enableLabelShadow: true,
-                enableScrollBackgroundColor: true,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
+//              EventBadgeList(
+//                items: DemoData().eventBadgeList,
+//                labelTitle: R.strings.personalEventBadges,
+//                enableLabelShadow: true,
+//                enableScrollBackgroundColor: true,
+//                pressItemFunction: _pressEventBadge,
+//              ),
+//              SizedBox(
+//                height: R.appRatio.appSpacing20,
+//              ),
+//              // Photo
+//              PhotoList(
+//                items: DemoData().photoItemList,
+//                labelTitle: R.strings.personalPhotos,
+//                enableLabelShadow: true,
+//                enableScrollBackgroundColor: true,
+//              ),
+//              SizedBox(
+//                height: R.appRatio.appSpacing20,
+//              ),
               // Activity Timeline
               Container(
                 padding: EdgeInsets.only(

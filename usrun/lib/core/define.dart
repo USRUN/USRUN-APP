@@ -98,6 +98,9 @@ enum LoginChannel {
 enum EventType { League, Team, User }
 
 @reflector
+enum EventStatus { Opening, OnGoing, Ended }
+
+@reflector
 enum UserRole { Owner, Admin, Member }
 
 @reflector
