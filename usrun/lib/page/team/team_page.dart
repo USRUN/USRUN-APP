@@ -52,7 +52,7 @@ class _TeamPageState extends State<TeamPage> {
 
     List<dynamic> data = DemoData().bannerList;
     for (int i = 0; i < data.length; ++i) {
-      bannerList.add(ImageCacheManager.getImageData(url: data[i]['imageURL']));
+      bannerList.add(ImageCacheManager.getImageData(url: data[i]     ['imageURL']));
     }
 
     return bannerList;

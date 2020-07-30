@@ -12,9 +12,10 @@ class EventManager{
 
     Map<String,dynamic> params = {};
     Response<dynamic> response = await Client.post('/event/getEventOfUser',params);
-
-    List<Event> events = (response.object as List)
-        .map((item)=> MapperObject.create<Event>(item)).toList();
+    List<Event> events = [];
+    if (response.object != null)
+      events = (response.object as List)
+          .map((item)=> MapperObject.create<Event>(item)).toList();
 
     userEvents = events;
 

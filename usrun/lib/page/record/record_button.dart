@@ -210,32 +210,6 @@ class RecordButton extends StatelessWidget {
         });
   }
 
-  _buildChooseEventButton() {
-    return StreamBuilder<EventVisibility>(
-        stream: this.bloc.streamEventVisibility,
-        initialData: this.bloc.getEventVisibilityValue,
-        builder: (context, snapshot) {
-          print(snapshot.data);
-          if (snapshot.data == EventVisibility.Gone)
-            return StateButton(
-              disabled: false,
-              icon: R.myIcons.icRecordEventWhite,
-              size: R.appRatio.deviceWidth / 7,
-              onPress: () =>
-                  this.bloc.updateEventVisibility(EventVisibility.Visible),
-            );
-          else {
-            return StateButton(
-              disabled: false,
-              icon: R.myIcons.icRecordEventColor,
-              size: R.appRatio.deviceWidth / 7,
-              onPress: () =>
-                  this.bloc.updateEventVisibility(EventVisibility.Gone),
-            );
-          }
-        });
-  }
-
 
   _buildLayoutForStateNone(BuildContext context) {
     return Align(
@@ -254,10 +228,6 @@ class RecordButton extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                SizedBox(
-                                  width: R.appRatio.deviceWidth / 5 +
-                                      R.appRatio.appSpacing15,
-                                ),
                                 StateButton(
                                     disabled: false,
                                     icon: R.myIcons.icStartRecord,
@@ -271,17 +241,6 @@ class RecordButton extends StatelessWidget {
                                         : () {
                                       onStartButtonTap();
                                     }),
-                                SizedBox(
-                                  width: R.appRatio.appSpacing15,
-                                ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: R.appRatio.deviceWidth / 5,
-                                  height: R.appRatio.deviceWidth / 5,
-                                  child: Stack(children: <Widget>[
-                                    _buildChooseEventButton()
-                                  ]),
-                                )
                               ],
                             ),
                           ]));

@@ -67,7 +67,6 @@ enum StatType {
 
 @reflector
 enum Gender {
-  Other,
   Male,
   Female,
 }

@@ -24,7 +24,7 @@ class User extends MapperObject {
   num weight;
   num height;
   // test tạm thời
-  String accessToken = "Bearer  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNTg1ODEwNDE5LCJleHAiOjE1ODY0MTUyMTl9.CSIQmHZgpde8TVX6PKZxpqBujqgKQ2Hsy5j4HSTPZvA";
+  String accessToken;
   // --------------
   DateTime lastLogin;
 
