@@ -32,7 +32,7 @@ class RecordBloc extends BlocBase {
 
   MyStreamController<RecordState> _streamRecordStateController;
 
-  MyStreamController<RecordData> _streamRecorData;
+  MyStreamController<RecordData> _streamRecordData;
 
   MyStreamController<GPSSignalStatus> _streamGPSSignal;
   MyStreamController<ReportVisibility> _streamReportVisibilityController;
@@ -53,7 +53,6 @@ class RecordBloc extends BlocBase {
   List<Polyline> lData = List<Polyline>();
   List<Marker> mData = List<Marker>();
   Uint8List markerIcon;
-
   //end test
 
   RecordBloc() {
@@ -62,7 +61,7 @@ class RecordBloc extends BlocBase {
     this.recordData = RecordData();
     this._streamSplitStateController = MyStreamController<ReportVisibility>(
         defaultValue: ReportVisibility.Gone, activeBroadcast: true);
-    this._streamRecorData = MyStreamController<RecordData>(
+    this._streamRecordData = MyStreamController<RecordData>(
         defaultValue: recordData, activeBroadcast: true);
     this._streamLocationController = MyStreamController<LocationData>(
         defaultValue: null, activeBroadcast: true);
@@ -71,9 +70,6 @@ class RecordBloc extends BlocBase {
     this._streamReportVisibilityController =
         MyStreamController<ReportVisibility>(
             defaultValue: ReportVisibility.Visible, activeBroadcast: true);
-    this._streamEventtVisibilityController =
-        MyStreamController<EventVisibility>(
-            defaultValue: EventVisibility.Visible, activeBroadcast: true);
     this._streamGPSSignal = MyStreamController<GPSSignalStatus>(
         defaultValue: GPSSignalStatus.CHECKING, activeBroadcast: true);
     // this._streamSportType =  MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
@@ -99,14 +95,8 @@ class RecordBloc extends BlocBase {
   ReportVisibility get getReportVisibilityValue =>
       this._streamReportVisibilityController.value;
 
-  EventVisibility get getEventVisibilityValue =>
-      this._streamEventtVisibilityController.value;
-
   Stream<ReportVisibility> get streamReportVisibility =>
       _streamReportVisibilityController.stream;
-
-  Stream<EventVisibility> get streamEventVisibility =>
-      _streamEventtVisibilityController.stream;
 
   Stream<RecordState> get streamRecordState =>
       _streamRecordStateController.stream;
@@ -117,26 +107,26 @@ class RecordBloc extends BlocBase {
 
   GPSSignalStatus get gpsStatus => this._streamGPSSignal.value;
 
-  Stream<RecordData> get streamRecordData => _streamRecorData.stream;
+  Stream<RecordData> get streamRecordData => _streamRecordData.stream;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     if (this._locationSubscription != null) {
       this._locationSubscription.cancel();
     }
+
     if (_streamReportVisibilityController != null) {
       this._streamReportVisibilityController.close();
     }
-    if (_streamEventtVisibilityController != null) {
-      this._streamEventtVisibilityController.close();
-    }
+
     if (_streamLocationController != null) {
       this._streamLocationController.close();
     }
+
     if (_streamRecordStateController != null) {
       this._streamRecordStateController.close();
     }
+
     if (_timeService != null) {
       this._timeService.close();
     }
@@ -265,7 +255,7 @@ class RecordBloc extends BlocBase {
 
     this.recordData.totalTime = duration;
     this.recordData.endTime = DateTime.now().millisecondsSinceEpoch;
-    this._streamRecorData.add(recordData);
+    this._streamRecordData.add(recordData);
     this.onMapUpdate();
     // // update activity every 15 seconds;
     if (duration % 15 == 0) {
@@ -400,23 +390,6 @@ class RecordBloc extends BlocBase {
     this._streamReportVisibilityController.add(value);
   }
 
-  void showEventPicker() {
-    if (this._streamEventtVisibilityController.value !=
-        EventVisibility.Visible) {
-      this.updateEventVisibility(EventVisibility.Visible);
-    }
-  }
-
-  void hideEventPicker() {
-    if (this._streamEventtVisibilityController.value != EventVisibility.Gone) {
-      this.updateEventVisibility(EventVisibility.Gone);
-    }
-  }
-
-  void updateEventVisibility(EventVisibility value) {
-    this._streamEventtVisibilityController.add(value);
-  }
-
   void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0.0,
@@ -500,7 +473,7 @@ class RecordBloc extends BlocBase {
     this.initPlatformState();
     this._streamRecordStateController.listenValueChange();
     this._streamReportVisibilityController.listenValueChange();
-    this._streamRecorData.listenValueChange();
+    this._streamRecordData.listenValueChange();
     this._streamGPSSignal.listenValueChange();
     this._streamSplitStateController.listenValueChange();
     this.streamRecordState.listen(this.onRecordStageChange);
@@ -529,15 +502,6 @@ class RecordBloc extends BlocBase {
     });
     await this.onGpsStatusChecking();
     await this.loadLatestRecord();
-    //await this.onResumeFromBackground();
-
-    // KhaVN print raw gps data
-//    List<List<LocationData>> polylines = await RecordCache.loadRawRecord();
-//    for (List<LocationData> line in polylines) {
-//      for(LocationData p in line) {
-//        print("${p.longitude}, ${p.latitude},");
-//      }
-//    }
   }
 
   void updateSplitState(ReportVisibility newValue) {
@@ -579,18 +543,18 @@ class RecordBloc extends BlocBase {
     }
 
     /* Kalman Filter */
-    double Qvalue;
+    double qValue;
 
     int elapsedTimeInMillis = timePassed;
 
     if (currentSpeed == 0) {
-      Qvalue = 1; //1 meters per second
+      qValue = 1; //1 meters per second
     } else {
-      Qvalue = currentSpeed; // meters per second
+      qValue = currentSpeed; // meters per second
     }
 
     kalmanFilter.Process(myLocation.latitude, myLocation.longitude,
-        myLocation.accuracy, elapsedTimeInMillis, Qvalue);
+        myLocation.accuracy, elapsedTimeInMillis, qValue);
     double predictedLat = kalmanFilter.get_lat();
     double predictedLng = kalmanFilter.get_lng();
 
@@ -684,7 +648,7 @@ class RecordBloc extends BlocBase {
       _initTimeService(data.totalTime);
 
       this._streamLocationController.add(recordData.lastLocation);
-      this._streamRecorData.add(this.recordData);
+      this._streamRecordData.add(this.recordData);
       this._streamGPSSignal.add(GPSSignalStatus.HIDE);
       this.updateRecordStatus(RecordState.StatusStop);
     } catch (error) {
@@ -711,7 +675,7 @@ class RecordBloc extends BlocBase {
 
   void resetAll() {
     this.recordData = RecordData();
-    this._streamRecorData.add(this.recordData);
+    this._streamRecordData.add(this.recordData);
     this.onGpsStatusChecking();
     this.updateRecordStatus(RecordState.StatusNone);
     if (this._timeService != null) {
