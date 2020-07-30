@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -177,25 +179,32 @@ class CustomTabBarStyle02 extends StatelessWidget {
 */
 
 class CustomTabBarStyle03 extends StatelessWidget {
-  final int selectedTabIndex;
-  final List<String> items;
-  final Function pressTab;
-
-  static double _tabFontSize = R.appRatio.appFontSize16;
-  static double _tabWidth = R.appRatio.appWidth120;
-  static double _tabHeight = R.appRatio.appHeight40;
+  final TabController tabController;
+  final List<String> tabBarTitleList;
+  final List<Widget> tabBarViewList;
+  final void Function(int tabIndex) pressTab;
 
   CustomTabBarStyle03({
-    @required this.selectedTabIndex,
-    @required this.items,
+    @required this.tabController,
+    @required this.tabBarTitleList,
+    @required this.tabBarViewList,
     this.pressTab,
-  })  : assert(items != null && items.length > 0),
-        assert(selectedTabIndex != null);
+  })  : assert(tabBarTitleList != null && tabBarTitleList.length > 0),
+        assert(tabBarViewList != null && tabBarViewList.length > 0),
+        assert(tabBarTitleList.length == tabBarViewList.length);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _renderTabBar() {
+    List<Tab> tabList = List();
+    tabBarTitleList.forEach((element) {
+      tabList.add(
+        Tab(
+          text: element.toUpperCase(),
+        ),
+      );
+    });
+
     return Container(
-      height: R.appRatio.appHeight50,
+      height: 45,
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
         boxShadow: [
@@ -206,61 +215,50 @@ class CustomTabBarStyle03 extends StatelessWidget {
           ),
         ],
       ),
-      alignment: Alignment.center,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            for (var i = 0; i < this.items.length; ++i)
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  // Tab
-                  GestureDetector(
-                    onTap: () {
-                      if (this.pressTab != null) {
-                        this.pressTab(i);
-                      }
-                    },
-                    child: Container(
-                      width: _tabWidth,
-                      height: _tabHeight,
-                      alignment: Alignment.center,
-                      color: (this.selectedTabIndex == i
-                          ? R.colors.tabLayer
-                          : null),
-                      child: Text(
-                        (this.items[i] != null && this.items[i].length != 0
-                            ? this.items[i].toUpperCase()
-                            : ""),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: R.colors.majorOrange,
-                          fontSize: _tabFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Divider
-                  (i != this.items.length - 1
-                      ? Container(
-                          width: R.appRatio.appSpacing15,
-                          height: _tabHeight,
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 1,
-                            color: R.colors.majorOrange,
-                          ),
-                        )
-                      : Container()),
-                ],
-              ),
-          ],
+      child: TabBar(
+        controller: tabController,
+        labelColor: R.colors.majorOrange,
+        labelStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
         ),
+        unselectedLabelColor: R.colors.majorOrange,
+        unselectedLabelStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+        indicatorColor: R.colors.majorOrange,
+        indicatorWeight: 2,
+        indicatorPadding: EdgeInsets.all(0),
+        onTap: (index) {
+          if (this.pressTab != null) {
+            this.pressTab(index);
+          }
+        },
+        tabs: tabList,
       ),
+    );
+  }
+
+  Widget _renderTabBarView() {
+    return Expanded(
+      child: TabBarView(
+        children: tabBarViewList,
+        controller: tabController,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        _renderTabBar(),
+        _renderTabBarView(),
+      ],
     );
   }
 }
