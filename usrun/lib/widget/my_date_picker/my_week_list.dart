@@ -47,6 +47,7 @@ class _MyWeekListState extends State<MyWeekList> {
   }
 
   void _updatePosWeekInList(index) {
+    if (!mounted) return;
     setState(() {
       _posWeekInList = index;
     });

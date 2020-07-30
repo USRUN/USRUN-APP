@@ -54,6 +54,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -72,6 +73,8 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
       response.object.forEach((element) {
         toAdd.add(new TeamItem.from(element));
       });
+
+      if (!mounted) return;
       setState(() {
         teamList.addAll(toAdd);
         remainingResults = true;
@@ -82,6 +85,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
   void _onSubmittedFunction(data) {
     if (data.toString().length == 0) return;
+    if (!mounted) return;
 
     //reset states
 
@@ -106,6 +110,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   void _onChangedFunction(data) {
     // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
+      if (!mounted) return;
       setState(() {
         teamList = widget.defaultList;
       });

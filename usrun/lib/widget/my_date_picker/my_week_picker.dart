@@ -61,6 +61,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
               .roundToDouble();
     }
 
+    if (!mounted) return;
     setState(() {
       _yearPickerState = !_yearPickerState;
     });
@@ -79,6 +80,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _updateSelectedWeek(DateTime fromDateValue) {
+    if (!mounted) return;
     setState(() {
       _selectedWeek = WeekDateTime.getCurrentWeek(fromDateValue);
     });
@@ -99,6 +101,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _onWeekChanged(newWeekValue) {
+    if (!mounted) return;
     setState(() {
       _selectedWeek = newWeekValue;
     });

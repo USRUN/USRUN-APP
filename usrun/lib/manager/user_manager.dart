@@ -30,7 +30,6 @@ class UserManager {
 
   static void saveUser(User info) {
     currentUser.copy(info);
-
     DataManager.saveUser(currentUser);
   }
 

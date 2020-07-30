@@ -10,16 +10,31 @@ bool validateEmail(String email) {
 }
 
 String validatePassword(String pass) {
-  int length = pass.length;
-  if (length < 8) {
-    return R.strings.errorPasswordShort;
+  if (checkStringNullOrEmpty(pass.trim())) {
+    return R.strings.errorEmptyPassword;
   }
 
-  if (pass.trim().isEmpty) {
+  if (pass.length < 8 || !hasUppercase(pass) || !hasDigits(pass)) {
     return R.strings.errorInvalidPassword;
   }
 
   return null;
+}
+
+bool hasUppercase(String content) {
+  return content.contains(new RegExp(r'[A-Z]'));
+}
+
+bool hasLowercase(String content) {
+  return content.contains(new RegExp(r'[a-z]'));
+}
+
+bool hasSpecialCharacters(String content) {
+  return content.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+}
+
+bool hasDigits(String content) {
+  return content.contains(new RegExp(r'[0-9]'));
 }
 
 bool checkStringNullOrEmpty(String src) {

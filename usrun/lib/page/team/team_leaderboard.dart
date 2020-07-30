@@ -48,6 +48,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });

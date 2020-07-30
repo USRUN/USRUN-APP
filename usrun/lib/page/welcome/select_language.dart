@@ -99,7 +99,7 @@ class _SelectLanguagePageState extends State<SelectLanguagePage>
         onPressed: () => _selectLanguage(lang),
         splashColor: R.colors.lightBlurMajorOrange,
         textColor: Colors.white,
-        color: R.colors.grayF2F2F2,
+        color: R.colors.lightBlurMajorOrange,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_radius),
         ),

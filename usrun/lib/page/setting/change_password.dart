@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -19,33 +20,38 @@ class ChangePasswordPage extends StatelessWidget {
     String newPassword = _newPWController.text.trim();
     String oldPassword = _currentPWController.text.trim();
     String retypeNewPassword = _retypePWController.text.trim();
+    String alertMsg;
 
-    if (newPassword.isEmpty ||
-        oldPassword.isEmpty ||
-        retypeNewPassword.isEmpty) {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: R.strings.settingsCPEmptyField,
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () => pop(context));
-      return;
+    if (alertMsg == null &&
+        (newPassword.isEmpty ||
+            oldPassword.isEmpty ||
+            retypeNewPassword.isEmpty)) {
+      alertMsg = R.strings.settingsCPEmptyField;
     }
 
-    if (newPassword != retypeNewPassword) {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: R.strings.settingsCPPwdNotMatch,
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () => pop(context));
-      return;
+    if (alertMsg == null &&
+        (validatePassword(oldPassword) != null ||
+            validatePassword(newPassword) != null ||
+            validatePassword(retypeNewPassword) != null)) {
+      alertMsg = R.strings.settingsCPInvalidPwd;
     }
 
-    if (newPassword == oldPassword) {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: R.strings.settingsCPNewPwdDifferent,
-          firstButtonText: R.strings.cancel,
-          firstButtonFunction: () => pop(context));
+    if (alertMsg == null && newPassword != retypeNewPassword) {
+      alertMsg = R.strings.settingsCPPwdNotMatch;
+    }
+
+    if (alertMsg == null && newPassword == oldPassword) {
+      alertMsg = R.strings.settingsCPNewPwdDifferent;
+    }
+
+    if (alertMsg != null) {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: alertMsg,
+        firstButtonText: R.strings.cancel,
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
@@ -53,17 +59,21 @@ class ChangePasswordPage extends StatelessWidget {
         await UserManager.changePassword(oldPassword, newPassword);
 
     if (changePasswordRequest.success) {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: R.strings.settingsChangePasswordSuccessful,
-          firstButtonText: R.strings.settingsBackToLogin,
-          firstButtonFunction: () => pop(context));
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: R.strings.settingsChangePasswordSuccessful,
+        firstButtonText: R.strings.settingsCPReLogin,
+        firstButtonFunction: () => pop(context),
+      );
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: changePasswordRequest.errorMessage,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () => pop(context));
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: changePasswordRequest.errorMessage,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () => pop(context),
+      );
     }
   }
 

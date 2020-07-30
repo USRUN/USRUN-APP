@@ -182,12 +182,14 @@ class IntroductionScreenState extends State<IntroductionScreen> {
   }
 
   Future<void> skipToEnd() async {
+    if (!mounted) return;
     setState(() => _isSkipPressed = true);
     await animateScroll(widget.pages.length - 1);
     setState(() => _isSkipPressed = false);
   }
 
   Future<void> animateScroll(int page) async {
+    if (!mounted) return;
     setState(() => _isScrolling = true);
     await _pageController.animateToPage(
       page,
@@ -200,6 +202,7 @@ class IntroductionScreenState extends State<IntroductionScreen> {
   bool _onScroll(ScrollNotification notification) {
     final metrics = notification.metrics;
     if (metrics is PageMetrics) {
+      if (!mounted) return false;
       setState(() => _currentPage = metrics.page);
     }
     return false;

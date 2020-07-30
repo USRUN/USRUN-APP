@@ -436,6 +436,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       _currSecond = max(min(_currSecond, secondRange.last), secondRange.first);
     }
 
+    if (!mounted) return;
     setState(() {
       _hourRange = hourRange;
       _minuteRange = minuteRange;

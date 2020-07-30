@@ -61,6 +61,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -68,24 +69,28 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   }
 
   void _changeUserCodeState() {
+    if (!mounted) return;
     setState(() {
       _enableUserCode = !_enableUserCode;
     });
   }
 
   void _changeProfileDescriptionState() {
+    if (!mounted) return;
     setState(() {
       _enableProfileDescription = !_enableProfileDescription;
     });
   }
 
   void _changeFFButtonState() {
+    if (!mounted) return;
     setState(() {
       _enableFFButton = !_enableFFButton;
     });
   }
 
   void _changeFFButtonType() {
+    if (!mounted) return;
     setState(() {
       _isFollowingButton = !_isFollowingButton;
     });

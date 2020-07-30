@@ -168,6 +168,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   String _statsSectionLabelTitle = "";
 
   void _updateSubTitle(String content) {
+    if (!mounted) return;
     setState(() {
       _chartSubTitle = content;
     });

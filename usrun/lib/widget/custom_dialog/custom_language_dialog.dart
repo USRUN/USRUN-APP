@@ -52,6 +52,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
   }
 
   void _changeLanguageIndex(String appLang) {
+    if (!mounted) return;
     setState(() {
       _languageIndex = _getLanguageIndex(appLang);
     });

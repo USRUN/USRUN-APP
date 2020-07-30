@@ -213,7 +213,7 @@ class SignUpPage extends StatelessWidget {
     String email = _emailController.text.trim();
     bool validate = validateEmail(email);
     if (!validate) {
-      message = R.strings.errorEmailInvalid;
+      message = R.strings.errorInvalidEmail;
     }
 
     if (message != null) {

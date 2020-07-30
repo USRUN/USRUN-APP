@@ -53,9 +53,6 @@ class SignInPage extends StatelessWidget {
                       SizedBox(
                         height: R.appRatio.appSpacing25,
                       ),
-                      SizedBox(
-                        height: R.appRatio.appSpacing25,
-                      ),
                       InputField(
                         controller: _passwordController,
                         enableFullWidth: true,
@@ -130,7 +127,11 @@ class SignInPage extends StatelessWidget {
         DataManager.setLoginChannel(channel.index);
         UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
-        showPage(context, AppPage());
+        showPage(
+          context,
+          AppPage(),
+          popUntilFirstRoutes: true,
+        );
       }
     } else {
       // call channel logout with
@@ -182,7 +183,7 @@ class SignInPage extends StatelessWidget {
     String email = _emailController.text.trim();
     bool validate = validateEmail(email);
     if (!validate) {
-      message = R.strings.errorEmailInvalid;
+      message = R.strings.errorInvalidEmail;
     }
 
     if (message != null) {

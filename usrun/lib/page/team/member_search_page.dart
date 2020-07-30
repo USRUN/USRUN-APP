@@ -73,6 +73,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -112,7 +113,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     Response<dynamic> response = await TeamManager.findTeamMemberRequest(
         widget.teamId, _curSearchString, _curResultPage, widget.resultPerPage);
 
-    if (response.success && (response.object as List).isNotEmpty) {
+    if (response.success && (response.object as List).isNotEmpty && mounted) {
       setState(() {
         parseResponse(response.object);
         remainingResults = true;
@@ -130,6 +131,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 
   void _onSubmittedFunction(data) {
     if (data.toString().length == 0) return;
+    if (!mounted) return;
 
     //reset states
 
@@ -153,7 +155,9 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
 
   void _onSelectTabItem(index) {
     if (index == _selectedTab) return;
+    if (!mounted) return;
     _selectedTab = index;
+
     switch (index) {
       case 0:
         setState(() {
@@ -219,6 +223,8 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   }
 
   void changeMemberRole(int index, int newMemberType) async {
+    if (!mounted) return;
+
     setState(() {
       _isLoading = true;
     });
@@ -238,6 +244,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
           firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
         pop(this.context);
       });
+
       setState(() {
         _isLoading = false;
       });

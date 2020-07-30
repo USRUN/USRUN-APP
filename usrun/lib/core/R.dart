@@ -1072,6 +1072,7 @@ class Strings {
 
   String caution;
   String exitApp;
+  String logoutApp;
   String yes;
   String no;
   String close;
@@ -1315,10 +1316,11 @@ class Strings {
   String settingsSOAppInfoTitle;
   String settingsSOLogOutTitle;
   String settingsChangePasswordSuccessful;
-  String settingsBackToLogin;
   String settingsCPEmptyField;
   String settingsCPPwdNotMatch;
   String settingsCPNewPwdDifferent;
+  String settingsCPInvalidPwd;
+  String settingsCPReLogin;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
@@ -1370,8 +1372,8 @@ class Strings {
   String errorUserCancelledLogin;
   String errorNetworkUnstable;
   String errorUserNotFoundCreateNew;
-  String errorEmailInvalid;
-  String errorPasswordShort;
+  String errorInvalidEmail;
+  String errorEmptyPassword;
   String errorInvalidPassword;
   String errorEmailIsUsed;
   String errorNameIsRequired;

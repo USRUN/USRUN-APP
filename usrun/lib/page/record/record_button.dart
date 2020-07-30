@@ -339,18 +339,20 @@ class _ChooseEventButtonState extends State<ChooseEventButton> {
   @override
   Widget build(BuildContext context) {
     return StateButton(
-        disabled: false,
-        icon: icon,
-        size: R.appRatio.deviceWidth / 7.5,
-        onPress: () {
-          setState(() {
-            if (isPressed)
-              icon = R.myIcons.icRecordEventWhite;
-            else
-              icon = R.myIcons.icRecordEventColor;
-            isPressed = !isPressed;
-          });
-          widget.onPress();
+      disabled: false,
+      icon: icon,
+      size: R.appRatio.deviceWidth / 7.5,
+      onPress: () {
+        if (!mounted) return;
+        setState(() {
+          if (isPressed)
+            icon = R.myIcons.icRecordEventWhite;
+          else
+            icon = R.myIcons.icRecordEventColor;
+          isPressed = !isPressed;
         });
+        widget.onPress();
+      },
+    );
   }
 }

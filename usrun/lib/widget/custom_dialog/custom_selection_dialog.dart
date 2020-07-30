@@ -39,6 +39,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   }
 
   void _changeSelected(int index) {
+    if (!mounted) return;
     setState(() {
       _selectedIndex = index;
     });

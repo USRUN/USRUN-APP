@@ -203,6 +203,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
                 widget.onPressedCheckBox(index, value);
               }
 
+              if (!mounted) return;
               setState(() {
                 this.boxList[index].isSelected = value;
               });

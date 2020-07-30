@@ -170,7 +170,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     TeamManager.getAllTeamMemberPaged(
             widget.teamId, _curPage, widget.resultPerPage)
         .then((response) => {
-              if (response.success && (response.object as List).isNotEmpty)
+              if (mounted && response.success && (response.object as List).isNotEmpty)
                 {
                   setState(() {
                     items.addAll(response.object);
@@ -180,6 +180,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 }
             });
 
+    if (!mounted) return;
     setState(() {
       _isLoading = false;
     });
@@ -200,6 +201,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         element.teamMemberType = queryMemberType;
       });
 
+      if (!mounted) return;
       setState(() {
         items.addAll(toAdd);
         _remainingResults = true;
@@ -207,6 +209,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       });
     }
 
+    if (!mounted) return;
     setState(() {
       _isLoading = false;
     });
@@ -242,7 +245,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   _onSelectItem(int tabIndex) {
-    if (_selectedTabIndex == tabIndex) return;
+    if (_selectedTabIndex == tabIndex || !mounted) return;
+    if (!mounted) return;
+
     setState(() {
       _isLoading = true;
       items = List();
@@ -317,6 +322,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   void changeMemberRole(int index, int newMemberType) async {
+    if (!mounted) return;
+
     setState(() {
       _isLoading = true;
     });
@@ -335,6 +342,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
         pop(this.context);
       });
+
       setState(() {
         _isLoading = false;
       });

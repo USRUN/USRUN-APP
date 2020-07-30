@@ -103,6 +103,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamInfo(Team toMap) {
+    if (!mounted) return;
     setState(() {
       _teamDescription =
           toMap.description == null ? R.strings.description : toMap.description;
@@ -117,6 +118,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -214,6 +216,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           await TeamManager.cancelJoinTeam(widget.teamId);
 
       if (response.success) {
+        if (!mounted) return;
         setState(() {
           _teamMemberType = TeamMemberType.Guest;
         });
@@ -237,17 +240,21 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           await TeamManager.requestJoinTeam(widget.teamId);
 
       if (response.success) {
+        if (!mounted) return;
         setState(() {
           _teamMemberType = TeamMemberType.Pending;
         });
       } else {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: response.errorMessage,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-          pop(this.context);
-        }, secondButtonText: "");
+        showCustomAlertDialog(
+          context,
+          title: R.strings.notice,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          },
+          secondButtonText: "",
+        );
       }
     }
   }

@@ -34,6 +34,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
 
   _getProfileActivityData() async {
     if (!_isLoading) {
+      if (!mounted) return;
       setState(() {
         _isLoading = true;
       });
@@ -74,6 +75,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
       R.constants.activityTimelineNumber,
       _activityTimelineListOffset,
     ).then((value) {
+      if (!mounted) return;
       if (value != null) {
         _activityTimelineListOffset += 1;
         _allowLoadMore = true;
@@ -88,6 +90,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
 
   _changeKM() {
     // TODO: Implement function here
+    if (!mounted) return;
     setState(() {
       _isKM = !_isKM;
     });

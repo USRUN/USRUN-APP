@@ -26,6 +26,7 @@ class _ExpandableTextState extends State<ExpandableText> {
 
   checkLongText() {
     if (widget.text.length >= 150) {
+      if (!mounted) return;
       setState(() {
         longText = true;
       });
@@ -36,7 +37,7 @@ class _ExpandableTextState extends State<ExpandableText> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (!longText) return;
+        if (!longText || !mounted) return;
         setState(() {
           isExpanded = !isExpanded;
         });

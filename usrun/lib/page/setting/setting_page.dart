@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
@@ -13,6 +14,7 @@ import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
@@ -54,7 +56,7 @@ class _SettingPageState extends State<SettingPage> {
 
     if (selectedIndex != null) {
       DataManager.setUserDefaultTab(selectedIndex);
-
+      if (!mounted) return;
       setState(() {
         currentDefaultTab = selectedIndex;
       });
@@ -202,6 +204,8 @@ class _SettingPageState extends State<SettingPage> {
                   } else {
                     R.changeAppTheme("Light");
                   }
+
+                  if (!mounted) return;
                   setState(() {});
                 },
               ),
@@ -322,13 +326,24 @@ class _SettingPageState extends State<SettingPage> {
                 enableBottomUnderline: false,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () async {
-                  bool result = await showCustomExitDialog(context);
-                  if (!result) return;
-                  UserManager.logout();
-                  showPage(
+                  await showCustomAlertDialog(
                     context,
-                    WelcomePage(),
-                    popUntilFirstRoutes: true,
+                    title: R.strings.caution,
+                    content: R.strings.logoutApp,
+                    firstButtonText: R.strings.yes.toUpperCase(),
+                    firstButtonFunction: () {
+                      UserManager.logout();
+                      pop(context);
+                      Future.delayed(Duration(milliseconds: 600), () {
+                        showPageWithRoute(
+                          context,
+                          SlidePageRoute(page: WelcomePage()),
+                          popUntilFirstRoutes: true,
+                        );
+                      });
+                    },
+                    secondButtonText: R.strings.no.toUpperCase(),
+                    secondButtonFunction: () => pop(context),
                   );
                 },
               )
