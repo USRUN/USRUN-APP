@@ -110,24 +110,27 @@ class _RecordWidget extends StatelessWidget {
   Widget buildMap(BuildContext context) {
     this.context = context;
     this.bloc = BlocProvider.of(context);
+
     return StreamBuilder<LocationData>(
-        stream: bloc.streamLocation,
-        builder: (BuildContext context, snapShot) {
-          var defaultBegin = LatLng(10.763106, 106.682214);
-          return GestureDetector(
-            child: GoogleMap(
-              initialCameraPosition:
-                  CameraPosition(target: defaultBegin, zoom: 13),
-              markers: Set.of(bloc.mData),
-              onMapCreated: (controller) => bloc.onMapCreated(controller),
-              myLocationEnabled: false,
-              scrollGesturesEnabled: true,
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              polylines: Set.of(bloc.lData),
-            ),
-          );
-        });
+      stream: bloc.streamLocation,
+      builder: (BuildContext context, snapShot) {
+        var defaultBegin = LatLng(10.763106, 106.682214);
+        return GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: defaultBegin,
+            zoom: 13,
+          ),
+          markers: Set.of(bloc.mData),
+          onMapCreated: (controller) => bloc.onMapCreated(controller),
+          myLocationEnabled: false,
+          myLocationButtonEnabled: false,
+          compassEnabled: false,
+          scrollGesturesEnabled: true,
+          zoomControlsEnabled: false,
+          polylines: Set.of(bloc.lData),
+        );
+      },
+    );
   }
 
   Widget buildReportView() {

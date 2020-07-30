@@ -60,6 +60,11 @@ enum StatType {
   year,
 }
 
+enum AppTheme {
+  LIGHT,
+  DARK,
+}
+
 @reflector
 enum Gender {
   Male,

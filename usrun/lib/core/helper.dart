@@ -25,8 +25,22 @@ T cast<T>(x) => x is T ? x : null;
 Future<void> initializeConfigs(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
+  loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
+}
+
+void loadAppTheme() {
+  AppTheme appTheme = AppTheme.LIGHT;
+  int themeIndex = DataManager.loadAppTheme();
+
+  if (themeIndex == null) {
+    DataManager.saveAppTheme(appTheme);
+  } else {
+    appTheme = AppTheme.values[themeIndex];
+  }
+
+  R.changeAppTheme(appTheme);
 }
 
 bool hasSelectedLanguageFirstTime() {

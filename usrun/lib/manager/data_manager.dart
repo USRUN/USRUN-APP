@@ -77,6 +77,14 @@ class DataManager {
     return LoginChannel.values[_prefs.getInt(_LOGIN_CHANNEL)];
   }
 
+  static int loadAppTheme() {
+    return _prefs.getInt(_APP_THEME);
+  }
+
+  static void saveAppTheme(AppTheme appTheme) {
+    _prefs.setInt(_APP_THEME, appTheme.index);
+  }
+
   static void setLoginChannel(int channel) {
     _prefs.setInt(_LOGIN_CHANNEL, channel);
   }
@@ -303,8 +311,9 @@ const String _SYNC_IDS = "SYNC_IDS";
 const String _PROFILE = "PROFILE";
 const String _DEVICE_TOKEN = "UPRACE_DEVICE_TOKEN";
 const String _LAST_LOGIN_USER_ID = "LAST_LOGIN_USER_ID";
-const String _SELECT_LANGUAGE_FIRST_TIME = "SELECT_LANGUAGE_FIRST_TIME";
 const String _LANGUAGE = "LANGUAGE";
+const String _SELECT_LANGUAGE_FIRST_TIME = "SELECT_LANGUAGE_FIRST_TIME";
+const String _APP_THEME = "APP_THEME";
 const String _VERSION = "VERSION";
 const String _DEVICE_NAME = "DEVICE_NAME";
 const String _OS_VERSION = "OS_VERSION";

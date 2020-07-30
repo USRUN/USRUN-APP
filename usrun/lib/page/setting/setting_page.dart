@@ -15,7 +15,6 @@ import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
@@ -192,21 +191,32 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayThemeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.appThemeDescription,
+                subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                enableSwitchButton: true,
-                switchButtonOnTitle: "On",
-                switchButtonOffTitle: "Off",
-                initSwitchStatus: (R.currentAppTheme == "Light" ? false : true),
-                switchFunction: (state) {
-                  if (state) {
-                    R.changeAppTheme("Black");
-                  } else {
-                    R.changeAppTheme("Light");
-                  }
+                lineFunction: () async {
+                  int index = await showCustomSelectionDialog(
+                    context,
+                    [
+                      ObjectFilter(
+                          name: R.strings.lightTheme,
+                          value: AppTheme.LIGHT.index),
+                      ObjectFilter(
+                          name: R.strings.darkTheme,
+                          value: AppTheme.DARK.index),
+                    ],
+                    R.currentAppTheme.index,
+                    title: R.strings.chooseAppThemeTitle,
+                    description: R.strings.chooseAppThemeDescription,
+                  );
 
-                  if (!mounted) return;
-                  setState(() {});
+                  if (index != null) {
+                    AppTheme appTheme = AppTheme.values[index];
+                    R.changeAppTheme(appTheme);
+                    DataManager.saveAppTheme(appTheme);
+                    restartApp(0);
+                  }
                 },
               ),
               LineButton(
