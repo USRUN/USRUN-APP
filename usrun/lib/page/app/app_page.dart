@@ -15,7 +15,6 @@ import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {
@@ -27,6 +26,20 @@ class DrawerItem {
 }
 
 class AppPage extends StatefulWidget {
+  @override
+  _AppPageState createState() => _AppPageState();
+}
+
+class _AppPageState extends State<AppPage> {
+  final List<Widget> pages = [
+    RecordPage(),
+    FeedPage(),
+    EventPage(),
+    TeamPage(),
+    ProfilePage(),
+    SettingPage()
+  ];
+
   final drawerItems = [
     DrawerItem(
         R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
@@ -42,20 +55,6 @@ class AppPage extends StatefulWidget {
         R.myIcons.drawerActiveSettings),
   ];
 
-  @override
-  _AppPageState createState() => _AppPageState();
-}
-
-final List<Widget> pages = [
-  RecordPage(),
-  FeedPage(),
-  EventPage(),
-  TeamPage(),
-  ProfilePage(),
-  SettingPage()
-];
-
-class _AppPageState extends State<AppPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedDrawerIndex = DataManager.getUserDefaultTab();
@@ -145,8 +144,8 @@ class _AppPageState extends State<AppPage> {
   @override
   Widget build(BuildContext context) {
     var drawerWidgets = <Widget>[];
-    for (var i = 0; i < widget.drawerItems.length; i++) {
-      var item = widget.drawerItems[i];
+    for (var i = 0; i < drawerItems.length; i++) {
+      var item = drawerItems[i];
       drawerWidgets.add(FlatButton(
         onPressed: () => _onSelectItem(i),
         padding: EdgeInsets.all(0),
@@ -172,11 +171,12 @@ class _AppPageState extends State<AppPage> {
                   item.title.toUpperCase(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: R.appRatio.appFontSize18,
-                      color: i == _selectedDrawerIndex
-                          ? R.colors.oldYellow
-                          : Colors.white),
+                    fontWeight: FontWeight.normal,
+                    fontSize: R.appRatio.appFontSize18,
+                    color: i == _selectedDrawerIndex
+                        ? R.colors.oldYellow
+                        : Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -192,7 +192,7 @@ class _AppPageState extends State<AppPage> {
         leadingIconUrl: R.myIcons.menuIcon,
         actions: _appBarActionList(),
         titleWidget: Text(
-          widget.drawerItems[_selectedDrawerIndex].title,
+          drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
             color: Colors.white,
             fontSize: R.appRatio.appFontSize22,
