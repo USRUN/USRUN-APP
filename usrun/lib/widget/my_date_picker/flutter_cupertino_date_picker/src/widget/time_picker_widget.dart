@@ -342,6 +342,7 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
       _currSecond = max(min(_currSecond, secondRange.last), secondRange.first);
     }
 
+    if (!mounted) return;
     setState(() {
       _minuteRange = minuteRange;
       _secondRange = secondRange;

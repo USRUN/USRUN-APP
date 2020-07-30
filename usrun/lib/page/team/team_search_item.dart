@@ -1,4 +1,5 @@
 class TeamSearchItem {
+  int teamId;
   String avatarImageURL;
   String supportImageURL;
   String teamName;

@@ -2,9 +2,9 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/week_date_time.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
@@ -61,6 +61,7 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   void _getProfileStatsData() async {
     if (!_isLoading) {
+      if (!mounted) return;
       setState(() {
         _isLoading = true;
       });
@@ -75,8 +76,8 @@ class _ProfileStatsState extends State<ProfileStats> {
 
       await UserManager.getUserActivityByTimeWithSum(fromTime, toTime)
           .then((value) {
-        if (!mounted) return;
         var newValue = FormatProfileStats.formatDayObject(value);
+        if (!mounted) return;
         setState(() {
           _profileStatsDayList = newValue;
           _isLoading = !_isLoading;
@@ -156,6 +157,7 @@ class _ProfileStatsState extends State<ProfileStats> {
         var newStatsSectionList =
             FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
 
+        if (!mounted) return;
         setState(() {
           _chartItems = newChartList;
           _statsSectionItems = newStatsSectionList;
@@ -172,6 +174,8 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   _onSelectItem(int tabIndex) {
     if (_selectedTabIndex == tabIndex) return;
+    if (!mounted) return;
+
     setState(() {
       _selectedTabIndex = tabIndex;
       _getProfileStatsData();
@@ -250,6 +254,7 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedDay) {
+            if (!mounted) return;
             setState(() {
               _selectedDay = datePick;
               _stringSelectedDate =
@@ -269,8 +274,9 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedWeek) {
+            if (!mounted) return;
             setState(() {
-              _selectedWeek = datePick;
+              _selectedWeek = datePick as WeekDateTime;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
             _getProfileStatsData();
@@ -287,6 +293,7 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedMonth) {
+            if (!mounted) return;
             setState(() {
               _selectedMonth = datePick;
               _stringSelectedDate = formatDate(datePick, [mm, '/', yyyy]);
@@ -305,6 +312,7 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedYear) {
+            if (!mounted) return;
             setState(() {
               _selectedYear = datePick;
               _stringSelectedDate = formatDate(datePick, [yyyy]);

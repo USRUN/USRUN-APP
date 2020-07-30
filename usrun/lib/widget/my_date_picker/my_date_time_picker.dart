@@ -40,6 +40,7 @@ class _MyDateTimePickerState extends State<_MyDateTimePicker> {
       + intResultList = [int hourIndexResult, int minuteIndexResult, int secondIndexResult]
       + But it isn't necessary to use.
     */
+    if (!mounted) return;
     setState(() {
       _selectedDate = value;
     });

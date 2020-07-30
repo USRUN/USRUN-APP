@@ -24,6 +24,7 @@ class InputField extends StatefulWidget {
   final Function searchFunction;
   final Function clearTextFunction;
   final String suffixText;
+  final FocusNode focusNode;
 
   InputField({
     this.labelTitle = "",
@@ -48,6 +49,7 @@ class InputField extends StatefulWidget {
     this.searchFunction,
     this.clearTextFunction,
     this.suffixText = "",
+    this.focusNode,
   });
 
   @override
@@ -80,10 +82,12 @@ class _InputFieldState extends State<InputField> {
                   )),
           ),
           TextField(
+            focusNode: widget.focusNode,
             controller: widget.controller,
             obscureText: widget.obscureText,
             keyboardType: widget.textInputType,
             autofocus: widget.autoFocus,
+            cursorColor: R.colors.majorOrange,
             onSubmitted: (data) {
               if (widget.onSubmittedFunction != null) {
                 widget.onSubmittedFunction(data);

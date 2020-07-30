@@ -3,18 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/page/record/record_page.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {
   String title;
@@ -56,7 +58,7 @@ final List<Widget> pages = [
 class _AppPageState extends State<AppPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedDrawerIndex = 0;
+  int _selectedDrawerIndex = DataManager.getUserDefaultTab();
   String _avatar = UserManager.currentUser.avatar;
   String _supportAvatar =
       UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;
@@ -185,28 +187,17 @@ class _AppPageState extends State<AppPage> {
 
     Widget _buildElement = Scaffold(
       key: _scaffoldKey,
-      appBar: GradientAppBar(
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
+      appBar: CustomGradientAppBar(
+        leadingFunction: () => _openDrawer(),
+        leadingIconUrl: R.myIcons.menuIcon,
+        actions: _appBarActionList(),
+        titleWidget: Text(
           widget.drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
             color: Colors.white,
             fontSize: R.appRatio.appFontSize22,
           ),
         ),
-        leading: FlatButton(
-          onPressed: () => _openDrawer(),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.menuIcon,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        actions: _appBarActionList(),
       ),
       backgroundColor: R.colors.appBackground,
       drawer: Container(
@@ -242,7 +233,7 @@ class _AppPageState extends State<AppPage> {
                     height: R.appRatio.appSpacing20,
                   ),
                   Text(
-                    _fullName,
+                    _fullName ?? "",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,

@@ -2,28 +2,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/page/team/team_info.dart';
+import 'package:usrun/page/team/teamstat_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 class TeamRank extends StatefulWidget {
+  final int teamId;
+
+  TeamRank({@required this.teamId});
+
   @override
   _TeamRankState createState() => _TeamRankState();
 }
 
 class _TeamRankState extends State<TeamRank> {
   bool _isLoading;
-  List items;
+  List<TeamStatRankItem> items;
 
   /*
-    + Structure of the "items" variable: 
+    + Structure of the "items" variable:
     [
       {
         "avatarImageURL":
@@ -38,9 +45,28 @@ class _TeamRankState extends State<TeamRank> {
   @override
   void initState() {
     super.initState();
+    items = [];
     _isLoading = true;
-    items = DemoData().teamRankLead;
+
+    getTeamRank();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+  }
+
+  void getTeamRank() async {
+    Response<dynamic> teamRank =
+        await TeamManager.getTeamStatRank(widget.teamId);
+
+    if (teamRank.success && (teamRank.object as List).isNotEmpty) {
+      items = teamRank.object;
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: teamRank.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
+    }
   }
 
   void _updateLoading() {
@@ -56,26 +82,7 @@ class _TeamRankState extends State<TeamRank> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.teamRank,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.teamRank),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -132,10 +139,12 @@ class _TeamRankState extends State<TeamRank> {
             shrinkWrap: true,
             itemCount: items.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              String avatarImageURL = items[index]['avatarImageURL'];
-              String name = items[index]['name'];
+              int teamId = items[index].teamId;
+              String rank = items[index].rank.toString();
+              String avatarImageURL = items[index].avatar;
+              String name = items[index].name;
               String distance = NumberFormat("#,##0.##", "en_US")
-                  .format(items[index]['distance']);
+                  .format(items[index].distance);
 
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -158,10 +167,12 @@ class _TeamRankState extends State<TeamRank> {
                             alignment: Alignment.center,
                             child: FittedBox(
                               child: Text(
-                                (index + 1).toString(),
+                                rank,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: R.colors.contentText,
+                                  color: (widget.teamId == teamId)
+                                      ? R.colors.orangeNoteText
+                                      : R.colors.contentText,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),
@@ -187,13 +198,16 @@ class _TeamRankState extends State<TeamRank> {
                               title: name,
                               titleStyle: TextStyle(
                                 fontSize: R.appRatio.appFontSize16,
-                                color: R.colors.contentText,
+                                color: (widget.teamId == teamId)
+                                    ? R.colors.orangeNoteText
+                                    : R.colors.contentText,
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
                                 // TODO: Implement here
                                 print(
                                     "Pressing info with index $index, no. ${index + 1}");
+                                pushPage(context, TeamInfoPage(teamId: teamId));
                               },
                             ),
                           ),
@@ -206,7 +220,9 @@ class _TeamRankState extends State<TeamRank> {
                                 distance,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: R.colors.contentText,
+                                  color: (widget.teamId == teamId)
+                                      ? R.colors.orangeNoteText
+                                      : R.colors.contentText,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),

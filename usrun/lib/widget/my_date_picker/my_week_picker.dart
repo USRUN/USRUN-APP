@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/my_date_picker/my_horizontal_month_list.dart';
 import 'package:usrun/widget/my_date_picker/my_week_list.dart';
 import 'package:usrun/widget/my_date_picker/my_year_list.dart';
@@ -61,6 +61,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
               .roundToDouble();
     }
 
+    if (!mounted) return;
     setState(() {
       _yearPickerState = !_yearPickerState;
     });
@@ -79,6 +80,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _updateSelectedWeek(DateTime fromDateValue) {
+    if (!mounted) return;
     setState(() {
       _selectedWeek = WeekDateTime.getCurrentWeek(fromDateValue);
     });
@@ -99,6 +101,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 
   void _onWeekChanged(newWeekValue) {
+    if (!mounted) return;
     setState(() {
       _selectedWeek = newWeekValue;
     });

@@ -23,9 +23,7 @@ class User extends MapperObject {
   Gender gender;
   num weight;
   num height;
-  // test tạm thời
   String accessToken;
-  // --------------
   DateTime lastLogin;
 
   DateTime addDate;
@@ -49,7 +47,7 @@ class User extends MapperObject {
 
   List<int> notifications;
 
-  UserRole teamRole;
+  TeamMemberType teamMemberType;
 
   @override
   bool operator == (other) {

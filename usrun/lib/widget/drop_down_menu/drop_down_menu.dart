@@ -223,6 +223,8 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
             if (widget.onChanged != null) {
               widget.onChanged(newValue);
             }
+
+            if (!mounted) return;
             setState(() {
               this._selectedValue = newValue;
             });
@@ -266,6 +268,8 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
                   if (widget.onChanged != null) {
                     widget.onChanged(newValue);
                   }
+
+                  if (!mounted) return;
                   setState(() {
                     this._selectedValue = newValue;
                   });

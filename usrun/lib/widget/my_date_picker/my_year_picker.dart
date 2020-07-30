@@ -40,6 +40,7 @@ class _MyYearPickerState extends State<_MyYearPicker> {
   }
 
   void _onChanged(value) {
+    if (!mounted) return;
     setState(() {
       _selectedDate = value;
     });

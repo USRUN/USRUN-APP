@@ -2,29 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
-class TeamLeaderBoard extends StatefulWidget {
+class TeamLeaderBoardPage extends StatefulWidget {
   final int teamId;
 
-  TeamLeaderBoard({@required this.teamId});
+  TeamLeaderBoardPage({@required this.teamId});
 
   @override
-  _TeamLeaderBoardState createState() => _TeamLeaderBoardState();
+  _TeamLeaderBoardPageState createState() => _TeamLeaderBoardPageState();
 }
 
-class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
+class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
   bool _isLoading;
   List<TeamRankItem> items;
 
@@ -39,15 +37,18 @@ class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
   }
 
   void _getLeaderBoard() async {
-    Response<List<TeamRankItem>> teamLeaderboard =
+    Response<dynamic> teamLeaderboard =
         await TeamManager.getTeamLeaderBoard(widget.teamId);
-    if (teamLeaderboard.success && teamLeaderboard.object.length != 0) {
-      items = teamLeaderboard.object;
+    if (teamLeaderboard.success && teamLeaderboard.object != null) {
+      items = List();
+      teamLeaderboard.object.forEach((element) {items.add(TeamRankItem.from(element));});
     }
+    else items = null;
   }
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -59,26 +60,7 @@ class _TeamLeaderBoardState extends State<TeamLeaderBoard> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.teamLeaderboard,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.teamLeaderboard),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

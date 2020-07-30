@@ -47,6 +47,7 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
   }
 
   void _updateYearPickerState() {
+    if (!mounted) return;
     setState(() {
       _yearPickerState = !_yearPickerState;
     });
@@ -66,6 +67,7 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
 
   void _onChanged(value) {
     DateTime checkResult = _checkDateTimeBound(value);
+    if (!mounted) return;
 
     if (checkResult == null) {
       setState(() {

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
@@ -18,6 +19,7 @@ import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/widget/input_field.dart';
@@ -210,7 +212,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
-      var image = await pickImage(context);
+       var image = await getUserImageFile(CropStyle.rectangle, context);
       if (image != null) {
         widget.activity.addPhotoFile(image, indexPhoto);
         this.widget.streamFile.add(image);
@@ -220,17 +222,16 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     }
   }
 
-
   void _getSelectedDropDownMenuItem<T>(T value) {
     print("Select event with id: $value");
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown(){
-
+  _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
     EventManager.userEvents.forEach((event) {
-      dropDowMenuList.add(DropDownObject<int>(value: event.eventId, text: event.eventName));
+      dropDowMenuList.add(
+          DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
     return DropDownMenu(
       errorEmptyData: R.strings.nothingToShow,
@@ -240,7 +241,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       enableHorizontalLabelTitle: false,
       onChanged: this._getSelectedDropDownMenuItem,
       items: dropDowMenuList,
-      initialValue: dropDowMenuList.isEmpty?'': dropDowMenuList[0].value,
+      initialValue: dropDowMenuList.isEmpty ? '' : dropDowMenuList[0].value,
     );
   }
 
@@ -282,8 +283,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         mainTextFontSize: R.appRatio.appFontSize18,
         mainTextStyle: R.styles.labelStyle,
         subText: R.strings.viewMapDescription,
-        subTextFontSize: R.appRatio.appFontSize14,
-        spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+        subTextFontSize: R.appRatio.appFontSize16,
+        textPadding: EdgeInsets.all(15),
         enableSwitchButton: true,
         switchButtonOnTitle: "On",
         switchButtonOffTitle: "Off",
@@ -328,20 +329,22 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   _clearRecordData() async {
-    showCustomAlertDialog(context,
-        title: R.strings.notice,
-        content: "Discard this activity?",
-        firstButtonText: R.strings.ok,
-        firstButtonFunction: () async {
-          pop(this.context);
-          await RecordHelper.removeFile();
-          this.widget.bloc.resetAll();
-          Navigator.pop(context);
-        },
-        secondButtonText: R.strings.cancel,
-        secondButtonFunction: () {
-          pop(this.context);
-        });
+    showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: "Discard this activity?",
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () async {
+        pop(this.context);
+        await RecordHelper.removeFile();
+        this.widget.bloc.resetAll();
+        Navigator.pop(context);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: () {
+        pop(this.context);
+      },
+    );
   }
 
   _uploadActivity() async {
@@ -351,21 +354,25 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       print("Uploaded");
       await RecordHelper.removeFile();
       this.widget.bloc.resetAll();
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: "Seccessfully uploaded!",
-          firstButtonText: R.strings.ok, firstButtonFunction: () async {
-        pop(this.context);
-        Navigator.pop(context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: "Seccessfully uploaded!",
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () async {
+          pop(this.context);
+          Navigator.pop(context);
+        },
+      );
     } else {
       print("Uploaded error");
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: "Fail to upload, please try again later",
-          firstButtonText: R.strings.ok, firstButtonFunction: () async {
-        pop(this.context);
-      });
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: "Fail to upload, please try again later",
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     }
   }
 
@@ -393,29 +400,19 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = GradientAppBar(
-      leading: FlatButton(
-        onPressed: () {
-          this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
-          pop(context);
-        },
-        padding: EdgeInsets.all(0.0),
-        splashColor: R.colors.lightBlurMajorOrange,
-        textColor: Colors.white,
-        child: ImageCacheManager.getImage(
-          url: R.myIcons.appBarBackBtn,
-          width: R.appRatio.appAppBarIconSize,
-          height: R.appRatio.appAppBarIconSize,
-        ),
-      ),
-      title: Container(
+    var appBar = CustomGradientAppBar(
+      titleWidget: Container(
         margin: EdgeInsets.only(right: R.appRatio.appAppBarIconSize),
         child: Center(
           child: Text(R.strings.uploadActivity),
         ),
       ),
-      gradient: R.colors.uiGradient,
+      leadingFunction: () {
+        this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
+        pop(context);
+      },
     );
+
     return WillPopScope(
         onWillPop: () async {
           this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
@@ -449,7 +446,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                           height: R.appRatio.appSpacing25,
                         ),
                         _buildEventDropDown(),
-                          SizedBox(
+                        SizedBox(
                           height: R.appRatio.appSpacing25,
                         ),
                         _buildPhotoPicker(),

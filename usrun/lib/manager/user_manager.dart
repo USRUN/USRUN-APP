@@ -32,7 +32,6 @@ class UserManager {
 
   static void saveUser(User info) {
     currentUser.copy(info);
-
     DataManager.saveUser(currentUser);
   }
 
@@ -100,6 +99,7 @@ class UserManager {
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
       await logout();
     }
 
@@ -253,6 +253,25 @@ class UserManager {
     }
 
     return response.object;
+  }
+
+  static Future<dynamic> changePassword(String oldPassword, String newPassword) async{
+    Map<String, dynamic> params = {
+      'oldPassword': oldPassword,
+      'newPassword': newPassword
+    };
+
+    Response<dynamic> response = await Client.post('/user/changePassword',params);
+    return response;
+  }
+
+  static Future<dynamic> resetPassword(String email) async{
+    Map<String, dynamic> params = {
+      'email': email
+    };
+
+    Response<dynamic> response = await Client.post('/user/resetPassword',params);
+    return response;
   }
 }
 

@@ -74,6 +74,8 @@ class _ChooseLanguagePageState extends State<ChooseLanguagePage>
 
   _changeLanguage(String lang) {
     if (lang.compareTo(_selectedLanguage) == 0) return;
+    if (!mounted) return;
+
     switch (lang) {
       case "en":
         setState(() {

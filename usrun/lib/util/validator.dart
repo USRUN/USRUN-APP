@@ -1,3 +1,4 @@
+import 'package:usrun/core/R.dart';
 
 bool validateEmail(String email) {
   String p =
@@ -6,6 +7,34 @@ bool validateEmail(String email) {
   RegExp regExp = new RegExp(p);
 
   return regExp.hasMatch(email) ? true : false;
+}
+
+String validatePassword(String pass) {
+  if (checkStringNullOrEmpty(pass.trim())) {
+    return R.strings.errorEmptyPassword;
+  }
+
+  if (pass.length < 8 || !hasUppercase(pass) || !hasDigits(pass)) {
+    return R.strings.errorInvalidPassword;
+  }
+
+  return null;
+}
+
+bool hasUppercase(String content) {
+  return content.contains(new RegExp(r'[A-Z]'));
+}
+
+bool hasLowercase(String content) {
+  return content.contains(new RegExp(r'[a-z]'));
+}
+
+bool hasSpecialCharacters(String content) {
+  return content.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+}
+
+bool hasDigits(String content) {
+  return content.contains(new RegExp(r'[0-9]'));
 }
 
 bool checkStringNullOrEmpty(String src) {

@@ -1,18 +1,13 @@
 import 'package:usrun/util/reflector.dart';
 
-const String STRAVA_CLIENT_ID = "26496";
-const String STRAVA_CLIENT_SECRET = "06db3de6b974347549b2d27e3c4794dd05e3f811";
-const String STRAVA_SCOPE = "profile:read_all,activity:read_all";
+const NO_INTERNET_ACCESS = -100;
 
-const DEFAULT_LENGTH = 30;
-
-// Define error code
 const LOGOUT_CODE = 100;
 const MAINTENANCE = 101;
 const FORCE_UPDATE = 102;
+const ACCESS_DENY = 103;
 
 const FIELD_REQUIRED = 1000;
-const ACCESS_DENY = 1001;
 const UPDATE_FAIL = 1002;
 const IMAGE_INVALID = 1003;
 const OTP_INVALID = 1004;
@@ -28,7 +23,7 @@ const USER_IS_OWNER = 2006;
 const USER_DOES_NOT_PERMISSION = 2007;
 const USER_UPDATE_PASSWORD_FAIL = 2008;
 const USER_FOLLOW_FAIL = 2009;
-const FOLOWER_NOT_FOUND = 2010;
+const FOLLOWER_NOT_FOUND = 2010;
 const USER_EXISTED = 2011;
 const USER_IS_CONNECTED = 2012;
 const USER_CAN_NOT_CONNECT = 2013;
@@ -102,6 +97,7 @@ enum EventStatus { Opening, OnGoing, Ended }
 
 @reflector
 enum UserRole { Owner, Admin, Member }
+enum TeamMemberType { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
 
 @reflector
 enum TeamVerifyStatus {

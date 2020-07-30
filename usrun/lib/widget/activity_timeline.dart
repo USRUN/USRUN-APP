@@ -577,12 +577,14 @@ class _ActivityTimelineState extends State<ActivityTimeline> {
   }
 
   void _updateIsLovedState() {
+    if (!mounted) return;
     setState(() {
       _isLovedState = !_isLovedState;
     });
   }
 
   void _setLoveNumber(int value) {
+    if (!mounted) return;
     setState(() {
       _loveNumberState = value;
     });

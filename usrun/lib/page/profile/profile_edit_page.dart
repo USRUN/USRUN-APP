@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:image/image.dart' as Img;
+import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -14,15 +14,15 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
 class EditProfilePage extends StatefulWidget {
-
   @override
   _EditProfilePage createState() => _EditProfilePage();
 }
@@ -32,7 +32,6 @@ class _EditProfilePage extends State<EditProfilePage> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   User editUser = new User();
-
 
   final _dropdownGender = [
     DropDownObject<Gender>(value: Gender.Male, text: 'Male'),
@@ -70,14 +69,16 @@ class _EditProfilePage extends State<EditProfilePage> {
     editUser.province = value as int;
   }
 
-  void showInvalidFieldDialog(BuildContext context, String field){
-    showCustomAlertDialog(context,
-        title: R.strings.notice,
-        content: 'Invalid $field',
-        firstButtonText: R.strings.ok,
-        firstButtonFunction: () {
-          pop(this.context);
-        });
+  void showInvalidFieldDialog(BuildContext context, String field) {
+    showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: 'Invalid $field',
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () {
+        pop(this.context);
+      },
+    );
   }
 
   Future<void> _updateProfile(BuildContext context) async {
@@ -90,26 +91,23 @@ class _EditProfilePage extends State<EditProfilePage> {
       }
     try{
       editUser.weight = double.parse(_weightController.text);
-    }
-    catch(e){
+    } catch (e) {
       showInvalidFieldDialog(context, R.strings.weight);
       return;
     }
-    try{
+    try {
       editUser.height = double.parse(_heightController.text);
-    }
-    catch(e){
+    } catch (e) {
       showInvalidFieldDialog(context, R.strings.height);
       return;
     }
 
-    Map<String,dynamic> params = new Map<String,dynamic>();
+    Map<String, dynamic> params = new Map<String, dynamic>();
     params = editUser.toMap();
     if (editUser.avatar!= UserManager.currentUser.avatar)
       params['avatar'] = "data:image/png;base64,${editUser.avatar}";
     else
       params.remove('avatar');
-
     Response<User> res = await UserManager.updateProfileInfo(params);
     if (res.success)
       {
@@ -119,7 +117,7 @@ class _EditProfilePage extends State<EditProfilePage> {
             firstButtonText: R.strings.ok,
             firstButtonFunction: () {
               pop(this.context);
-              restartApp(FORCE_UPDATE);
+              restartApp(0);
             });
       }
     else
@@ -137,10 +135,11 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   Future<void> openSelectPhoto(BuildContext context) async {
     try {
-      var image = await pickImage(context,maxWidth: 350, maxHeight: 350);
-      if (image != null) {
+      var image = await getUserImageAsBase64(CropStyle.rectangle, context);
+      if (image.isNotEmpty) {
+        print(image.isNotEmpty);
         setState(() {
-          editUser.avatar = "${base64Encode(image.readAsBytesSync())}";
+          editUser.avatar = image;
         });
       }
     } catch (error) {
@@ -161,25 +160,8 @@ class _EditProfilePage extends State<EditProfilePage> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.editProfile,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
+      appBar: CustomGradientAppBar(
+        title: R.strings.editProfile,
         actions: <Widget>[
           Container(
             width: R.appRatio.appWidth60,
@@ -212,21 +194,24 @@ class _EditProfilePage extends State<EditProfilePage> {
                   height: R.appRatio.appSpacing25,
                 ),
                 Align(
-                    alignment: Alignment.center,
-                    child: AvatarView(
-                      avatarImageURL: editUser.avatar,
-                      avatarImageSize: R.appRatio.appAvatarSize150,
-                      enableSquareAvatarImage: false,
-                      pressAvatarImage: () {
-                        openSelectPhoto(context,);
-                      },
-                      avatarBoxBorder: Border.all(
-                        color: R.colors.majorOrange,
-                        width: 2,
-                      ),
-                      supportImageURL:
-                          editUser.hcmus ? R.myIcons.hcmusLogo : null,
-                    )),
+                  alignment: Alignment.center,
+                  child: AvatarView(
+                    avatarImageURL: editUser.avatar,
+                    avatarImageSize: R.appRatio.appAvatarSize150,
+                    enableSquareAvatarImage: false,
+                    pressAvatarImage: () {
+                      openSelectPhoto(
+                        context,
+                      );
+                    },
+                    avatarBoxBorder: Border.all(
+                      color: R.colors.majorOrange,
+                      width: 2,
+                    ),
+                    supportImageURL:
+                        editUser.hcmus ? R.myIcons.hcmusLogo : null,
+                  ),
+                ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
                 ),

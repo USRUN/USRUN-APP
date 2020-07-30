@@ -1,7 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/my_info_box/simple_info_box.dart';
 import 'package:usrun/widget/stats_section/stats_section.dart';
 
@@ -168,6 +168,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   String _statsSectionLabelTitle = "";
 
   void _updateSubTitle(String content) {
+    if (!mounted) return;
     setState(() {
       _chartSubTitle = content;
     });

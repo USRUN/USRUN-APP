@@ -17,7 +17,12 @@
 	<string>UsRun cần xin quyền truy cập Location để tính toán quãng đường</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>UsRun cần xin quyền truy cập Location để tính toán quãng đường</string>
-	
+
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Application needs photo library accessing permission to upload your own photo</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Application needs camera usage accessing permission to take a photo</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

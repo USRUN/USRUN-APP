@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 
 import 'package:usrun/model/mapper_object.dart';
 

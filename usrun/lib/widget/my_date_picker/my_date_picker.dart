@@ -40,6 +40,7 @@ class _MyDatePickerState extends State<_MyDatePicker> {
       + intResultList = [int yearIndexResult, int monthIndexResult, int dayIndexResult]
       + But it isn't necessary to use.
     */
+    if (!mounted) return;
     setState(() {
       _selectedDate = value;
     });

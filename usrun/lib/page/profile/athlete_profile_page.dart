@@ -5,6 +5,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
 import 'package:usrun/widget/event_list/event_list.dart';
 import 'package:usrun/widget/follower_following_list/follower_following_list.dart';
@@ -61,6 +62,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
       });
@@ -68,24 +70,28 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   }
 
   void _changeUserCodeState() {
+    if (!mounted) return;
     setState(() {
       _enableUserCode = !_enableUserCode;
     });
   }
 
   void _changeProfileDescriptionState() {
+    if (!mounted) return;
     setState(() {
       _enableProfileDescription = !_enableProfileDescription;
     });
   }
 
   void _changeFFButtonState() {
+    if (!mounted) return;
     setState(() {
       _enableFFButton = !_enableFFButton;
     });
   }
 
   void _changeFFButtonType() {
+    if (!mounted) return;
     setState(() {
       _isFollowingButton = !_isFollowingButton;
     });
@@ -194,26 +200,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: FlatButton(
-          onPressed: () => pop(context),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-            height: R.appRatio.appAppBarIconSize,
-          ),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.athleteProfile,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.athleteProfile),
       body: (_isLoading
           ? LoadingIndicator()
           : SingleChildScrollView(
@@ -311,8 +298,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     (_enableFFButton
                         ? Center(
                             child: UIButton(
-                              text:
-                                  (_isFollowingButton ?  R.strings.unFollow :  R.strings.follow),
+                              text: (_isFollowingButton
+                                  ? R.strings.unFollow
+                                  : R.strings.follow),
                               textColor: (_isFollowingButton
                                   ? R.colors.grayButtonColor
                                   : R.colors.majorOrange),
@@ -365,7 +353,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowing,
                       enableLabelShadow: true,
-                      subTitle: "$_followingNumber " + R.strings.athleteFollowingNotice,
+                      subTitle: "$_followingNumber " +
+                          R.strings.athleteFollowingNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: true,
@@ -380,7 +369,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowers,
                       enableLabelShadow: true,
-                      subTitle: "$_followerNumber " + R.strings.athleteFollowersNotice,
+                      subTitle: "$_followerNumber " +
+                          R.strings.athleteFollowersNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: false,
