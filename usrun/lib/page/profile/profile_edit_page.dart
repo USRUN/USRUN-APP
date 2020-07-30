@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:image/image.dart' as Img;
+import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -34,13 +39,13 @@ class _EditProfilePage extends State<EditProfilePage> {
   ];
 
   List<DropDownObject<int>> _setUpValue() {
-    _nameController.text = UserManager.currentUser.name;
-    if (UserManager.currentUser.height != null) {
+    if (_nameController.text.isEmpty)
+      _nameController.text = UserManager.currentUser.name;
+    if (_heightController.text.isEmpty)
       _heightController.text = UserManager.currentUser.height.toString();
-    }
-    if (UserManager.currentUser.weight != null) {
+    if (_weightController.text.isEmpty)
       _weightController.text = UserManager.currentUser.weight.toString();
-    }
+
 
     List<DropDownObject<int>> _dropdownCities = List();
     R.strings.provinces.asMap().forEach((index, value) {
@@ -79,49 +84,64 @@ class _EditProfilePage extends State<EditProfilePage> {
   Future<void> _updateProfile(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
     editUser.name = _nameController.text;
-    try {
+    if (editUser.name.isEmpty)
+      {
+        showInvalidFieldDialog(context, R.strings.name);
+        return;
+      }
+    try{
       editUser.weight = double.parse(_weightController.text);
     } catch (e) {
       showInvalidFieldDialog(context, R.strings.weight);
+      return;
     }
     try {
       editUser.height = double.parse(_heightController.text);
     } catch (e) {
       showInvalidFieldDialog(context, R.strings.height);
+      return;
     }
 
     Map<String, dynamic> params = new Map<String, dynamic>();
     params = editUser.toMap();
+    if (editUser.avatar!= UserManager.currentUser.avatar)
+      params['avatar'] = "data:image/png;base64,${editUser.avatar}";
+    else
+      params.remove('avatar');
+    Response<User> res = await UserManager.updateProfileInfo(params);
+    if (res.success)
+      {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: 'Successfully updated profile!',
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () {
+              pop(this.context);
+              restartApp(0);
+            });
+      }
+    else
+      {
+        showCustomAlertDialog(context,
+            title: R.strings.notice,
+            content: 'Fail to update profile! Please try again later!',
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () {
+              pop(this.context);
+            });
+      }
 
-    Response<User> res = await UserManager.updateProfile(params);
-    if (res.success) {
-      showCustomAlertDialog(
-        context,
-        title: R.strings.notice,
-        content: 'Successfully updated profile!',
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
-      );
-    } else {
-      showCustomAlertDialog(
-        context,
-        title: R.strings.notice,
-        content: 'Fail to update profile! Please try again later!',
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
-      );
-    }
   }
 
   Future<void> openSelectPhoto(BuildContext context) async {
     try {
-//      TODO: Open this line code
-//      var image = await pickImage(context);
-//      if (image != null) {
-//        setState(() {
-//          editUser.avatar = base64Encode(image.readAsBytesSync());
-//        });
-//      }
+      var image = await getUserImageAsBase64(CropStyle.rectangle, context);
+      if (image.isNotEmpty) {
+        print(image.isNotEmpty);
+        setState(() {
+          editUser.avatar = image;
+        });
+      }
     } catch (error) {
       print(error);
     }
@@ -172,23 +192,6 @@ class _EditProfilePage extends State<EditProfilePage> {
               children: <Widget>[
                 SizedBox(
                   height: R.appRatio.appSpacing25,
-                ),
-                Center(
-                  child: AvatarView(
-                    avatarImageURL: UserManager.currentUser.avatar,
-                    avatarImageSize: R.appRatio.appAvatarSize150,
-                    enableSquareAvatarImage: false,
-                    pressAvatarImage: () {
-                      // TODO: A function for doing something
-                      // Example: Click to change avatar of my profile or my teams, or direct to other pages.
-                      print(R.strings.nothingToShow);
-                    },
-                    avatarBoxBorder: Border.all(
-                      color: R.colors.majorOrange,
-                      width: 2,
-                    ),
-                    supportImageURL: R.images.logo,
-                  ),
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -255,7 +258,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                   enableHorizontalLabelTitle: false,
                   onChanged: this._getSelectedDropDownCities,
                   items: _dropdownCities,
-                  initialValue: _dropdownCities[0].value,
+                  initialValue: _dropdownCities[UserManager.currentUser.province].value,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

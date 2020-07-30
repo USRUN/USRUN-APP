@@ -6,7 +6,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:sensors/sensors.dart';
@@ -38,7 +37,6 @@ class RecordBloc extends BlocBase {
 
   MyStreamController<RecordState> _streamRecordStateController;
 
-  MyStreamController<EventVisibility> _streamEventtVisibilityController;
   MyStreamController<RecordData> _streamRecorData;
 
   MyStreamController<GPSSignalStatus> _streamGPSSignal;
@@ -74,7 +72,6 @@ class RecordBloc extends BlocBase {
     this._streamRecordStateController = MyStreamController<RecordState>(
         defaultValue: RecordState.StatusNone, activeBroadcast: true);
     this._streamReportVisibilityController = MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Visible, activeBroadcast: true);
-    this._streamEventtVisibilityController = MyStreamController<EventVisibility>(defaultValue: EventVisibility.Visible, activeBroadcast: true);
     this._streamGPSSignal = MyStreamController<GPSSignalStatus>(
         defaultValue: GPSSignalStatus.CHECKING, activeBroadcast: true);
     // this._streamSportType =  MyStreamController<ReportVisibility>(defaultValue: ReportVisibility.Gone, activeBroadcast: true);
@@ -96,9 +93,7 @@ class RecordBloc extends BlocBase {
   Stream<ReportVisibility> get streamSplit => _streamSplitStateController.stream;
   ReportVisibility get currentSplitState =>  this._streamSplitStateController.value;
   ReportVisibility get getReportVisibilityValue => this._streamReportVisibilityController.value;
-  EventVisibility get getEventVisibilityValue => this._streamEventtVisibilityController.value;
   Stream<ReportVisibility> get streamReportVisibility => _streamReportVisibilityController.stream;
-  Stream<EventVisibility> get streamEventVisibility => _streamEventtVisibilityController.stream;
   Stream<RecordState> get streamRecordState =>
       _streamRecordStateController.stream;
 
@@ -118,9 +113,6 @@ class RecordBloc extends BlocBase {
     }
     if (_streamReportVisibilityController != null) {
       this._streamReportVisibilityController.close();
-    }
-    if (_streamEventtVisibilityController!= null) {
-      this._streamEventtVisibilityController.close();
     }
     if (_streamLocationController != null) {
       this._streamLocationController.close();
@@ -394,21 +386,6 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     this._streamReportVisibilityController.add(value);
   }
 
-  void showEventPicker() {
-    if (this._streamEventtVisibilityController.value != EventVisibility.Visible) {
-      this.updateEventVisibility(EventVisibility.Visible);
-    }
-  }
-
-  void hideEventPicker() {
-    if (this._streamEventtVisibilityController.value != EventVisibility.Gone) {
-      this.updateEventVisibility(EventVisibility.Gone);
-    }
-  }
-
-  void updateEventVisibility(EventVisibility value) {
-    this._streamEventtVisibilityController.add(value);
-  }
 
   void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -494,7 +471,6 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     this.initPlatformState();
     this._streamRecordStateController.listenValueChange();
     this._streamReportVisibilityController.listenValueChange();
-    this._streamEventtVisibilityController.listenValueChange();
     this._streamRecorData.listenValueChange();
     this._streamGPSSignal.listenValueChange();
     this._streamSplitStateController.listenValueChange();
@@ -526,16 +502,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     });
     await this.onGpsStatusChecking();
     await this.loadLatestRecord();
-    //await this.onResumeFromBackground();
-    
 
-    // KhaVN print raw gps data
-//    List<List<LocationData>> polylines = await RecordCache.loadRawRecord();
-//    for (List<LocationData> line in polylines) {
-//      for(LocationData p in line) {
-//        print("${p.longitude}, ${p.latitude},");
-//      }
-//    }
   }
 
    void updateSplitState(ReportVisibility newValue) {

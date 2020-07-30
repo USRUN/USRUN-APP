@@ -207,74 +207,42 @@ class RecordButton extends StatelessWidget {
     );
   }
 
-  _buildChooseEventButton() {
-    return StreamBuilder<EventVisibility>(
-      stream: this.bloc.streamEventVisibility,
-      initialData: this.bloc.getEventVisibilityValue,
-      builder: (context, snapshot) {
-        print(snapshot.data);
-        if (snapshot.data == EventVisibility.Gone)
-          return StateButton(
-            disabled: false,
-            icon: R.myIcons.icRecordEventWhite,
-            size: R.appRatio.deviceWidth / 7.5,
-            onPress: () =>
-                this.bloc.updateEventVisibility(EventVisibility.Visible),
-          );
-        else {
-          return StateButton(
-            disabled: false,
-            icon: R.myIcons.icRecordEventColor,
-            size: R.appRatio.deviceWidth / 7.5,
-            onPress: () =>
-                this.bloc.updateEventVisibility(EventVisibility.Gone),
-          );
-        }
-      },
-    );
-  }
-
   _buildLayoutForStateNone(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        children: <Widget>[
-          StreamBuilder<Object>(
-            stream: this.bloc.streamGPSStatus,
-            builder: (context, snapshot) {
-              return Container(
-                width: R.appRatio.deviceWidth,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    StateButton(
-                      disabled: false,
-                      icon: R.myIcons.icStartRecord,
-                      size: R.appRatio.deviceWidth / 5.5,
-                      onPress: snapshot.data == null ||
-                              snapshot.data != GPSSignalStatus.READY
-                          ? () {
-                              showRequestServiceDialog();
-                            }
-                          : () {
-                              onStartButtonTap();
-                            },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: (R.appRatio.deviceWidth / 5.5) * 2 +
-                            R.appRatio.appSpacing20,
-                      ),
-                      child: _buildChooseEventButton(),
-                    ),
-                  ],
-                ),
-              );
-            },
-          )
-        ],
-      ),
-    );
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          children: <Widget>[
+            StreamBuilder<Object>(
+                stream: this.bloc.streamGPSStatus,
+                builder: (context, snapshot) {
+                  return Container(
+                      height: R.appRatio.deviceHeight,
+                      width: R.appRatio.deviceWidth,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                StateButton(
+                                    disabled: false,
+                                    icon: R.myIcons.icStartRecord,
+                                    size: R.appRatio.deviceWidth / 5,
+                                    onPress: snapshot.data == null ||
+                                        snapshot.data !=
+                                            GPSSignalStatus.READY
+                                        ? () {
+                                      showRequestServiceDialog();
+                                    }
+                                        : () {
+                                      onStartButtonTap();
+                                    }),
+                              ],
+                            ),
+                          ]));
+                })
+          ],
+        ));
   }
 
   @override
@@ -309,42 +277,6 @@ class RecordButton extends StatelessWidget {
           }
         },
       ),
-    );
-  }
-}
-
-class ChooseEventButton extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _ChooseEventButtonState();
-  final Function onPress;
-
-  ChooseEventButton(this.onPress);
-}
-
-class _ChooseEventButtonState extends State<ChooseEventButton> {
-  var isPressed = false;
-  var icon = R.myIcons.icRecordEventWhite;
-
-  @override
-  Widget build(BuildContext context) {
-    return StateButton(
-      disabled: false,
-      icon: icon,
-      size: R.appRatio.deviceWidth / 7.5,
-      onPress: () {
-        if (!mounted) return;
-
-        setState(() {
-          if (isPressed) {
-            icon = R.myIcons.icRecordEventWhite;
-          } else {
-            icon = R.myIcons.icRecordEventColor;
-          }
-          isPressed = !isPressed;
-        });
-
-        widget.onPress();
-      },
     );
   }
 }

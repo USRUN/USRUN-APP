@@ -175,7 +175,7 @@ class SignUpPage extends StatelessWidget {
         // có user và đúng thông tin => save user + goto app page
         UserManager.saveUser(response.object);
         DataManager.setLoginChannel(channel.index);
-        UserManager.sendDeviceToken();
+        //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
         showPage(context, AppPage());
       }

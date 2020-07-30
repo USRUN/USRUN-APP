@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:intl/intl.dart';
+import 'package:usrun/core/define.dart';
+import 'package:usrun/model/event.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 import 'event_item.dart';
@@ -8,9 +10,9 @@ import 'event_item.dart';
 class EventList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  final List<EventItem> items;
+  final List<Event> items;
   final bool enableScrollBackgroundColor;
-  final void Function(EventItem data) pressItemFunction;
+  final void Function(Event data) pressItemFunction;
   final VoidCallback loadMoreFunction;
 
   final double _eventItemWidth = R.appRatio.appWidth160;
@@ -97,12 +99,12 @@ class EventList extends StatelessWidget {
           this.loadMoreFunction();
         }
 
-        String name = this.items[index].name;
+        String name = this.items[index].eventName;
         String athleteQuantity = NumberFormat("#,##0", "en_US")
-                .format(this.items[index].athleteQuantity) +
+                .format(this.items[index].totalParticipant) +
             " athletes";
-        bool isFinished = this.items[index].isFinished;
-        String bannerImageURL = this.items[index].bannerImageURL;
+        bool isFinished = this.items[index].status==EventStatus.Ended;
+        String bannerImageURL = this.items[index].banner;
 
         return Container(
           padding: EdgeInsets.only(

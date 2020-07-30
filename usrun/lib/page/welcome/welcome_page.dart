@@ -208,7 +208,7 @@ class _WelcomePageState extends State<WelcomePage>
         // có user và đúng thông tin => save user + goto app page
         UserManager.saveUser(response.object);
         DataManager.setLoginChannel(channel.index);
-        UserManager.sendDeviceToken();
+        //UserManager.sendDeviceToken(); //only need when using fcm
         DataManager.setLastLoginUserId(response.object.userId);
         showPage(context, AppPage());
       }

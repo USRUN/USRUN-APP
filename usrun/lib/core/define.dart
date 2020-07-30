@@ -62,7 +62,6 @@ enum StatType {
 
 @reflector
 enum Gender {
-  Other,
   Male,
   Female,
 }
@@ -94,6 +93,10 @@ enum LoginChannel {
 enum EventType { League, Team, User }
 
 @reflector
+enum EventStatus { Opening, OnGoing, Ended }
+
+@reflector
+enum UserRole { Owner, Admin, Member }
 enum TeamMemberType { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
 
 @reflector

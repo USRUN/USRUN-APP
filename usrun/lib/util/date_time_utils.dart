@@ -18,6 +18,32 @@ String formatDateTime(DateTime dateTime,
   return DateFormat(formatDisplay).format(dateTime).toString();
 }
 
+String secondToTimeFormat(int sec)
+{
+  if (sec == -1)
+    return "00:00:00";
+  int hh = sec~/(60*60);
+  int mm = sec~/60 - hh*60;
+  int ss = sec - hh*3600 - mm*60;
+  if (hh>24)
+    {
+      int dd = hh~/24;
+      return '$dd';
+    }
+
+  return '${hh<10?"0$hh":hh}:${mm<10?"0$mm":mm}:${ss<10?"0$ss":ss}';
+}
+
+String secondToMinFormat(int sec)
+{
+  if (sec == -1)
+    return "00:00";
+  int mm = sec~/60;
+  int ss = sec - mm*60;
+
+  return '${mm<10?"0$mm":mm}:${ss<10?"0$ss":ss}';
+}
+
 String formatDateTimeToLocal(DateTime dateTime,
     {String formatDisplay = formatDateConst}) {
   if (dateTime == null) return "";
@@ -43,4 +69,16 @@ DateTime convertString2DateTime(String src, {String formatConvert = formatDateTi
     print("convertString2DateTime failed ${e.toString()}");
     return null;
   }
+}
+
+
+String millisecondToDateString(int ts){
+  var d = new DateTime.fromMillisecondsSinceEpoch(ts,isUtc: true);
+  return formatDateTimeToLocal(d, formatDisplay: formatDateTimeConst);
+}
+
+DateTime localToUtc(DateTime d)
+{
+  DateTime date = DateTime.utc(d.year,d.month,d.day,d.hour,d.minute,d.second);
+  return date;
 }

@@ -10,6 +10,7 @@ import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/track.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/reflector.dart';
 
 class RunningRoute{
@@ -30,7 +31,7 @@ class TrackRequest{
   TrackRequest(){
     this.trackId = 0;
     this.sig = "";
-    this.createTime = DateTime.now().millisecondsSinceEpoch.toString();
+    this.createTime = localToUtc(DateTime.now()).millisecondsSinceEpoch.toString();
     this.routes = [];
   }
 }
@@ -63,7 +64,7 @@ class RecordData {
     this.totalTime = 0;
     this.totalMovingTime = 0;
     this.splitData = Map<String, double>();
-    this.createTime = DateTime.now().millisecondsSinceEpoch;
+    this.createTime = localToUtc( DateTime.now()).millisecondsSinceEpoch;
     this.totalDistance = 0;
     this.totalStep = -1;
     this.avgPace = -1;

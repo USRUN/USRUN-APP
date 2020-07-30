@@ -90,6 +90,7 @@ class RecordHelper{
       photos.add(imageB64);
     });
 
+
     Map<String,dynamic> res = {
       "eventId": data.eventId,
       "totalDistance": data.totalDistance,

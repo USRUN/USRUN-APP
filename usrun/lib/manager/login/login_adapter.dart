@@ -5,14 +5,7 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/login/facebook_adapter.dart';
 import 'package:usrun/manager/login/google_adapter.dart';
-import 'package:usrun/manager/login/strava_adapter.dart';
 import 'package:usrun/manager/login/usrun_adapter.dart';
-
-// import 'package:upraceapp/manager/login/strava_adapter.dart';
-// import 'package:upraceapp/manager/login/facebook_adapter.dart';
-// import 'package:upraceapp/manager/login/google_adapter.dart';
-// import 'package:upraceapp/manager/login/uprace_adapter.dart';
-// import 'package:upraceapp/manager/login/garmin_adapter.dart';
 
 abstract class LoginAdapter {
   Future<Map<String, dynamic>> login(Map params) {
@@ -43,8 +36,6 @@ abstract class LoginAdapter {
         return FacebookLoginAdapter();
       case LoginChannel.Google:
         return GoogleLoginAdapter();
-      case LoginChannel.Strava:
-        return StravaLoginAdapter();
       case LoginChannel.UsRun:
        return UsRunLoginAdapter();
     }

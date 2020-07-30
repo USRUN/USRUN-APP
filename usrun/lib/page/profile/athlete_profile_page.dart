@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -380,7 +381,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     ),
                     // Events
                     EventList(
-                      items: DemoData().eventList,
+                      items: EventManager.userEvents,
                       labelTitle: R.strings.athleteEvents,
                       enableLabelShadow: true,
                       enableScrollBackgroundColor: true,

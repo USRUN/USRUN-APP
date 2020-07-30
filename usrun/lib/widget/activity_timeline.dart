@@ -112,10 +112,10 @@ class _ActivityContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     String _formattedDistance =
         NumberFormat("#,##0.00", "en_US").format(this.distance);
-    String _formattedLoveNumber =
-        NumberFormat("#,##0", "en_US").format(this.loveNumber) + " loves";
+    String _formattedLoveNumber = '${this.loveNumber}' + " loves";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -623,14 +623,14 @@ class _ActivityTimelineState extends State<ActivityTimeline> {
           ),
           _ActivityContent(
             activityID: widget.activityID,
-            title: widget.title,
+            title: widget.title.isEmpty? R.strings.na: widget.title,
             dateTime: widget.dateTime,
             distance: widget.distance,
             isKM: widget.isKM,
-            pace: widget.pace,
+            pace: widget.pace == "-1"? R.strings.na: widget.pace,
             time: widget.time,
-            calories: widget.calories,
-            elevation: widget.elevation,
+            calories: widget.calories == "-1"? R.strings.na: widget.calories,
+            elevation: widget.elevation == "-1"? R.strings.na: widget.elevation,
             isLoved: _isLovedState,
             loveNumber: _loveNumberState,
             pressActivityFunction: widget.pressActivityFunction,

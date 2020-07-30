@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
@@ -43,9 +45,9 @@ class _ProfileActivityState extends State<ProfileActivity> {
     var futures = List<Future>();
 
     // Function: Get activityTimeline data
-    futures.add(UserManager.getActivityTimelineList(
-      R.constants.activityTimelineNumber,
-      _activityTimelineListOffset,
+    futures.add(UserManager.getActivityTimelineList(UserManager.currentUser.userId,
+      limit: R.constants.activityTimelineNumber,
+      offset: _activityTimelineListOffset,
     ));
 
     // Function: Get eventBadges data
@@ -71,9 +73,9 @@ class _ProfileActivityState extends State<ProfileActivity> {
   }
 
   _loadMoreActivityTimelineItems() async {
-    await UserManager.getActivityTimelineList(
-      R.constants.activityTimelineNumber,
-      _activityTimelineListOffset,
+    await UserManager.getActivityTimelineList(UserManager.currentUser.userId,
+      limit: R.constants.activityTimelineNumber,
+      offset: _activityTimelineListOffset,
     ).then((value) {
       if (!mounted) return;
       if (value != null) {
@@ -138,26 +140,26 @@ class _ProfileActivityState extends State<ProfileActivity> {
         : Column(
             children: <Widget>[
               // Event Badges
-              EventBadgeList(
-                items: DemoData().eventBadgeList,
-                labelTitle: R.strings.personalEventBadges,
-                enableLabelShadow: true,
-                enableScrollBackgroundColor: true,
-                pressItemFunction: _pressEventBadge,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
-              // Photo
-              PhotoList(
-                items: DemoData().photoItemList,
-                labelTitle: R.strings.personalPhotos,
-                enableLabelShadow: true,
-                enableScrollBackgroundColor: true,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing20,
-              ),
+//              EventBadgeList(
+//                items: DemoData().eventBadgeList,
+//                labelTitle: R.strings.personalEventBadges,
+//                enableLabelShadow: true,
+//                enableScrollBackgroundColor: true,
+//                pressItemFunction: _pressEventBadge,
+//              ),
+//              SizedBox(
+//                height: R.appRatio.appSpacing20,
+//              ),
+//              // Photo
+//              PhotoList(
+//                items: DemoData().photoItemList,
+//                labelTitle: R.strings.personalPhotos,
+//                enableLabelShadow: true,
+//                enableScrollBackgroundColor: true,
+//              ),
+//              SizedBox(
+//                height: R.appRatio.appSpacing20,
+//              ),
               // Activity Timeline
               Container(
                 padding: EdgeInsets.only(
@@ -166,8 +168,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  R.strings.personalActivities +
-                      ": ${_activityTimelineList.length}",
+                  R.strings.personalActivities,
                   style: R.styles.shadowLabelStyle,
                 ),
               ),
@@ -205,7 +206,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
       dateTime: item['dateTime'],
       title: item['title'],
       calories: item['calories'],
-      distance: (_isKM ? item['distance'] : item['distance'] * 1000),
+      distance: (_isKM ? item['distance'] /1000: item['distance']),
       isKM: _isKM,
       elevation: item['elevation'],
       pace: item['pace'],

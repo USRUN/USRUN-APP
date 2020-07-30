@@ -309,31 +309,31 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        // [Chart] label
-        _renderChartLabel(),
-        // [Chart] Horizontal stats section
-        _renderChartHorizontalStats(),
-        SizedBox(
-          height: R.appRatio.appSpacing25,
-        ),
-        // [Chart] Draw chart
-        // TODO: Please don't forget drawing this chart :D
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            "--->  Here, there is a chart  <---",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              backgroundColor: Colors.amber,
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: R.appRatio.appFontSize18,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: R.appRatio.appSpacing25,
-        ),
+//        // [Chart] label
+//        _renderChartLabel(),
+//        // [Chart] Horizontal stats section
+//        _renderChartHorizontalStats(),
+//        SizedBox(
+//          height: R.appRatio.appSpacing25,
+//        ),
+//        // [Chart] Draw chart
+//        // TODO: Please don't forget drawing this chart :D
+//        Container(
+//          alignment: Alignment.center,
+//          child: Text(
+//            "--->  Here, there is a chart  <---",
+//            textAlign: TextAlign.center,
+//            style: TextStyle(
+//              backgroundColor: Colors.amber,
+//              color: Colors.red,
+//              fontWeight: FontWeight.bold,
+//              fontSize: R.appRatio.appFontSize18,
+//            ),
+//          ),
+//        ),
+//        SizedBox(
+//          height: R.appRatio.appSpacing25,
+//        ),
         // [StatsSection] Draw stats section
         Container(
           padding: EdgeInsets.only(

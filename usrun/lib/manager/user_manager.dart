@@ -12,6 +12,8 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
+import 'package:usrun/util/date_time_utils.dart';
 
 class UserManager {
   // static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
@@ -63,17 +65,9 @@ class UserManager {
 
       saveUser(result.object);
       DataManager.setLoginChannel(int.parse(params["type"]));
-      sendDeviceToken();
+      //sendDeviceToken();
       DataManager.setLastLoginUserId(result.object.userId);
 
-      //appsflyer
-      // Map<String, dynamic> afParams = {
-      //   "type": int.parse(params["type"]) ?? "",
-      //   "userId": result.object.userId ?? "",
-      //   "openId": result.object.openId ?? "",
-      //   "email": result.object.email ?? "",
-      // };
-      // AppsflyerTrack.sendEvent("signUp", afParams);
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
@@ -100,7 +94,7 @@ class UserManager {
 
       saveUser(result.object);
       DataManager.setLoginChannel(int.parse(params["type"]));
-      sendDeviceToken();
+      //sendDeviceToken();
       DataManager.setLastLoginUserId(result.object.userId);
     } else {
       result.success = false;
@@ -112,23 +106,7 @@ class UserManager {
     return result;
   }
 
-   static Future<Response<User>> check(Map<String, dynamic> params) async {
-    Response<Map<String, dynamic>> res = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/check', params);
 
-    if (res.errorCode == USER_EMAIL_IS_USED) {
-      res.errorMessage = emailIsUserMessage(params['email']);
-    }
-
-    Response<User> response = Response(
-        success: res.success,
-        errorCode: res.errorCode,
-        errorMessage: res.errorMessage);
-    if (res.success) {
-      response.object = MapperObject.create<User>(res.object);
-    }
-
-    return response;
-  }
 
   static Future<Map<String, dynamic>> adapterLogin(
       LoginChannel channel, Map<String, dynamic> params) async {
@@ -137,7 +115,7 @@ class UserManager {
     return res;
   }
 
-  static Future<Response<User>> updateProfile(Map<String, dynamic> params) async {
+  static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
 
@@ -149,9 +127,11 @@ class UserManager {
     if (response.success) {
       // save data
       result.success = true;
+      String accessToken = currentUser.accessToken;
       result.object = MapperObject.create<User>(response.object);
-
       saveUser(result.object);
+      if (accessToken!=null)
+        currentUser.accessToken = accessToken;
     }
     else
       {
@@ -162,58 +142,46 @@ class UserManager {
     return result;
   }
 
-  static void sendDeviceToken() async {
-    if (currentUser.userId == null) {
-      return;
-    }
-
-    String deviceToken = DataManager.getDeviceToken();
-    int lastUserId = DataManager.getLastLoginUserId();
-
-    if (lastUserId == null ||
-        lastUserId != currentUser.userId ||
-        deviceToken != currentUser.deviceToken) {
-      Map<String, String> newData = {
-        'os': getPlatform().toString(),
-        'deviceToken': deviceToken ?? "",
-        'language': DataManager.loadLanguage(),
-      };
-
-      Response response = await updateProfile(newData);
-      if (response.success) {
-        saveUser(response.object);
-      }
-    }
-  }
+//  static void sendDeviceToken() async {
+//    if (currentUser.userId == null) {
+//      return;
+//    }
+//
+//    String deviceToken = DataManager.getDeviceToken();
+//    int lastUserId = DataManager.getLastLoginUserId();
+//
+//    if (lastUserId == null ||
+//        lastUserId != currentUser.userId ||
+//        deviceToken != currentUser.deviceToken) {
+//      Map<String, String> newData = {
+//        'os': getPlatform().toString(),
+//        'deviceToken': deviceToken ?? "",
+//        'language': DataManager.loadLanguage(),
+//      };
+//
+//      Response response = await updateProfile(newData);
+//      if (response.success) {
+//        saveUser(response.object);
+//      }
+//    }
+//  }
 
   static Future<void> logout() async {
     DataManager.clearAskEventJoin();
+    await RecordHelper.removeFile();
 
-    Response res = Response();
-    //RecordCache.clearCurrentActivity();
-    //RecordCache.deleteAllFiles();
-
-    //appsflyer
-    // Map<String, dynamic> afParams = {
-    //   "type": currentUser.type.toString() ?? "",
-    //   "userId": currentUser.userId ?? "",
-    //   "openId": currentUser.openId ?? "",
-    //   "email": currentUser.email ?? "",
-    // };
-    // AppsflyerTrack.sendEvent("signOut", afParams);
 
     if (currentUser != null) {
       // User.type will be removed soon
       // Use login channel in SharedPreferences instead
       for (LoginChannel channel in LoginChannel.values) {
-        //LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
+        LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
 
-        //await adapter.logout();
+        await adapter.logout();
       }
 
       clear();
     }
-    res.success = true;
   }
 
   static String emailIsUserMessage(String email) {
@@ -222,14 +190,14 @@ class UserManager {
     return message;
   }
 
-  static Future<List<dynamic>> getActivityTimelineList(
-      int size, int offset) async {
+  static Future<List<dynamic>> getActivityTimelineList(int userID, {int limit = 30, int offset = 0}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
-    params['size'] = size;
+    params['userId'] = userID;
+    params['limit'] = limit;
     params['offset'] = offset;
 
     Response<dynamic> response =
-        await Client.post('/getNumberLastUserActivity', params);
+        await Client.post('/activity/getActivityByUser', params);
 
     if (response.object == null || !response.success) {
       return null;
@@ -241,15 +209,15 @@ class UserManager {
     for (var i = 0; i < obj.length; ++i) {
       result.add({
         "activityID": obj[i]['userActivityId'].toString(),
-        "dateTime": obj[i]['createTime'],
+        "dateTime": millisecondToDateString(obj[i]['createTime']),
         "title": obj[i]['title'] ?? "Let's run!",
         "calories": obj[i]['calories'].toString(),
         "distance": double.tryParse(obj[i]['totalDistance'].toString()),
         "elevation": obj[i]['elevGain'].toString() + "m",
-        "pace": obj[i]['avgPace'].toString() + "/km",
-        "time": obj[i]['totalTime'],
+        "pace": secondToMinFormat(obj[i]['avgPace']~/1) + "/km",
+        "time": secondToTimeFormat(obj[i]['totalTime']),
         "isLoved": false,
-        "loveNumber": obj[i]['totalLike'],
+        "loveNumber": obj[i]['totalLove'],
       });
     }
 
@@ -259,11 +227,26 @@ class UserManager {
   static Future<dynamic> getUserActivityByTimeWithSum(
       DateTime fromTime, DateTime toTime) async {
     Map<String, dynamic> params = Map<String, dynamic>();
-    params['fromTime'] = fromTime.toIso8601String();
-    params['toTime'] = toTime.toIso8601String();
+    params['fromTime'] = localToUtc(fromTime).millisecondsSinceEpoch;
+    params['toTime'] = localToUtc(toTime).millisecondsSinceEpoch;
+    Response<dynamic> response =
+        await Client.post('/activity/getStatUser', params);
+
+    if (response.object == null || !response.success) {
+      return null;
+    }
+
+    return response.object;
+  }
+
+  static Future<dynamic> getUserActivity(int userID, {int limit = 30, int offset = 0}) async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['userId'] = userID;
+    params['limit'] = limit;
+    params['offset'] = offset;
 
     Response<dynamic> response =
-        await Client.post('/getUserActivityByTimeWithSum', params);
+    await Client.post('/activity/getActivityByUser', params);
 
     if (response.object == null || !response.success) {
       return null;
@@ -291,3 +274,4 @@ class UserManager {
     return response;
   }
 }
+
