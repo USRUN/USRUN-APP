@@ -11,6 +11,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/team_member_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -20,7 +21,6 @@ import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/widget/loading_dot.dart';
 
 import 'member_search_page.dart';
 
@@ -60,15 +60,15 @@ class TeamMemberPage extends StatefulWidget {
 
   final tabBarItems = [R.strings.all];
 
-  final List<List<PopupItem>> member_options = [[], [], []];
+  final List<List<PopupItem>> memberOptions = [[], [], []];
 
-  final List<List<PopupItem>> admin_options = [
+  final List<List<PopupItem>> adminOptions = [
     [],
     [],
     [popUpMenu[0], popUpMenu[1]]
   ];
 
-  final List<List<PopupItem>> owner_options = [
+  final List<List<PopupItem>> ownerOptions = [
     [],
     [popUpMenu[0], popUpMenu[1], popUpMenu[3]],
     popUpMenu.sublist(0, 3),
@@ -93,14 +93,16 @@ class TeamMemberPage extends StatefulWidget {
   _TeamMemberPageState createState() => _TeamMemberPageState();
 }
 
-class _TeamMemberPageState extends State<TeamMemberPage> {
+class _TeamMemberPageState extends State<TeamMemberPage>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = false;
   int _selectedTabIndex;
   List<User> items = List();
   int _curPage;
   bool _remainingResults;
-  List tabItems;
+  List<String> tabItems;
   List options = List();
+  TabController _tabController;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final TextEditingController _nameController = TextEditingController();
@@ -114,6 +116,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _selectedTabIndex = 0;
     _curPage = 1;
     _remainingResults = true;
+    _tabController = TabController(length: 3, vsync: this);
 
     if (TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Admin, widget.teamMemberType)) {
@@ -125,13 +128,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     switch (widget.teamMemberType) {
       case TeamMemberType.Owner:
         options = List<List<PopupItem>>();
-        options = widget.owner_options;
+        options = widget.ownerOptions;
         break;
       case TeamMemberType.Admin:
-        options = widget.admin_options;
+        options = widget.adminOptions;
         break;
       default:
-        options = widget.member_options;
+        options = widget.memberOptions;
         break;
     }
 
@@ -225,7 +228,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     //  MEMBER(3),
     //  PENDING(4),
     //  BLOCKED(5);
-    // GUESS (6);
+    //  GUESS (6);
 
     switch (tabIndex) {
       case 0: // All
@@ -407,7 +410,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
         title: R.strings.teamMember,
         actions: <Widget>[
           Container(
-            width: R.appRatio.appWidth40,
+            width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
                     TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
@@ -427,7 +430,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 : Container(),
           ),
           Container(
-            width: R.appRatio.appWidth60,
+            width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
                     TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
@@ -436,11 +439,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                         context,
                         //MEMBER SEARCH PAGE
                         MemberSearchPage(
-                            autoFocusInput: true,
-                            tabItems: tabItems,
-                            selectedTab: _selectedTabIndex,
-                            teamId: widget.teamId,
-                            options: options),
+                          autoFocusInput: true,
+                          tabItems: tabItems,
+                          selectedTab: _selectedTabIndex,
+                          teamId: widget.teamId,
+                          options: options,
+                        ),
                       );
                     },
                     padding: EdgeInsets.all(0.0),
@@ -456,71 +460,69 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          // TabBar
-          CustomTabBarStyle03(
-            items: tabItems,
-            selectedTabIndex: _selectedTabIndex,
-            pressTab: _onSelectItem,
-          ),
-          // All contents
-          Expanded(
-            child: (items.isEmpty
-                ? _buildEmptyList()
-                : (_isLoading ? LoadingIndicator() : _renderList())),
-          ),
+      body: CustomTabBarStyle03(
+        tabBarTitleList: tabItems,
+        tabController: _tabController,
+        pressTab: _onSelectItem,
+        tabBarViewList: [
+          // TODO: Update "lists" here
+          (checkListIsNullOrEmpty(items) ? _buildEmptyList() : _renderList()),
+          (checkListIsNullOrEmpty(items) ? _buildEmptyList() : _renderList()),
+          (checkListIsNullOrEmpty(items) ? _buildEmptyList() : _renderList()),
         ],
       ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 
   Widget _renderList() {
     return AnimationLimiter(
-        child: RefreshConfiguration(
-            maxOverScrollExtent: 50,
-            headerTriggerDistance: 50,
-            child: SmartRefresher(
-              enablePullDown: true,
-              controller: _refreshController,
-              onRefresh: () => {_reloadItems(_selectedTabIndex)},
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == items.length - 1) {
-                      _loadMoreData();
-                    }
+      child: RefreshConfiguration(
+        maxOverScrollExtent: 50,
+        headerTriggerDistance: 50,
+        child: SmartRefresher(
+          enablePullDown: true,
+          controller: _refreshController,
+          onRefresh: () => {_reloadItems(_selectedTabIndex)},
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == items.length - 1) {
+                _loadMoreData();
+              }
 
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      duration: const Duration(milliseconds: 400),
-                      child: SlideAnimation(
-                        verticalOffset: 100.0,
-                        child: FadeInAnimation(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                              bottom: R.appRatio.appSpacing15,
-                              left: R.appRatio.appSpacing15,
-                              right: R.appRatio.appSpacing15,
-                            ),
-                            child: _renderCustomCell(index),
-                          ),
-                        ),
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 400),
+                child: SlideAnimation(
+                  verticalOffset: 100.0,
+                  child: FadeInAnimation(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+                        bottom: R.appRatio.appSpacing15,
+                        left: R.appRatio.appSpacing15,
+                        right: R.appRatio.appSpacing15,
                       ),
-                    );
-                  }),
-            )));
+                      child: _renderCustomCell(index),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _renderCustomCell(index) {

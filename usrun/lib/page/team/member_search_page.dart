@@ -44,7 +44,8 @@ class MemberSearchPage extends StatefulWidget {
   _MemberSearchPageState createState() => _MemberSearchPageState();
 }
 
-class _MemberSearchPageState extends State<MemberSearchPage> {
+class _MemberSearchPageState extends State<MemberSearchPage>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textSearchController = TextEditingController();
   bool _isLoading;
   bool remainingResults;
@@ -55,7 +56,8 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   String _curSearchString;
   int _curResultPage;
   int _selectedTab;
-  List tabItems;
+  List<String> tabItems;
+  TabController _tabController;
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
     _selectedTab = widget.selectedTab;
     remainingResults = true;
     memberList = List();
+    _tabController = TabController(length: 3, vsync: this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
@@ -331,44 +334,42 @@ class _MemberSearchPageState extends State<MemberSearchPage> {
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: R.colors.appBackground,
-        appBar: CustomGradientAppBar(
-          titleWidget: InputField(
-            controller: _textSearchController,
-            hintText: R.strings.search,
-            hintStyle: TextStyle(
-              fontSize: R.appRatio.appFontSize18,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            contentStyle: TextStyle(
-              color: Colors.white,
-              fontSize: R.appRatio.appFontSize18,
-              fontWeight: FontWeight.w500,
-            ),
-            bottomUnderlineColor: Colors.white,
-            enableBottomUnderline: true,
-            isDense: true,
-            autoFocus: widget.autoFocusInput,
-            textInputAction: TextInputAction.search,
-            onSubmittedFunction: _onSubmittedFunction,
-            onChangedFunction: _onChangedFunction,
+      resizeToAvoidBottomInset: true,
+      backgroundColor: R.colors.appBackground,
+      appBar: CustomGradientAppBar(
+        titleWidget: InputField(
+          controller: _textSearchController,
+          hintText: R.strings.search,
+          hintStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize18,
+            color: Colors.white.withOpacity(0.5),
           ),
+          contentStyle: TextStyle(
+            color: Colors.white,
+            fontSize: R.appRatio.appFontSize18,
+            fontWeight: FontWeight.w500,
+          ),
+          bottomUnderlineColor: Colors.white,
+          enableBottomUnderline: true,
+          isDense: true,
+          autoFocus: widget.autoFocusInput,
+          textInputAction: TextInputAction.search,
+          onSubmittedFunction: _onSubmittedFunction,
+          onChangedFunction: _onChangedFunction,
         ),
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // TabBar
-              CustomTabBarStyle03(
-                items: tabItems,
-                selectedTabIndex: _selectedTab,
-                pressTab: _onSelectTabItem,
-              ),
-              // All contents
-              Expanded(
-                child: (_isLoading ? LoadingIndicator() : _renderList()),
-              ),
-            ]));
+      ),
+      body: CustomTabBarStyle03(
+        tabBarTitleList: tabItems,
+        tabController: _tabController,
+        pressTab: _onSelectTabItem,
+        tabBarViewList: [
+          // TODO: Update "lists" here
+          (_isLoading ? LoadingIndicator() : _renderList()),
+          (_isLoading ? LoadingIndicator() : _renderList()),
+          (_isLoading ? LoadingIndicator() : _renderList()),
+        ],
+      ),
+    );
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
