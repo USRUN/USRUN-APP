@@ -95,7 +95,7 @@ Map<int, Color> rgbToMaterialColor(int r, int g, int b) {
 
 void restartApp(int errorCode) {
   if (errorCode == null) return;
-  if (errorCode.compareTo(_errorCode) != 0) {
+  if (errorCode == 0 || errorCode != _errorCode) {
     setErrorCode(errorCode);
     UsRunApp.restartApp(errorCode);
   }
