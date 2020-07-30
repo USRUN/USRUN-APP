@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -198,7 +199,16 @@ class CustomTabBarStyle03 extends StatelessWidget {
     tabBarTitleList.forEach((element) {
       tabList.add(
         Tab(
-          text: element.toUpperCase(),
+          child: Text(
+            element.toUpperCase(),
+            textScaleFactor: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: R.colors.majorOrange,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       );
     });
@@ -217,16 +227,7 @@ class CustomTabBarStyle03 extends StatelessWidget {
       ),
       child: TabBar(
         controller: tabController,
-        labelColor: R.colors.majorOrange,
-        labelStyle: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
-        unselectedLabelColor: R.colors.majorOrange,
-        unselectedLabelStyle: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
+        labelPadding: EdgeInsets.all(0),
         indicatorColor: R.colors.majorOrange,
         indicatorWeight: 2,
         indicatorPadding: EdgeInsets.all(0),

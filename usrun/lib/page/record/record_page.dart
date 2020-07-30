@@ -132,19 +132,19 @@ class _RecordWidget extends StatelessWidget {
 
   Widget buildReportView() {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      alignment: Alignment.bottomLeft,
-      padding: EdgeInsets.only(left: 20, bottom: 120),
+      alignment: Alignment.bottomCenter,
+      margin: EdgeInsets.only(bottom: 110),
       child: StreamBuilder<ReportVisibility>(
-          stream: this.bloc.streamReportVisibility,
-          initialData: ReportVisibility.Gone,
-          builder: (context, snapshot) {
-            print(snapshot.data);
-            return Offstage(
-              offstage: snapshot.data == ReportVisibility.Gone,
-              child: RecordReport(),
-            );
-          }),
+        stream: this.bloc.streamReportVisibility,
+        initialData: ReportVisibility.Gone,
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          return Offstage(
+            offstage: snapshot.data == ReportVisibility.Gone,
+            child: RecordReport(),
+          );
+        },
+      ),
     );
   }
 
