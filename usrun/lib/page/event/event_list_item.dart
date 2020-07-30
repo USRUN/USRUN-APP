@@ -26,7 +26,7 @@ class EventListItem{
     this.totalTeamParticipant = event.totalTeamParticipant;
     this.startDate = DateFormat().format(event.startTime);
     this.endDate = DateFormat().format(event.endTime);
-    this.status = R.strings.eventStatus[event.status];
+    this.status = R.strings.eventStatus[event.status.index];
     this.joined = event.joined;
   }
 }
