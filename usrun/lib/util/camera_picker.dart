@@ -107,6 +107,7 @@ class CameraPicker {
     double maxHeight: 1080,
     int imageQuality: 100,
     CameraDevice preferredCameraDevice: CameraDevice.rear,
+    bool enableClearSelectedFile: false,
   }) {
     final double _spacing = 15.0;
     final double _radius = 7.0;
@@ -223,9 +224,14 @@ class CameraPicker {
                         pop(context, object: true);
                       },
                       shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
+                        borderRadius: (enableClearSelectedFile
+                            ? BorderRadius.all(
+                                Radius.circular(0),
+                              )
+                            : BorderRadius.only(
+                                bottomLeft: Radius.circular(_radius),
+                                bottomRight: Radius.circular(_radius),
+                              )),
                       ),
                     ),
                     // Horizontal divider
@@ -235,26 +241,28 @@ class CameraPicker {
                       thickness: 0.4,
                     ),
                     // Clear selected photo
-                    _renderButton(
-                      text: R.strings.clearSelectedFile,
-                      func: () async {
-                        bool obj = false;
-                        if (_cameraFileState != CameraFileState.FREE) {
-                          obj = true;
-                        }
+                    (enableClearSelectedFile
+                        ? _renderButton(
+                            text: R.strings.clearSelectedFile,
+                            func: () async {
+                              bool obj = false;
+                              if (_cameraFileState != CameraFileState.FREE) {
+                                obj = true;
+                              }
 
-                        _cameraFileState = CameraFileState.FREE;
-                        _file = null;
+                              _cameraFileState = CameraFileState.FREE;
+                              _file = null;
 
-                        pop(context, object: obj);
-                      },
-                      shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(_radius),
-                          bottomRight: Radius.circular(_radius),
-                        ),
-                      ),
-                    ),
+                              pop(context, object: obj);
+                            },
+                            shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(_radius),
+                                bottomRight: Radius.circular(_radius),
+                              ),
+                            ),
+                          )
+                        : Container()),
                   ],
                 ),
               ),
