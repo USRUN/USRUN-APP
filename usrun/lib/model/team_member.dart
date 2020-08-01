@@ -2,7 +2,7 @@ import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
 @reflector
-class TeamMember extends MapperObject {
+class TeamMember with MapperObject {
   //  OWNER(1),
   //  ADMIN(2),
   //  MEMBER(3),

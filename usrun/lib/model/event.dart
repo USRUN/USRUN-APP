@@ -3,7 +3,7 @@ import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
 
 @reflector
-class Event extends MapperObject {
+class Event with MapperObject {
   int eventId;
   EventStatus status;
   DateTime createTime;

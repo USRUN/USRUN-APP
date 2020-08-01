@@ -1,12 +1,9 @@
 import 'package:usrun/core/define.dart';
-
-
 import 'package:usrun/model/mapper_object.dart';
-
 import 'package:usrun/util/reflector.dart';
 
 @reflector
-class User extends MapperObject {
+class User with MapperObject {
   int userId;
   String openId;
   LoginChannel type;
@@ -35,7 +32,6 @@ class User extends MapperObject {
   int followingCount;
   int activityCount;
 
-
   num distance;
   int rank;
   int activeDays;
@@ -50,7 +46,7 @@ class User extends MapperObject {
   TeamMemberType teamMemberType;
 
   @override
-  bool operator == (other) {
+  bool operator ==(other) {
     if (other is User) {
       return userId == other.userId;
     }

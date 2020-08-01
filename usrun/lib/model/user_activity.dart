@@ -1,6 +1,8 @@
 import 'package:usrun/model/mapper_object.dart';
+import 'package:usrun/util/reflector.dart';
 
-class UserActivity extends MapperObject{
+@reflector
+class UserActivity with MapperObject {
   int userActivityId;
   int userId;
   String userDisplayName;
@@ -22,4 +24,30 @@ class UserActivity extends MapperObject{
   int totalLove;
   int totalComment;
   int totalShare;
+
+  UserActivity(
+    this.userActivityId,
+    this.userId,
+    this.userDisplayName,
+    this.eventId,
+    this.eventName,
+    this.createTime,
+    this.totalDistance,
+    this.totalTime,
+    this.totalStep,
+    this.avgPace,
+    this.avgHeart,
+    this.maxHeart,
+    this.calories,
+    this.elevGain,
+    this.elevMax,
+    this.photos,
+    this.title,
+    this.description,
+    this.totalLove,
+    this.totalComment,
+    this.totalShare,
+  );
+
+  // Chưa có mảng dữ liệu cho Splits (KM, Pace, Elev,...)
 }
