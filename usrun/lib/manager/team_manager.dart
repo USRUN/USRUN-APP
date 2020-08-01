@@ -284,8 +284,8 @@ class TeamManager {
   }
 
   static Future<Response> inviteNewMember(
-      int teamId, dynamic toInviteId) async {
-    Map<String, dynamic> params = {'teamId': teamId, 'userId': toInviteId};
+      int teamId, dynamic emailOrUserCode) async {
+    Map<String, dynamic> params = {'teamId': teamId, 'emailOrUserCode': emailOrUserCode};
     Response<dynamic> res = await Client.post('/team/invite', params);
 
     return res;

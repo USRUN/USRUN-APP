@@ -34,6 +34,62 @@ class TeamMemberPage extends StatefulWidget {
   final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
 
+  static final popUpMenu = [
+    PopupItem(
+      iconURL: R.myIcons.closeIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.kickAMember,
+      value: "Kick",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.blockIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.blockAPerson,
+      value: "Block",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.starIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.promoteAPerson,
+      value: "Promote",
+    ),
+    PopupItem(
+      iconURL: R.myIcons.caloriesStatsIconByTheme,
+      iconSize: R.appRatio.appIconSize15,
+      title: R.strings.demoteAPerson,
+      value: "Demote",
+    ),
+  ];
+
+  final List<List<PopupItem>> adminOptions = [
+    [],
+    [],
+    [
+      popUpMenu[0],
+      popUpMenu[1],
+    ],
+  ];
+
+  final List<List<PopupItem>> ownerOptions = [
+    [],
+    [
+      popUpMenu[0],
+      popUpMenu[1],
+      popUpMenu[3],
+    ],
+    popUpMenu.sublist(0, 3),
+  ];
+
+  final List memberTypes = [
+    'Owner',
+    'Admin',
+    'Member',
+    'Pending',
+    'Invited',
+    'Blocked',
+    'Guest'
+  ];
+
   TeamMemberPage({@required this.teamId, @required this.teamMemberType});
 
   @override
@@ -57,6 +113,19 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     _selectedTabIndex = 0;
     _tabController = TabController(length: 3, vsync: this);
 
+    switch (widget.teamMemberType) {
+      case TeamMemberType.Owner:
+        options = List<List<PopupItem>>();
+        options = widget.ownerOptions;
+        break;
+      case TeamMemberType.Admin:
+        options = widget.adminOptions;
+        break;
+      default:
+        options = null;
+        break;
+    }
+
     if (TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Admin, widget.teamMemberType)) {
       tabItems = widget.adminTabBarItems;
@@ -68,6 +137,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   void _inviteMember(dynamic data) async {
     Response<dynamic> res =
         await TeamManager.inviteNewMember(widget.teamId, data);
+
+    _nameController.clear();
+
     if (res.success) {
       pop(this.context);
       showCustomAlertDialog(
@@ -153,7 +225,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         tabController: _tabController,
         tabBarViewList: [
           AllMemberPage(
-              teamId: widget.teamId, teamMemberType: widget.teamMemberType),
+              teamId: widget.teamId, teamMemberType: widget.teamMemberType,options: options,),
           PendingMemberPage(
               teamId: widget.teamId, teamMemberType: widget.teamMemberType),
           BlockedMemberPage(
@@ -194,7 +266,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
             _inviteMember(_nameController.text);
           },
           secondButtonText: R.strings.cancel.toUpperCase(),
-          secondButtonFunction: (index) => pop(context),
+          secondButtonFunction: () {
+            pop(context);
+          }
         );
         break;
       default:

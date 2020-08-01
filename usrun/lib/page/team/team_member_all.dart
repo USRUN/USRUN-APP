@@ -47,27 +47,6 @@ class AllMemberPage extends StatefulWidget {
 
   final tabBarItems = [R.strings.all];
 
-  final List<List<PopupItem>> memberOptions = List.filled(3, List());
-
-  final List<List<PopupItem>> adminOptions = [
-    [],
-    [],
-    [
-      popUpMenu[0],
-      popUpMenu[1],
-    ],
-  ];
-
-  final List<List<PopupItem>> ownerOptions = [
-    [],
-    [
-      popUpMenu[0],
-      popUpMenu[1],
-      popUpMenu[3],
-    ],
-    popUpMenu.sublist(0, 3),
-  ];
-
   final List memberTypes = [
     'Owner',
     'Admin',
@@ -81,8 +60,12 @@ class AllMemberPage extends StatefulWidget {
   final int teamId;
   final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
+  final List<List<PopupItem>> options;
 
-  AllMemberPage({@required this.teamId, @required this.teamMemberType});
+  AllMemberPage(
+      {@required this.teamId,
+      @required this.teamMemberType,
+      @required this.options});
 
   @override
   _AllMemberPageState createState() => _AllMemberPageState();
@@ -104,18 +87,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     _curPage = 1;
     _remainingResults = true;
 
-    switch (widget.teamMemberType) {
-      case TeamMemberType.Owner:
-        options = List<List<PopupItem>>();
-        options = widget.ownerOptions;
-        break;
-      case TeamMemberType.Admin:
-        options = widget.adminOptions;
-        break;
-      default:
-        options = widget.memberOptions;
-        break;
-    }
+    options = widget.options;
   }
 
   void loadMoreData() async {
@@ -160,6 +132,7 @@ class _AllMemberPageState extends State<AllMemberPage>
         changeMemberRole(index, TeamMemberType.Blocked.index);
         break;
       case "Kick":
+        changeMemberRole(index, TeamMemberType.Pending.index);
         break;
       case "Promote":
         changeMemberRole(index, TeamMemberType.Admin.index);
@@ -185,7 +158,7 @@ class _AllMemberPageState extends State<AllMemberPage>
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
-    if (response.success && mounted) {
+    if (response.success) {
       setState(() {
         _reloadItems();
       });

@@ -243,9 +243,13 @@ class _PendingMemberPageState extends State<PendingMemberPage>
       pressInfo: _pressUserInfo,
       centerVerticalSuffix: true,
       enableCloseButton: true,
-      pressCloseButton: _pressCloseBtn(index),
+      pressCloseButton: () {
+        _pressCloseBtn(index);
+      },
       enableCheckButton: true,
-      pressCheckButton: _pressCheckBtn(index),
+      pressCheckButton: () {
+        _pressCheckBtn(index);
+      },
     );
   }
 }

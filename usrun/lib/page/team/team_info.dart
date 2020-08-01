@@ -270,8 +270,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   Widget _renderJoinButton() {
-    if (TeamMemberUtil.authorizeLowerLevel(
-        TeamMemberType.Member, _teamMemberType)) return null;
+    if (TeamMemberUtil.authorizeHigherLevel(
+        TeamMemberType.Member, _teamMemberType)) {
+      return null;
+    }
 
     String toDisplay;
     if (TeamMemberUtil.authorizeEqualLevel(

@@ -8,6 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -86,13 +87,13 @@ class _MemberSearchPageState extends State<MemberSearchPage>
 
   void parseResponse(List<User> responseObject) {
     responseObject.forEach((element) {
-      if (element.teamMemberType < TeamMemberType.Pending.index) {
+      if (element.teamMemberType <= TeamMemberType.Member.index +1) {
         allMemberList.add(element);
       }
-      if (element.teamMemberType == TeamMemberType.Pending.index) {
+      if (element.teamMemberType == TeamMemberType.Pending.index + 1) {
         requestingMemberList.add(element);
       }
-      if (element.teamMemberType == TeamMemberType.Blocked.index) {
+      if (element.teamMemberType == TeamMemberType.Blocked.index + 1) {
         blockingMemberList.add(element);
       }
     });
@@ -179,15 +180,15 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   void _onChangedFunction(data) {}
 
   _pressCloseBtn(index) {
-    changeMemberRole(index, 5);
+    changeMemberRole(index, TeamMemberType.Blocked.index);
   }
 
   _pressCheckBtn(index) {
-    changeMemberRole(index, 3);
+    changeMemberRole(index, TeamMemberType.Member.index);
   }
 
   _releaseFromBlock(index) {
-    changeMemberRole(index, 4);
+    changeMemberRole(index, TeamMemberType.Pending.index);
   }
 
   _onSelectMemberOption(int index, String value) {
@@ -402,7 +403,6 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   Widget _renderCustomCell(index) {
     int listMemberTypeIndex = memberList[index].teamMemberType - 1;
     String avatarImageURL = memberList[index].avatar;
-    String supportImageURL = memberList[index].avatar;
     String name = memberList[index].name;
     String location = memberList[index].province.toString();
     String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
@@ -433,7 +433,7 @@ class _MemberSearchPageState extends State<MemberSearchPage>
           ),
 //          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
-          enablePopupMenuButton: true,
+          enablePopupMenuButton: !checkListIsNullOrEmpty(widget.options[listMemberTypeIndex]),
           customPopupMenu: CustomPopupMenu(
             items: widget.options[listMemberTypeIndex],
             onSelected: (option) {
