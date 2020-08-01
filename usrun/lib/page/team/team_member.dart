@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -225,7 +224,10 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         tabController: _tabController,
         tabBarViewList: [
           AllMemberPage(
-              teamId: widget.teamId, teamMemberType: widget.teamMemberType,options: options,),
+            teamId: widget.teamId,
+            teamMemberType: widget.teamMemberType,
+            options: options,
+          ),
           PendingMemberPage(
               teamId: widget.teamId, teamMemberType: widget.teamMemberType),
           BlockedMemberPage(
@@ -249,27 +251,26 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     switch (index) {
       case 0: // Invite
         await showCustomComplexDialog(
-          context: context,
-          headerContent: R.strings.inviteNewMember,
-          descriptionContent: R.strings.inviteNewMemberContent,
-          inputFieldList: [
-            InputField(
-              controller: _nameController,
-              enableFullWidth: true,
-              labelTitle: _nameLabel,
-              hintText: _nameLabel,
-              focusNode: _testInvite,
-            ),
-          ],
-          firstButtonText: R.strings.invite.toUpperCase(),
-          firstButtonFunction: () {
-            _inviteMember(_nameController.text);
-          },
-          secondButtonText: R.strings.cancel.toUpperCase(),
-          secondButtonFunction: () {
-            pop(context);
-          }
-        );
+            context: context,
+            headerContent: R.strings.inviteNewMember,
+            descriptionContent: R.strings.inviteNewMemberContent,
+            inputFieldList: [
+              InputField(
+                controller: _nameController,
+                enableFullWidth: true,
+                labelTitle: _nameLabel,
+                hintText: _nameLabel,
+                focusNode: _testInvite,
+              ),
+            ],
+            firstButtonText: R.strings.invite.toUpperCase(),
+            firstButtonFunction: () {
+              _inviteMember(_nameController.text);
+            },
+            secondButtonText: R.strings.cancel.toUpperCase(),
+            secondButtonFunction: () {
+              pop(context);
+            });
         break;
       default:
         break;

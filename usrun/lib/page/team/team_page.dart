@@ -56,11 +56,16 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   void _updateLoading() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        setState(
+          () {
+            _isLoading = !_isLoading;
+          },
+        );
+      },
+    );
   }
 
   List<dynamic> _getBannerList() {
@@ -98,11 +103,13 @@ class _TeamPageState extends State<TeamPage> {
             break;
         }
       });
-      setState(() {
-        _myTeamList = _toMyTeamList;
-        _myRequestingTeamList = _toMyRequestingTeamList;
-        _myInvitedTeamList = _toMyInvitedTeamList;
-      });
+      setState(
+        () {
+          _myTeamList = _toMyTeamList;
+          _myRequestingTeamList = _toMyRequestingTeamList;
+          _myInvitedTeamList = _toMyInvitedTeamList;
+        },
+      );
     } else {
       _myTeamList = null;
       _myRequestingTeamList = null;
@@ -130,126 +137,127 @@ class _TeamPageState extends State<TeamPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: R.colors.appBackground,
-        body: RefreshConfiguration(
-          maxOverScrollExtent: 50,
-          headerTriggerDistance: 50,
-          child: SmartRefresher(
-            enablePullDown: true,
-            controller: _refreshController,
-            onRefresh: () => {reloadTeamList()},
-            child: (_isLoading
-                ? LoadingDot()
-                : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(
-                          height: R.appRatio.appHeight250,
-                          width: R.appRatio.deviceWidth,
-                          child: Carousel(
-                            images: _getBannerList(),
-                            defaultImage: R.images.smallDefaultImage,
-                            dotSize: R.appRatio.appIconSize5,
-                            dotSpacing: R.appRatio.appSpacing20,
-                            dotColor: Colors.white,
-                            dotIncreasedColor: R.colors.majorOrange,
-                            dotBgColor: Colors.black.withOpacity(0.25),
-                            boxFit: BoxFit.cover,
-                            indicatorBgPadding: 5.0,
-                            animationDuration: Duration(milliseconds: 500),
-                            autoplayDuration: Duration(seconds: 8),
-                          ),
+      backgroundColor: R.colors.appBackground,
+      body: RefreshConfiguration(
+        maxOverScrollExtent: 50,
+        headerTriggerDistance: 50,
+        child: SmartRefresher(
+          enablePullDown: true,
+          controller: _refreshController,
+          onRefresh: () => {reloadTeamList()},
+          child: (_isLoading
+              ? LoadingDot()
+              : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(
+                        height: R.appRatio.appHeight250,
+                        width: R.appRatio.deviceWidth,
+                        child: Carousel(
+                          images: _getBannerList(),
+                          defaultImage: R.images.smallDefaultImage,
+                          dotSize: R.appRatio.appIconSize5,
+                          dotSpacing: R.appRatio.appSpacing20,
+                          dotColor: Colors.white,
+                          dotIncreasedColor: R.colors.majorOrange,
+                          dotBgColor: Colors.black.withOpacity(0.25),
+                          boxFit: BoxFit.cover,
+                          indicatorBgPadding: 5.0,
+                          animationDuration: Duration(milliseconds: 500),
+                          autoplayDuration: Duration(seconds: 8),
                         ),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        TeamList(
-                          items: _myTeamList,
-                          labelTitle: R.strings.yourTeams,
-                          enableLabelShadow: true,
-                          enableScrollBackgroundColor: true,
-                          pressItemFunction: (teamItem) {
-                            pushPage(
-                                context, TeamInfoPage(teamId: teamItem.teamId));
-                          },
-                        ),
-                        (checkListIsNullOrEmpty(_myInvitedTeamList)
-                            ? Container()
-                            : SizedBox(
-                                height: R.appRatio.appSpacing20,
-                              )),
-                        (checkListIsNullOrEmpty(_myInvitedTeamList)
-                            ? Container()
-                            : TeamList(
-                                items: _myInvitedTeamList,
-                                labelTitle: "You are invited to join ",
-                                enableLabelShadow: true,
-                                enableScrollBackgroundColor: true,
-                                enableSplitListToTwo: false,
-                                pressItemFunction: (teamItem) {
-                                  pushPage(context,
-                                      TeamInfoPage(teamId: teamItem.teamId));
-                                },
-                              )),
-                        (checkListIsNullOrEmpty(_myRequestingTeamList)
-                            ? Container()
-                            : SizedBox(
-                                height: R.appRatio.appSpacing20,
-                              )),
-                        (checkListIsNullOrEmpty(_myRequestingTeamList)
-                            ? Container()
-                            : TeamList(
-                                items: _myRequestingTeamList,
-                                labelTitle: "Requesting teams",
-                                enableLabelShadow: true,
-                                enableScrollBackgroundColor: true,
-                                enableSplitListToTwo: false,
-                                pressItemFunction: (teamItem) {
-                                  pushPage(context,
-                                      TeamInfoPage(teamId: teamItem.teamId));
-                                },
-                              )),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        TeamList(
-                          items: _teamSuggestionList,
-                          labelTitle: R.strings.weSuggestYou,
-                          enableLabelShadow: true,
-                          enableScrollBackgroundColor: true,
-                          enableSplitListToTwo: false,
-                          pressItemFunction: (teamItem) {
-                            pushPage(
-                                context, TeamInfoPage(teamId: teamItem.teamId));
-                          },
-                        ),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        LineButton(
-                          mainText: R.strings.viewAllTeams,
-                          mainTextFontSize: R.appRatio.appFontSize16,
-                          enableSuffixIcon: true,
-                          suffixIconSize: R.appRatio.appIconSize15,
-                          suffixIconImageURL: R.myIcons.nextIconByTheme,
-                          enableBottomUnderline: true,
-                          textPadding: EdgeInsets.all(15),
-                          enableTopUnderline: true,
-                          lineFunction: () {
-                            pushPage(
-                              context,
-                              TeamSearchPage(
-                                  autoFocusInput: false,
-                                  defaultList: _teamSuggestionList),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  )),
-          ),
-        ));
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      TeamList(
+                        items: _myTeamList,
+                        labelTitle: R.strings.yourTeams,
+                        enableLabelShadow: true,
+                        enableScrollBackgroundColor: true,
+                        pressItemFunction: (teamItem) {
+                          pushPage(
+                              context, TeamInfoPage(teamId: teamItem.teamId));
+                        },
+                      ),
+                      (checkListIsNullOrEmpty(_myInvitedTeamList)
+                          ? Container()
+                          : SizedBox(
+                              height: R.appRatio.appSpacing20,
+                            )),
+                      (checkListIsNullOrEmpty(_myInvitedTeamList)
+                          ? Container()
+                          : TeamList(
+                              items: _myInvitedTeamList,
+                              labelTitle: "You are invited to join ",
+                              enableLabelShadow: true,
+                              enableScrollBackgroundColor: true,
+                              enableSplitListToTwo: false,
+                              pressItemFunction: (teamItem) {
+                                pushPage(context,
+                                    TeamInfoPage(teamId: teamItem.teamId));
+                              },
+                            )),
+                      (checkListIsNullOrEmpty(_myRequestingTeamList)
+                          ? Container()
+                          : SizedBox(
+                              height: R.appRatio.appSpacing20,
+                            )),
+                      (checkListIsNullOrEmpty(_myRequestingTeamList)
+                          ? Container()
+                          : TeamList(
+                              items: _myRequestingTeamList,
+                              labelTitle: "Requesting teams",
+                              enableLabelShadow: true,
+                              enableScrollBackgroundColor: true,
+                              enableSplitListToTwo: false,
+                              pressItemFunction: (teamItem) {
+                                pushPage(context,
+                                    TeamInfoPage(teamId: teamItem.teamId));
+                              },
+                            )),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      TeamList(
+                        items: _teamSuggestionList,
+                        labelTitle: R.strings.weSuggestYou,
+                        enableLabelShadow: true,
+                        enableScrollBackgroundColor: true,
+                        enableSplitListToTwo: false,
+                        pressItemFunction: (teamItem) {
+                          pushPage(
+                              context, TeamInfoPage(teamId: teamItem.teamId));
+                        },
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      LineButton(
+                        mainText: R.strings.viewAllTeams,
+                        mainTextFontSize: R.appRatio.appFontSize16,
+                        enableSuffixIcon: true,
+                        suffixIconSize: R.appRatio.appIconSize15,
+                        suffixIconImageURL: R.myIcons.nextIconByTheme,
+                        enableBottomUnderline: true,
+                        textPadding: EdgeInsets.all(15),
+                        enableTopUnderline: true,
+                        lineFunction: () {
+                          pushPage(
+                            context,
+                            TeamSearchPage(
+                                autoFocusInput: false,
+                                defaultList: _teamSuggestionList),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )),
+        ),
+      ),
+    );
   }
 }

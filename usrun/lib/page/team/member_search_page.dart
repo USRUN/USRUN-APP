@@ -87,7 +87,7 @@ class _MemberSearchPageState extends State<MemberSearchPage>
 
   void parseResponse(List<User> responseObject) {
     responseObject.forEach((element) {
-      if (element.teamMemberType <= TeamMemberType.Member.index +1) {
+      if (element.teamMemberType <= TeamMemberType.Member.index + 1) {
         allMemberList.add(element);
       }
       if (element.teamMemberType == TeamMemberType.Pending.index + 1) {
@@ -433,7 +433,8 @@ class _MemberSearchPageState extends State<MemberSearchPage>
           ),
 //          pressInfo: () => _pressUserInfo(index),
           centerVerticalSuffix: true,
-          enablePopupMenuButton: !checkListIsNullOrEmpty(widget.options[listMemberTypeIndex]),
+          enablePopupMenuButton:
+              !checkListIsNullOrEmpty(widget.options[listMemberTypeIndex]),
           customPopupMenu: CustomPopupMenu(
             items: widget.options[listMemberTypeIndex],
             onSelected: (option) {

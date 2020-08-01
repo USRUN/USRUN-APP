@@ -9,16 +9,15 @@ class TeamMemberItem {
   int userId;
   TeamMemberType teamMemberType;
 
-  TeamMemberItem({
-    this.avatarImageURL = "",
-    this.supportImageURL = "",
-    this.name = "",
-    this.location = "",
-    this.isFollowing = false,
-    this.teamMemberType = TeamMemberType.Guest,
-    this.userId = -1
-  }) : assert(
-            avatarImageURL != null &&
+  TeamMemberItem(
+      {this.avatarImageURL = "",
+      this.supportImageURL = "",
+      this.name = "",
+      this.location = "",
+      this.isFollowing = false,
+      this.teamMemberType = TeamMemberType.Guest,
+      this.userId = -1})
+      : assert(avatarImageURL != null &&
             supportImageURL != null &&
             name != null &&
             location != null &&

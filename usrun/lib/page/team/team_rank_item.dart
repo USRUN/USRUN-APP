@@ -18,7 +18,7 @@ class TeamRankItem {
             distance != null &&
             distance >= 0.0);
 
-  TeamRankItem.from(TeamLeaderboard t){
+  TeamRankItem.from(TeamLeaderboard t) {
     this.userId = t.userId;
     this.avatarImageURL = t.avatar;
     this.name = t.displayName;

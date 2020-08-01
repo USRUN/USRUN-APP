@@ -72,10 +72,12 @@ class _TeamRankState extends State<TeamRank> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
-      if(!mounted) return;
-      setState(() {
-        _isLoading = !_isLoading;
-      },);
+      if (!mounted) return;
+      setState(
+        () {
+          _isLoading = !_isLoading;
+        },
+      );
     });
   }
 

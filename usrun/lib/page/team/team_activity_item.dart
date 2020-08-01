@@ -2,7 +2,7 @@ import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/util/reflector.dart';
 
 @reflector
-class TeamActivityItem extends MapperObject{
+class TeamActivityItem extends MapperObject {
   int userActivityId;
   int userId;
   DateTime createTime;
@@ -36,9 +36,5 @@ class TeamActivityItem extends MapperObject{
     this.avgHeart = 0.0,
     this.maxHeart = 0.0,
     this.calories = 0,
-  }) : assert(
-    userId != null &&
-    userActivityId != null &&
-    title != null
-  );
+  }) : assert(userId != null && userActivityId != null && title != null);
 }
