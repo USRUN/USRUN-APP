@@ -1,5 +1,4 @@
 import 'package:usrun/core/define.dart';
-import 'package:usrun/model/user.dart';
 
 class TeamMemberItem {
   String avatarImageURL;

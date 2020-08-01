@@ -144,7 +144,7 @@ class TeamList extends StatelessWidget {
         String athleteQuantity = NumberFormat("#,##0", "en_US")
             .format(element[index].athleteQuantity);
         String avatarImageURL = element[index].avatarImageURL;
-        String supportImageURL = element[index].supportImageURL;
+        String supportImageURL = element[index].verificationStatus?R.myIcons.greenCheck:null;
 
         return Container(
           margin: EdgeInsets.only(

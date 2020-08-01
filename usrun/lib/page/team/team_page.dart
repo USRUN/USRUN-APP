@@ -1,11 +1,11 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/demo_data.dart';
+import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -17,10 +17,10 @@ import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/team_list/team_item.dart';
 import 'package:usrun/widget/team_list/team_list.dart';
-import 'package:usrun/manager/team_manager.dart';
 
 class TeamPage extends StatefulWidget {
   final int suggestionLength = 15;
+
   @override
   _TeamPageState createState() => _TeamPageState();
 }
@@ -41,8 +41,6 @@ class _TeamPageState extends State<TeamPage> {
     _isLoading = true;
     _teamSuggestionList = List();
     _myTeamList = List();
-//    _getMyTeamList(UserManager.currentUser.userId);
-//    _getSuggestionList(widget.suggestionLength);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
     WidgetsBinding.instance.addPostFrameCallback(
@@ -68,13 +66,8 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     if (_teamSuggestionList == null) {
       List<dynamic> bannerList = List<dynamic>();
-      for (int i = 0; i < DemoData().bannerList.length; ++i) {
-        bannerList
-            .add(ImageCacheManager.getImageData(url: DemoData().bannerList[i]));
-      }
       return bannerList;
     }
-    ;
 
     List<dynamic> bannerList = List<dynamic>();
     for (int i = 0; i < _teamSuggestionList.length; ++i) {
@@ -178,11 +171,8 @@ class _TeamPageState extends State<TeamPage> {
                           enableLabelShadow: true,
                           enableScrollBackgroundColor: true,
                           pressItemFunction: (teamItem) {
-                            // TODO: Test
-                            pushPage(context,
-                                    TeamInfoPage(teamId: teamItem.teamId));
-                            print(
-                                "[YourTeams] This team with id ${teamItem.teamId} is pressed");
+                            pushPage(
+                                context, TeamInfoPage(teamId: teamItem.teamId));
                           },
                         ),
                         (checkListIsNullOrEmpty(_myInvitedTeamList)
@@ -200,9 +190,7 @@ class _TeamPageState extends State<TeamPage> {
                                 enableSplitListToTwo: false,
                                 pressItemFunction: (teamItem) {
                                   pushPage(context,
-                                          TeamInfoPage(teamId: teamItem.teamId));
-                                  print(
-                                      "[Invited] This team with id ${teamItem.teamId} is pressed");
+                                      TeamInfoPage(teamId: teamItem.teamId));
                                 },
                               )),
                         (checkListIsNullOrEmpty(_myRequestingTeamList)
@@ -220,9 +208,7 @@ class _TeamPageState extends State<TeamPage> {
                                 enableSplitListToTwo: false,
                                 pressItemFunction: (teamItem) {
                                   pushPage(context,
-                                          TeamInfoPage(teamId: teamItem.teamId));
-                                  print(
-                                      "[Requested] This team with id ${teamItem.teamId} is pressed");
+                                      TeamInfoPage(teamId: teamItem.teamId));
                                 },
                               )),
                         SizedBox(
@@ -235,10 +221,8 @@ class _TeamPageState extends State<TeamPage> {
                           enableScrollBackgroundColor: true,
                           enableSplitListToTwo: false,
                           pressItemFunction: (teamItem) {
-                            pushPage(context,
-                                    TeamInfoPage(teamId: teamItem.teamId));
-                            print(
-                                "[WeSuggestYou] This team with id ${teamItem.teamId} is pressed");
+                            pushPage(
+                                context, TeamInfoPage(teamId: teamItem.teamId));
                           },
                         ),
                         SizedBox(

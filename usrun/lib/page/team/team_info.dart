@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
@@ -14,6 +15,7 @@ import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
+import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -40,7 +42,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
   String _teamBanner = R.images.drawerBackgroundDarker;
   String _teamAvatar = R.images.avatar;
-  String _teamSymbol = R.images.avatarQuocTK;
+  String _teamSymbol = R.myIcons.hcmusLogo;
   String _teamName = R.strings.loading;
   bool _teamPublicStatus = true;
   String _teamLocation = R.strings.loading;
@@ -52,19 +54,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamLeadingDistance = -1;
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
+  bool _verificationStatus = false;
   TeamMemberType _teamMemberType = TeamMemberType.Guest;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-
-  /*
-    + userRole:
-      //  OWNER(1),
-      //  ADMIN(2),
-      //  MEMBER(3),
-      //  PENDING(4),
-      //  BLOCKED(5);
-      // GUESS (6);
-  */
 
   @override
   void initState() {
@@ -105,6 +98,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   void mapTeamInfo(Team toMap) {
     if (!mounted) return;
     setState(() {
+      _verificationStatus = toMap.verified;
+      _teamSymbol = toMap.verified ? R.myIcons.hcmusLogo : null;
       _teamDescription =
           toMap.description == null ? R.strings.description : toMap.description;
       _teamName = toMap.teamName;
@@ -163,6 +158,22 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     _teamPublicStatus = privacy;
   }
 
+  Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
+    final CameraPicker _selectedCameraFile = CameraPicker();
+
+    bool result =
+        await _selectedCameraFile.showCameraPickerActionSheet(context);
+    if (!result) return "";
+
+    result = await _selectedCameraFile.cropImage(
+      cropStyle: cropStyle,
+      androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+    );
+    if (!result) return "";
+
+    return _selectedCameraFile.toBase64();
+  }
+
   _changeTeamImage(String fieldToChange) async {
     Map<String, dynamic> reqParam = Map();
 
@@ -179,13 +190,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     }
 
     try {
-      var image;
+      String image;
 
-//      TODO: Open these code below
-//      if (fieldToChange == 'banner')
-//        image = await pickImageByShape(context, CropStyle.rectangle);
-//      else
-//        image = await pickImageByShape(context, CropStyle.circle);
+      if (fieldToChange == 'banner')
+        image = await getUserImageAsBase64(CropStyle.rectangle);
+      else
+        image = await getUserImageAsBase64(CropStyle.circle);
 
       reqParam[fieldToChange] = image;
       reqParam['teamId'] = widget.teamId;
@@ -260,7 +270,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   Widget _renderJoinButton() {
-    if (TeamMemberUtil.authorizeHigherLevel(
+    if (TeamMemberUtil.authorizeLowerLevel(
         TeamMemberType.Member, _teamMemberType)) return null;
 
     String toDisplay;
@@ -431,7 +441,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             )
                           : Container(),
                       // Symbol
-                      (_teamSymbol.length != 0
+                      (this._verificationStatus != false
                           ? Padding(
                               padding: EdgeInsets.only(
                                 bottom: R.appRatio.appSpacing25,
@@ -488,7 +498,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 ],
                               ),
                             )
-                          : Container),
+                          : Container()),
                       // Team stats
                       Padding(
                         padding: EdgeInsets.only(

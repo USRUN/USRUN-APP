@@ -4,14 +4,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/response.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
-import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class TeamLeaderBoardPage extends StatefulWidget {
   final int teamId;
@@ -41,9 +42,11 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
         await TeamManager.getTeamLeaderBoard(widget.teamId);
     if (teamLeaderboard.success && teamLeaderboard.object != null) {
       items = List();
-      teamLeaderboard.object.forEach((element) {items.add(TeamRankItem.from(element));});
-    }
-    else items = null;
+      teamLeaderboard.object.forEach((element) {
+        items.add(TeamRankItem.from(element));
+      });
+    } else
+      items = null;
   }
 
   void _updateLoading() {
@@ -121,6 +124,10 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
               String name = items[index].name;
               String distance = NumberFormat("#,##0.##", "en_US")
                   .format(items[index].distance);
+              Color contentColor =
+                  items[index].userId == UserManager.currentUser.userId
+                      ? R.colors.majorOrange
+                      : R.colors.contentText;
 
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -146,7 +153,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                                 (index + 1).toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: R.colors.contentText,
+                                  color: contentColor,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),
@@ -172,7 +179,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                               title: name,
                               titleStyle: TextStyle(
                                 fontSize: R.appRatio.appFontSize16,
-                                color: R.colors.contentText,
+                                color: contentColor,
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
@@ -191,7 +198,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                                 distance,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: R.colors.contentText,
+                                  color: contentColor,
                                   fontSize: R.appRatio.appFontSize16,
                                 ),
                               ),

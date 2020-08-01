@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -13,7 +15,6 @@ import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class MemberSearchPage extends StatefulWidget {
@@ -85,13 +86,13 @@ class _MemberSearchPageState extends State<MemberSearchPage>
 
   void parseResponse(List<User> responseObject) {
     responseObject.forEach((element) {
-      if (element.teamMemberType.index < 4) {
+      if (element.teamMemberType < TeamMemberType.Pending.index) {
         allMemberList.add(element);
       }
-      if (element.teamMemberType.index == 4) {
+      if (element.teamMemberType == TeamMemberType.Pending.index) {
         requestingMemberList.add(element);
       }
-      if (element.teamMemberType.index == 5) {
+      if (element.teamMemberType == TeamMemberType.Blocked.index) {
         blockingMemberList.add(element);
       }
     });
@@ -136,8 +137,6 @@ class _MemberSearchPageState extends State<MemberSearchPage>
     if (data.toString().length == 0) return;
     if (!mounted) return;
 
-    //reset states
-
     setState(() {
       _isLoading = !_isLoading;
       _curSearchString = data.toString();
@@ -145,9 +144,6 @@ class _MemberSearchPageState extends State<MemberSearchPage>
       _curResultPage = 1;
       remainingResults = true;
     });
-
-    // TODO: Implement function here
-    print("Data: $data");
 
     _findMember();
 
@@ -183,27 +179,14 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   void _onChangedFunction(data) {}
 
   _pressCloseBtn(index) {
-    // TODO: Implement function here
-    // Decline join request
-
-    print("Decline ${memberList[index].userId} join request");
-
     changeMemberRole(index, 5);
   }
 
   _pressCheckBtn(index) {
-    // TODO: Implement function here
-    // Approve join request
-
-    print("Approve ${memberList[index].userId} join request");
-
     changeMemberRole(index, 3);
   }
 
   _releaseFromBlock(index) {
-    // Remove from block list
-    print("Remove ${memberList[index].userId} from block list");
-
     changeMemberRole(index, 4);
   }
 
@@ -417,7 +400,7 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   }
 
   Widget _renderCustomCell(index) {
-    int listMemberTypeIndex = memberList[index].teamMemberType.index - 1;
+    int listMemberTypeIndex = memberList[index].teamMemberType - 1;
     String avatarImageURL = memberList[index].avatar;
     String supportImageURL = memberList[index].avatar;
     String name = memberList[index].name;

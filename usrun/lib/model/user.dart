@@ -47,7 +47,7 @@ class User extends MapperObject {
 
   List<int> notifications;
 
-  TeamMemberType teamMemberType;
+  int teamMemberType;
 
   @override
   bool operator == (other) {

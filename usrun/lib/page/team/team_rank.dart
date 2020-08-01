@@ -9,12 +9,13 @@ import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/teamstat_rank_item.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
-import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/header_rank_lead.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class TeamRank extends StatefulWidget {
   final int teamId;
@@ -71,9 +72,10 @@ class _TeamRankState extends State<TeamRank> {
 
   void _updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
+      if(!mounted) return;
       setState(() {
         _isLoading = !_isLoading;
-      });
+      },);
     });
   }
 
@@ -111,7 +113,9 @@ class _TeamRankState extends State<TeamRank> {
                       ),
                       child: LoadingIndicator(),
                     )
-                  : _renderList()),
+                  : (checkListIsNullOrEmpty(items))
+                      ? _buildEmptyList()
+                      : _renderList()),
             ),
           ),
         ],
@@ -124,6 +128,27 @@ class _TeamRankState extends State<TeamRank> {
           overScroll.disallowGlow();
           return false;
         });
+  }
+
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.noResult;
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize16,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _renderList() {

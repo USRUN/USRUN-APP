@@ -208,6 +208,8 @@
         "Ongoing",
         "Ended"
     ],
+    "eventLeave": "Are you sure you want to leave this event?",
+    "eventLeaveButton": "LEAVE",
 
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",

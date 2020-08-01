@@ -806,6 +806,7 @@ class _MyIcons {
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
   final String englishColor = 'assets/myicons/icon-color-en.png';
   final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
+  final String greenCheck = 'assets/myicons/icon-green-check.png';
 
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
@@ -1226,6 +1227,8 @@ class Strings {
   String faqs;
 
   List<String> eventStatus;
+  String eventLeaveContent;
+  String eventLeaveButton;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1448,10 +1451,9 @@ class _ImagePickerDefaults {
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
       toolbarColor: R.colors.majorOrange,
       showCropGrid: false,
-      toolbarTitle: "Crop Your Image",
       toolbarWidgetColor: Colors.white,
       cropFrameColor: R.colors.majorOrange,
-      dimmedLayerColor: R.colors.blurMajorOrange);
+  );
 
   IOSUiSettings defaultIOSSettings;
 }

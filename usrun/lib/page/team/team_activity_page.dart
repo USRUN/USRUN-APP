@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -122,24 +119,6 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        // Event Badges
-//        EventBadgeList(
-//          items: DemoData().eventBadgeList,
-//          labelTitle: R.strings.personalEventBadges,
-//          enableLabelShadow: true,
-//          enableScrollBackgroundColor: true,
-//          pressItemFunction: _pressEventBadge,
-//        ),
-//        SizedBox(
-//          height: R.appRatio.appSpacing20,
-//        ),
-        // Photo
-//        PhotoList(
-//          items: _photos,
-//          labelTitle: R.strings.personalPhotos,
-//          enableLabelShadow: true,
-//          enableScrollBackgroundColor: true,
-//        ),
         SizedBox(
           height: R.appRatio.appSpacing20,
         ),
