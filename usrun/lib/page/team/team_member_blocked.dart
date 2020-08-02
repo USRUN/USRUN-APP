@@ -172,7 +172,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
   @override
   Widget build(BuildContext context) {
     if (checkListIsNullOrEmpty(items)) {
-      _buildEmptyList();
+      return _buildEmptyList();
     }
 
     return AnimationLimiter(

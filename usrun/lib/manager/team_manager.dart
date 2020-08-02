@@ -10,28 +10,38 @@ import 'package:usrun/page/team/teamstat_rank_item.dart';
 
 class TeamManager {
   static Future<Response> getTeamById(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res = await Client.post('/team/getTeamById', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getTeamById',
+      params,
+    );
 
     if (!res.success || res.object == null) return res;
 
     Response<Team> response = new Response(
-        errorCode: res.errorCode,
-        success: res.success,
-        object: MapperObject.create<Team>(res.object));
+      errorCode: res.errorCode,
+      success: res.success,
+      object: MapperObject.create<Team>(res.object),
+    );
     return response;
   }
 
   static Future<Response> updateTeam(dynamic params) async {
-    Response<dynamic> res = await Client.post('/team/update', params);
+    Response<dynamic> res = await Client.post(
+      '/team/update',
+      params,
+    );
 
     if (!res.success || res.object == null) return res;
 
     Response<Team> response = new Response(
-        errorCode: res.errorCode,
-        success: res.success,
-        object: MapperObject.create<Team>(res.object));
+      errorCode: res.errorCode,
+      success: res.success,
+      object: MapperObject.create<Team>(res.object),
+    );
     return response;
   }
 
@@ -40,11 +50,13 @@ class TeamManager {
       // TODO: Resolve User location
       'district': null,
       'province': null,
-      'howMany': howMany
+      'howMany': howMany,
     };
 
-    Response<dynamic> res =
-        await Client.post('/team/getTeamSuggestion', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getTeamSuggestion',
+      params,
+    );
 
     if (!res.success || (res.object as List).length == 0) return res;
 
@@ -53,7 +65,10 @@ class TeamManager {
         .toList();
 
     Response<List<Team>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teams);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teams,
+    );
 
     return response;
   }
@@ -63,10 +78,13 @@ class TeamManager {
     Map<String, dynamic> params = {
       'teamName': teamName,
       'pageNum': pageNum,
-      'perPage': perPage
+      'perPage': perPage,
     };
 
-    Response<dynamic> res = await Client.post('/team/findTeam', params);
+    Response<dynamic> res = await Client.post(
+      '/team/findTeam',
+      params,
+    );
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -75,7 +93,10 @@ class TeamManager {
         .toList();
 
     Response<List<Team>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teams);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teams,
+    );
 
     return response;
   }
@@ -85,10 +106,13 @@ class TeamManager {
     Map<String, dynamic> params = {
       'teamId': teamId,
       'pageNum': pageNum,
-      'perPage': perPage
+      'perPage': perPage,
     };
 
-    Response<dynamic> res = await Client.post('/team/getAllTeamMember', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getAllTeamMember',
+      params,
+    );
 
     if (!res.success || (res.object as List).length == 0) return res;
 
@@ -97,7 +121,10 @@ class TeamManager {
         .toList();
 
     Response<List<User>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamMembers);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamMembers,
+    );
 
     return response;
   }
@@ -108,10 +135,12 @@ class TeamManager {
       'teamId': teamId,
       'memberType': teamMemberType + 1,
       'page': pageNum,
-      'count': perPage
+      'count': perPage,
     };
-    Response<dynamic> res =
-        await Client.post('/team/getUserByMemberType', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getUserByMemberType',
+      params,
+    );
 
     if (!res.success || (res.object as List).length == 0) return res;
 
@@ -120,22 +149,35 @@ class TeamManager {
         .toList();
 
     Response<List<User>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamMembers);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamMembers,
+    );
 
     return response;
   }
 
   static Future<Response> requestJoinTeam(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res = await Client.post('/team/join', params);
+    Response<dynamic> res = await Client.post(
+      '/team/join',
+      params,
+    );
     return res;
   }
 
   static Future<Response> cancelJoinTeam(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res = await Client.post('/team/cancelJoin', params);
+    Response<dynamic> res = await Client.post(
+      '/team/cancelJoin',
+      params,
+    );
     return res;
   }
 
@@ -147,7 +189,10 @@ class TeamManager {
       'memberType': newRole + 1,
     };
 
-    Response<dynamic> res = await Client.post('/team/changeMemberType', params);
+    Response<dynamic> res = await Client.post(
+      '/team/changeMemberType',
+      params,
+    );
     return res;
   }
 
@@ -161,15 +206,23 @@ class TeamManager {
         .toList();
 
     Response<List<Team>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teams);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teams,
+    );
 
     return response;
   }
 
   static Future<Response> getTeamLeaderBoard(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res = await Client.post('/team/getLeaderBoard', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getLeaderBoard',
+      params,
+    );
 
     if (!res.success || (res.object as List).length == 0) return res;
 
@@ -178,7 +231,10 @@ class TeamManager {
         .toList();
 
     Response<List<TeamLeaderboard>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: leaderboard);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: leaderboard,
+    );
 
     return response;
   }
@@ -189,10 +245,13 @@ class TeamManager {
       'teamId': teamId,
       'keyword': searchString,
       'offset': pageNum,
-      'count': perPage
+      'count': perPage,
     };
 
-    Response<dynamic> res = await Client.post('/team/findUser', params);
+    Response<dynamic> res = await Client.post(
+      '/team/findUser',
+      params,
+    );
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -201,7 +260,10 @@ class TeamManager {
         .toList();
 
     Response<List<User>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamMembers);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamMembers,
+    );
 
     return response;
   }
@@ -212,11 +274,13 @@ class TeamManager {
       'searchString': searchString,
       'memberType': memberType,
       'pageNum': pageNum,
-      'perPage': perPage
+      'perPage': perPage,
     };
 
-    Response<dynamic> res =
-        await Client.post('/team/findTeamMemberByType', params);
+    Response<dynamic> res = await Client.post(
+      '/team/findTeamMemberByType',
+      params,
+    );
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -225,7 +289,10 @@ class TeamManager {
         .toList();
 
     Response<List<User>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamMembers);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamMembers,
+    );
 
     return response;
   }
@@ -235,11 +302,13 @@ class TeamManager {
     Map<String, dynamic> params = {
       'teamId': teamId,
       'offset': pageNum,
-      'count': perPage
+      'count': perPage,
     };
 
-    Response<dynamic> res =
-        await Client.post('/activity/getActivitiesByTeam', params);
+    Response<dynamic> res = await Client.post(
+      '/activity/getActivitiesByTeam',
+      params,
+    );
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -248,15 +317,23 @@ class TeamManager {
         .toList();
 
     Response<List<TeamActivityItem>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamActivities);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamActivities,
+    );
 
     return response;
   }
 
   static Future<Response> getTeamStatById(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res = await Client.post('/team/getTeamStat', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getTeamStat',
+      params,
+    );
 
     if (res.success && res.object != null) {
       res.object = MapperObject.create<TeamStatItem>(res.object);
@@ -266,10 +343,14 @@ class TeamManager {
   }
 
   static Future<Response> getTeamStatRank(int teamId) async {
-    Map<String, dynamic> params = {'teamId': teamId};
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
 
-    Response<dynamic> res =
-        await Client.post('/team/getTeamLeaderBoard', params);
+    Response<dynamic> res = await Client.post(
+      '/team/getTeamLeaderBoard',
+      params,
+    );
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -278,15 +359,37 @@ class TeamManager {
         .toList();
 
     Response<List<TeamStatRankItem>> response = new Response(
-        errorCode: res.errorCode, success: res.success, object: teamRank);
+      errorCode: res.errorCode,
+      success: res.success,
+      object: teamRank,
+    );
 
     return response;
   }
 
   static Future<Response> inviteNewMember(
       int teamId, dynamic emailOrUserCode) async {
-    Map<String, dynamic> params = {'teamId': teamId, 'emailOrUserCode': emailOrUserCode};
-    Response<dynamic> res = await Client.post('/team/invite', params);
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+      'emailOrUserCode': emailOrUserCode,
+    };
+    Response<dynamic> res = await Client.post(
+      '/team/invite',
+      params,
+    );
+
+    return res;
+  }
+
+  static Future<Response> acceptInvitation(int teamId) async {
+    Map<String, dynamic> params = {
+      'teamId': teamId,
+    };
+
+    Response<dynamic> res = await Client.post(
+      '/team/accept',
+      params,
+    );
 
     return res;
   }

@@ -101,6 +101,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   List<String> tabItems;
   List options = List();
   TabController _tabController;
+  List<Widget> tabBarViewItems;
+  bool renderAsMember;
   final TextEditingController _nameController = TextEditingController();
 
   final String _nameLabel = "User Code or Email";
@@ -110,7 +112,6 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     super.initState();
 
     _selectedTabIndex = 0;
-    _tabController = TabController(length: 3, vsync: this);
 
     switch (widget.teamMemberType) {
       case TeamMemberType.Owner:
@@ -128,16 +129,38 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     if (TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Admin, widget.teamMemberType)) {
       tabItems = widget.adminTabBarItems;
+      renderAsMember = false;
+      tabBarViewItems = [
+        AllMemberPage(
+          teamId: widget.teamId,
+          teamMemberType: widget.teamMemberType,
+          options: options,
+          renderAsMember: renderAsMember,
+        ),
+        PendingMemberPage(
+            teamId: widget.teamId, teamMemberType: widget.teamMemberType),
+        BlockedMemberPage(
+            teamId: widget.teamId, teamMemberType: widget.teamMemberType),
+      ];
     } else {
+      renderAsMember = true;
+      tabBarViewItems = [
+        AllMemberPage(
+          teamId: widget.teamId,
+          teamMemberType: widget.teamMemberType,
+          options: options,
+          renderAsMember: renderAsMember,
+        )
+      ];
       tabItems = widget.tabBarItems;
     }
+
+    _tabController = TabController(length: tabItems.length, vsync: this);
   }
 
   void _inviteMember(dynamic data) async {
     Response<dynamic> res =
-        await TeamManager.inviteNewMember(widget.teamId, data);
-
-    _nameController.clear();
+    await TeamManager.inviteNewMember(widget.teamId, data);
 
     if (res.success) {
       pop(this.context);
@@ -171,50 +194,51 @@ class _TeamMemberPageState extends State<TeamMemberPage>
           Container(
             width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
-                    TeamMemberType.Member, widget.teamMemberType))
+                TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
-                    onPressed: () {
-                      _showCustomDialog(0);
-                    },
-                    padding: EdgeInsets.all(0.0),
-                    splashColor: R.colors.lightBlurMajorOrange,
-                    textColor: Colors.white,
-                    child: ImageCacheManager.getImage(
-                      url: R.myIcons.addIcon02ByTheme,
-                      width: R.appRatio.appAppBarIconSize,
-                      height: R.appRatio.appAppBarIconSize,
-                      color: Colors.white,
-                    ),
-                  )
+              onPressed: () {
+                _showCustomDialog(0);
+              },
+              padding: EdgeInsets.all(0.0),
+              splashColor: R.colors.lightBlurMajorOrange,
+              textColor: Colors.white,
+              child: ImageCacheManager.getImage(
+                url: R.myIcons.addIcon02ByTheme,
+                width: R.appRatio.appAppBarIconSize,
+                height: R.appRatio.appAppBarIconSize,
+                color: Colors.white,
+              ),
+            )
                 : Container(),
           ),
           Container(
             width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
-                    TeamMemberType.Member, widget.teamMemberType))
+                TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
-                    onPressed: () {
-                      pushPage(
-                        context,
-                        //MEMBER SEARCH PAGE
-                        MemberSearchPage(
-                          autoFocusInput: true,
-                          tabItems: tabItems,
-                          selectedTab: _selectedTabIndex,
-                          teamId: widget.teamId,
-                          options: options,
-                        ),
-                      );
-                    },
-                    padding: EdgeInsets.all(0.0),
-                    splashColor: R.colors.lightBlurMajorOrange,
-                    textColor: Colors.white,
-                    child: ImageCacheManager.getImage(
-                      url: R.myIcons.appBarSearchBtn,
-                      width: R.appRatio.appAppBarIconSize,
-                      height: R.appRatio.appAppBarIconSize,
-                      color: Colors.white,
-                    ))
+                onPressed: () {
+                  pushPage(
+                    context,
+                    //MEMBER SEARCH PAGE
+                    MemberSearchPage(
+                      autoFocusInput: true,
+                      tabItems: tabItems,
+                      selectedTab: _selectedTabIndex,
+                      teamId: widget.teamId,
+                      options: options,
+                      renderAsMember: renderAsMember,
+                    ),
+                  );
+                },
+                padding: EdgeInsets.all(0.0),
+                splashColor: R.colors.lightBlurMajorOrange,
+                textColor: Colors.white,
+                child: ImageCacheManager.getImage(
+                  url: R.myIcons.appBarSearchBtn,
+                  width: R.appRatio.appAppBarIconSize,
+                  height: R.appRatio.appAppBarIconSize,
+                  color: Colors.white,
+                ))
                 : Container(),
           ),
         ],
@@ -222,17 +246,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
       body: CustomTabBarStyle03(
         tabBarTitleList: tabItems,
         tabController: _tabController,
-        tabBarViewList: [
-          AllMemberPage(
-            teamId: widget.teamId,
-            teamMemberType: widget.teamMemberType,
-            options: options,
-          ),
-          PendingMemberPage(
-              teamId: widget.teamId, teamMemberType: widget.teamMemberType),
-          BlockedMemberPage(
-              teamId: widget.teamId, teamMemberType: widget.teamMemberType),
-        ],
+        tabBarViewList: tabBarViewItems,
       ),
     );
 
@@ -245,7 +259,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     );
   }
 
-  final FocusNode _testInvite = FocusNode();
+  final FocusNode _inviteNode = FocusNode();
 
   void _showCustomDialog(index) async {
     switch (index) {
@@ -260,15 +274,17 @@ class _TeamMemberPageState extends State<TeamMemberPage>
                 enableFullWidth: true,
                 labelTitle: _nameLabel,
                 hintText: _nameLabel,
-                focusNode: _testInvite,
+                focusNode: _inviteNode,
               ),
             ],
             firstButtonText: R.strings.invite.toUpperCase(),
             firstButtonFunction: () {
               _inviteMember(_nameController.text);
+              _nameController.clear();
             },
             secondButtonText: R.strings.cancel.toUpperCase(),
             secondButtonFunction: () {
+              _nameController.clear();
               pop(context);
             });
         break;

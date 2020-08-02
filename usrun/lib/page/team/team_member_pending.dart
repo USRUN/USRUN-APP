@@ -174,7 +174,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
   @override
   Widget build(BuildContext context) {
     if (checkListIsNullOrEmpty(items)) {
-      _buildEmptyList();
+      return _buildEmptyList();
     }
 
     return AnimationLimiter(

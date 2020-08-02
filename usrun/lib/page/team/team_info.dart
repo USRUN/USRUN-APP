@@ -223,49 +223,36 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   _joinTeamFunction() async {
+    Response<dynamic> response;
+
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Pending, _teamMemberType)) {
-      Response<dynamic> response =
-          await TeamManager.cancelJoinTeam(widget.teamId);
-
-      if (response.success) {
-        if (!mounted) return;
-        setState(() {
-          _teamMemberType = TeamMemberType.Guest;
-        });
-      } else {
-        showCustomAlertDialog(
-          context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
-        );
-      }
-      return;
+      response = await TeamManager.cancelJoinTeam(widget.teamId);
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(
-            TeamMemberType.Guest, _teamMemberType) ||
-        TeamMemberUtil.authorizeEqualLevel(
-            TeamMemberType.Invited, _teamMemberType)) {
-      Response<dynamic> response =
-          await TeamManager.requestJoinTeam(widget.teamId);
+        TeamMemberType.Invited, _teamMemberType)) {
+      response = await TeamManager.acceptInvitation(widget.teamId);
+    }
 
-      if (response.success) {
-        if (!mounted) return;
-        setState(() {
-          _teamMemberType = TeamMemberType.Pending;
-        });
-      } else {
-        showCustomAlertDialog(
-          context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
-        );
-      }
+    if (TeamMemberUtil.authorizeEqualLevel(
+        TeamMemberType.Guest, _teamMemberType)) {
+      response = await TeamManager.requestJoinTeam(widget.teamId);
+    }
+
+    if (response.success) {
+      if (!mounted) return;
+      setState(() {
+        _teamMemberType = TeamMemberType.Pending;
+      });
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
     }
   }
 

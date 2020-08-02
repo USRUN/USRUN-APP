@@ -61,11 +61,14 @@ class AllMemberPage extends StatefulWidget {
   final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
   final List<List<PopupItem>> options;
+  final bool renderAsMember;
 
-  AllMemberPage(
-      {@required this.teamId,
-      @required this.teamMemberType,
-      @required this.options});
+  AllMemberPage({
+    @required this.teamId,
+    @required this.teamMemberType,
+    @required this.options,
+    @required this.renderAsMember,
+  });
 
   @override
   _AllMemberPageState createState() => _AllMemberPageState();
@@ -87,7 +90,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     _curPage = 1;
     _remainingResults = true;
 
-    options = widget.options;
+    options = checkListIsNullOrEmpty(widget.options) ? List() : widget.options;
   }
 
   void loadMoreData() async {
@@ -230,7 +233,7 @@ class _AllMemberPageState extends State<AllMemberPage>
   @override
   Widget build(BuildContext context) {
     if (checkListIsNullOrEmpty(items)) {
-      _buildEmptyList();
+      return _buildEmptyList();
     }
 
     return AnimationLimiter(
@@ -261,7 +264,9 @@ class _AllMemberPageState extends State<AllMemberPage>
                         left: R.appRatio.appSpacing15,
                         right: R.appRatio.appSpacing15,
                       ),
-                      child: _renderCustomCell(index),
+                      child: widget.renderAsMember
+                          ? _renderMemberCustomCell(index)
+                          : _renderCustomCell(index),
                     ),
                   ),
                 ),
@@ -270,6 +275,48 @@ class _AllMemberPageState extends State<AllMemberPage>
           ),
         ),
       ),
+    );
+  }
+
+  Widget _renderMemberCustomCell(int index) {
+    if (checkListIsNullOrEmpty(items)) return Container();
+
+    int listMemberTypeIndex = items[index].teamMemberType - 1;
+    String avatarImageURL = items[index].avatar;
+    String name = items[index].name;
+    String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
+    bool enablePopUpMenu = false;
+
+    return CustomCell(
+      avatarView: AvatarView(
+        avatarImageURL: avatarImageURL,
+        avatarImageSize: R.appRatio.appWidth60,
+        avatarBoxBorder: Border.all(
+          width: 1,
+          color: R.colors.majorOrange,
+        ),
+        pressAvatarImage: () {
+          _pressAvatar(index);
+        },
+      ),
+      // Content
+      title: name,
+      titleStyle: TextStyle(
+        fontSize: R.appRatio.appFontSize16,
+        color: R.colors.contentText,
+        fontWeight: FontWeight.w500,
+      ),
+      enableAddedContent: false,
+      subTitle: listTeamMemberType,
+      subTitleStyle: TextStyle(
+        fontSize: R.appRatio.appFontSize14,
+        color: R.colors.contentText,
+      ),
+      pressInfo: () {
+        _pressUserInfo(index);
+      },
+      centerVerticalSuffix: true,
+      enablePopupMenuButton: enablePopUpMenu,
     );
   }
 
@@ -292,7 +339,9 @@ class _AllMemberPageState extends State<AllMemberPage>
           width: 1,
           color: R.colors.majorOrange,
         ),
-        pressAvatarImage: () => _pressAvatar(index),
+        pressAvatarImage: () {
+          _pressAvatar(index);
+        },
       ),
       // Content
       title: name,
@@ -307,7 +356,9 @@ class _AllMemberPageState extends State<AllMemberPage>
         fontSize: R.appRatio.appFontSize14,
         color: R.colors.contentText,
       ),
-      pressInfo: () => _pressUserInfo(index),
+      pressInfo: () {
+        _pressUserInfo(index);
+      },
       centerVerticalSuffix: true,
       enablePopupMenuButton: enablePopUpMenu,
       customPopupMenu: CustomPopupMenu(
