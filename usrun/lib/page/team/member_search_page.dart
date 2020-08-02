@@ -52,7 +52,7 @@ class MemberSearchPage extends StatefulWidget {
 class _MemberSearchPageState extends State<MemberSearchPage>
     with SingleTickerProviderStateMixin {
   final TextEditingController _textSearchController = TextEditingController();
-  bool _isLoading;
+
   bool remainingResults;
   List options;
   List<Widget> tabBarViewItems;
@@ -65,19 +65,21 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   int _selectedTab;
   List<String> tabItems;
   TabController _tabController;
+  bool _isLoading;
 
   @override
   void initState() {
     super.initState();
     _curSearchString = "";
-    _isLoading = false;
     _curResultPage = 1;
+    _isLoading = false;
     options = checkListIsNullOrEmpty(widget.options) ? List() : widget.options;
     tabItems = widget.tabItems;
     _selectedTab = widget.selectedTab;
     remainingResults = true;
     memberList = List();
     _tabController = TabController(length: widget.tabItems.length, vsync: this);
+    _tabController.animateTo(widget.selectedTab);
     _tabController.addListener(() {
       _onSelectTabItem(_tabController.index);
     });
@@ -111,14 +113,6 @@ class _MemberSearchPageState extends State<MemberSearchPage>
         _curResultPage += 1;
       });
     }
-
-    if (mounted) {
-      setState(
-        () {
-          _isLoading = false;
-        },
-      );
-    }
   }
 
   void clearMemberLists() {
@@ -133,18 +127,14 @@ class _MemberSearchPageState extends State<MemberSearchPage>
     if (!mounted) return;
 
     setState(() {
-      _isLoading = !_isLoading;
       _curSearchString = data.toString();
       clearMemberLists();
       _curResultPage = 1;
       remainingResults = true;
+      _isLoading = false;
     });
 
     _findMember();
-
-    setState(() {
-      _isLoading = !_isLoading;
-    });
   }
 
   void _onSelectTabItem(index) {
@@ -214,27 +204,21 @@ class _MemberSearchPageState extends State<MemberSearchPage>
 
   void changeMemberRole(List items, int index, int newMemberType) async {
     if (!mounted) return;
+    setState(
+      () {
+        _isLoading = true;
+      },
+    );
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    if (memberList[index] == null) {
-      setState(
-        () {
-          _isLoading = false;
-        },
-      );
+    if (items[index] == null) {
       return;
     }
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
-        widget.teamId, memberList[index].userId, newMemberType);
+        widget.teamId, items[index].userId, newMemberType);
     if (response.success) {
       setState(() {
-        clearMemberLists();
         _onSubmittedFunction(_curSearchString);
-        _isLoading = false;
       });
     } else {
       showCustomAlertDialog(
@@ -242,13 +226,24 @@ class _MemberSearchPageState extends State<MemberSearchPage>
         title: R.strings.notice,
         content: response.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
-
-      setState(() {
-        _isLoading = false;
-      });
     }
+
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        if (mounted) {
+          setState(
+            () {
+              _isLoading = false;
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget _buildEmptyList() {
@@ -353,27 +348,20 @@ class _MemberSearchPageState extends State<MemberSearchPage>
       body: CustomTabBarStyle03(
         tabBarTitleList: tabItems,
         tabController: _tabController,
-        pressTab: _onSelectTabItem,
-        tabBarViewList: [
-          (_isLoading
-              ? LoadingIndicator()
-              : _renderList(
-                  allMemberList,
-                  0,
-                )),
-          (_isLoading
-              ? LoadingIndicator()
-              : _renderList(
-                  requestingMemberList,
-                  1,
-                )),
-          (_isLoading
-              ? LoadingIndicator()
-              : _renderList(
-                  blockingMemberList,
-                  2,
-                )),
-        ],
+//        pressTab: _onSelectTabItem,
+        tabBarViewList: widget.renderAsMember
+            ? [
+                _isLoading ? LoadingIndicator() : _renderList(allMemberList, 0),
+              ]
+            : [
+                _isLoading ? LoadingIndicator() : _renderList(allMemberList, 0),
+                _isLoading
+                    ? LoadingIndicator()
+                    : _renderList(requestingMemberList, 1),
+                _isLoading
+                    ? LoadingIndicator()
+                    : _renderList(blockingMemberList, 2),
+              ],
       ),
     );
 
@@ -541,7 +529,9 @@ class _MemberSearchPageState extends State<MemberSearchPage>
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
           ),
-          pressInfo: () => _pressUserInfo(index),
+          pressInfo: () {
+            _pressUserInfo(index);
+          },
           centerVerticalSuffix: true,
           enableCloseButton: true,
           pressCloseButton: () {
@@ -561,7 +551,9 @@ class _MemberSearchPageState extends State<MemberSearchPage>
               width: 1,
               color: R.colors.majorOrange,
             ),
-            pressAvatarImage: () => _pressAvatar(index),
+            pressAvatarImage: () {
+              _pressAvatar(index);
+            },
           ),
           // Content
           title: name,
@@ -576,10 +568,14 @@ class _MemberSearchPageState extends State<MemberSearchPage>
             fontSize: R.appRatio.appFontSize14,
             color: R.colors.contentText,
           ),
-          pressInfo: () => _pressUserInfo(index),
+          pressInfo: () {
+            _pressUserInfo(index);
+          },
           centerVerticalSuffix: true,
           enableCloseButton: true,
-          pressCloseButton: () => _releaseFromBlock(index),
+          pressCloseButton: () {
+            _releaseFromBlock(index);
+          },
         );
       default:
         return Container();

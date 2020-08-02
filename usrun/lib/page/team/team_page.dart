@@ -49,6 +49,12 @@ class _TeamPageState extends State<TeamPage> {
         (_) => _getSuggestionList(widget.suggestionLength));
   }
 
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   void reloadTeamList() {
     _getMyTeamList(UserManager.currentUser.userId);
     _getSuggestionList(widget.suggestionLength);

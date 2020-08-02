@@ -68,6 +68,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   void _getTeamInfo() async {
     Response<dynamic> infoResponse =
         await TeamManager.getTeamById(widget.teamId);
@@ -118,11 +124,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         _isLoading = !_isLoading;
       });
     });
-  }
-
-  _shareTeamInfo() {
-    // TODO: Code here
-    print("Pressing share team info");
   }
 
   _changeTeamPrivacy(bool privacy) async {
@@ -510,7 +511,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               ),
                             ),
                             GestureDetector(
-                              // TODO: Pass teamId to pushPage!!!
                               onTap: () => pushPage(context,
                                   TeamLeaderBoardPage(teamId: widget.teamId)),
                               child: Row(
@@ -566,12 +566,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                       numberDisplayAdapter(_teamActivities),
                                   secondTitleLine: R.strings.activities,
                                   pressBox: (id) {
-                                    // TODO: Pass teamId to pushPage!!!
                                     pushPage(
-                                        context,
-                                        TeamActivityPage(
-                                            teamId: widget.teamId,
-                                            totalActivity: _teamActivities));
+                                      context,
+                                      TeamActivityPage(
+                                          teamId: widget.teamId,
+                                          totalActivity: _teamActivities),
+                                    );
                                   },
                                 ),
                               ],
@@ -636,7 +636,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: numberDisplayAdapter(_teamMembers),
                                   secondTitleLine: R.strings.members,
                                   pressBox: (id) {
-                                    // TODO: Pass teamId to pushPage!!!
                                     pushPage(
                                         context,
                                         TeamMemberPage(
@@ -651,7 +650,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         ),
                       ),
                       // Tool zone
-                      // TODO: Pass teamId to pushPage!!!
                       (TeamMemberUtil.authorizeLowerLevel(
                               TeamMemberType.Admin, _teamMemberType))
                           ? Container()

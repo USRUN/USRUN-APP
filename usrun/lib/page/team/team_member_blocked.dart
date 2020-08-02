@@ -42,6 +42,12 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
     _remainingResults = true;
   }
 
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   void loadMoreData() async {
     if (!_remainingResults) {
       _refreshController.loadNoData();
@@ -228,7 +234,9 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
           width: 1,
           color: R.colors.majorOrange,
         ),
-        pressAvatarImage: (index) => _pressAvatar(index),
+        pressAvatarImage: () {
+          _pressAvatar(index);
+        },
       ),
       // Content
       title: name,
@@ -238,7 +246,9 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
         fontWeight: FontWeight.w500,
       ),
       enableAddedContent: false,
-      pressInfo: _pressUserInfo,
+      pressInfo: () {
+        _pressUserInfo(index);
+      },
       centerVerticalSuffix: true,
       enableCloseButton: true,
       pressCloseButton: () {

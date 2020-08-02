@@ -153,6 +153,10 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         )
       ];
       tabItems = widget.tabBarItems;
+
+//      _tabController.addListener(() {
+//        _selectedTabIndex = _tabController.index;
+//      });
     }
 
     _tabController = TabController(length: tabItems.length, vsync: this);
@@ -160,7 +164,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
 
   void _inviteMember(dynamic data) async {
     Response<dynamic> res =
-    await TeamManager.inviteNewMember(widget.teamId, data);
+        await TeamManager.inviteNewMember(widget.teamId, data);
 
     if (res.success) {
       pop(this.context);
@@ -169,7 +173,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         title: R.strings.notice,
         content: "Invitation sent",
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     } else {
       pop(this.context);
@@ -178,7 +184,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         title: R.strings.error,
         content: res.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     }
   }
@@ -194,51 +202,51 @@ class _TeamMemberPageState extends State<TeamMemberPage>
           Container(
             width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
-                TeamMemberType.Member, widget.teamMemberType))
+                    TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
-              onPressed: () {
-                _showCustomDialog(0);
-              },
-              padding: EdgeInsets.all(0.0),
-              splashColor: R.colors.lightBlurMajorOrange,
-              textColor: Colors.white,
-              child: ImageCacheManager.getImage(
-                url: R.myIcons.addIcon02ByTheme,
-                width: R.appRatio.appAppBarIconSize,
-                height: R.appRatio.appAppBarIconSize,
-                color: Colors.white,
-              ),
-            )
+                    onPressed: () {
+                      _showCustomDialog(0);
+                    },
+                    padding: EdgeInsets.all(0.0),
+                    splashColor: R.colors.lightBlurMajorOrange,
+                    textColor: Colors.white,
+                    child: ImageCacheManager.getImage(
+                      url: R.myIcons.addIcon02ByTheme,
+                      width: R.appRatio.appAppBarIconSize,
+                      height: R.appRatio.appAppBarIconSize,
+                      color: Colors.white,
+                    ),
+                  )
                 : Container(),
           ),
           Container(
             width: 50,
             child: (TeamMemberUtil.authorizeHigherLevel(
-                TeamMemberType.Member, widget.teamMemberType))
+                    TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
-                onPressed: () {
-                  pushPage(
-                    context,
-                    //MEMBER SEARCH PAGE
-                    MemberSearchPage(
-                      autoFocusInput: true,
-                      tabItems: tabItems,
-                      selectedTab: _selectedTabIndex,
-                      teamId: widget.teamId,
-                      options: options,
-                      renderAsMember: renderAsMember,
-                    ),
-                  );
-                },
-                padding: EdgeInsets.all(0.0),
-                splashColor: R.colors.lightBlurMajorOrange,
-                textColor: Colors.white,
-                child: ImageCacheManager.getImage(
-                  url: R.myIcons.appBarSearchBtn,
-                  width: R.appRatio.appAppBarIconSize,
-                  height: R.appRatio.appAppBarIconSize,
-                  color: Colors.white,
-                ))
+                    onPressed: () {
+                      pushPage(
+                        context,
+                        //MEMBER SEARCH PAGE
+                        MemberSearchPage(
+                          autoFocusInput: true,
+                          tabItems: tabItems,
+                          selectedTab: _tabController.index,
+                          teamId: widget.teamId,
+                          options: options,
+                          renderAsMember: renderAsMember,
+                        ),
+                      );
+                    },
+                    padding: EdgeInsets.all(0.0),
+                    splashColor: R.colors.lightBlurMajorOrange,
+                    textColor: Colors.white,
+                    child: ImageCacheManager.getImage(
+                      url: R.myIcons.appBarSearchBtn,
+                      width: R.appRatio.appAppBarIconSize,
+                      height: R.appRatio.appAppBarIconSize,
+                      color: Colors.white,
+                    ))
                 : Container(),
           ),
         ],

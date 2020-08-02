@@ -42,6 +42,12 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     _remainingResults = true;
   }
 
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   void loadMoreData() async {
     if (!_remainingResults) {
       _refreshController.loadNoData();
@@ -112,7 +118,9 @@ class _PendingMemberPageState extends State<PendingMemberPage>
         title: R.strings.notice,
         content: response.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     }
   }
@@ -230,7 +238,9 @@ class _PendingMemberPageState extends State<PendingMemberPage>
           width: 1,
           color: R.colors.majorOrange,
         ),
-        pressAvatarImage: (index) => _pressAvatar(index),
+        pressAvatarImage: () {
+          _pressAvatar(index);
+        },
       ),
       // Content
       title: name,
@@ -240,7 +250,9 @@ class _PendingMemberPageState extends State<PendingMemberPage>
         fontWeight: FontWeight.w500,
       ),
       enableAddedContent: false,
-      pressInfo: _pressUserInfo,
+      pressInfo: () {
+        _pressUserInfo(index);
+      },
       centerVerticalSuffix: true,
       enableCloseButton: true,
       pressCloseButton: () {

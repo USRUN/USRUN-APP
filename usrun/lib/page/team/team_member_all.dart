@@ -93,6 +93,12 @@ class _AllMemberPageState extends State<AllMemberPage>
     options = checkListIsNullOrEmpty(widget.options) ? List() : widget.options;
   }
 
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   void loadMoreData() async {
     if (!_remainingResults) {
       _refreshController.loadNoData();
