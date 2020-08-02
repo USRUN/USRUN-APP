@@ -315,17 +315,18 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       unitTitle: R.strings.avgPaceUnit,
     );
 
-    Widget _avgHeartWidget = _wrapWidgetData(
-      firstTitle: R.strings.avgHeart,
-      data: _userActivity.avgHeart.toString(),
-      unitTitle: R.strings.avgHeartUnit,
-    );
-
-    Widget _maxHeartWidget = _wrapWidgetData(
-      firstTitle: R.strings.maxHeart,
-      data: _userActivity.maxHeart.toString(),
-      unitTitle: R.strings.avgHeartUnit,
-    );
+//    TODO: Can be used in the future
+//    Widget _avgHeartWidget = _wrapWidgetData(
+//      firstTitle: R.strings.avgHeart,
+//      data: _userActivity.avgHeart.toString(),
+//      unitTitle: R.strings.avgHeartUnit,
+//    );
+//
+//    Widget _maxHeartWidget = _wrapWidgetData(
+//      firstTitle: R.strings.maxHeart,
+//      data: _userActivity.maxHeart.toString(),
+//      unitTitle: R.strings.avgHeartUnit,
+//    );
 
     Widget _avgTotalStepWidget = _wrapWidgetData(
       firstTitle: R.strings.total,
@@ -333,17 +334,18 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       unitTitle: R.strings.totalStepsUnit,
     );
 
-    Widget _elevGainWidget = _wrapWidgetData(
-      firstTitle: R.strings.elevGain,
-      data: _userActivity.elevGain?.toString() ?? R.strings.na,
-      unitTitle: R.strings.m,
-    );
-
-    Widget _maxElevWidget = _wrapWidgetData(
-      firstTitle: R.strings.maxElev,
-      data: _userActivity.elevMax?.toString() ?? R.strings.na,
-      unitTitle: R.strings.m,
-    );
+//    TODO: Can be used in the future
+//    Widget _elevGainWidget = _wrapWidgetData(
+//      firstTitle: R.strings.elevGain,
+//      data: _userActivity.elevGain?.toString() ?? R.strings.na,
+//      unitTitle: R.strings.m,
+//    );
+//
+//    Widget _maxElevWidget = _wrapWidgetData(
+//      firstTitle: R.strings.maxElev,
+//      data: _userActivity.elevMax?.toString() ?? R.strings.na,
+//      unitTitle: R.strings.m,
+//    );
 
     Widget _caloriesWidget = _wrapWidgetData(
       firstTitle: R.strings.calories,
@@ -355,11 +357,11 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       _distanceWidget,
       _timeWidget,
       _avgPaceWidget,
-      _avgHeartWidget,
-      _maxHeartWidget,
+//      _avgHeartWidget,
+//      _maxHeartWidget,
       _avgTotalStepWidget,
-       _elevGainWidget,
-       _maxElevWidget,
+//       _elevGainWidget,
+//       _maxElevWidget,
       _caloriesWidget,
     ];
 
