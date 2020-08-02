@@ -21,19 +21,20 @@ import 'package:usrun/manager/team_manager.dart';
 
 class TeamPage extends StatefulWidget {
   final int suggestionLength = 15;
+
   @override
   _TeamPageState createState() => _TeamPageState();
 }
 
 class _TeamPageState extends State<TeamPage> {
+  final RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
   bool _isLoading;
   List<TeamItem> _myTeamList;
   List<TeamItem> _teamSuggestionList;
   List<TeamItem> _myInvitedTeamList;
   List<TeamItem> _myRequestingTeamList;
-
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -137,135 +138,142 @@ class _TeamPageState extends State<TeamPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: R.colors.appBackground,
-        body: RefreshConfiguration(
-          maxOverScrollExtent: 50,
-          headerTriggerDistance: 50,
-          child: SmartRefresher(
-            enablePullDown: true,
-            controller: _refreshController,
-            onRefresh: () => {reloadTeamList()},
-            child: (_isLoading
-                ? LoadingDot()
-                : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(
-                          height: R.appRatio.appHeight250,
-                          width: R.appRatio.deviceWidth,
-                          child: Carousel(
-                            images: _getBannerList(),
-                            defaultImage: R.images.smallDefaultImage,
-                            dotSize: R.appRatio.appIconSize5,
-                            dotSpacing: R.appRatio.appSpacing20,
-                            dotColor: Colors.white,
-                            dotIncreasedColor: R.colors.majorOrange,
-                            dotBgColor: Colors.black.withOpacity(0.25),
-                            boxFit: BoxFit.cover,
-                            indicatorBgPadding: 5.0,
-                            animationDuration: Duration(milliseconds: 500),
-                            autoplayDuration: Duration(seconds: 8),
-                          ),
+      backgroundColor: R.colors.appBackground,
+      body: RefreshConfiguration(
+        headerBuilder: () => WaterDropMaterialHeader(
+          backgroundColor: R.colors.majorOrange,
+        ),
+        footerBuilder: null,
+        shouldFooterFollowWhenNotFull: (state) {
+          return false;
+        },
+        hideFooterWhenNotFull: true,
+        child: SmartRefresher(
+          enablePullDown: true,
+          controller: _refreshController,
+          onRefresh: () => {reloadTeamList()},
+          child: (_isLoading
+              ? LoadingDot()
+              : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(
+                        height: R.appRatio.appHeight250,
+                        width: R.appRatio.deviceWidth,
+                        child: Carousel(
+                          images: _getBannerList(),
+                          defaultImage: R.images.smallDefaultImage,
+                          dotSize: R.appRatio.appIconSize5,
+                          dotSpacing: R.appRatio.appSpacing20,
+                          dotColor: Colors.white,
+                          dotIncreasedColor: R.colors.majorOrange,
+                          dotBgColor: Colors.black.withOpacity(0.25),
+                          boxFit: BoxFit.cover,
+                          indicatorBgPadding: 5.0,
+                          animationDuration: Duration(milliseconds: 500),
+                          autoplayDuration: Duration(seconds: 8),
                         ),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        TeamList(
-                          items: _myTeamList,
-                          labelTitle: R.strings.yourTeams,
-                          enableLabelShadow: true,
-                          enableScrollBackgroundColor: true,
-                          pressItemFunction: (teamItem) {
-                            // TODO: Test
-                            pushPage(context,
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      TeamList(
+                        items: _myTeamList,
+                        labelTitle: R.strings.yourTeams,
+                        enableLabelShadow: true,
+                        enableScrollBackgroundColor: true,
+                        pressItemFunction: (teamItem) {
+                          // TODO: Test
+                          pushPage(
+                              context, TeamInfoPage(teamId: teamItem.teamId));
+                          print(
+                              "[YourTeams] This team with id ${teamItem.teamId} is pressed");
+                        },
+                      ),
+                      (checkListIsNullOrEmpty(_myInvitedTeamList)
+                          ? Container()
+                          : SizedBox(
+                              height: R.appRatio.appSpacing20,
+                            )),
+                      (checkListIsNullOrEmpty(_myInvitedTeamList)
+                          ? Container()
+                          : TeamList(
+                              items: _myInvitedTeamList,
+                              labelTitle: "You are invited to join ",
+                              enableLabelShadow: true,
+                              enableScrollBackgroundColor: true,
+                              enableSplitListToTwo: false,
+                              pressItemFunction: (teamItem) {
+                                pushPage(context,
                                     TeamInfoPage(teamId: teamItem.teamId));
-                            print(
-                                "[YourTeams] This team with id ${teamItem.teamId} is pressed");
-                          },
-                        ),
-                        (checkListIsNullOrEmpty(_myInvitedTeamList)
-                            ? Container()
-                            : SizedBox(
-                                height: R.appRatio.appSpacing20,
-                              )),
-                        (checkListIsNullOrEmpty(_myInvitedTeamList)
-                            ? Container()
-                            : TeamList(
-                                items: _myInvitedTeamList,
-                                labelTitle: "You are invited to join ",
-                                enableLabelShadow: true,
-                                enableScrollBackgroundColor: true,
-                                enableSplitListToTwo: false,
-                                pressItemFunction: (teamItem) {
-                                  pushPage(context,
-                                          TeamInfoPage(teamId: teamItem.teamId));
-                                  print(
-                                      "[Invited] This team with id ${teamItem.teamId} is pressed");
-                                },
-                              )),
-                        (checkListIsNullOrEmpty(_myRequestingTeamList)
-                            ? Container()
-                            : SizedBox(
-                                height: R.appRatio.appSpacing20,
-                              )),
-                        (checkListIsNullOrEmpty(_myRequestingTeamList)
-                            ? Container()
-                            : TeamList(
-                                items: _myRequestingTeamList,
-                                labelTitle: "Requesting teams",
-                                enableLabelShadow: true,
-                                enableScrollBackgroundColor: true,
-                                enableSplitListToTwo: false,
-                                pressItemFunction: (teamItem) {
-                                  pushPage(context,
-                                          TeamInfoPage(teamId: teamItem.teamId));
-                                  print(
-                                      "[Requested] This team with id ${teamItem.teamId} is pressed");
-                                },
-                              )),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        TeamList(
-                          items: _teamSuggestionList,
-                          labelTitle: R.strings.weSuggestYou,
-                          enableLabelShadow: true,
-                          enableScrollBackgroundColor: true,
-                          enableSplitListToTwo: false,
-                          pressItemFunction: (teamItem) {
-                            pushPage(context,
+                                print(
+                                    "[Invited] This team with id ${teamItem.teamId} is pressed");
+                              },
+                            )),
+                      (checkListIsNullOrEmpty(_myRequestingTeamList)
+                          ? Container()
+                          : SizedBox(
+                              height: R.appRatio.appSpacing20,
+                            )),
+                      (checkListIsNullOrEmpty(_myRequestingTeamList)
+                          ? Container()
+                          : TeamList(
+                              items: _myRequestingTeamList,
+                              labelTitle: "Requesting teams",
+                              enableLabelShadow: true,
+                              enableScrollBackgroundColor: true,
+                              enableSplitListToTwo: false,
+                              pressItemFunction: (teamItem) {
+                                pushPage(context,
                                     TeamInfoPage(teamId: teamItem.teamId));
-                            print(
-                                "[WeSuggestYou] This team with id ${teamItem.teamId} is pressed");
-                          },
-                        ),
-                        SizedBox(
-                          height: R.appRatio.appSpacing20,
-                        ),
-                        LineButton(
-                          mainText: R.strings.viewAllTeams,
-                          mainTextFontSize: R.appRatio.appFontSize16,
-                          enableSuffixIcon: true,
-                          suffixIconSize: R.appRatio.appIconSize15,
-                          suffixIconImageURL: R.myIcons.nextIconByTheme,
-                          enableBottomUnderline: true,
-                          textPadding: EdgeInsets.all(15),
-                          enableTopUnderline: true,
-                          lineFunction: () {
-                            pushPage(
-                              context,
-                              TeamSearchPage(
-                                  autoFocusInput: false,
-                                  defaultList: _teamSuggestionList),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  )),
-          ),
-        ));
+                                print(
+                                    "[Requested] This team with id ${teamItem.teamId} is pressed");
+                              },
+                            )),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      TeamList(
+                        items: _teamSuggestionList,
+                        labelTitle: R.strings.weSuggestYou,
+                        enableLabelShadow: true,
+                        enableScrollBackgroundColor: true,
+                        enableSplitListToTwo: false,
+                        pressItemFunction: (teamItem) {
+                          pushPage(
+                              context, TeamInfoPage(teamId: teamItem.teamId));
+                          print(
+                              "[WeSuggestYou] This team with id ${teamItem.teamId} is pressed");
+                        },
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing20,
+                      ),
+                      LineButton(
+                        mainText: R.strings.viewAllTeams,
+                        mainTextFontSize: R.appRatio.appFontSize16,
+                        enableSuffixIcon: true,
+                        suffixIconSize: R.appRatio.appIconSize15,
+                        suffixIconImageURL: R.myIcons.nextIconByTheme,
+                        enableBottomUnderline: true,
+                        textPadding: EdgeInsets.all(15),
+                        enableTopUnderline: true,
+                        lineFunction: () {
+                          pushPage(
+                            context,
+                            TeamSearchPage(
+                                autoFocusInput: false,
+                                defaultList: _teamSuggestionList),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )),
+        ),
+      ),
+    );
   }
 }

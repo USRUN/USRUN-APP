@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/util/date_time_utils.dart';
-import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
-
-import 'package:usrun/widget/photo_list.dart';
-
-// Demo data
-import 'package:usrun/demo_data.dart';
 
 class ProfileActivity extends StatefulWidget {
   @override

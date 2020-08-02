@@ -209,13 +209,12 @@ void pop(BuildContext context, {bool rootNavigator = false, dynamic object}) {
   }
 }
 
+// ================ IMAGE PICKER ================
 
-//================= IMAGE PICKER ==========================
-
-Future<String> getUserImageAsBase64(CropStyle cropStyle, BuildContext context) async {
+Future<String> getUserImageAsBase64(
+    CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result =
-  await _selectedCameraFile.showCameraPickerActionSheet(context);
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
   if (!result) return "";
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
@@ -227,8 +226,7 @@ Future<String> getUserImageAsBase64(CropStyle cropStyle, BuildContext context) a
 
 Future<File> getUserImageFile(CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result =
-  await _selectedCameraFile.showCameraPickerActionSheet(context);
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
   if (!result) return null;
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
@@ -242,4 +240,22 @@ Future<File> getUserImageFile(CropStyle cropStyle, BuildContext context) async {
 
 int getPlatform() {
   return Platform.isIOS ? PlatformType.iOS.index : PlatformType.Android.index;
+}
+
+double switchBetweenMeterAndKm(int meters, {RunningUnit formatType}) {
+  double _computeValue(RunningUnit data) {
+    if (data == RunningUnit.METER) {
+      return meters * 1.0;
+    } else if (data == RunningUnit.KILOMETER) {
+      return meters / 1000;
+    } else {
+      return 0;
+    }
+  }
+
+  if (formatType != null) {
+    return _computeValue(formatType);
+  } else {
+    return _computeValue(R.currentRunningUnit);
+  }
 }

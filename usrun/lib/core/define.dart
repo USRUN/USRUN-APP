@@ -65,6 +65,11 @@ enum AppTheme {
   DARK,
 }
 
+enum RunningUnit {
+  METER,
+  KILOMETER,
+}
+
 @reflector
 enum Gender {
   Male,
@@ -102,6 +107,8 @@ enum EventStatus { Opening, OnGoing, Ended }
 
 @reflector
 enum UserRole { Owner, Admin, Member }
+
+@reflector
 enum TeamMemberType { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
 
 @reflector

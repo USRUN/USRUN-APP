@@ -10,11 +10,10 @@ import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
 import 'package:usrun/widget/event_list/event_list.dart';
 import 'package:usrun/widget/follower_following_list/follower_following_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
-import 'package:usrun/widget/photo_list.dart';
+import 'package:usrun/widget/photo_list/photo_list.dart';
 import 'package:usrun/widget/stats_section/stats_section.dart';
 import 'package:usrun/widget/team_list/team_list.dart';
 import 'package:usrun/widget/ui_button.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 // Demo data
 import 'package:usrun/demo_data.dart';

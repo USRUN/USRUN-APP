@@ -7,6 +7,7 @@ import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/event_badge_list/event_badge_item.dart';
 import 'package:usrun/widget/event_list/event_item.dart';
 import 'package:usrun/widget/follower_following_list/follower_following_item.dart';
+import 'package:usrun/widget/photo_list/photo_item.dart';
 import 'package:usrun/widget/team_list/team_item.dart';
 import 'package:usrun/widget/team_plan_list/team_plan_item.dart';
 
@@ -70,72 +71,72 @@ class DemoData {
   ];
 
   final photoItemList = [
-    {
-      'thumbnailURL':
+    PhotoItem(
+      imageURL:
           'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
-      'imageURL':
-          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i.pinimg.com/originals/3f/e8/f3/3fe8f39d6470b4f5e6b95b63b41b032f.png',
+    ),
+    PhotoItem(
+      imageURL:
           'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
-      'imageURL':
-          'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://fsa.zobj.net/crop.php?r=Jpxw0sc1BcrDUUhFmPojrSJwGldpurelLtyUo5aZfSedCBxQxUUSMl91wbzycYOPAancYe8Y1eViVrNu4Eqj-3IhWGNot1_J8OKDVoYBdbx7B4RAfYwVnAtw8yF-di-mAgGvseJ1A_d_M3LL',
+    ),
+    PhotoItem(
+      imageURL:
           'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
-      'imageURL':
-          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i113.photobucket.com/albums/n224/hazels_designs/rahne-1.gif',
-      'imageURL':
-          'https://i113.photobucket.com/albums/n224/hazels_designs/rahne-1.gif'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i113.photobucket.com/albums/n224/hazels_designs/rahne-1.gif',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
-      'imageURL':
-          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
-      'imageURL':
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic8.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
-      'imageURL':
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
-      'imageURL':
-          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
-      'imageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg',
-      'imageURL':
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg'
-    },
-    {
-      'thumbnailURL':
+      thumbnailURL:
+          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg',
+    ),
+    PhotoItem(
+      imageURL:
           'https://i49.photobucket.com/albums/f260/starfoxfan/fursona.jpg',
-      'imageURL':
-          'https://i49.photobucket.com/albums/f260/starfoxfan/fursona.jpg'
-    }
+      thumbnailURL:
+          'https://i49.photobucket.com/albums/f260/starfoxfan/fursona.jpg',
+    ),
   ];
 
   final ffItemList = [

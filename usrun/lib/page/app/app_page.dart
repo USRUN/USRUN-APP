@@ -6,6 +6,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
+import 'package:usrun/page/feed/athlete_search_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
@@ -106,7 +107,18 @@ class _AppPageState extends State<AppPage> {
         list.add(Container());
         break;
       case 1: // Feed page
-        list.add(Container());
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarSearchBtn,
+                () {
+              pushPage(
+                context,
+                AthleteSearchPage(),
+              );
+            },
+          ),
+        );
+        break;
         break;
       case 2: // Event page
         list.add(Container());

@@ -52,4 +52,39 @@ class User with MapperObject {
     }
     return false;
   }
+
+  User({
+    this.userId,
+    this.openId,
+    this.type,
+    this.code,
+    this.email,
+    this.avatar,
+    this.name,
+    this.nameSlug,
+    this.isActive,
+    this.deviceToken,
+    this.birthday,
+    this.phone,
+    this.province,
+    this.gender,
+    this.weight,
+    this.height,
+    this.accessToken,
+    this.lastLogin,
+    this.addDate,
+    this.updateTime,
+    this.hcmus,
+    this.followerCount,
+    this.followingCount,
+    this.activityCount,
+    this.distance,
+    this.rank,
+    this.activeDays,
+    this.followingPrivacy,
+    this.activitiesPrivacy,
+    this.followStatus,
+    this.notifications,
+    this.teamMemberType,
+  });
 }

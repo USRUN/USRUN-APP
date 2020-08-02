@@ -1,8 +1,14 @@
 import 'package:reflectable/reflectable.dart';
 
-class Reflector extends Reflectable
-{
-  const Reflector(): super(invokingCapability,typingCapability,reflectedTypeCapability);
+class Reflector extends Reflectable {
+  const Reflector()
+      : super(
+          invokingCapability,
+          typingCapability,
+          reflectedTypeCapability,
+          typeRelationsCapability,
+          superclassQuantifyCapability,
+        );
 }
 
 const reflector = const Reflector();
