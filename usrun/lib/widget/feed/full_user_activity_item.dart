@@ -5,7 +5,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
-import 'package:usrun/page/profile/profile_edit_page.dart';
+import 'package:usrun/page/feed/edit_activity_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -78,8 +78,13 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
   void _onSelectedPopup(var value) {
     switch (value) {
       case 0:
-        // Edit profile
-        pushPage(context, EditProfilePage());
+        // Edit activity
+        pushPage(
+          context,
+          EditActivityPage(
+            userActivity: _userActivity,
+          ),
+        );
         break;
       case 1:
         // Delete current activity

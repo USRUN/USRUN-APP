@@ -77,7 +77,7 @@ class _UserActivityPageState extends State<UserActivityPage> {
     );
 
     Widget _buildElement = Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
         title: R.strings.activity,
