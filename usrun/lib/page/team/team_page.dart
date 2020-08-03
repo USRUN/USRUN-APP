@@ -27,7 +27,7 @@ class TeamPage extends StatefulWidget {
 
 class _TeamPageState extends State<TeamPage> {
   final RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   bool _isLoading;
   List<TeamItem> _myTeamList;
@@ -147,10 +147,18 @@ class _TeamPageState extends State<TeamPage> {
       body: RefreshConfiguration(
         maxOverScrollExtent: 50,
         headerTriggerDistance: 50,
+        headerBuilder: () => WaterDropMaterialHeader(
+          backgroundColor: R.colors.majorOrange,
+        ),
+        footerBuilder: null,
+        shouldFooterFollowWhenNotFull: (state) {
+          return false;
+        },
+        hideFooterWhenNotFull: true,
         child: SmartRefresher(
           enablePullDown: true,
           controller: _refreshController,
-          onRefresh: () => {reloadTeamList()},
+          onRefresh: reloadTeamList,
           child: (_isLoading
               ? LoadingDot()
               : SingleChildScrollView(
@@ -173,14 +181,6 @@ class _TeamPageState extends State<TeamPage> {
                           indicatorBgPadding: 5.0,
                           animationDuration: Duration(milliseconds: 500),
                           autoplayDuration: Duration(seconds: 8),
-        headerBuilder: () => WaterDropMaterialHeader(
-          backgroundColor: R.colors.majorOrange,
-        ),
-        footerBuilder: null,
-        shouldFooterFollowWhenNotFull: (state) {
-          return false;
-        },
-        hideFooterWhenNotFull: true,
                         ),
                       ),
                       SizedBox(
@@ -205,7 +205,7 @@ class _TeamPageState extends State<TeamPage> {
                           ? Container()
                           : TeamList(
                               items: _myInvitedTeamList,
-                              labelTitle: "You are invited to join ",
+                              labelTitle: R.strings.inviteTeamListTitle,
                               enableLabelShadow: true,
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,
@@ -223,7 +223,7 @@ class _TeamPageState extends State<TeamPage> {
                           ? Container()
                           : TeamList(
                               items: _myRequestingTeamList,
-                              labelTitle: "Requesting teams",
+                              labelTitle: R.strings.requestTeamListTitle,
                               enableLabelShadow: true,
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,

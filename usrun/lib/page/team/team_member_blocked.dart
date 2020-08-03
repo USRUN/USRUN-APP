@@ -14,6 +14,7 @@ import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class BlockedMemberPage extends StatefulWidget {
   final int teamId;
@@ -29,17 +30,21 @@ class BlockedMemberPage extends StatefulWidget {
 class _BlockedMemberPageState extends State<BlockedMemberPage>
     with SingleTickerProviderStateMixin {
   List<User> items = List();
+  bool _isLoading;
   int _curPage;
   bool _remainingResults;
   RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
 
+    _isLoading = false;
     _curPage = 1;
     _remainingResults = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _reloadItems());
   }
 
   @override
@@ -53,14 +58,14 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
       _refreshController.loadNoData();
       return;
     }
-    if (!_remainingResults) return;
     _remainingResults = false;
 
     Response<dynamic> response = await TeamManager.getTeamMemberByType(
-        widget.teamId,
-        TeamMemberType.Blocked.index,
-        _curPage,
-        widget.resultPerPage);
+      widget.teamId,
+      TeamMemberType.Blocked.index,
+      _curPage,
+      widget.resultPerPage,
+    );
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<User> toAdd = response.object;
@@ -71,6 +76,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
           items.addAll(toAdd);
           _remainingResults = true;
           _curPage += 1;
+          _isLoading = false;
           _refreshController.loadComplete();
         },
       );
@@ -102,23 +108,46 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
   }
 
   void changeMemberRole(int index, int newMemberType) async {
-    if (!mounted) return;
+    if (!mounted || items[index] == null) return;
+
+    setState(
+      () {
+        _isLoading = true;
+      },
+    );
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success) {
-      setState(() {
-        _reloadItems();
-      });
+      setState(
+        () {
+          _reloadItems();
+        },
+      );
     } else {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
         content: response.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     }
+
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        if (mounted && _isLoading) {
+          setState(
+            () {
+              _isLoading = false;
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget _buildEmptyList() {
@@ -179,6 +208,10 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
   Widget build(BuildContext context) {
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
+    }
+
+    if (_isLoading) {
+      return LoadingIndicator();
     }
 
     return AnimationLimiter(

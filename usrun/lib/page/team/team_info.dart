@@ -185,7 +185,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         title: R.strings.notice,
         content: R.strings.notAuthorizedTeamChange,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
       return;
     }
@@ -210,7 +212,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           title: R.strings.notice,
           content: updatedTeam.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
+          firstButtonFunction: () {
+            pop(this.context);
+          },
         );
       }
     } catch (error) {
@@ -252,7 +256,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         title: R.strings.notice,
         content: response.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     }
   }
@@ -282,7 +288,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         gradient: R.colors.uiGradient,
         text: toDisplay,
         textSize: R.appRatio.appFontSize20,
-        onTap: () => _joinTeamFunction());
+        onTap: _joinTeamFunction);
   }
 
   String numberDisplayAdapter(dynamic toDisplay) {
@@ -315,7 +321,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         child: SmartRefresher(
           enablePullDown: true,
           controller: _refreshController,
-          onRefresh: () => {_getTeamInfo()},
+          onRefresh: _getTeamInfo,
           child: (_isLoading
               ? LoadingIndicator()
               : SingleChildScrollView(
@@ -336,7 +342,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   TeamMemberType.Admin, _teamMemberType)
                               ? Container()
                               : GestureDetector(
-                                  onTap: () => _changeTeamImage("banner"),
+                                  onTap: () {
+                                    _changeTeamImage("banner");
+                                  },
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                       right: R.appRatio.appSpacing15,
@@ -394,7 +402,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                         TeamMemberType.Admin, _teamMemberType)
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
-                            pressAvatarImage: () => _changeTeamImage("Avatar"),
+                            pressAvatarImage: () {
+                              _changeTeamImage("Avatar");
+                            },
                           ),
                           title: _teamName,
                           enableAddedContent: true,
@@ -511,8 +521,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => pushPage(context,
-                                  TeamLeaderBoardPage(teamId: widget.teamId)),
+                              onTap: () {
+                                pushPage(context,
+                                    TeamLeaderBoardPage(teamId: widget.teamId));
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[

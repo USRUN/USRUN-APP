@@ -97,7 +97,6 @@ class TeamMemberPage extends StatefulWidget {
 
 class _TeamMemberPageState extends State<TeamMemberPage>
     with SingleTickerProviderStateMixin {
-  int _selectedTabIndex;
   List<String> tabItems;
   List options = List();
   TabController _tabController;
@@ -110,8 +109,6 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   @override
   void initState() {
     super.initState();
-
-    _selectedTabIndex = 0;
 
     switch (widget.teamMemberType) {
       case TeamMemberType.Owner:
@@ -171,7 +168,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
-        content: "Invitation sent",
+        content: R.strings.invitationSent,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () {
           pop(this.context);

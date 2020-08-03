@@ -203,16 +203,15 @@ class _MemberSearchPageState extends State<MemberSearchPage>
   }
 
   void changeMemberRole(List items, int index, int newMemberType) async {
-    if (!mounted) return;
+    if (!mounted || items[index] == null) {
+      return;
+    }
+
     setState(
       () {
         _isLoading = true;
       },
     );
-
-    if (items[index] == null) {
-      return;
-    }
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);

@@ -1159,6 +1159,7 @@ class Strings {
 
   String teams;
   String team;
+  String invitationSent;
 
   String public;
   String private;

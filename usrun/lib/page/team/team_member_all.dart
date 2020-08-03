@@ -16,6 +16,7 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class AllMemberPage extends StatefulWidget {
   static final popUpMenu = [
@@ -77,6 +78,7 @@ class AllMemberPage extends StatefulWidget {
 class _AllMemberPageState extends State<AllMemberPage>
     with SingleTickerProviderStateMixin {
   List<User> items = List();
+  bool _isLoading;
   int _curPage;
   bool _remainingResults;
   List options = List();
@@ -89,6 +91,7 @@ class _AllMemberPageState extends State<AllMemberPage>
 
     _curPage = 1;
     _remainingResults = true;
+    _isLoading = false;
 
     options = checkListIsNullOrEmpty(widget.options) ? List() : widget.options;
   }
@@ -104,7 +107,6 @@ class _AllMemberPageState extends State<AllMemberPage>
       _refreshController.loadNoData();
       return;
     }
-
     _remainingResults = false;
 
     Response<dynamic> response = await TeamManager.getAllTeamMemberPaged(
@@ -116,10 +118,19 @@ class _AllMemberPageState extends State<AllMemberPage>
           items.addAll(response.object);
           _curPage += 1;
           _remainingResults = true;
+          _isLoading = false;
           _refreshController.loadComplete();
         },
       );
       return;
+    }
+
+    if (mounted) {
+      setState(
+        () {
+          _isLoading = false;
+        },
+      );
     }
 
     _refreshController.loadNoData();
@@ -163,7 +174,12 @@ class _AllMemberPageState extends State<AllMemberPage>
   }
 
   void changeMemberRole(int index, int newMemberType) async {
-    if (!mounted) return;
+    if (!mounted || items[index] == null) return;
+    setState(
+      () {
+        _isLoading = true;
+      },
+    );
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
@@ -177,9 +193,24 @@ class _AllMemberPageState extends State<AllMemberPage>
         title: R.strings.notice,
         content: response.errorMessage,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
     }
+
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        if (mounted && _isLoading) {
+          setState(
+            () {
+              _isLoading = false;
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget _buildEmptyList() {
@@ -242,46 +273,48 @@ class _AllMemberPageState extends State<AllMemberPage>
       return _buildEmptyList();
     }
 
-    return AnimationLimiter(
-      child: RefreshConfiguration(
-        maxOverScrollExtent: 50,
-        headerTriggerDistance: 50,
-        child: SmartRefresher(
-          enablePullDown: true,
-          controller: _refreshController,
-          onRefresh: _reloadItems,
-          enablePullUp: true,
-          onLoading: loadMoreData,
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 400),
-                child: SlideAnimation(
-                  verticalOffset: 100.0,
-                  child: FadeInAnimation(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                        bottom: R.appRatio.appSpacing15,
-                        left: R.appRatio.appSpacing15,
-                        right: R.appRatio.appSpacing15,
+    return _isLoading
+        ? LoadingIndicator()
+        : (AnimationLimiter(
+            child: RefreshConfiguration(
+              maxOverScrollExtent: 50,
+              headerTriggerDistance: 50,
+              child: SmartRefresher(
+                enablePullDown: true,
+                controller: _refreshController,
+                onRefresh: _reloadItems,
+                enablePullUp: true,
+                onLoading: loadMoreData,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 400),
+                      child: SlideAnimation(
+                        verticalOffset: 100.0,
+                        child: FadeInAnimation(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+                              bottom: R.appRatio.appSpacing15,
+                              left: R.appRatio.appSpacing15,
+                              right: R.appRatio.appSpacing15,
+                            ),
+                            child: widget.renderAsMember
+                                ? _renderMemberCustomCell(index)
+                                : _renderCustomCell(index),
+                          ),
+                        ),
                       ),
-                      child: widget.renderAsMember
-                          ? _renderMemberCustomCell(index)
-                          : _renderCustomCell(index),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+          ));
   }
 
   Widget _renderMemberCustomCell(int index) {

@@ -14,6 +14,7 @@ import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/loading_dot.dart';
 
 class PendingMemberPage extends StatefulWidget {
   final int teamId;
@@ -31,8 +32,9 @@ class _PendingMemberPageState extends State<PendingMemberPage>
   List<User> items = List();
   int _curPage;
   bool _remainingResults;
+  bool _isLoading;
   RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -40,6 +42,9 @@ class _PendingMemberPageState extends State<PendingMemberPage>
 
     _curPage = 1;
     _remainingResults = true;
+    _isLoading = false;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _reloadItems());
   }
 
   @override
@@ -53,14 +58,14 @@ class _PendingMemberPageState extends State<PendingMemberPage>
       _refreshController.loadNoData();
       return;
     }
-    if (!_remainingResults) return;
     _remainingResults = false;
 
     Response<dynamic> response = await TeamManager.getTeamMemberByType(
-        widget.teamId,
-        TeamMemberType.Pending.index,
-        _curPage,
-        widget.resultPerPage);
+      widget.teamId,
+      TeamMemberType.Pending.index,
+      _curPage,
+      widget.resultPerPage,
+    );
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<User> toAdd = response.object;
@@ -71,6 +76,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
           items.addAll(toAdd);
           _remainingResults = true;
           _curPage += 1;
+          _isLoading = false;
           _refreshController.loadComplete();
         },
       );
@@ -106,12 +112,22 @@ class _PendingMemberPageState extends State<PendingMemberPage>
   }
 
   void changeMemberRole(int index, int newMemberType) async {
+    if (!mounted || items[index] == null) return;
+
+    setState(
+      () {
+        _isLoading = true;
+      },
+    );
+
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success && mounted) {
-      setState(() {
-        _reloadItems();
-      });
+      setState(
+        () {
+          _reloadItems();
+        },
+      );
     } else {
       showCustomAlertDialog(
         context,
@@ -123,6 +139,19 @@ class _PendingMemberPageState extends State<PendingMemberPage>
         },
       );
     }
+
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        if (mounted && _isLoading) {
+          setState(
+            () {
+              _isLoading = false;
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget _buildEmptyList() {
@@ -183,6 +212,10 @@ class _PendingMemberPageState extends State<PendingMemberPage>
   Widget build(BuildContext context) {
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
+    }
+
+    if (_isLoading) {
+      return LoadingIndicator();
     }
 
     return AnimationLimiter(

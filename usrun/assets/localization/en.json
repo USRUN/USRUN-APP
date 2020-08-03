@@ -32,10 +32,10 @@
     "inviteNewMember": "Invite new member",
     "inviteNewMemberContent": "You can send an invitation to anyone as long as they are not a member in this team. In “User Info” field, you can find them by their User Code or Name or Email.",
     "invite": "Invite",
-    "kickAMember": "Kick a member",
+    "kickAMember": "Kick this member",
     "kickAMemberContent": "You can kick anyone as long as that person is a member in your team and the role is lower than you. Noting that, they can request to join your team again.",
     "kick": "Kick",
-    "blockAPerson": "Block a person",
+    "blockAPerson": "Block this member",
     "blockAPersonContent": "You can block anyone as long as that person is a member in your team and the role is lower than you. After blocking, they will be kicked off of your team and can not request to join this team anymore. Noting that, they can still see your team’s information.",
     "block": "Block",
 
@@ -133,6 +133,7 @@
 
     "teams": "Teams",
     "team": "Team",
+    "invitationSent":  "Invitation sent",
 
     "public": "Public",
     "private": "Private",
