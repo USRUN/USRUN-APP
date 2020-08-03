@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
-import 'package:image/image.dart' as Img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -46,7 +42,6 @@ class _EditProfilePage extends State<EditProfilePage> {
     if (_weightController.text.isEmpty)
       _weightController.text = UserManager.currentUser.weight.toString();
 
-
     List<DropDownObject<int>> _dropdownCities = List();
     R.strings.provinces.asMap().forEach((index, value) {
       _dropdownCities.add(DropDownObject<int>(value: index, text: value));
@@ -84,12 +79,11 @@ class _EditProfilePage extends State<EditProfilePage> {
   Future<void> _updateProfile(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
     editUser.name = _nameController.text;
-    if (editUser.name.isEmpty)
-      {
-        showInvalidFieldDialog(context, R.strings.name);
-        return;
-      }
-    try{
+    if (editUser.name.isEmpty) {
+      showInvalidFieldDialog(context, R.strings.name);
+      return;
+    }
+    try {
       editUser.weight = double.parse(_weightController.text);
     } catch (e) {
       showInvalidFieldDialog(context, R.strings.weight);
@@ -104,33 +98,27 @@ class _EditProfilePage extends State<EditProfilePage> {
 
     Map<String, dynamic> params = new Map<String, dynamic>();
     params = editUser.toMap();
-    if (editUser.avatar!= UserManager.currentUser.avatar)
+    if (editUser.avatar != UserManager.currentUser.avatar)
       params['avatar'] = "data:image/png;base64,${editUser.avatar}";
     else
       params.remove('avatar');
     Response<User> res = await UserManager.updateProfileInfo(params);
-    if (res.success)
-      {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: 'Successfully updated profile!',
-            firstButtonText: R.strings.ok,
-            firstButtonFunction: () {
-              pop(this.context);
-              restartApp(0);
-            });
-      }
-    else
-      {
-        showCustomAlertDialog(context,
-            title: R.strings.notice,
-            content: 'Fail to update profile! Please try again later!',
-            firstButtonText: R.strings.ok,
-            firstButtonFunction: () {
-              pop(this.context);
-            });
-      }
-
+    if (res.success) {
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: 'Successfully updated profile!',
+          firstButtonText: R.strings.ok, firstButtonFunction: () {
+        pop(this.context);
+        restartApp(0);
+      });
+    } else {
+      showCustomAlertDialog(context,
+          title: R.strings.notice,
+          content: 'Fail to update profile! Please try again later!',
+          firstButtonText: R.strings.ok, firstButtonFunction: () {
+        pop(this.context);
+      });
+    }
   }
 
   Future<void> openSelectPhoto(BuildContext context) async {
@@ -197,12 +185,10 @@ class _EditProfilePage extends State<EditProfilePage> {
                   alignment: Alignment.center,
                   child: AvatarView(
                     avatarImageURL: editUser.avatar,
-                    avatarImageSize: R.appRatio.appAvatarSize150,
+                    avatarImageSize: 120,
                     enableSquareAvatarImage: false,
                     pressAvatarImage: () {
-                      openSelectPhoto(
-                        context,
-                      );
+                      openSelectPhoto(context);
                     },
                     avatarBoxBorder: Border.all(
                       color: R.colors.majorOrange,
@@ -258,7 +244,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                   enableHorizontalLabelTitle: false,
                   onChanged: this._getSelectedDropDownCities,
                   items: _dropdownCities,
-                  initialValue: _dropdownCities[UserManager.currentUser.province].value,
+                  initialValue:
+                      _dropdownCities[UserManager.currentUser.province].value,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

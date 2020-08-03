@@ -4,32 +4,22 @@ import 'package:usrun/core/R.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/validator.dart';
+import 'package:usrun/widget/photo_list/photo_item.dart';
 
 class PhotoList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;
-  final List items;
+  final List<PhotoItem> items;
   final bool enableScrollBackgroundColor;
 
-  final double _thumbnailSize =
-      R.appRatio.appPhotoThumbnailSize;
+  final double _thumbnailSize = R.appRatio.appPhotoThumbnailSize;
 
   // Define configurations for splitting item list
-  static List _newItemList = [];
+  static List<List<PhotoItem>> _newItemList = [];
   static bool _enableListWithTwoRows = false;
   static int _numberToSplit = R.constants.numberToSplitPhotoList;
   static int _endPositionOfFirstList = 0;
-
-  /*
-    Structure of the "items" variable: 
-    [
-      {
-        "thumbnailURL": "https://...",
-        "imageURL": "https://..."
-      },
-      ...
-    ]
-  */
 
   PhotoList({
     this.labelTitle = "",
@@ -59,7 +49,7 @@ class PhotoList extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          (this.labelTitle.length != 0
+          (!checkStringNullOrEmpty(this.labelTitle)
               ? Container(
                   padding: EdgeInsets.only(
                     left: R.appRatio.appSpacing15,
@@ -142,13 +132,13 @@ class PhotoList extends StatelessWidget {
   }
 
   Widget _buildPhotoList(
-      BuildContext context, List element, int firstIndexOfPhoto) {
+      BuildContext context, List<PhotoItem> element, int firstIndexOfPhoto) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: element.length,
       itemBuilder: (BuildContext ctxt, int index) {
-        String thumbnailURL = element[index]['thumbnailURL'];
+        String thumbnailURL = element[index].thumbnailURL;
 
         return Container(
           padding: EdgeInsets.only(
@@ -217,7 +207,7 @@ class _GalleryPhotoViewWrapper extends StatefulWidget {
   final dynamic maxScale;
   final int initialIndex;
   final PageController pageController;
-  final List items;
+  final List<PhotoItem> items;
 
   @override
   State<StatefulWidget> createState() => new _GalleryPhotoViewWrapperState();
@@ -265,9 +255,9 @@ class _GalleryPhotoViewWrapperState extends State<_GalleryPhotoViewWrapper> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final element = widget.items[index];
+    final imageURL = widget.items[index].imageURL;
     return PhotoViewGalleryPageOptions(
-      imageProvider: NetworkImage(element['imageURL']),
+      imageProvider: NetworkImage(imageURL),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * 1.0,
       maxScale: PhotoViewComputedScale.covered * 2.0,

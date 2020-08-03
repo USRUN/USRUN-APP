@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
@@ -100,9 +98,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         _buildStatsBox(
-                            R.strings.distance,
-                            data.totalDistance.toString(),
-                            R.strings.distanceUnit),
+                          R.strings.distance,
+                          data.totalDistance.toString(),
+                          R.strings.meters,
+                        ),
                         _buildStatsBox(
                             R.strings.time,
                             (Duration(seconds: data.totalTime).toString())
@@ -138,7 +137,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                             data.totalStep == -1
                                 ? R.strings.na
                                 : data.totalStep.toString(),
-                            R.strings.totalUnit)
+                            R.strings.totalStepsUnit)
                       ],
                     )
                   ],
@@ -155,7 +154,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   TextEditingController _descriptionController = new TextEditingController();
 
   _buildRunTitle() {
-    if (_titleController.text.isEmpty){
+    if (_titleController.text.isEmpty) {
       _titleController.text = widget.activity.title;
     }
     return (Padding(
@@ -212,7 +211,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
-       var image = await getUserImageFile(CropStyle.rectangle, context);
+      var image = await getUserImageFile(CropStyle.rectangle, context);
       if (image != null) {
         widget.activity.addPhotoFile(image, indexPhoto);
         this.widget.streamFile.add(image);
@@ -378,11 +377,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
-    String requestTime = localToUtc(DateTime.now()).millisecondsSinceEpoch.toString();
+    String requestTime =
+        localToUtc(DateTime.now()).millisecondsSinceEpoch.toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
-    var params = RecordHelper.generateParamsForRequest(widget.activity, requestTime);
+    var params =
+        RecordHelper.generateParamsForRequest(widget.activity, requestTime);
     Response<Map<String, dynamic>> response =
         await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
             '/activity/createUserActivity', params);

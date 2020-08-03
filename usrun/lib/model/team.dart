@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:usrun/core/R.dart';
-
 import 'package:usrun/model/mapper_object.dart';
-
 import 'package:usrun/util/reflector.dart';
 
 @reflector
-class Team extends MapperObject {
+class Team with MapperObject {
   int id;
   String teamName;
   String description;
@@ -22,15 +19,17 @@ class Team extends MapperObject {
   bool deleted;
   int totalMember;
   int teamMemberType;
+
 //  TeamVerifyStatus verifyStatus;
 //  SportType sportType;
 //  UserRole userType;
 //  bool hasOwner = false;
 //  bool official = false;
 
-
   static Widget nameWidget(Team team, [TextStyle style, TextAlign textAlign]) {
-    style = style ?? TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16);
+    style = style ??
+        TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16);
     List<TextSpan> children = [
       TextSpan(
         text: team.teamName + " ",
@@ -64,7 +63,7 @@ class Team extends MapperObject {
   }
 
   @override
-  bool operator == (other) {
+  bool operator ==(other) {
     if (other is Team) {
       return id == other.id;
     }

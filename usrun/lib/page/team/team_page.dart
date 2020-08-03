@@ -26,14 +26,14 @@ class TeamPage extends StatefulWidget {
 }
 
 class _TeamPageState extends State<TeamPage> {
+  final RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
   bool _isLoading;
   List<TeamItem> _myTeamList;
   List<TeamItem> _teamSuggestionList;
   List<TeamItem> _myInvitedTeamList;
   List<TeamItem> _myRequestingTeamList;
-
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -173,6 +173,14 @@ class _TeamPageState extends State<TeamPage> {
                           indicatorBgPadding: 5.0,
                           animationDuration: Duration(milliseconds: 500),
                           autoplayDuration: Duration(seconds: 8),
+        headerBuilder: () => WaterDropMaterialHeader(
+          backgroundColor: R.colors.majorOrange,
+        ),
+        footerBuilder: null,
+        shouldFooterFollowWhenNotFull: (state) {
+          return false;
+        },
+        hideFooterWhenNotFull: true,
                         ),
                       ),
                       SizedBox(

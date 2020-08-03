@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
@@ -12,6 +13,7 @@ class AvatarView extends StatelessWidget {
   final double radiusSquareBorder;
   final Function pressAvatarImage;
   final String supportImageURL;
+  final BoxBorder supportImageBorder;
 
   AvatarView({
     @required this.avatarImageURL,
@@ -24,12 +26,13 @@ class AvatarView extends StatelessWidget {
     this.radiusSquareBorder = 5,
     this.pressAvatarImage,
     this.supportImageURL,
+    this.supportImageBorder,
   }) : assert(avatarImageSize != null &&
-      avatarImageSize >= 0.0 &&
-      avatarSquareWidth != null &&
-      avatarSquareWidth >= 0.0 &&
-      avatarSquareHeight != null &&
-      avatarSquareHeight >= 0.0);
+            avatarImageSize >= 0.0 &&
+            avatarSquareWidth != null &&
+            avatarSquareWidth >= 0.0 &&
+            avatarSquareHeight != null &&
+            avatarSquareHeight >= 0.0);
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +54,8 @@ class AvatarView extends StatelessWidget {
         border: this.avatarBoxBorder,
         boxShadow: (this.avatarBoxShadow != null
             ? [
-          this.avatarBoxShadow,
-        ]
+                this.avatarBoxShadow,
+              ]
             : null),
       ),
       child: GestureDetector(
@@ -68,7 +71,7 @@ class AvatarView extends StatelessWidget {
               borderRadius: (this.enableSquareAvatarImage
                   ? BorderRadius.all(Radius.circular(this.radiusSquareBorder))
                   : BorderRadius.all(
-                  Radius.circular(this.avatarImageSize / 2))),
+                      Radius.circular(this.avatarImageSize / 2))),
               child: ImageCacheManager.getImage(
                 url: this.avatarImageURL,
                 height: avatarHeight,
@@ -79,19 +82,27 @@ class AvatarView extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: (this.supportImageURL == null ||
-                  this.supportImageURL.length == 0
+                      this.supportImageURL.length == 0
                   ? null
-                  : ClipRRect(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(_supportImageSize / 2),
-                ),
-                child: ImageCacheManager.getImage(
-                  url: this.supportImageURL,
-                  height: _supportImageSize,
-                  width: _supportImageSize,
-                  fit: BoxFit.cover,
-                ),
-              )),
+                  : Container(
+                      decoration: BoxDecoration(
+                        border: supportImageBorder,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(_supportImageSize / 2),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(_supportImageSize / 2),
+                        ),
+                        child: ImageCacheManager.getImage(
+                          url: this.supportImageURL,
+                          height: _supportImageSize,
+                          width: _supportImageSize,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )),
             ),
           ],
         ),

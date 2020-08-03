@@ -2,7 +2,7 @@ import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/util/reflector.dart';
 
 @reflector
-class ObjectFilter extends MapperObject {
+class ObjectFilter with MapperObject {
   int value;
   String name;
 

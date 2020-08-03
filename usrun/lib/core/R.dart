@@ -21,6 +21,7 @@ class R {
   static _ImagePickerDefaults imagePickerDefaults = _ImagePickerDefaults();
   static AppTheme currentAppTheme = AppTheme.LIGHT;
   static String currentAppLanguage = "en";
+  static RunningUnit currentRunningUnit = RunningUnit.KILOMETER;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   static PackageInfo packageInfo;
   static String modelName = "";
@@ -718,12 +719,13 @@ class _Colors {
   Color appBackground = Color(0xFFFFFFFF);
   Color boxBackground = Color(0xFFFFFFFF);
   Color grayButtonColor = Color(0xFF515151);
-  Color sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.2);
+  Color sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
   Color btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
   Color textShadow = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
+  Color supportAvatarBorder = Color(0xFF01458E);
 
   // User need to change theme
   void changeTheme(AppTheme theme) {
@@ -735,12 +737,13 @@ class _Colors {
       appBackground = Color(0xFFFFFFFF);
       boxBackground = Color(0xFFFFFFFF);
       grayButtonColor = Color(0xFF515151);
-      sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.75);
+      sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
       btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
       textShadow = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
       notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
+      supportAvatarBorder = Color(0xFF01458E);
     } else {
       // #212121 = RGB(33, 33, 33)
       // #FFFFFF = RGB(255, 255, 255)
@@ -758,6 +761,7 @@ class _Colors {
       tabLayer = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
+      supportAvatarBorder = Colors.transparent;
     }
   }
 }
@@ -876,7 +880,7 @@ class _MyIcons {
   String popupMenuIconByTheme = 'assets/myicons/icon-black-3-dots.png';
   String gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
-  String hcmusLogo = 'assets/myicons/khtn.jpg';
+  String hcmusLogo = 'assets/myicons/khtn.png';
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
 
   // User wants to change theme
@@ -1113,19 +1117,24 @@ class Strings {
   String distance;
   String avgPace;
   String avgHeart;
+  String maxHeart;
   String movingTime;
   String calories;
   String total;
   String timeUnit;
-  String distanceUnit;
+  String meters;
+  String km;
+  String m;
   String avgPaceUnit;
   String avgHeartUnit;
   String movingTimeUnit;
   String caloriesUnit;
-  String totalUnit;
+  String totalStepsUnit;
   String stats;
   String title;
   String description;
+  String elevGain;
+  String maxElev;
   String photos;
   String maps;
   String viewMapDescription;
@@ -1139,15 +1148,14 @@ class Strings {
   String upload;
   String na;
 
-  String chooseImage;
-  String gallery;
-  String camera;
-  String imageTooLarge;
-  String imageUploadFailed;
-
   String uFeed;
+  String readMore;
+  String editActivity;
+  String deleteActivity;
+  String confirmActivityDeletion;
 
   String events;
+  String event;
 
   String teams;
   String team;
@@ -1163,6 +1171,7 @@ class Strings {
   String leaderboard;
   String rank;
   String activities;
+  String activity;
   String members;
   String leadingTime;
   String leadingDist;
