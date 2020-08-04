@@ -1066,6 +1066,7 @@ class Strings {
   String signUp;
   String resetPassword;
 
+  String warning;
   String caution;
   String exitApp;
   String logoutApp;
@@ -1075,6 +1076,7 @@ class Strings {
 
   String profile;
   String editProfile;
+  String discardEditedChanges;
 
   String athleteProfile;
   String athleteBadges;
@@ -1129,8 +1131,8 @@ class Strings {
   String description;
   String elevGain;
   String maxElev;
-  String photos;
-  String maps;
+  String yourPhotos;
+  String yourMaps;
   String paceChart;
   String viewMapDescription;
   String uploadActivity;
@@ -1148,6 +1150,7 @@ class Strings {
   String editActivity;
   String deleteActivity;
   String confirmActivityDeletion;
+  String askToRemoveOldOnlinePhoto;
 
   String events;
   String event;
@@ -1219,6 +1222,7 @@ class Strings {
   String blocking;
   String reporting;
   String processing;
+  String updating;
   String loading;
   String loadingTeamInfo;
 

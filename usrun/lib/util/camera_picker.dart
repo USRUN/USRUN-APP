@@ -42,12 +42,17 @@ import 'package:image_picker/image_picker.dart';
     + image_cropper: https://pub.dev/packages/image_cropper
 
   <V> How to use?:
+    + 3 values of <result> variable below:
+      - True: Take a photo or Open photo library successfully
+      - False: Photo file has been cleared/removed
+      - Null: Close action sheet
+
   void _doSomething() async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
     bool result =
         await _selectedCameraFile.showCameraPickerActionSheet(context, <Optional params>);
-    if (!result) return;
+    if (result == null || !result) return;
 
     result = await _selectedCameraFile.cropImage(<Optional params>);
     if (!result) return;
@@ -244,16 +249,10 @@ class CameraPicker {
                     (enableClearSelectedFile
                         ? _renderButton(
                             text: R.strings.clearSelectedFile,
-                            func: () async {
-                              bool obj = false;
-                              if (_cameraFileState != CameraFileState.FREE) {
-                                obj = true;
-                              }
-
+                            func: () {
                               _cameraFileState = CameraFileState.FREE;
                               _file = null;
-
-                              pop(context, object: obj);
+                              pop(context, object: false);
                             },
                             shapeBorder: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
@@ -269,7 +268,7 @@ class CameraPicker {
               SizedBox(height: _spacing),
               _renderButton(
                 text: R.strings.close,
-                func: () => pop(context, object: false),
+                func: () => pop(context, object: null),
               ),
             ],
           ),

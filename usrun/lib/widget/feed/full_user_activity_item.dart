@@ -36,22 +36,22 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     PopupItem<int>(
       title: R.strings.editActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 0,
       iconURL: R.myIcons.blackEditIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 1,
       iconURL: R.myIcons.blackCloseIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
   ];
 
@@ -75,16 +75,22 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     );
   }
 
-  void _onSelectedPopup(var value) {
+  void _onSelectedPopup(var value) async {
     switch (value) {
       case 0:
         // Edit activity
-        pushPage(
+        UserActivity newUserActivity = await pushPage(
           context,
           EditActivityPage(
             userActivity: _userActivity,
           ),
         );
+
+        if (newUserActivity != null) {
+          setState(() {
+            _userActivity = newUserActivity;
+          });
+        }
         break;
       case 1:
         // Delete current activity

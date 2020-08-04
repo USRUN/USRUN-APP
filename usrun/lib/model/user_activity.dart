@@ -22,6 +22,7 @@ class UserActivity with MapperObject {
   int calories;
   double elevGain;
   double elevMax;
+  bool showMap;
   List<String> photos;
   String title;
   String description;
@@ -49,6 +50,7 @@ class UserActivity with MapperObject {
     this.calories,
     this.elevGain,
     this.elevMax,
+    this.showMap,
     this.photos,
     this.title,
     this.description,

@@ -232,25 +232,71 @@ class _GalleryPhotoViewWrapperState extends State<_GalleryPhotoViewWrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: widget.backgroundDecoration,
-        constraints: BoxConstraints.expand(
-          height: R.appRatio.deviceHeight,
-        ),
-        child: GestureDetector(
-          onVerticalDragEnd: (event) {
-            Navigator.of(context).pop();
-          },
-          child: PhotoViewGallery.builder(
-            scrollPhysics: const BouncingScrollPhysics(),
-            builder: _buildItem,
-            itemCount: widget.items.length,
-            loadingBuilder: widget.loadingBuilder,
-            backgroundDecoration: widget.backgroundDecoration,
-            pageController: widget.pageController,
-            onPageChanged: onPageChanged,
+          decoration: widget.backgroundDecoration,
+          constraints: BoxConstraints.expand(
+            height: R.appRatio.deviceHeight,
           ),
-        ),
-      ),
+          child: Stack(
+            alignment: Alignment.topLeft,
+            children: <Widget>[
+              // Photo
+              GestureDetector(
+                onVerticalDragEnd: (event) {
+                  Navigator.of(context).pop();
+                },
+                child: PhotoViewGallery.builder(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  builder: _buildItem,
+                  itemCount: widget.items.length,
+                  loadingBuilder: widget.loadingBuilder,
+                  backgroundDecoration: widget.backgroundDecoration,
+                  pageController: widget.pageController,
+                  onPageChanged: onPageChanged,
+                ),
+              ),
+              // Back button
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1.0),
+                      color: R.colors.btnShadow,
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.only(
+                  left: 15,
+                  top: R.appRatio.statusBarHeight + 15,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  padding: EdgeInsets.all(0),
+                  splashColor: R.colors.lightBlurMajorOrange,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                  child: ImageCacheManager.getImage(
+                    url: R.myIcons.appBarBackBtn,
+                    color: Colors.black,
+                    width: 15,
+                    height: 15,
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 

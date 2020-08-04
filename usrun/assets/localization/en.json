@@ -88,6 +88,7 @@
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
 
+    "warning": "Warning",
     "caution": "Caution",
     "exitApp": "Do you want to exit USRUN app?",
     "logoutApp": "Are you sure to logout USRUN app?",
@@ -97,6 +98,7 @@
 
     "profile": "Profile",
     "editProfile": "Edit Profile",
+    "discardEditedChanges": "If you back to previous page without updating data changes, it will be lost. Are you sure?",
 
     "athleteProfile": "Athlete Profile",
     "athleteBadges": "Athlete's Badges",
@@ -127,6 +129,7 @@
     "editActivity": "Edit activity",
     "deleteActivity": "Delete activity",
     "confirmActivityDeletion": "Are you sure to delete this activity from USRUN?",
+    "askToRemoveOldOnlinePhoto": "To upload new photo, you must remove this old one first. Do you want to remove it?",
 
     "events": "Events",
     "event": "Event",
@@ -198,6 +201,7 @@
     "blocking": "Blocking",
     "reporting": "Reporting",
     "processing": "Processing...",
+    "updating": "Updating...",
     "loading": "Loading...",
     "loadingTeamInfo": "Loading team info...",
 
@@ -367,10 +371,10 @@
     "description":"Your Description",
     "elevGain": "ELEV.GAIN",
     "maxElev": "MAX.ELEV",
-    "photos":"Your Photos",
-    "maps":"Your Maps",
+    "yourPhotos":"Your Photos",
+    "yourMaps":"Your Maps",
     "paceChart": "Pace Chart",
-    "viewMapDescription":"View your Maps as Defalt",
+    "viewMapDescription":"View your maps as default",
     "uploadActivity": "Upload activity",
     "morningRun": "Morning Run",
     "afternoonRun": "Afternoon Run",
