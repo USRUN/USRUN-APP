@@ -305,6 +305,14 @@ class DataManager {
   static int getUserDefaultTab() {
     return _prefs.getInt(_USER_DEFAULT_TAB) ?? 0;
   }
+
+  static void setUserRunningUnit(RunningUnit newRunningUnit) {
+    _prefs.setInt(_USER_RUNNING_UNIT, newRunningUnit.index);
+  }
+
+  static RunningUnit getUserRunningUnit() {
+    return RunningUnit.values[(_prefs.getInt(_USER_RUNNING_UNIT) ?? 0)];
+  }
 }
 
 const String _SYNC_IDS = "SYNC_IDS";
@@ -336,3 +344,4 @@ const String _USER_CONNECT_CHECK_COUNT = "%s_CONNECT_CHECK_COUNT";
 const String _REFRESH_ACTIVITY_CHECK_TIME = "REFRESH_ACTIVITY_CHECK_TIME";
 
 const String _USER_DEFAULT_TAB = "USER_DEFAULT_TAB";
+const String _USER_RUNNING_UNIT = "_USER_RUNNING_UNIT";

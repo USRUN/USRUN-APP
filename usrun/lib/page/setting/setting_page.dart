@@ -62,6 +62,28 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
+  void handleChangeRunningUnit(state) async {
+    if (state) {
+      DataManager.setUserRunningUnit(RunningUnit.METER);
+    } else {
+      DataManager.setUserRunningUnit(RunningUnit.KILOMETER);
+    }
+
+    await showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: "Do you want to restart the app to apply the changes?",
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () {
+        restartApp(0);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: () {
+        pop(context);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,7 +192,7 @@ class _SettingPageState extends State<SettingPage> {
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                lineFunction: () async {
+                lineFunction: () {
                   handleChangeDefaultTab();
                 },
               ),
@@ -182,10 +204,10 @@ class _SettingPageState extends State<SettingPage> {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "M",
                 switchButtonOffTitle: "Km",
-                initSwitchStatus: true,
+                initSwitchStatus:
+                    DataManager.getUserRunningUnit() == RunningUnit.METER,
                 switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
+                  handleChangeRunningUnit(state);
                 },
               ),
               LineButton(
@@ -200,11 +222,13 @@ class _SettingPageState extends State<SettingPage> {
                     context,
                     [
                       ObjectFilter(
-                          name: R.strings.lightTheme,
-                          value: AppTheme.LIGHT.index),
+                        name: R.strings.lightTheme,
+                        value: AppTheme.LIGHT.index,
+                      ),
                       ObjectFilter(
-                          name: R.strings.darkTheme,
-                          value: AppTheme.DARK.index),
+                        name: R.strings.darkTheme,
+                        value: AppTheme.DARK.index,
+                      ),
                     ],
                     R.currentAppTheme.index,
                     title: R.strings.chooseAppThemeTitle,

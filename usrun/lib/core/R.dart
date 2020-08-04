@@ -1233,6 +1233,8 @@ class Strings {
   String hotContact;
   String legal;
   String faqs;
+  String selectDefaultTabTitle;
+  String selectDefaultTabContent;
 
   List<String> eventStatus;
 
