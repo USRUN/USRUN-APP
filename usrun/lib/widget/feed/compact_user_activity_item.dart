@@ -65,13 +65,19 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     _userActivity = widget.userActivity;
   }
 
-  _goToUserActivityPage() {
-    pushPage(
+  _goToUserActivityPage() async {
+    UserActivity newUserActivity = await pushPage(
       context,
       UserActivityPage(
         userActivity: _userActivity,
       ),
     );
+
+    if (newUserActivity != null) {
+      setState(() {
+        _userActivity = newUserActivity;
+      });
+    }
   }
 
   _goToUserProfile() {

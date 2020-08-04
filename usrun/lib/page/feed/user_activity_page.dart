@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/feed/full_user_activity_item.dart';
@@ -33,6 +34,11 @@ class _UserActivityPageState extends State<UserActivityPage> {
   void dispose() {
     _refreshController.dispose();
     super.dispose();
+  }
+
+  Future<bool> _doTapBack() async {
+    pop(context, object: _userActivity);
+    return false;
   }
 
   void _reLoadData() async {
@@ -81,12 +87,16 @@ class _UserActivityPageState extends State<UserActivityPage> {
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
         title: R.strings.activity,
+        leadingFunction: _doTapBack,
       ),
       body: refreshConfigs,
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-      child: _buildElement,
+      child: WillPopScope(
+        onWillPop: _doTapBack,
+        child: _buildElement,
+      ),
       onNotification: (overScroll) {
         overScroll.disallowGlow();
         return false;

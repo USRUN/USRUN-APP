@@ -23,7 +23,7 @@ enum _UserPhotoStatus {
 }
 
 class _UserPhotoItem {
-  String onlinePhoto;
+  final String onlinePhoto;
   File photoFile;
   _UserPhotoStatus status;
 
@@ -39,15 +39,14 @@ class _UserPhotoItem {
   }
 
   bool isDeletedOnlinePhoto() {
-    if (checkStringNullOrEmpty(onlinePhoto)) {
-      return false;
+    if (!checkStringNullOrEmpty(onlinePhoto) &&
+        (getPhotoFile() != null ||
+            status == _UserPhotoStatus.EMPTY ||
+            status == _UserPhotoStatus.HAS_PHOTO_FILE)) {
+      return true;
     }
 
-    if (getPhotoFile() == null) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 }
 
@@ -100,33 +99,52 @@ class _EditActivityPageState extends State<EditActivityPage> {
     }
 
     for (int i = 1; i < _userActivity.photos.length && i <= _numberPhoto; ++i) {
-      _userPhotoList[i - 1].status = _UserPhotoStatus.HAS_ONLINE_PHOTO;
-      _userPhotoList[i - 1].onlinePhoto = _userActivity.photos[i];
+      _userPhotoList[i - 1] = _UserPhotoItem(
+        status: _UserPhotoStatus.HAS_ONLINE_PHOTO,
+        onlinePhoto: _userActivity.photos[i],
+      );
     }
   }
 
   bool _dataHasChanged() {
+    bool userPhotoHasChanged = false;
+    for (int i = 0; i < _userPhotoList.length; ++i) {
+      if (_userPhotoList[i].isDeletedOnlinePhoto() ||
+          _userPhotoList[i].status == _UserPhotoStatus.HAS_PHOTO_FILE) {
+        userPhotoHasChanged = true;
+        break;
+      }
+    }
+
     return _titleTextController.text != _userActivity.title ||
-        // TODO: Check image
-        this._descriptionTextController.text != _userActivity.description;
+        this._descriptionTextController.text != _userActivity.description ||
+        userPhotoHasChanged;
+  }
+
+  void _unFocusAllTextFields() {
+    _titleNode.unfocus();
+    _descriptionNode.unfocus();
   }
 
   Future<bool> _doTapBack() async {
+    _unFocusAllTextFields();
     if (_dataHasChanged()) {
-      await showCustomAlertDialog(
-        context,
-        title: R.strings.warning,
-        content: R.strings.discardEditedChanges,
-        firstButtonText: R.strings.yes.toUpperCase(),
-        firstButtonFunction: () {
-          pop(context);
-          pop(context);
-        },
-        secondButtonText: R.strings.discard.toUpperCase(),
-        secondButtonFunction: () {
-          pop(context);
-        },
-      );
+      await Future.delayed(Duration(milliseconds: 300), () {
+        showCustomAlertDialog(
+          context,
+          title: R.strings.warning,
+          content: R.strings.discardEditedChanges,
+          firstButtonText: R.strings.yes.toUpperCase(),
+          firstButtonFunction: () {
+            pop(context);
+            pop(context);
+          },
+          secondButtonText: R.strings.discard.toUpperCase(),
+          secondButtonFunction: () {
+            pop(context);
+          },
+        );
+      });
     } else {
       pop(
         context,
@@ -134,11 +152,6 @@ class _EditActivityPageState extends State<EditActivityPage> {
       );
     }
     return false;
-  }
-
-  void _unFocusAllTextFields() {
-    _titleNode.unfocus();
-    _descriptionNode.unfocus();
   }
 
   Future<void> _updateActivityData() async {
@@ -155,7 +168,27 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
     // TODO: Code here
     print("Updating activity information");
+    _userActivity.title = "[EDIT_ACTIVITY_TEST] Test updating info";
+    _userActivity.description =
+        "[EDIT_ACTIVITY_TEST] Short description will be here Short description will be here Short description will be here Short description will be here Short description will be here";
+    /*
+       ===== FLOW =====
+       + B1: Validate giá trị 4 fields ở trên nếu cần (title, description, showMap, _userPhotoList)
+       + B2: async await gọi API cập nhật user_activity và nhận giá trị trả về là bool (Cập nhật thành công hay Thất bại)
+        - Nếu thành công: Hiện showToastDefault(msg: R.strings.updateDataSuccessfully);
+        - Nếu thất bại: Hiện showCustomAlertDialog (title: R.strings.error, content: R.strings.errorUpdateDataFail)
+       + B3: Nếu B2 thành công, gọi 1 API để lấy dữ liệu user_activity mới nhất và setState lại giá trị của các fields.
 
+      + Lưu ý:
+        - Đối với B2: Viết trực tiếp logic tại chỗ này, hàm này.
+        - Đối với B3: Nên viết 1 hàm riêng biệt.
+        - Nếu không có B3 (setState lại toàn bộ giá trị của các fields sau khi update) thì khi user bấm nút Back, hàm _dataHasChanged()
+        sẽ trả về true => User không thể pop trang => Logic chỗ này trở nên vô lý: "Update info mà data chưa thay đổi là sao???"
+    */
+
+    // TODO: End...
+
+    // Pop loading dialog
     pop(context);
   }
 
