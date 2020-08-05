@@ -1073,6 +1073,7 @@ class Strings {
   String yes;
   String no;
   String close;
+  String back;
 
   String profile;
   String editProfile;
@@ -1308,6 +1309,14 @@ class Strings {
   String settingsAccountPrivacyProfileTitle;
   String settingsAccountConnectGoogleTitle;
   String settingsAccountConnectFacebookTitle;
+  String settingsAccountVerifyHcmusEmailTitle;
+  String settingsAccountVerifyHcmusEmailVerified;
+  String settingsAccountVerifyHcmusEmailVerifiedMessage;
+  String settingsAccountVerifyHcmusEmailUnVerified;
+  String settingsAccountVerifyHcmusEmailDescription;
+  String settingsAccountVerifyHcmusEmailResendCode;
+  String settingsAccountVerifyHcmusEmailInvalidCode;
+  String settingsAccountVerifyHcmusEmailTimeRemaining;
   String settingsDisplayLabel;
   String settingsDisplayDefaultTabTitle;
   String settingsDisplayMeasureTitle;
