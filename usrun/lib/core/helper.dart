@@ -214,7 +214,7 @@ void pop(BuildContext context, {bool rootNavigator = false, dynamic object}) {
 Future<String> getUserImageAsBase64(
     CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context, maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality);
   if (!result) return "";
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
@@ -226,7 +226,7 @@ Future<String> getUserImageAsBase64(
 
 Future<File> getUserImageFile(CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context, maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality);
   if (!result) return null;
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,

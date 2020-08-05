@@ -53,6 +53,7 @@ class Client {
 
       setErrorCode(0);
       String reply = await response.transform(utf8.decoder).join();
+      print(reply);
       return _handleResponse<T, E>(response, reply);
     } on TimeoutException catch (_) {
       return Response<T>(

@@ -45,22 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
     _initNecessaryData();
   }
 
-  void _loadUserData() async {
-    if (widget.userInfo == null) {
-      return;
-    }
-
-    // TODO: Call API to get user profile information from _userInfo.userId
-    // P/s: This user info is not the sign-in user
-
-    setState(() {
-      // TODO: Change "null" and "N/A" to the value after calling API
-      _userInfo = null;
-      _avatarImageURL = R.images.avatar;
-      _supportImageURL = R.images.avatar;
-      _fullName = "N/A";
-      _userCode = "N/A";
-    });
+  void _displayProfile() {
+    _avatarImageURL = _userInfo.avatar;
+    _supportImageURL =
+    _userInfo.hcmus ? R.myIcons.hcmusLogo : null;
+    _fullName = _userInfo.name;
+    _userCode = _userInfo.code == null
+        ? "USRUN${_userInfo.userId}"
+        : _userInfo.code;
   }
 
   void _initNecessaryData() {
@@ -71,26 +63,13 @@ class _ProfilePageState extends State<ProfilePage> {
     _fullName = "";
     _userCode = "";
 
-    void _displayMyOwnProfile() {
-      _avatarImageURL = UserManager.currentUser.avatar;
-      _supportImageURL =
-          UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;
-      _fullName = UserManager.currentUser.name;
-      _userCode = UserManager.currentUser.code == null
-          ? "USRUN${UserManager.currentUser.userId}"
-          : UserManager.currentUser.code;
-    }
-
-    if (_userInfo == null) {
-      _displayMyOwnProfile();
-    } else {
-      if (_userInfo.userId == UserManager.currentUser.userId) {
-        _userInfo = null;
-        _displayMyOwnProfile();
-      } else {
-        _loadUserData();
+    if (_userInfo == null)
+      {
+        _userInfo = UserManager.currentUser;
       }
-    }
+
+
+    _displayProfile();
   }
 
   Widget _renderAppBar() {

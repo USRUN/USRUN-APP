@@ -111,6 +111,7 @@ class RecordHelper{
       "processed": true,
       "deleted": 0,
       "privacy": 0,
+      "showMap": activityData.showMap,
       "trackRequest":{
         "time": data.createTime,
         "locations": routes,
@@ -120,6 +121,7 @@ class RecordHelper{
       "sig": activityData.sig
     };
 
+    print(res);
     return res;
 
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
@@ -34,71 +35,71 @@ class _FeedPageState extends State<FeedPage> {
   Future<void> _loadData() async {
     if (!_allowLoadMore) return;
 
-    // TODO: Demo data --> Call API here & use "_page"
-    List<UserActivity> result = [
-      UserActivity(
-        userId: 2,
-        userDisplayName: "2 Kiến Quốc Trần",
-        userAvatar: R.images.avatarQuocTK,
-        userHcmus: true,
-        userActivityId: 2,
-        title: "Morning running!",
-        description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        createTime: DateTime.now(),
-        photos: [
-          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
-          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
-          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
-        ],
-        eventId: 2,
-        eventName: "UpRace - Move Viet Nam",
-        eventThumbnail: R.images.drawerBackgroundDarker,
-        totalDistance: 42500,
-        totalTime: 45943,
-        avgPace: 705,
-        totalStep: 34851,
-        avgHeart: 145.5,
-        maxHeart: 165.8,
-        calories: 185,
-        elevGain: 160,
-        elevMax: 50,
-      ),
-      UserActivity(
-        userId: 1,
-        userDisplayName: "1 Kiến Quốc Trần",
-        userAvatar: R.images.avatarQuocTK,
-        userHcmus: true,
-        userActivityId: 1,
-        title:
-            "Morning running! Morning running! Morning running! Morning running! Morning running!",
-        description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        createTime: DateTime.now(),
-        photos: [
-          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
-          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
-          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
-          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
-          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
-          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
-        ],
-        totalDistance: 42500,
-        totalTime: 45943,
-        avgPace: 705,
-        totalStep: 34851,
-        avgHeart: 145.5,
-        maxHeart: 165.8,
-        calories: 185,
-        elevGain: 160,
-        elevMax: 50,
-      ),
-    ];
+    List<UserActivity> result = await UserManager.getUserActivity(UserManager.currentUser.userId,offset: _page);
+//    List<UserActivity> result = [
+//      UserActivity(
+//        userId: 2,
+//        userDisplayName: "2 Kiến Quốc Trần",
+//        userAvatar: R.images.avatarQuocTK,
+//        userHcmus: true,
+//        userActivityId: 2,
+//        title: "Morning running!",
+//        description:
+//            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+//        createTime: DateTime.now(),
+//        photos: [
+//          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+//          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
+//          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+//          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+//          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
+//          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+//          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+//        ],
+//        eventId: 2,
+//        eventName: "UpRace - Move Viet Nam",
+//        eventThumbnail: R.images.drawerBackgroundDarker,
+//        totalDistance: 42500,
+//        totalTime: 45943,
+//        avgPace: 705,
+//        totalStep: 34851,
+//        avgHeart: 145.5,
+//        maxHeart: 165.8,
+//        calories: 185,
+//        elevGain: 160,
+//        elevMax: 50,
+//      ),
+//      UserActivity(
+//        userId: 1,
+//        userDisplayName: "1 Kiến Quốc Trần",
+//        userAvatar: R.images.avatarQuocTK,
+//        userHcmus: true,
+//        userActivityId: 1,
+//        title:
+//            "Morning running! Morning running! Morning running! Morning running! Morning running!",
+//        description:
+//            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+//        createTime: DateTime.now(),
+//        photos: [
+//          'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
+//          'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
+//          'https://i1088.photobucket.com/albums/i324/chishono/Short%20North%20Chiropractic/shortnorthchiropractic10.jpg',
+//          'https://i1217.photobucket.com/albums/dd388/jnelson9r/J%20Nelson%20Real%20Estate/JNELSONREALESTATE2.jpg',
+//          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedFCAwayFlamesWallpaperbySunnyboiiii.jpg',
+//          "https://i1078.photobucket.com/albums/w481/sunnyboiiii/Manchester%20United/ManchesterUnitedRedLogoWallpaperbyDALIBOR.jpg",
+//          'https://i1078.photobucket.com/albums/w481/sunnyboiiii/Western%20Sydney%20Wanderers%20FC/WSWFCFlamesShortQuoteWallpaperbySunnyboiiii.jpg',
+//        ],
+//        totalDistance: 42500,
+//        totalTime: 45943,
+//        avgPace: 705,
+//        totalStep: 34851,
+//        avgHeart: 145.5,
+//        maxHeart: 165.8,
+//        calories: 185,
+//        elevGain: 160,
+//        elevMax: 50,
+//      ),
+//    ];
 
     if (result != null && result.length != 0) {
       setState(() {

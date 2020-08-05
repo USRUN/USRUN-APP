@@ -12,6 +12,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/util/date_time_utils.dart';
 
@@ -113,6 +114,30 @@ class UserManager {
     LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
     Map<String, dynamic> res = await adapter.login(params);
     return res;
+  }
+
+  static Future<Response<User>> getUser(int userID) async {
+    Map<String, dynamic> params = {};
+    params["userId"] = userID;
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
+
+    Response<User> result = Response();
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      //sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
+      await logout();
+    }
+
+    return result;
   }
 
   static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
@@ -227,8 +252,8 @@ class UserManager {
   static Future<dynamic> getUserActivityByTimeWithSum(
       DateTime fromTime, DateTime toTime) async {
     Map<String, dynamic> params = Map<String, dynamic>();
-    params['fromTime'] = localToUtc(fromTime).millisecondsSinceEpoch;
-    params['toTime'] = localToUtc(toTime).millisecondsSinceEpoch;
+    params['fromTime'] = fromTime.millisecondsSinceEpoch;
+    params['toTime'] = toTime.millisecondsSinceEpoch;
     Response<dynamic> response =
         await Client.post('/activity/getStatUser', params);
 
@@ -239,7 +264,7 @@ class UserManager {
     return response.object;
   }
 
-  static Future<dynamic> getUserActivity(int userID, {int limit = 30, int offset = 0}) async {
+  static Future<List<UserActivity>> getUserActivity(int userID, {int limit = 30, int offset = 0}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
     params['userId'] = userID;
     params['limit'] = limit;
@@ -252,8 +277,14 @@ class UserManager {
       return null;
     }
 
-    return response.object;
+    List<UserActivity> obj = [];
+    if (response.object != null)
+      obj = (response.object as List)
+          .map((item)=> MapperObject.create<UserActivity>(item)).toList();
+
+    return obj;
   }
+
 
   static Future<dynamic> changePassword(String oldPassword, String newPassword) async{
     Map<String, dynamic> params = {
