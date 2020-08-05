@@ -669,32 +669,26 @@ class _AppRatio {
 
 class _Colors {
   // Gradient color
-  final Gradient uiGradient = LinearGradient(colors: [
-    Color(0xFFFC8800),
-    Color(0xFFF26B30),
-    Color(0xFFEE4C3E),
-    Color(0xFFDA2A16)
-  ], stops: [
-    0.0,
-    0.25,
-    0.5,
-    1.0
-  ]);
+  final Gradient uiGradient = LinearGradient(
+    colors: [
+      Color(0xFFFC8800),
+      Color(0xFFF26B30),
+      Color(0xFFEE4C3E),
+      Color(0xFFDA2A16)
+    ],
+    stops: [0.0, 0.25, 0.5, 1.0],
+  );
 
   final Gradient verticalUiGradient = LinearGradient(
-      begin: Alignment.bottomCenter,
-      colors: [
-        Color(0xFFFC8800),
-        Color(0xFFF26B30),
-        Color(0xFFEE4C3E),
-        Color(0xFFDA2A16)
-      ],
-      stops: [
-        0.0,
-        0.25,
-        0.5,
-        1.0
-      ]);
+    begin: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFC8800),
+      Color(0xFFF26B30),
+      Color(0xFFEE4C3E),
+      Color(0xFFDA2A16)
+    ],
+    stops: [0.0, 0.25, 0.5, 1.0],
+  );
 
   // Official/Main/Common color of app
   Color majorOrange = Color(0xFFFD632C);
@@ -1072,6 +1066,7 @@ class Strings {
   String signUp;
   String resetPassword;
 
+  String warning;
   String caution;
   String exitApp;
   String logoutApp;
@@ -1081,6 +1076,7 @@ class Strings {
 
   String profile;
   String editProfile;
+  String discardEditedChanges;
 
   String athleteProfile;
   String athleteBadges;
@@ -1114,6 +1110,7 @@ class Strings {
   String enableGPS;
   String time;
   String distance;
+  String pace;
   String avgPace;
   String avgHeart;
   String maxHeart;
@@ -1134,8 +1131,9 @@ class Strings {
   String description;
   String elevGain;
   String maxElev;
-  String photos;
-  String maps;
+  String yourPhotos;
+  String yourMaps;
+  String paceChart;
   String viewMapDescription;
   String uploadActivity;
   String morningRun;
@@ -1152,6 +1150,7 @@ class Strings {
   String editActivity;
   String deleteActivity;
   String confirmActivityDeletion;
+  String askToRemoveOldOnlinePhoto;
 
   String events;
   String event;
@@ -1171,6 +1170,7 @@ class Strings {
   String rank;
   String activities;
   String activity;
+  String splits;
   String members;
   String leadingTime;
   String leadingDist;
@@ -1222,6 +1222,7 @@ class Strings {
   String blocking;
   String reporting;
   String processing;
+  String updating;
   String loading;
   String loadingTeamInfo;
 

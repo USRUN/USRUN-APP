@@ -193,7 +193,7 @@ Future<T> pushPageWithNavState<T>(Widget page) {
 
 Future<T> pushPage<T>(BuildContext context, Widget page) {
   if (!checkSystemStatus()) return null;
-  Route route = SlidePageRoute(page: page);
+  Route<T> route = SlidePageRoute<T>(page: page);
   return Navigator.of(context).push(route);
 }
 
@@ -224,16 +224,41 @@ Future<String> getUserImageAsBase64(
   return _selectedCameraFile.toBase64();
 }
 
-Future<File> getUserImageFile(CropStyle cropStyle, BuildContext context) async {
+Future<Map<String, dynamic>> getUserImageFile(
+  CropStyle cropStyle,
+  BuildContext context, {
+  bool enableClearSelectedFile: false,
+}) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context, maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality);
-  if (!result) return null;
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(
+    context,
+    enableClearSelectedFile: enableClearSelectedFile,
+     maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality
+  );
+
+  if (result == null || !result) {
+    return {
+      "result": result,
+      "file": null,
+    };
+  }
+
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
     androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
   );
-  if (!result) return null;
-  return File(_selectedCameraFile.file.path);
+
+  if (!result || _selectedCameraFile.file == null) {
+    return {
+      "result": false,
+      "file": null,
+    };
+  }
+
+  return {
+    "result": true,
+    "file": File(_selectedCameraFile.file.path),
+  };
 }
 
 // ================ COMMON PUBLIC FUNCTIONS ================

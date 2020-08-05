@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ScalePageRoute extends PageRouteBuilder {
+class ScalePageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
   final Curve curve;
 

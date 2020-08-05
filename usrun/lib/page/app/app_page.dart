@@ -110,7 +110,7 @@ class _AppPageState extends State<AppPage> {
         list.add(
           wrapWidget(
             R.myIcons.appBarSearchBtn,
-                () {
+            () {
               pushPage(
                 context,
                 AthleteSearchPage(),
@@ -207,7 +207,8 @@ class _AppPageState extends State<AppPage> {
           drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
             color: Colors.white,
-            fontSize: R.appRatio.appFontSize22,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

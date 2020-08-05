@@ -211,10 +211,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
-      var image = await getUserImageFile(CropStyle.rectangle, context);
-      if (image != null) {
-        widget.activity.addPhotoFile(image, indexPhoto);
-        this.widget.streamFile.add(image);
+      Map<String, dynamic> imageResult =
+          await getUserImageFile(CropStyle.rectangle, context);
+      bool result = imageResult["result"];
+      File file = imageResult["file"];
+      if (result != null && result) {
+        widget.activity.addPhotoFile(file, indexPhoto);
+        this.widget.streamFile.add(file);
       }
     } catch (error) {
       print(error);
@@ -254,7 +257,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(R.strings.photos, style: R.styles.labelStyle),
+              Text(R.strings.yourPhotos, style: R.styles.labelStyle),
               SizedBox(
                 height: R.appRatio.appWidth1 * 15,
               ),
@@ -277,14 +280,15 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   _buildMapOptions() {
-    return (Padding(
+    return Padding(
       padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
       child: LineButton(
-        mainText: R.strings.maps,
+        mainText: R.strings.yourMaps,
         mainTextFontSize: R.appRatio.appFontSize18,
         mainTextStyle: R.styles.labelStyle,
         subText: R.strings.viewMapDescription,
         subTextFontSize: R.appRatio.appFontSize16,
+        enableSplashColor: false,
         textPadding: EdgeInsets.all(15),
         enableSwitchButton: true,
         switchButtonOnTitle: "On",
@@ -294,7 +298,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
           this.widget.activity.showMap = state;
         },
       ),
-    ));
+    );
   }
 
   _buildButtons() {
