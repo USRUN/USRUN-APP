@@ -6,17 +6,20 @@ import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
-import 'package:usrun/model/object_filter.dart';
-import 'package:usrun/model/user.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/object_filter.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/page/setting/app_info.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
+import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 
 class SettingPage extends StatefulWidget {
@@ -35,6 +38,9 @@ class _SettingPageState extends State<SettingPage> {
     R.strings.settings,
   ];
   int currentDefaultTab = DataManager.getUserDefaultTab();
+  bool showVerifyButtons =
+      UserManager.currentUser.email.endsWith("@student.hcmus.edu.vn") &&
+          !UserManager.currentUser.hcmus;
 
   void handleChangeDefaultTab() async {
     int selectedIndex = await showCustomSelectionDialog(
@@ -48,9 +54,8 @@ class _SettingPageState extends State<SettingPage> {
         ObjectFilter(name: R.strings.settings, value: 5),
       ],
       currentDefaultTab,
-      title: "Select default tab",
-      description:
-          "You can choose a default tab which will be displayed when the app opened",
+      title: R.strings.settingsDefaultTabTitle,
+      description: R.strings.settingsDefaultTabDescription,
     );
 
     if (selectedIndex != null) {
@@ -72,10 +77,115 @@ class _SettingPageState extends State<SettingPage> {
     await showCustomAlertDialog(
       context,
       title: R.strings.notice,
-      content: "Do you want to restart the app to apply the changes?",
+      content: R.strings.settingsAskForRestart,
       firstButtonText: R.strings.ok.toUpperCase(),
       firstButtonFunction: () {
         restartApp(0);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: () {
+        pop(context);
+      },
+    );
+  }
+
+  void handleAccountVerificationResponse(String otp) async {
+    Response<dynamic> response = await UserManager.verifyAccount(otp);
+
+    User newUser = currentUser;
+    newUser.hcmus = true;
+    currentUser.copy(newUser);
+    DataManager.saveUser(newUser);
+
+    pop(context);
+
+    if (response.success) {
+      setState(
+        () {
+          showVerifyButtons = false;
+        },
+      );
+
+      await showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: R.strings.settingsAccountVerified,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+        },
+      );
+    } else {
+      await showCustomAlertDialog(
+        context,
+        title: R.strings.error.toUpperCase(),
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+        },
+      );
+    }
+  }
+
+  void handleVerifyButton() async {
+    TextEditingController _otpController = TextEditingController();
+    FocusNode _otpNode = FocusNode();
+
+    await showCustomComplexDialog(
+      context: context,
+      headerContent: "ACCOUNT VERIFICATION",
+      descriptionContent:
+          "Verify your account using the OTP sent to your email",
+      inputFieldList: [
+        InputField(
+          controller: _otpController,
+          enableFullWidth: true,
+          labelTitle: R.strings.otp,
+          hintText: R.strings.settingsCheckMailForOTP,
+          focusNode: _otpNode,
+        ),
+      ],
+      firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
+      firstButtonFunction: () async {
+        handleAccountVerificationResponse(_otpController.text);
+      },
+      secondButtonText: R.strings.cancel.toUpperCase(),
+      secondButtonFunction: () => pop(context),
+    );
+  }
+
+  void handleResendButton() async {
+    await showCustomAlertDialog(
+      context,
+      title: R.strings.settingsResendOTP.toUpperCase(),
+      content: "Do you want us to send another OTP to your mail?",
+      firstButtonText: R.strings.settingsResendOTP.toUpperCase(),
+      firstButtonFunction: () async {
+        Response response = await UserManager.resendOTP();
+        pop(context);
+
+        if (response.success) {
+          await showCustomAlertDialog(
+            context,
+            title: R.strings.notice.toUpperCase(),
+            content: R.strings.settingsOTPSent,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context);
+            },
+          );
+        } else {
+          await showCustomAlertDialog(
+            context,
+            title: R.strings.error.toUpperCase(),
+            content: response.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context);
+            },
+          );
+        }
       },
       secondButtonText: R.strings.cancel,
       secondButtonFunction: () {
@@ -117,11 +227,30 @@ class _SettingPageState extends State<SettingPage> {
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
+                lineFunction: () {},
               ),
+              showVerifyButtons
+                  ? LineButton(
+                      mainText: R.strings.settingsVerifyButton,
+                      mainTextFontSize: R.appRatio.appFontSize18,
+                      enableBottomUnderline: true,
+                      textPadding: EdgeInsets.all(15),
+                      lineFunction: () {
+                        handleVerifyButton();
+                      },
+                    )
+                  : Container(),
+              showVerifyButtons
+                  ? LineButton(
+                      mainText: R.strings.settingsResendOTP,
+                      mainTextFontSize: R.appRatio.appFontSize18,
+                      enableBottomUnderline: true,
+                      textPadding: EdgeInsets.all(15),
+                      lineFunction: () {
+                        handleResendButton();
+                      },
+                    )
+                  : Container(),
               // No password to be changed if user signed up using social networks
               (currentUser.type == LoginChannel.UsRun)
                   ? LineButton(
