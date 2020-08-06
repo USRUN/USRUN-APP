@@ -89,110 +89,111 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  void handleAccountVerificationResponse(String otp) async {
-    Response<dynamic> response = await UserManager.verifyAccount(otp);
-
-    User newUser = currentUser;
-    newUser.hcmus = true;
-    currentUser.copy(newUser);
-    DataManager.saveUser(newUser);
-
-    pop(context);
-
-    if (response.success) {
-      setState(
-        () {
-          showVerifyButtons = false;
-        },
-      );
-
-      await showCustomAlertDialog(
-        context,
-        title: R.strings.notice,
-        content: R.strings.settingsAccountVerified,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () {
-          pop(context);
-        },
-      );
-    } else {
-      await showCustomAlertDialog(
-        context,
-        title: R.strings.error.toUpperCase(),
-        content: response.errorMessage,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () {
-          pop(context);
-        },
-      );
-    }
-  }
-
-  void handleVerifyButton() async {
-    TextEditingController _otpController = TextEditingController();
-    FocusNode _otpNode = FocusNode();
-
-    await showCustomComplexDialog(
-      context: context,
-      headerContent: "ACCOUNT VERIFICATION",
-      descriptionContent:
-          "Verify your account using the OTP sent to your email",
-      inputFieldList: [
-        InputField(
-          controller: _otpController,
-          enableFullWidth: true,
-          labelTitle: R.strings.otp,
-          hintText: R.strings.settingsCheckMailForOTP,
-          focusNode: _otpNode,
-        ),
-      ],
-      firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
-      firstButtonFunction: () async {
-        handleAccountVerificationResponse(_otpController.text);
-      },
-      secondButtonText: R.strings.cancel.toUpperCase(),
-      secondButtonFunction: () => pop(context),
-    );
-  }
-
-  void handleResendButton() async {
-    await showCustomAlertDialog(
-      context,
-      title: R.strings.settingsResendOTP.toUpperCase(),
-      content: "Do you want us to send another OTP to your mail?",
-      firstButtonText: R.strings.settingsResendOTP.toUpperCase(),
-      firstButtonFunction: () async {
-        Response response = await UserManager.resendOTP();
-        pop(context);
-
-        if (response.success) {
-          await showCustomAlertDialog(
-            context,
-            title: R.strings.notice.toUpperCase(),
-            content: R.strings.settingsOTPSent,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-              pop(context);
-            },
-          );
-        } else {
-          await showCustomAlertDialog(
-            context,
-            title: R.strings.error.toUpperCase(),
-            content: response.errorMessage,
-            firstButtonText: R.strings.ok.toUpperCase(),
-            firstButtonFunction: () {
-              pop(context);
-            },
-          );
-        }
-      },
-      secondButtonText: R.strings.cancel,
-      secondButtonFunction: () {
-        pop(context);
-      },
-    );
-  }
+  // VERIFICATIONS
+//  void handleAccountVerificationResponse(String otp) async {
+//    Response<dynamic> response = await UserManager.verifyAccount(otp);
+//
+//    User newUser = currentUser;
+//    newUser.hcmus = true;
+//    currentUser.copy(newUser);
+//    DataManager.saveUser(newUser);
+//
+//    pop(context);
+//
+//    if (response.success) {
+//      setState(
+//        () {
+//          showVerifyButtons = false;
+//        },
+//      );
+//
+//      await showCustomAlertDialog(
+//        context,
+//        title: R.strings.notice,
+//        content: R.strings.settingsAccountVerified,
+//        firstButtonText: R.strings.ok.toUpperCase(),
+//        firstButtonFunction: () {
+//          pop(context);
+//        },
+//      );
+//    } else {
+//      await showCustomAlertDialog(
+//        context,
+//        title: R.strings.error.toUpperCase(),
+//        content: response.errorMessage,
+//        firstButtonText: R.strings.ok.toUpperCase(),
+//        firstButtonFunction: () {
+//          pop(context);
+//        },
+//      );
+//    }
+//  }
+//
+//  void handleVerifyButton() async {
+//    TextEditingController _otpController = TextEditingController();
+//    FocusNode _otpNode = FocusNode();
+//
+//    await showCustomComplexDialog(
+//      context: context,
+//      headerContent: "ACCOUNT VERIFICATION",
+//      descriptionContent:
+//          "Verify your account using the OTP sent to your email",
+//      inputFieldList: [
+//        InputField(
+//          controller: _otpController,
+//          enableFullWidth: true,
+//          labelTitle: R.strings.otp,
+//          hintText: R.strings.settingsCheckMailForOTP,
+//          focusNode: _otpNode,
+//        ),
+//      ],
+//      firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
+//      firstButtonFunction: () async {
+//        handleAccountVerificationResponse(_otpController.text);
+//      },
+//      secondButtonText: R.strings.cancel.toUpperCase(),
+//      secondButtonFunction: () => pop(context),
+//    );
+//  }
+//
+//  void handleResendButton() async {
+//    await showCustomAlertDialog(
+//      context,
+//      title: R.strings.settingsResendOTP.toUpperCase(),
+//      content: "Do you want us to send another OTP to your mail?",
+//      firstButtonText: R.strings.settingsResendOTP.toUpperCase(),
+//      firstButtonFunction: () async {
+//        Response response = await UserManager.resendOTP();
+//        pop(context);
+//
+//        if (response.success) {
+//          await showCustomAlertDialog(
+//            context,
+//            title: R.strings.notice.toUpperCase(),
+//            content: R.strings.settingsOTPSent,
+//            firstButtonText: R.strings.ok.toUpperCase(),
+//            firstButtonFunction: () {
+//              pop(context);
+//            },
+//          );
+//        } else {
+//          await showCustomAlertDialog(
+//            context,
+//            title: R.strings.error.toUpperCase(),
+//            content: response.errorMessage,
+//            firstButtonText: R.strings.ok.toUpperCase(),
+//            firstButtonFunction: () {
+//              pop(context);
+//            },
+//          );
+//        }
+//      },
+//      secondButtonText: R.strings.cancel,
+//      secondButtonFunction: () {
+//        pop(context);
+//      },
+//    );
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -229,28 +230,6 @@ class _SettingPageState extends State<SettingPage> {
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () {},
               ),
-              showVerifyButtons
-                  ? LineButton(
-                      mainText: R.strings.settingsVerifyButton,
-                      mainTextFontSize: R.appRatio.appFontSize18,
-                      enableBottomUnderline: true,
-                      textPadding: EdgeInsets.all(15),
-                      lineFunction: () {
-                        handleVerifyButton();
-                      },
-                    )
-                  : Container(),
-              showVerifyButtons
-                  ? LineButton(
-                      mainText: R.strings.settingsResendOTP,
-                      mainTextFontSize: R.appRatio.appFontSize18,
-                      enableBottomUnderline: true,
-                      textPadding: EdgeInsets.all(15),
-                      lineFunction: () {
-                        handleResendButton();
-                      },
-                    )
-                  : Container(),
               // No password to be changed if user signed up using social networks
               (currentUser.type == LoginChannel.UsRun)
                   ? LineButton(
