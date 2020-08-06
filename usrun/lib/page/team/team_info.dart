@@ -38,7 +38,7 @@ class TeamInfoPage extends StatefulWidget {
 class _TeamInfoPageState extends State<TeamInfoPage> {
   bool _isLoading;
 
-  String _teamBanner = R.images.drawerBackgroundDarker;
+  String _teamBanner = R.images.avatar;
   String _teamAvatar = R.images.avatar;
   String _teamSymbol = R.images.avatarQuocTK;
   String _teamName = R.strings.loading;

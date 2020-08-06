@@ -59,7 +59,7 @@ class _FeedPageState extends State<FeedPage> {
         ],
         eventId: 2,
         eventName: "UpRace - Move Viet Nam",
-        eventThumbnail: R.images.drawerBackgroundDarker,
+        eventThumbnail: R.images.avatar,
         totalDistance: 42500,
         totalTime: 45943,
         avgPace: 705,

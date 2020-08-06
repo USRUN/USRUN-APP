@@ -956,9 +956,10 @@ class _Images {
   final String orLine = 'assets/images/or-line.png';
   final String pageBackground = 'assets/images/page-background.png';
 
-  final String drawerBackground = 'assets/images/drawer-background.png';
-  final String drawerBackgroundDarker =
-      'assets/images/drawer-background-darker.png';
+  final String drawerBackgroundLightTheme =
+      'assets/images/drawer-background-light-theme.png';
+  final String drawerBackgroundDarkTheme =
+      'assets/images/drawer-background-dark-theme.png';
   final String smallDefaultImage = 'assets/images/small-default-image.png';
   final String staticStatsChart01 = 'assets/images/static-stats-chart-01.png';
   final String staticStatsChart02 = 'assets/images/static-stats-chart-02.png';
