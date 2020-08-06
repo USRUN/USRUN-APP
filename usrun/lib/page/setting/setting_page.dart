@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
@@ -8,18 +9,18 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/object_filter.dart';
-import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/setting/app_info.dart';
 import 'package:usrun/page/setting/change_password.dart';
+import 'package:usrun/page/setting/hcmus_email_verification.dart';
 import 'package:usrun/page/setting/inapp_notifications.dart';
 import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/util/toast_utils.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
-import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 
 class SettingPage extends StatefulWidget {
@@ -28,8 +29,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  User currentUser = UserManager.currentUser;
-  List<String> possibleTab = [
+  final String _hcmusEmailSuffix = "hcmus.edu.vn";
+  final List<String> _possibleTab = [
     R.strings.record,
     R.strings.uFeed,
     R.strings.events,
@@ -37,10 +38,39 @@ class _SettingPageState extends State<SettingPage> {
     R.strings.profile,
     R.strings.settings,
   ];
-  int currentDefaultTab = DataManager.getUserDefaultTab();
-  bool showVerifyButtons =
-      UserManager.currentUser.email.endsWith("@student.hcmus.edu.vn") &&
-          !UserManager.currentUser.hcmus;
+
+  int _currentDefaultTab;
+  User _currentUser;
+  bool _enableHcmusEmailVerficationFeature;
+  bool _userBelongsToHcmus;
+
+  @override
+  void initState() {
+    super.initState();
+    _initDataValue();
+  }
+
+  void _initDataValue() {
+    // Normal info
+    _currentDefaultTab = DataManager.getUserDefaultTab();
+    _currentUser = UserManager.currentUser;
+
+    // User email info
+    String email = _currentUser.email;
+    if (checkStringNullOrEmpty(email)) return;
+    if (email.contains(_hcmusEmailSuffix)) {
+      _enableHcmusEmailVerficationFeature = true;
+    } else {
+      _enableHcmusEmailVerficationFeature = false;
+    }
+
+    // User belongs to hcmus or not?
+    if (_currentUser.hcmus != null && _currentUser.hcmus) {
+      _userBelongsToHcmus = true;
+    } else {
+      _userBelongsToHcmus = false;
+    }
+  }
 
   void handleChangeDefaultTab() async {
     int selectedIndex = await showCustomSelectionDialog(
@@ -53,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
         ObjectFilter(name: R.strings.profile, value: 4),
         ObjectFilter(name: R.strings.settings, value: 5),
       ],
-      currentDefaultTab,
+      _currentDefaultTab,
       title: R.strings.settingsDefaultTabTitle,
       description: R.strings.settingsDefaultTabDescription,
     );
@@ -62,7 +92,7 @@ class _SettingPageState extends State<SettingPage> {
       DataManager.setUserDefaultTab(selectedIndex);
       if (!mounted) return;
       setState(() {
-        currentDefaultTab = selectedIndex;
+        _currentDefaultTab = selectedIndex;
       });
     }
   }
@@ -88,112 +118,6 @@ class _SettingPageState extends State<SettingPage> {
       },
     );
   }
-
-  // VERIFICATIONS
-//  void handleAccountVerificationResponse(String otp) async {
-//    Response<dynamic> response = await UserManager.verifyAccount(otp);
-//
-//    User newUser = currentUser;
-//    newUser.hcmus = true;
-//    currentUser.copy(newUser);
-//    DataManager.saveUser(newUser);
-//
-//    pop(context);
-//
-//    if (response.success) {
-//      setState(
-//        () {
-//          showVerifyButtons = false;
-//        },
-//      );
-//
-//      await showCustomAlertDialog(
-//        context,
-//        title: R.strings.notice,
-//        content: R.strings.settingsAccountVerified,
-//        firstButtonText: R.strings.ok.toUpperCase(),
-//        firstButtonFunction: () {
-//          pop(context);
-//        },
-//      );
-//    } else {
-//      await showCustomAlertDialog(
-//        context,
-//        title: R.strings.error.toUpperCase(),
-//        content: response.errorMessage,
-//        firstButtonText: R.strings.ok.toUpperCase(),
-//        firstButtonFunction: () {
-//          pop(context);
-//        },
-//      );
-//    }
-//  }
-//
-//  void handleVerifyButton() async {
-//    TextEditingController _otpController = TextEditingController();
-//    FocusNode _otpNode = FocusNode();
-//
-//    await showCustomComplexDialog(
-//      context: context,
-//      headerContent: "ACCOUNT VERIFICATION",
-//      descriptionContent:
-//          "Verify your account using the OTP sent to your email",
-//      inputFieldList: [
-//        InputField(
-//          controller: _otpController,
-//          enableFullWidth: true,
-//          labelTitle: R.strings.otp,
-//          hintText: R.strings.settingsCheckMailForOTP,
-//          focusNode: _otpNode,
-//        ),
-//      ],
-//      firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
-//      firstButtonFunction: () async {
-//        handleAccountVerificationResponse(_otpController.text);
-//      },
-//      secondButtonText: R.strings.cancel.toUpperCase(),
-//      secondButtonFunction: () => pop(context),
-//    );
-//  }
-//
-//  void handleResendButton() async {
-//    await showCustomAlertDialog(
-//      context,
-//      title: R.strings.settingsResendOTP.toUpperCase(),
-//      content: "Do you want us to send another OTP to your mail?",
-//      firstButtonText: R.strings.settingsResendOTP.toUpperCase(),
-//      firstButtonFunction: () async {
-//        Response response = await UserManager.resendOTP();
-//        pop(context);
-//
-//        if (response.success) {
-//          await showCustomAlertDialog(
-//            context,
-//            title: R.strings.notice.toUpperCase(),
-//            content: R.strings.settingsOTPSent,
-//            firstButtonText: R.strings.ok.toUpperCase(),
-//            firstButtonFunction: () {
-//              pop(context);
-//            },
-//          );
-//        } else {
-//          await showCustomAlertDialog(
-//            context,
-//            title: R.strings.error.toUpperCase(),
-//            content: response.errorMessage,
-//            firstButtonText: R.strings.ok.toUpperCase(),
-//            firstButtonFunction: () {
-//              pop(context);
-//            },
-//          );
-//        }
-//      },
-//      secondButtonText: R.strings.cancel,
-//      secondButtonFunction: () {
-//        pop(context);
-//      },
-//    );
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +155,7 @@ class _SettingPageState extends State<SettingPage> {
                 lineFunction: () {},
               ),
               // No password to be changed if user signed up using social networks
-              (currentUser.type == LoginChannel.UsRun)
+              (_currentUser.type == LoginChannel.UsRun)
                   ? LineButton(
                       mainText: R.strings.changePassword,
                       mainTextFontSize: R.appRatio.appFontSize18,
@@ -251,6 +175,39 @@ class _SettingPageState extends State<SettingPage> {
                   pushPage(context, PrivacyProfile());
                 },
               ),
+              (_enableHcmusEmailVerficationFeature
+                  ? LineButton(
+                      mainText: R.strings.settingsAccountVerifyHcmusEmailTitle,
+                      mainTextFontSize: R.appRatio.appFontSize18,
+                      resultText: (_userBelongsToHcmus
+                          ? R.strings.settingsAccountVerifyHcmusEmailVerified
+                          : R.strings
+                              .settingsAccountVerifyHcmusEmailUnVerified),
+                      resultTextFontSize: R.appRatio.appFontSize16,
+                      enableBottomUnderline: true,
+                      enableSplashColor: !_userBelongsToHcmus,
+                      textPadding: EdgeInsets.all(15),
+                      lineFunction: () async {
+                        if (_userBelongsToHcmus) {
+                          showToastDefault(
+                            msg: R.strings
+                                .settingsAccountVerifyHcmusEmailVerifiedMessage,
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                          return;
+                        }
+
+                        bool result =
+                            await pushPage(context, HcmusEmailVerification());
+                        if (result != null && result) {
+                          setState(() {
+                            _userBelongsToHcmus = true;
+                            _currentUser.hcmus = true;
+                          });
+                        }
+                      },
+                    )
+                  : Container()),
               LineButton(
                 mainText: R.strings.settingsAccountConnectGoogleTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
@@ -296,7 +253,7 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayDefaultTabTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: possibleTab[currentDefaultTab],
+                resultText: _possibleTab[_currentDefaultTab],
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),

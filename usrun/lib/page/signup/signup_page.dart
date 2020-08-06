@@ -211,6 +211,7 @@ class SignUpPage extends StatelessWidget {
 
     // validate email
     String email = _emailController.text.trim();
+    String displayName = _firstNameController.text.trim() + " " + _lastNameController.text.trim();
     bool validate = validateEmail(email);
     if (!validate) {
       message = R.strings.errorInvalidEmail;
@@ -243,6 +244,7 @@ class SignUpPage extends StatelessWidget {
 
     Map<String, String> params = {
       'type': LoginChannel.UsRun.index.toString(),
+      'displayName': displayName,
       'email': email,
       'password': password
     };

@@ -77,6 +77,15 @@ class DataManager {
     return LoginChannel.values[_prefs.getInt(_LOGIN_CHANNEL)];
   }
 
+  static void setHEVCountDownTime(int timeValue) {
+    if (timeValue == null) timeValue = 0;
+    _prefs.setInt(_HCMUS_EMAIL_VERIFICATION_COUNT_DOWN_TIME, timeValue);
+  }
+
+  static int getHEVCountDownTime() {
+    return _prefs.getInt(_HCMUS_EMAIL_VERIFICATION_COUNT_DOWN_TIME);
+  }
+
   static int loadAppTheme() {
     return _prefs.getInt(_APP_THEME);
   }
@@ -321,6 +330,7 @@ const String _DEVICE_TOKEN = "UPRACE_DEVICE_TOKEN";
 const String _LAST_LOGIN_USER_ID = "LAST_LOGIN_USER_ID";
 const String _LANGUAGE = "LANGUAGE";
 const String _SELECT_LANGUAGE_FIRST_TIME = "SELECT_LANGUAGE_FIRST_TIME";
+const String _HCMUS_EMAIL_VERIFICATION_COUNT_DOWN_TIME = "HEV_COUNT_DOWN_TIME";
 const String _APP_THEME = "APP_THEME";
 const String _VERSION = "VERSION";
 const String _DEVICE_NAME = "DEVICE_NAME";

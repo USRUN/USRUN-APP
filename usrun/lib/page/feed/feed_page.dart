@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/model/splits.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
@@ -46,6 +47,7 @@ class _FeedPageState extends State<FeedPage> {
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         createTime: DateTime.now(),
+        showMap: true,
         photos: [
           'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
           'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
@@ -67,6 +69,12 @@ class _FeedPageState extends State<FeedPage> {
         calories: 185,
         elevGain: 160,
         elevMax: 50,
+        splitModelArray: [
+          SplitModel(pace: 352, km: 1),
+          SplitModel(pace: 287, km: 2),
+          SplitModel(pace: 478, km: 3),
+          SplitModel(pace: 361, km: 0.43),
+        ],
       ),
       UserActivity(
         userId: 1,
@@ -79,6 +87,7 @@ class _FeedPageState extends State<FeedPage> {
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         createTime: DateTime.now(),
+        showMap: false,
         photos: [
           'https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_QL50_SY1000_CR0,0,674,1000_AL_.jpg',
           'https://i1091.photobucket.com/albums/i395/ugg-boot/kid%20ugg%20boot/ugg-5991-kids-sand-boots_05.jpg',
@@ -97,6 +106,14 @@ class _FeedPageState extends State<FeedPage> {
         calories: 185,
         elevGain: 160,
         elevMax: 50,
+        splitModelArray: [
+          SplitModel(pace: 571, km: 1),
+          SplitModel(pace: 472, km: 2),
+          SplitModel(pace: 749, km: 3),
+          SplitModel(pace: 397, km: 4),
+          SplitModel(pace: 397, km: 5),
+          SplitModel(pace: 623, km: 6),
+        ],
       ),
     ];
 

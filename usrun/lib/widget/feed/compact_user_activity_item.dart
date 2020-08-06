@@ -5,8 +5,8 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
+import 'package:usrun/page/feed/edit_activity_page.dart';
 import 'package:usrun/page/feed/user_activity_page.dart';
-import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -38,22 +38,22 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     PopupItem<int>(
       title: R.strings.editActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 0,
       iconURL: R.myIcons.blackEditIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 1,
       iconURL: R.myIcons.blackCloseIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
   ];
 
@@ -65,13 +65,19 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     _userActivity = widget.userActivity;
   }
 
-  _goToUserActivityPage() {
-    pushPage(
+  _goToUserActivityPage() async {
+    UserActivity newUserActivity = await pushPage(
       context,
       UserActivityPage(
         userActivity: _userActivity,
       ),
     );
+
+    if (newUserActivity != null) {
+      setState(() {
+        _userActivity = newUserActivity;
+      });
+    }
   }
 
   _goToUserProfile() {
@@ -86,11 +92,22 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     );
   }
 
-  void _onSelectedPopup(var value) {
+  void _onSelectedPopup(var value) async {
     switch (value) {
       case 0:
-        // Edit profile
-        pushPage(context, EditProfilePage());
+        // Edit activity
+        UserActivity newUserActivity = await pushPage(
+          context,
+          EditActivityPage(
+            userActivity: _userActivity,
+          ),
+        );
+
+        if (newUserActivity != null) {
+          setState(() {
+            _userActivity = newUserActivity;
+          });
+        }
         break;
       case 1:
         // Delete current activity
@@ -303,66 +320,50 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       @required String firstTitle,
       @required String data,
       @required String unitTitle,
-      bool enableRightDivider: false,
     }) {
-      double _cellWidth = (R.appRatio.deviceWidth - (_spacing * 2)) / 3;
-      double _cellHeight = 80;
-      double _marginRight = 0;
-
-      if (enableRightDivider) {
-        _cellWidth = _cellWidth - 1;
-        _marginRight = 1;
-      }
-
-      return Container(
-        color: R.colors.appBackground,
-        width: _cellWidth,
-        height: _cellHeight,
-        margin: EdgeInsets.only(right: _marginRight),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              firstTitle.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-              ),
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            firstTitle.toUpperCase(),
+            textScaleFactor: 1.0,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: R.colors.contentText,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
             ),
-            SizedBox(height: 6),
-            Text(
-              data.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+          ),
+          SizedBox(height: 6),
+          Text(
+            data.toUpperCase(),
+            textScaleFactor: 1.0,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: R.colors.contentText,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
-            SizedBox(height: 6),
-            Text(
-              unitTitle.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-              ),
+          ),
+          SizedBox(height: 6),
+          Text(
+            unitTitle.toUpperCase(),
+            textScaleFactor: 1.0,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: R.colors.contentText,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
@@ -370,14 +371,12 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       firstTitle: R.strings.distance,
       data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
       unitTitle: R.strings.km,
-      enableRightDivider: true,
     );
 
     Widget _timeWidget = _wrapWidgetData(
       firstTitle: R.strings.time,
       data: secondToTimeFormat(_userActivity.totalTime),
       unitTitle: R.strings.timeUnit,
-      enableRightDivider: true,
     );
 
     Widget _avgPaceWidget = _wrapWidgetData(
@@ -386,15 +385,39 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       unitTitle: R.strings.avgPaceUnit,
     );
 
+    double _cellHeight = 90;
+
     return Container(
+      height: _cellHeight,
       margin: EdgeInsets.all(_spacing),
-      color: R.colors.majorOrange,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          _distanceWidget,
-          _timeWidget,
-          _avgPaceWidget,
+          Expanded(
+            child: _distanceWidget,
+          ),
+          Container(
+            width: 1,
+            height: _cellHeight,
+            child: VerticalDivider(
+              color: R.colors.majorOrange,
+              thickness: 1.0,
+            ),
+          ),
+          Expanded(
+            child: _timeWidget,
+          ),
+          Container(
+            width: 1,
+            height: _cellHeight,
+            child: VerticalDivider(
+              color: R.colors.majorOrange,
+              thickness: 1.0,
+            ),
+          ),
+          Expanded(
+            child: _avgPaceWidget,
+          ),
         ],
       ),
     );
