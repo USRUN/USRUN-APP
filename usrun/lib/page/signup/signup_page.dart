@@ -9,6 +9,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/page/setting/hcmus_email_verification.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
@@ -172,11 +173,36 @@ class SignUpPage extends StatelessWidget {
         // userId==null => prepare create user
         //showPage(context, ProfileEditPage(userInfo: response.object, loginChannel: channel, exParams: params, type: ProfileEditType.SignUp)); // pass empty user
       } else {
+
+        if (channel == LoginChannel.UsRun &&
+            response.object.email.contains("hcmus.edu.vn")) {
+          await showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: R.strings.verificationNotice,
+            firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
+            firstButtonFunction: () async {
+              bool result = await pushPage(context, HcmusEmailVerification());
+
+              if (result) {
+                response.object.hcmus = true;
+              }
+
+              pop(context);
+            },
+            secondButtonText: R.strings.cancel,
+            secondButtonFunction: () {
+              pop(context);
+            },
+          );
+        }
+
         // có user và đúng thông tin => save user + goto app page
         UserManager.saveUser(response.object);
         DataManager.setLoginChannel(channel.index);
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
+
         showPage(context, AppPage());
       }
     }
@@ -211,7 +237,9 @@ class SignUpPage extends StatelessWidget {
 
     // validate email
     String email = _emailController.text.trim();
-    String displayName = _firstNameController.text.trim() + " " + _lastNameController.text.trim();
+    String displayName = _firstNameController.text.trim() +
+        " " +
+        _lastNameController.text.trim();
     bool validate = validateEmail(email);
     if (!validate) {
       message = R.strings.errorInvalidEmail;

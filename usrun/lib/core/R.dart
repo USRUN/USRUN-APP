@@ -1349,6 +1349,7 @@ class Strings {
   String settingsResendOTP;
   String settingsVerifyButton;
   String settingsAskForRestart;
+  String verificationNotice;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
