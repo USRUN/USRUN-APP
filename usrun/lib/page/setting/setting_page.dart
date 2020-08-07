@@ -39,6 +39,7 @@ class _SettingPageState extends State<SettingPage> {
     R.strings.settings,
   ];
 
+  String _accountType;
   int _currentDefaultTab;
   User _currentUser;
   bool _enableHcmusEmailVerficationFeature;
@@ -69,6 +70,16 @@ class _SettingPageState extends State<SettingPage> {
       _userBelongsToHcmus = true;
     } else {
       _userBelongsToHcmus = false;
+    }
+
+    if(_enableHcmusEmailVerficationFeature == false){
+      _accountType = "Normal";
+    } else {
+      if(_userBelongsToHcmus){
+        _accountType = "HCMUS";
+      } else {
+        _accountType = "HCMUS (Unverified)";
+      }
     }
   }
 
@@ -148,7 +159,7 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsAccountTypeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.student,
+                resultText: _accountType,
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
