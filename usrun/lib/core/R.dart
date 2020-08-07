@@ -1196,6 +1196,8 @@ class Strings {
   String deleteTeamSubtitle;
   String noResult;
   String noResultSubtitle;
+  String noMemberInList;
+  String noMemberInListSubtitle;
   String memberOnly;
   String memberOnlySubtitle;
   String startSearch;
@@ -1461,6 +1463,7 @@ class _ImagePickerDefaults {
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
       toolbarColor: R.colors.majorOrange,
       showCropGrid: false,
+      cropFrameStrokeWidth: 0,
       toolbarWidgetColor: Colors.white,
       cropFrameColor: R.colors.majorOrange,
   );

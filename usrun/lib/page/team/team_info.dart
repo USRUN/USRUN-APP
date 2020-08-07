@@ -18,6 +18,7 @@ import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/team_member_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -93,8 +94,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = toMap.totalDistance;
-    _teamLeadingDistance = toMap.maxDistance;
+    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance, formatType: RunningUnit.KILOMETER).toInt();
+    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance, formatType: RunningUnit.KILOMETER).toInt();
     _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
     _teamActivities = toMap.totalActivity;
     _teamRank = toMap.rank;
@@ -162,12 +163,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    bool result =
-        await _selectedCameraFile.showCameraPickerActionSheet(context);
+    bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+        maxWidth: 800, maxHeight: 600, imageQuality: 80);
     if (!result) return "";
 
     result = await _selectedCameraFile.cropImage(
       cropStyle: cropStyle,
+      compressFormat: ImageCompressFormat.jpg,
       androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
     );
     if (!result) return "";
@@ -195,11 +197,16 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     try {
       String image;
 
-      if (fieldToChange == 'banner')
+      if (fieldToChange.compareTo('banner') == 0)
         image = await getUserImageAsBase64(CropStyle.rectangle);
       else
         image = await getUserImageAsBase64(CropStyle.circle);
 
+      if (checkStringNullOrEmpty(image)) {
+        return;
+      }
+
+      image = "data:image/jpg;base64," + image;
       reqParam[fieldToChange] = image;
       reqParam['teamId'] = widget.teamId;
       Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
@@ -403,7 +410,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
                             pressAvatarImage: () {
-                              _changeTeamImage("Avatar");
+                              _changeTeamImage("thumbnail");
                             },
                           ),
                           title: _teamName,

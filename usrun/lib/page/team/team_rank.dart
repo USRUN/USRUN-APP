@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -170,8 +171,12 @@ class _TeamRankState extends State<TeamRank> {
               String rank = items[index].rank.toString();
               String avatarImageURL = items[index].avatar;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US")
-                  .format(items[index].distance);
+              String distance = NumberFormat("#,##0.##", "en_US").format(
+                switchBetweenMeterAndKm(
+                  items[index].distance,
+                  formatType: RunningUnit.KILOMETER,
+                ),
+              );
 
               return AnimationConfiguration.staggeredList(
                 position: index,

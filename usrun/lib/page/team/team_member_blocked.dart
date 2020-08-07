@@ -156,8 +156,8 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
     if (TeamMemberUtil.authorizeHigherLevel(
         TeamMemberType.Member, widget.teamMemberType)) {
-      emptyList = R.strings.noResult;
-      emptyListSubtitle = R.strings.noResultSubtitle;
+      emptyList = R.strings.noMemberInList;
+      emptyListSubtitle = R.strings.noMemberInListSubtitle;
     } else {
       emptyList = R.strings.memberOnly;
       emptyListSubtitle = R.strings.memberOnlySubtitle;
