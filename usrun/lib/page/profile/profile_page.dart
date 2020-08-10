@@ -55,7 +55,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       // TODO: Change "null" and "N/A" to the value after calling API
-      _userInfo = null;
       _avatarImageURL = R.images.avatar;
       _supportImageURL = R.images.avatar;
       _fullName = "N/A";
@@ -65,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _initNecessaryData() {
     _selectedTabIndex = 0;
-    _userInfo = widget.userInfo;
+    _userInfo = widget.userInfo ?? UserManager.currentUser;
     _avatarImageURL = "";
     _supportImageURL = "";
     _fullName = "";
@@ -85,7 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
       _displayMyOwnProfile();
     } else {
       if (_userInfo.userId == UserManager.currentUser.userId) {
-        _userInfo = null;
         _displayMyOwnProfile();
       } else {
         _loadUserData();
@@ -130,7 +128,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   dynamic _getContentItemWidget(int tabIndex) {
     Widget widget;
-
     // TODO: Pass the value of "_userInfo" as a param of these widget page
     switch (tabIndex) {
       case 0:
@@ -140,7 +137,9 @@ class _ProfilePageState extends State<ProfilePage> {
         widget = ProfileActivity();
         break;
       case 2:
-        widget = ProfileInfo();
+        widget = ProfileInfo(
+          userId: _userInfo.userId,
+        );
         break;
       default:
         widget = ProfileStats();

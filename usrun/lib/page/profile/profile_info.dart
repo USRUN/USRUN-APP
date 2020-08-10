@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/team.dart';
+import 'package:usrun/page/team/team_info.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_list.dart';
 import 'package:usrun/widget/follower_following_list/follower_following_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 // Demo data
 import 'package:usrun/demo_data.dart';
+import 'package:usrun/widget/team_list/team_item.dart';
 import 'package:usrun/widget/team_list/team_list.dart';
 
 class ProfileInfo extends StatefulWidget {
+  final int userId;
+
+  ProfileInfo({@required this.userId});
+
   @override
   _ProfileInfoState createState() => _ProfileInfoState();
 }
@@ -18,14 +29,39 @@ class _ProfileInfoState extends State<ProfileInfo> {
   bool _isLoading;
   int _followingNumber;
   int _followerNumber;
+  List<TeamItem> _teamList;
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
+    _teamList = List();
     _followingNumber = DemoData().ffItemList.length;
     _followerNumber = DemoData().ffItemList.length;
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+    WidgetsBinding.instance.addPostFrameCallback((_) => loadUserTeams());
+  }
+
+  void loadUserTeams() async {
+    Response<dynamic> response = await TeamManager.getTeamByUser(widget.userId);
+
+    if (response.success && (response.object as List).isNotEmpty) {
+      List<TeamItem> toAdd = List();
+
+      response.object.forEach((Team t) => {toAdd.add(new TeamItem.from(t))});
+
+      if (mounted) {
+        setState(() {
+          _teamList.addAll(toAdd);
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _teamList = List();
+        });
+      }
+    }
   }
 
   void _updateLoading() {
@@ -58,8 +94,12 @@ class _ProfileInfoState extends State<ProfileInfo> {
   }
 
   void _pressTeamItemFunction(data) {
-    // TODO: Implement function here
-    print("[TeamWidget] Press team with data $data");
+    pushPage(
+      context,
+      TeamInfoPage(
+        teamId: data.teamId,
+      ),
+    );
   }
 
   void _pressTeamPlanItemFunction(data) {
@@ -120,7 +160,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
               ),
               // Teams
               TeamList(
-                items: DemoData().teamList,
+                items: _teamList,
                 labelTitle: R.strings.personalTeams,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
