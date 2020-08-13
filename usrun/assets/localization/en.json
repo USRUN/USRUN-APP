@@ -290,6 +290,7 @@
     "student": "Student",
     "connected": "Connected",
     "disconnected": "Disconnected",
+    "otp": "OTP",
 
     "settingsAccountLabel": "Account",
     "settingsAccountTypeTitle": "Account Type",
@@ -326,6 +327,15 @@
     "settingsCPNewPwdDifferent": "New password must be different from the old password",
     "settingsCPInvalidPwd": "All password fields must contain at least 8 characters with one number and one uppercase letter",
     "settingsCPReLogin": "Re-Login",
+    "settingsOTPSent": "OTP resent successfully.",
+    "settingsAccountVerified": "Your account has been verified.",
+    "settingsDefaultTabTitle": "Select default tab",
+    "settingsDefaultTabDescription": "You can choose a default tab which will be displayed when the app opened",
+    "settingsCheckMailForOTP": "Check your mail for your OTP",
+    "settingsResendOTP": "Resend OTP",
+    "settingsVerifyButton": "Verify",
+    "settingsAskForRestart": "Do you want to restart the app to apply the changes?",
+    "verificationNotice": "An OTP has been sent to your email. Do you want to verify your account now?\n You can always verify it later by visiting the settings page.",
 
     "appInfoUSRUNTitle": "About USRUN",
     "appInfoUSRUNSubtitle": "Both you and USRUN are flawless!",

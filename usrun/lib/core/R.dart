@@ -1240,6 +1240,8 @@ class Strings {
   String hotContact;
   String legal;
   String faqs;
+  String selectDefaultTabTitle;
+  String selectDefaultTabContent;
 
   List<String> eventStatus;
   String eventLeaveContent;
@@ -1309,6 +1311,7 @@ class Strings {
   String student;
   String connected;
   String disconnected;
+  String otp;
 
   String settingsAccountLabel;
   String settingsAccountTypeTitle;
@@ -1345,6 +1348,15 @@ class Strings {
   String settingsCPNewPwdDifferent;
   String settingsCPInvalidPwd;
   String settingsCPReLogin;
+  String settingsOTPSent;
+  String settingsAccountVerified;
+  String settingsDefaultTabTitle;
+  String settingsDefaultTabDescription;
+  String settingsCheckMailForOTP;
+  String settingsResendOTP;
+  String settingsVerifyButton;
+  String settingsAskForRestart;
+  String verificationNotice;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
