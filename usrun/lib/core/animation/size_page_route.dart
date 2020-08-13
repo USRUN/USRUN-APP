@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SizePageRoute extends PageRouteBuilder {
+class SizePageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
 
   /*

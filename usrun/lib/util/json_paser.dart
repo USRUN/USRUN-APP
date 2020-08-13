@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:reflectable/reflectable.dart';
 import 'package:reflectable/mirrors.dart';
+import 'package:usrun/model/splits.dart';
 import 'package:usrun/util/reflector.dart';
 
 class JsonParser {
@@ -299,6 +300,9 @@ List _initListType(String type) {
 //    case "SmallRouteTimeline":
 //      List<SmallRouteTimeline> element = [];
 //      return element;
+    case "SplitModel":
+      List<SplitModel> element = [];
+      return element;
     default:
       List element = [];
       return element;

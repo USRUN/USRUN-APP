@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -110,7 +111,7 @@ class _AppPageState extends State<AppPage> {
         list.add(
           wrapWidget(
             R.myIcons.appBarSearchBtn,
-                () {
+            () {
               pushPage(
                 context,
                 AthleteSearchPage(),
@@ -207,7 +208,8 @@ class _AppPageState extends State<AppPage> {
           drawerItems[_selectedDrawerIndex].title,
           style: TextStyle(
             color: Colors.white,
-            fontSize: R.appRatio.appFontSize22,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -220,7 +222,9 @@ class _AppPageState extends State<AppPage> {
         child: Stack(
           children: <Widget>[
             Image.asset(
-              R.images.drawerBackground,
+              (R.currentAppTheme == AppTheme.DARK
+                  ? R.images.drawerBackgroundDarkTheme
+                  : R.images.drawerBackgroundLightTheme),
               fit: BoxFit.cover,
               width: R.appRatio.appWidth250,
               height: R.appRatio.deviceHeight,

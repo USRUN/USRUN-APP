@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SlidePageRoute extends PageRouteBuilder {
+class SlidePageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
   final String slideTo;
 

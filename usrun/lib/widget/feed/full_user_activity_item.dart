@@ -5,11 +5,12 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
-import 'package:usrun/page/profile/profile_edit_page.dart';
+import 'package:usrun/page/feed/edit_activity_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/charts/splits_chart.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
@@ -35,22 +36,22 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     PopupItem<int>(
       title: R.strings.editActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 0,
       iconURL: R.myIcons.blackEditIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.black,
       ),
       value: 1,
       iconURL: R.myIcons.blackCloseIcon,
-      iconSize: 12,
+      iconSize: 14,
     ),
   ];
 
@@ -74,11 +75,22 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     );
   }
 
-  void _onSelectedPopup(var value) {
+  void _onSelectedPopup(var value) async {
     switch (value) {
       case 0:
-        // Edit profile
-        pushPage(context, EditProfilePage());
+        // Edit activity
+        UserActivity newUserActivity = await pushPage(
+          context,
+          EditActivityPage(
+            userActivity: _userActivity,
+          ),
+        );
+
+        if (newUserActivity != null) {
+          setState(() {
+            _userActivity = newUserActivity;
+          });
+        }
         break;
       case 1:
         // Delete current activity
@@ -249,7 +261,12 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       @required String unitTitle,
     }) {
       return Container(
-        color: R.colors.appBackground,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: R.colors.majorOrange,
+            width: 1,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -367,17 +384,13 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     return Container(
       margin: EdgeInsets.all(_spacing),
-      color: R.colors.majorOrange,
-      child: GridView(
+      child: GridView.count(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 1,
-          mainAxisSpacing: 1,
-          crossAxisCount: 3,
-          childAspectRatio: 1.2
-        ),
+        crossAxisCount: 3,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
         children: widgetList,
       ),
     );
@@ -401,6 +414,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       color: R.colors.sectionBackgroundLayer,
       height: _boxHeight,
       margin: EdgeInsets.only(
+        top: _spacing,
         bottom: _spacing,
       ),
       padding: EdgeInsets.only(
@@ -468,6 +482,28 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     return Container();
   }
 
+  Widget _renderSplits() {
+    return SplitsChart(
+      splitModelArray: _userActivity.splitModelArray,
+      labelTitle: R.strings.splits,
+      labelPadding: EdgeInsets.fromLTRB(
+        _spacing,
+        _spacing,
+        _spacing,
+        10,
+      ),
+      headingColor: R.colors.contentText,
+      textColor: R.colors.contentText,
+      dividerColor: R.colors.contentText,
+      paceBoxColor: R.colors.redPink,
+      chartPadding: EdgeInsets.only(
+        left: _spacing,
+        right: _spacing,
+        bottom: _spacing * 2,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -493,6 +529,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           _renderDetailVisualization(),
           _renderEventInfoBox(),
           _renderInteractionBox(),
+          _renderSplits()
         ],
       ),
     );

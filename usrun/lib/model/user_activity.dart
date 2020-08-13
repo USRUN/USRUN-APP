@@ -1,4 +1,5 @@
 import 'package:usrun/model/mapper_object.dart';
+import 'package:usrun/model/splits.dart';
 import 'package:usrun/util/reflector.dart';
 
 @reflector
@@ -21,12 +22,14 @@ class UserActivity with MapperObject {
   int calories;
   double elevGain;
   double elevMax;
+  bool showMap;
   List<String> photos;
   String title;
   String description;
   int totalLove;
   int totalComment;
   int totalShare;
+  List<SplitModel> splitModelArray;
 
   UserActivity({
     this.userActivityId,
@@ -47,13 +50,14 @@ class UserActivity with MapperObject {
     this.calories,
     this.elevGain,
     this.elevMax,
+    this.showMap,
     this.photos,
     this.title,
     this.description,
     this.totalLove,
     this.totalComment,
     this.totalShare,
+    this.splitModelArray,
   });
 
-// Chưa có mảng dữ liệu cho Splits (KM, Pace, Elev,...)
 }
