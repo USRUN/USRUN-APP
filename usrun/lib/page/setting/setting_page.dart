@@ -7,9 +7,9 @@ import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/setting/app_info.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/hcmus_email_verification.dart';
@@ -39,6 +39,7 @@ class _SettingPageState extends State<SettingPage> {
     R.strings.settings,
   ];
 
+  String _accountType;
   int _currentDefaultTab;
   User _currentUser;
   bool _enableHcmusEmailVerficationFeature;
@@ -70,6 +71,16 @@ class _SettingPageState extends State<SettingPage> {
     } else {
       _userBelongsToHcmus = false;
     }
+
+    if(_enableHcmusEmailVerficationFeature == false){
+      _accountType = "Normal";
+    } else {
+      if(_userBelongsToHcmus){
+        _accountType = "HCMUS";
+      } else {
+        _accountType = "HCMUS (Unverified)";
+      }
+    }
   }
 
   void handleChangeDefaultTab() async {
@@ -84,9 +95,8 @@ class _SettingPageState extends State<SettingPage> {
         ObjectFilter(name: R.strings.settings, value: 5),
       ],
       _currentDefaultTab,
-      title: "Select default tab",
-      description:
-          "You can choose a default tab which will be displayed when the app opened",
+      title: R.strings.settingsDefaultTabTitle,
+      description: R.strings.settingsDefaultTabDescription,
     );
 
     if (selectedIndex != null) {
@@ -96,6 +106,28 @@ class _SettingPageState extends State<SettingPage> {
         _currentDefaultTab = selectedIndex;
       });
     }
+  }
+
+  void handleChangeRunningUnit(state) async {
+    if (state) {
+      DataManager.setUserRunningUnit(RunningUnit.METER);
+    } else {
+      DataManager.setUserRunningUnit(RunningUnit.KILOMETER);
+    }
+
+    await showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: R.strings.settingsAskForRestart,
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () {
+        restartApp(0);
+      },
+      secondButtonText: R.strings.cancel,
+      secondButtonFunction: () {
+        pop(context);
+      },
+    );
   }
 
   @override
@@ -127,14 +159,11 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsAccountTypeTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.student,
+                resultText: _accountType,
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
+                lineFunction: () {},
               ),
               // No password to be changed if user signed up using social networks
               (_currentUser.type == LoginChannel.UsRun)
@@ -179,7 +208,8 @@ class _SettingPageState extends State<SettingPage> {
                           return;
                         }
 
-                        bool result = await pushPage(context, HcmusEmailVerification());
+                        bool result =
+                            await pushPage(context, HcmusEmailVerification());
                         if (result != null && result) {
                           setState(() {
                             _userBelongsToHcmus = true;
@@ -238,7 +268,7 @@ class _SettingPageState extends State<SettingPage> {
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                lineFunction: () async {
+                lineFunction: () {
                   handleChangeDefaultTab();
                 },
               ),
@@ -250,10 +280,10 @@ class _SettingPageState extends State<SettingPage> {
                 enableSwitchButton: true,
                 switchButtonOnTitle: "M",
                 switchButtonOffTitle: "Km",
-                initSwitchStatus: true,
+                initSwitchStatus:
+                    DataManager.getUserRunningUnit() == RunningUnit.METER,
                 switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
+                  handleChangeRunningUnit(state);
                 },
               ),
               LineButton(
@@ -268,11 +298,13 @@ class _SettingPageState extends State<SettingPage> {
                     context,
                     [
                       ObjectFilter(
-                          name: R.strings.lightTheme,
-                          value: AppTheme.LIGHT.index),
+                        name: R.strings.lightTheme,
+                        value: AppTheme.LIGHT.index,
+                      ),
                       ObjectFilter(
-                          name: R.strings.darkTheme,
-                          value: AppTheme.DARK.index),
+                        name: R.strings.darkTheme,
+                        value: AppTheme.DARK.index,
+                      ),
                     ],
                     R.currentAppTheme.index,
                     title: R.strings.chooseAppThemeTitle,

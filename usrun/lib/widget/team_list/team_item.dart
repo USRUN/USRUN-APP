@@ -10,6 +10,7 @@ class TeamItem {
   String bannerImageURL;
   String location;
   int teamMemberType;
+  bool verificationStatus;
 
   TeamItem({
     this.value,
@@ -34,5 +35,6 @@ class TeamItem {
     bannerImageURL = t.banner;
     location = t.province.toString();
     teamMemberType = t.teamMemberType;
+    verificationStatus = t.verified;
   }
 }

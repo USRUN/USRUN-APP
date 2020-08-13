@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
@@ -12,7 +13,6 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:usrun/widget/team_list/team_item.dart';
 
 class TeamSearchPage extends StatefulWidget {
@@ -87,8 +87,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     if (data.toString().length == 0) return;
     if (!mounted) return;
 
-    //reset states
-
     setState(() {
       _isLoading = !_isLoading;
       curSearchString = data.toString();
@@ -96,9 +94,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
       curResultPage = 0;
       remainingResults = true;
     });
-
-    // TODO: Implement function here
-    print("Data: $data");
 
     _findTeamByName();
 
@@ -108,7 +103,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
   }
 
   void _onChangedFunction(data) {
-    // [Demo] Clear all searching content => Render "SuggestedTeams" by setState
     if (data.toString().length == 0) {
       if (!mounted) return;
       setState(() {
@@ -161,7 +155,6 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                 itemCount: (teamList != null) ? teamList.length : 0,
                 itemBuilder: (BuildContext context, int index) {
                   String avatarImageURL = teamList[index].avatarImageURL;
-                  String supportImageURL = teamList[index].avatarImageURL;
                   String teamName = teamList[index].name;
                   String athleteQuantity = NumberFormat("#,##0", "en_US")
                       .format(teamList[index].athleteQuantity);
@@ -251,10 +244,11 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }

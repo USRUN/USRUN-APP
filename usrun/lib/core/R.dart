@@ -523,11 +523,11 @@ class _AppRatio {
     double statusBarHeight,
   ) {
     // Store device width and height
-    this.deviceWidth = deviceWidth.roundToDouble();
-    this.deviceHeight = deviceHeight.roundToDouble();
-    this.devicePixelRatio = devicePixelRatio.roundToDouble();
-    this.textScaleFactor = textScaleFactor.roundToDouble();
-    this.statusBarHeight = statusBarHeight.roundToDouble();
+    this.deviceWidth = deviceWidth;
+    this.deviceHeight = deviceHeight;
+    this.devicePixelRatio = devicePixelRatio;
+    this.textScaleFactor = textScaleFactor;
+    this.statusBarHeight = statusBarHeight;
     this.appBarHeight = AppBar().preferredSize.height;
 
     // Find font size
@@ -804,6 +804,7 @@ class _MyIcons {
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
   final String englishColor = 'assets/myicons/icon-color-en.png';
   final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
+  final String greenCheck = 'assets/myicons/icon-green-check.png';
 
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
@@ -1159,6 +1160,7 @@ class Strings {
 
   String teams;
   String team;
+  String invitationSent;
 
   String public;
   String private;
@@ -1196,6 +1198,8 @@ class Strings {
   String deleteTeamSubtitle;
   String noResult;
   String noResultSubtitle;
+  String noMemberInList;
+  String noMemberInListSubtitle;
   String memberOnly;
   String memberOnlySubtitle;
   String startSearch;
@@ -1236,8 +1240,12 @@ class Strings {
   String hotContact;
   String legal;
   String faqs;
+  String selectDefaultTabTitle;
+  String selectDefaultTabContent;
 
   List<String> eventStatus;
+  String eventLeaveContent;
+  String eventLeaveButton;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1303,6 +1311,7 @@ class Strings {
   String student;
   String connected;
   String disconnected;
+  String otp;
 
   String settingsAccountLabel;
   String settingsAccountTypeTitle;
@@ -1339,6 +1348,15 @@ class Strings {
   String settingsCPNewPwdDifferent;
   String settingsCPInvalidPwd;
   String settingsCPReLogin;
+  String settingsOTPSent;
+  String settingsAccountVerified;
+  String settingsDefaultTabTitle;
+  String settingsDefaultTabDescription;
+  String settingsCheckMailForOTP;
+  String settingsResendOTP;
+  String settingsVerifyButton;
+  String settingsAskForRestart;
+  String verificationNotice;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
@@ -1468,10 +1486,10 @@ class _ImagePickerDefaults {
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
       toolbarColor: R.colors.majorOrange,
       showCropGrid: false,
-      toolbarTitle: "Crop Your Image",
+      cropFrameStrokeWidth: 0,
       toolbarWidgetColor: Colors.white,
       cropFrameColor: R.colors.majorOrange,
-      dimmedLayerColor: R.colors.blurMajorOrange);
+  );
 
   IOSUiSettings defaultIOSSettings;
 }
