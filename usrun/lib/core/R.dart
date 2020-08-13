@@ -523,11 +523,11 @@ class _AppRatio {
     double statusBarHeight,
   ) {
     // Store device width and height
-    this.deviceWidth = deviceWidth.roundToDouble();
-    this.deviceHeight = deviceHeight.roundToDouble();
-    this.devicePixelRatio = devicePixelRatio.roundToDouble();
-    this.textScaleFactor = textScaleFactor.roundToDouble();
-    this.statusBarHeight = statusBarHeight.roundToDouble();
+    this.deviceWidth = deviceWidth;
+    this.deviceHeight = deviceHeight;
+    this.devicePixelRatio = devicePixelRatio;
+    this.textScaleFactor = textScaleFactor;
+    this.statusBarHeight = statusBarHeight;
     this.appBarHeight = AppBar().preferredSize.height;
 
     // Find font size
