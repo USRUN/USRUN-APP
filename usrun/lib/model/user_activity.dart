@@ -16,7 +16,7 @@ class UserActivity with MapperObject {
   int totalDistance;
   int totalTime;
   int totalStep;
-  int avgPace;
+  double avgPace;
   double avgHeart;
   double maxHeart;
   int calories;

@@ -15,7 +15,6 @@ import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/timer.dart';
 
-import 'package:android_intent/android_intent.dart';
 import 'package:location/location.dart';
 import 'package:location/location_background.dart';
 
@@ -145,7 +144,7 @@ class RecordBloc extends BlocBase {
   int deviceStep = 0;
 
   void _onData(int stepCountValue) async {
-    if (deviceStep == 0) deviceStep = stepCountValue;
+    if (deviceStep == 0 || recordData.totalStep == 0) deviceStep = stepCountValue;
     recordData.totalStep = stepCountValue - deviceStep;
     print("step: " + stepCountValue.toString());
   }
@@ -294,17 +293,20 @@ class RecordBloc extends BlocBase {
 
   Future<bool> onGpsStatusChecking() async {
     this._streamGPSSignal.add(GPSSignalStatus.CHECKING);
-    bool isServiceAvailable = await this.hasServiceEnabled();
-    if (!isServiceAvailable) {
-      this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
-      return false;
-    }
+//    bool isServiceAvailable = await this.hasServiceEnabled();
+//    if (!isServiceAvailable) {
+//      this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
+//      return false;s
+//    }
     bool hasPermission = await this.hasApprovedGPSPermission();
+    print("test"+hasPermission.toString());
     if (!hasPermission) {
       hasPermission = await this.requestGPSPermission();
     }
     if (!hasPermission) {
       this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
+
+      print("status"+hasPermission.toString());
       return false;
     }
     this.beginPoint = await this.getCurrentLocation();
@@ -353,10 +355,10 @@ class RecordBloc extends BlocBase {
   }
 
   Future<void> requestService() async {
-    final AndroidIntent intent = new AndroidIntent(
-      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    );
-    await intent.launch();
+//    final AndroidIntent intent = new AndroidIntent(
+//      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+//    );
+//    await intent.launch();
   }
 
   Future<void> showCurrentLocation() async {
@@ -489,9 +491,9 @@ class RecordBloc extends BlocBase {
     this.lifecycleEventHandler =
         new LifecycleEventHandler(resumeCallBack: () async {
       mapController.setMapStyle("[]");
-      if (gpsStatus == GPSSignalStatus.NOT_AVAILABLE) {
-        await this.onGpsStatusChecking();
-      }
+//      if (gpsStatus == GPSSignalStatus.NOT_AVAILABLE) {
+//        await this.onGpsStatusChecking();
+//      }
       return;
     }, detachedCallBack: () {
       return;
@@ -670,7 +672,7 @@ class RecordBloc extends BlocBase {
     this
             .recordData
             .splitData[(currentDistance1 + (x * 100).ceil() / 100).toString()] =
-        this.recordData.avgPace;
+        this.recordData.avgPace.toInt();
   }
 
   void resetAll() {

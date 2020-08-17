@@ -31,7 +31,7 @@ class TrackRequest{
   TrackRequest(){
     this.trackId = 0;
     this.sig = "";
-    this.createTime = localToUtc(DateTime.now()).millisecondsSinceEpoch.toString();
+    this.createTime = DateTime.now().millisecondsSinceEpoch.toString();
     this.routes = [];
   }
 }
@@ -42,7 +42,7 @@ class RecordData {
   int trackId;
   int totalTime;
   int totalMovingTime;
-  Map<String, double> splitData;
+  Map<String, int> splitData;
   int createTime;
   int totalDistance;
   int totalStep;
@@ -59,12 +59,12 @@ class RecordData {
   TrackRequest trackRequest;
 
   RecordData(){
-    this.eventId = null;
+    this.eventId = -1;
     this.trackId = 0;
     this.totalTime = 0;
     this.totalMovingTime = 0;
-    this.splitData = Map<String, double>();
-    this.createTime = localToUtc( DateTime.now()).millisecondsSinceEpoch;
+    this.splitData = Map<String, int>();
+    this.createTime = DateTime.now().millisecondsSinceEpoch;
     this.totalDistance = 0;
     this.totalStep = -1;
     this.avgPace = -1;
@@ -99,7 +99,7 @@ class RecordData {
   void updateSplit() {
     var km = (this.totalDistance / 1000).ceil();
     var pace = this.avgPace;
-    this.splitData[km.toString()] = pace;
+    this.splitData[km.toString()] = pace.toInt();
   }
 
 

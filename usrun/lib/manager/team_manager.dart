@@ -214,6 +214,27 @@ class TeamManager {
     return response;
   }
 
+  static Future<Response> getTeamByUser(int userId) async {
+    Map<String,dynamic> params = {
+      'userId': userId,
+    };
+
+    Response<dynamic> res = await Client.post('/team/getTeamByUser', params);
+
+    if(!res.success || (res.object as List).length == 0) return res;
+
+    List<Team> teams = (res.object as List)
+        .map((item)=> MapperObject.create<Team>(item)).toList();
+
+    Response<List<Team>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teams
+    );
+
+    return response;
+  }
+
   static Future<Response> getTeamLeaderBoard(int teamId) async {
     Map<String, dynamic> params = {
       'teamId': teamId,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -39,130 +40,122 @@ class _ProfilePageState extends State<ProfilePage> {
   String _fullName;
   String _userCode;
 
+
+  final RefreshController _refreshController = RefreshController(
+      initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
     _initNecessaryData();
   }
 
-  void _loadUserData() async {
-    if (widget.userInfo == null) {
-      return;
-    }
 
-    // TODO: Call API to get user profile information from _userInfo.userId
-    // P/s: This user info is not the sign-in user
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
 
+  Future<void> _loadData() async {
     setState(() {
-      // TODO: Change "null" and "N/A" to the value after calling API
-      _userInfo = null;
       _avatarImageURL = R.images.avatar;
       _supportImageURL = R.images.avatar;
-      _fullName = "N/A";
-      _userCode = "N/A";
+      _fullName = R.strings.na;
+      _userCode = R.strings.na;
     });
+    _refreshController.refreshCompleted();
+  }
+
+  void _displayProfile() {
+    _avatarImageURL = _userInfo.avatar;
+    _supportImageURL =
+    _userInfo.hcmus ? R.myIcons.hcmusLogo : null;
+    _fullName = _userInfo.name;
+    _userCode = _userInfo.code == null
+        ? "USRUN${_userInfo.userId}"
+        : _userInfo.code;
   }
 
   void _initNecessaryData() {
     _selectedTabIndex = 0;
-    _userInfo = widget.userInfo;
+    _userInfo = widget.userInfo == null? UserManager.currentUser: widget.userInfo;
     _avatarImageURL = "";
     _supportImageURL = "";
     _fullName = "";
     _userCode = "";
 
-    void _displayMyOwnProfile() {
-      _avatarImageURL = UserManager.currentUser.avatar;
-      _supportImageURL =
-          UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;
-      _fullName = UserManager.currentUser.name;
-      _userCode = UserManager.currentUser.code == null
-          ? "USRUN${UserManager.currentUser.userId}"
-          : UserManager.currentUser.code;
-    }
+    _displayProfile();
 
-    if (_userInfo == null) {
-      _displayMyOwnProfile();
-    } else {
-      if (_userInfo.userId == UserManager.currentUser.userId) {
-        _userInfo = null;
-        _displayMyOwnProfile();
-      } else {
-        _loadUserData();
-      }
-    }
   }
 
-  Widget _renderAppBar() {
-    if (!widget.enableAppBar) {
-      return null;
-    }
-
-    Widget _renderEditButton() {
-      if (_userInfo != null) {
-        return Container();
+    Widget _renderAppBar() {
+      if (!widget.enableAppBar) {
+        return null;
       }
 
-      return Container(
-        width: 50,
-        child: FlatButton(
-          onPressed: () => pushPage(context, EditProfilePage()),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarEditBtn,
-            width: 18,
-            height: 18,
-            color: Colors.white,
+      Widget _renderEditButton() {
+        if (_userInfo != null) {
+          return Container();
+        }
+
+        return Container(
+          width: 50,
+          child: FlatButton(
+            onPressed: () => pushPage(context, EditProfilePage()),
+            padding: EdgeInsets.all(0.0),
+            splashColor: R.colors.lightBlurMajorOrange,
+            textColor: Colors.white,
+            child: ImageCacheManager.getImage(
+              url: R.myIcons.appBarEditBtn,
+              width: 18,
+              height: 18,
+              color: Colors.white,
+            ),
           ),
-        ),
+        );
+      }
+
+      return CustomGradientAppBar(
+        title: R.strings.profile,
+        actions: <Widget>[
+          _renderEditButton(),
+        ],
       );
     }
 
-    return CustomGradientAppBar(
-      title: R.strings.profile,
-      actions: <Widget>[
-        _renderEditButton(),
-      ],
-    );
-  }
+    dynamic _getContentItemWidget(int tabIndex) {
+      Widget widget;
+      // TODO: Pass the value of "_userInfo" as a param of these widget page
+      switch (tabIndex) {
+        case 0:
+          widget = ProfileStats();
+          break;
+        case 1:
+          widget = ProfileActivity();
+          break;
+        case 2:
+          widget = ProfileInfo(
+            userId: _userInfo.userId,
+          );
+          break;
+        default:
+          widget = ProfileStats();
+          break;
+      }
 
-  dynamic _getContentItemWidget(int tabIndex) {
-    Widget widget;
-
-    // TODO: Pass the value of "_userInfo" as a param of these widget page
-    switch (tabIndex) {
-      case 0:
-        widget = ProfileStats();
-        break;
-      case 1:
-        widget = ProfileActivity();
-        break;
-      case 2:
-        widget = ProfileInfo();
-        break;
-      default:
-        widget = ProfileStats();
-        break;
+      return widget;
     }
 
-    return widget;
-  }
+    _onSelectItem(int tabIndex) {
+      if (_selectedTabIndex == tabIndex) return;
+      setState(() {
+        _selectedTabIndex = tabIndex;
+      });
+    }
 
-  _onSelectItem(int tabIndex) {
-    if (_selectedTabIndex == tabIndex) return;
-    setState(() {
-      _selectedTabIndex = tabIndex;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget _buildElement = Scaffold(
-      backgroundColor: R.colors.appBackground,
-      appBar: _renderAppBar(),
-      body: SingleChildScrollView(
+    _renderBodyContent() {
+      return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -221,14 +214,42 @@ class _ProfilePageState extends State<ProfilePage> {
             _getContentItemWidget(_selectedTabIndex),
           ],
         ),
-      ),
-    );
+      );
+    }
 
-    return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
+    @override
+    Widget build(BuildContext context) {
+      Widget smartRefresher = SmartRefresher(
+        enablePullUp: false,
+        controller: _refreshController,
+        child: _renderBodyContent(),
+        physics: BouncingScrollPhysics(),
+        footer: null,
+        onRefresh: () => _loadData(),
+        onLoading: () async {
+          await Future.delayed(Duration(milliseconds: 200));
+        },
+      );
+
+      Widget refreshConfigs = RefreshConfiguration(
+        child: smartRefresher,
+        headerBuilder: () =>
+            WaterDropMaterialHeader(
+              backgroundColor: R.colors.majorOrange,
+            ),
+        footerBuilder: null,
+        shouldFooterFollowWhenNotFull: (state) {
           return false;
-        });
-  }
+        },
+        hideFooterWhenNotFull: true,
+      );
+
+      return NotificationListener<OverscrollIndicatorNotification>(
+          child: refreshConfigs,
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
+            return false;
+          });
+    }
 }
+

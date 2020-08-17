@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_button.dart';
@@ -153,7 +154,6 @@ class _RecordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     this.bloc = BlocProvider.of(context);
     return Container(
       child: Column(

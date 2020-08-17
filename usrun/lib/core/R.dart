@@ -1120,6 +1120,7 @@ class Strings {
   String movingTime;
   String calories;
   String total;
+  String totalStep;
   String timeUnit;
   String meters;
   String km;
@@ -1475,8 +1476,8 @@ class _Styles {
 
 class _ImagePickerDefaults {
   // Sizes are in kilobytes
-  final int maxWidth = 800;
-  final int maxHeight = 600;
+  final double maxWidth = 800;
+  final double maxHeight = 600;
   final int imageQuality = 80;
   final int maxOutputSize = 75;
   final int minInputSize = 500;
