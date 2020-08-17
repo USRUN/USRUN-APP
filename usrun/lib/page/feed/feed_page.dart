@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/splits.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
@@ -66,7 +65,6 @@ class _FeedPageState extends State<FeedPage> {
       padding: EdgeInsets.all(0.0),
       itemCount: _userActivityList.length,
       itemBuilder: (context, index) {
-
         if (index == _userActivityList.length - 1) {
           _loadData();
         }

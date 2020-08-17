@@ -876,6 +876,8 @@ class _MyIcons {
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
   String hcmusLogo = 'assets/myicons/khtn.png';
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
+  String calendarByTheme = 'assets/myicons/icon-black-calendar.png';
+  String rocketByTheme = 'assets/myicons/icon-black-rocket.png';
 
   // User wants to change theme
   void changeTheme(AppTheme theme) {
@@ -905,6 +907,8 @@ class _MyIcons {
       gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
       keyIconByTheme = 'assets/myicons/icon-black-key.png';
       starIconByTheme = 'assets/myicons/icon-black-star.png';
+      calendarByTheme = 'assets/myicons/icon-black-calendar.png';
+      rocketByTheme = 'assets/myicons/icon-black-rocket.png';
 
       // TODO: Light theme (Black color)
     } else {
@@ -933,6 +937,8 @@ class _MyIcons {
       gpsIconByTheme = 'assets/myicons/icon-white-gps.png';
       keyIconByTheme = 'assets/myicons/icon-white-key.png';
       starIconByTheme = 'assets/myicons/icon-white-star.png';
+      calendarByTheme = 'assets/myicons/icon-white-calendar.png';
+      rocketByTheme = 'assets/myicons/icon-white-rocket.png';
 
       // TODO: Black theme (Light color)
     }
@@ -1158,6 +1164,12 @@ class Strings {
 
   String events;
   String event;
+  String currentEvents;
+  String eventHistory;
+  List<String> eventStatus;
+  String eventLeaveDescription;
+  String leave;
+  String register;
 
   String teams;
   String team;
@@ -1243,10 +1255,6 @@ class Strings {
   String faqs;
   String selectDefaultTabTitle;
   String selectDefaultTabContent;
-
-  List<String> eventStatus;
-  String eventLeaveContent;
-  String eventLeaveButton;
 
   String notiActLabel;
   String notiActReactionTitle;
