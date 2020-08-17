@@ -523,11 +523,11 @@ class _AppRatio {
     double statusBarHeight,
   ) {
     // Store device width and height
-    this.deviceWidth = deviceWidth.roundToDouble();
-    this.deviceHeight = deviceHeight.roundToDouble();
-    this.devicePixelRatio = devicePixelRatio.roundToDouble();
-    this.textScaleFactor = textScaleFactor.roundToDouble();
-    this.statusBarHeight = statusBarHeight.roundToDouble();
+    this.deviceWidth = deviceWidth;
+    this.deviceHeight = deviceHeight;
+    this.devicePixelRatio = devicePixelRatio;
+    this.textScaleFactor = textScaleFactor;
+    this.statusBarHeight = statusBarHeight;
     this.appBarHeight = AppBar().preferredSize.height;
 
     // Find font size
@@ -804,6 +804,7 @@ class _MyIcons {
   final String icCurrentSpot = 'assets/myicons/icon-color-markeruser.png';
   final String englishColor = 'assets/myicons/icon-color-en.png';
   final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
+  final String greenCheck = 'assets/myicons/icon-green-check.png';
 
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
@@ -956,9 +957,10 @@ class _Images {
   final String orLine = 'assets/images/or-line.png';
   final String pageBackground = 'assets/images/page-background.png';
 
-  final String drawerBackground = 'assets/images/drawer-background.png';
-  final String drawerBackgroundDarker =
-      'assets/images/drawer-background-darker.png';
+  final String drawerBackgroundLightTheme =
+      'assets/images/drawer-background-light-theme.png';
+  final String drawerBackgroundDarkTheme =
+      'assets/images/drawer-background-dark-theme.png';
   final String smallDefaultImage = 'assets/images/small-default-image.png';
   final String staticStatsChart01 = 'assets/images/static-stats-chart-01.png';
   final String staticStatsChart02 = 'assets/images/static-stats-chart-02.png';
@@ -1073,6 +1075,7 @@ class Strings {
   String yes;
   String no;
   String close;
+  String back;
 
   String profile;
   String editProfile;
@@ -1158,6 +1161,7 @@ class Strings {
 
   String teams;
   String team;
+  String invitationSent;
 
   String public;
   String private;
@@ -1195,6 +1199,8 @@ class Strings {
   String deleteTeamSubtitle;
   String noResult;
   String noResultSubtitle;
+  String noMemberInList;
+  String noMemberInListSubtitle;
   String memberOnly;
   String memberOnlySubtitle;
   String startSearch;
@@ -1235,8 +1241,12 @@ class Strings {
   String hotContact;
   String legal;
   String faqs;
+  String selectDefaultTabTitle;
+  String selectDefaultTabContent;
 
   List<String> eventStatus;
+  String eventLeaveContent;
+  String eventLeaveButton;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1302,6 +1312,7 @@ class Strings {
   String student;
   String connected;
   String disconnected;
+  String otp;
 
   String settingsAccountLabel;
   String settingsAccountTypeTitle;
@@ -1309,6 +1320,14 @@ class Strings {
   String settingsAccountPrivacyProfileTitle;
   String settingsAccountConnectGoogleTitle;
   String settingsAccountConnectFacebookTitle;
+  String settingsAccountVerifyHcmusEmailTitle;
+  String settingsAccountVerifyHcmusEmailVerified;
+  String settingsAccountVerifyHcmusEmailVerifiedMessage;
+  String settingsAccountVerifyHcmusEmailUnVerified;
+  String settingsAccountVerifyHcmusEmailDescription;
+  String settingsAccountVerifyHcmusEmailResendCode;
+  String settingsAccountVerifyHcmusEmailInvalidCode;
+  String settingsAccountVerifyHcmusEmailTimeRemaining;
   String settingsDisplayLabel;
   String settingsDisplayDefaultTabTitle;
   String settingsDisplayMeasureTitle;
@@ -1330,6 +1349,15 @@ class Strings {
   String settingsCPNewPwdDifferent;
   String settingsCPInvalidPwd;
   String settingsCPReLogin;
+  String settingsOTPSent;
+  String settingsAccountVerified;
+  String settingsDefaultTabTitle;
+  String settingsDefaultTabDescription;
+  String settingsCheckMailForOTP;
+  String settingsResendOTP;
+  String settingsVerifyButton;
+  String settingsAskForRestart;
+  String verificationNotice;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
@@ -1459,10 +1487,10 @@ class _ImagePickerDefaults {
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
       toolbarColor: R.colors.majorOrange,
       showCropGrid: false,
-      toolbarTitle: "Crop Your Image",
+      cropFrameStrokeWidth: 0,
       toolbarWidgetColor: Colors.white,
       cropFrameColor: R.colors.majorOrange,
-      dimmedLayerColor: R.colors.blurMajorOrange);
+  );
 
   IOSUiSettings defaultIOSSettings;
 }

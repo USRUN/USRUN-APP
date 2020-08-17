@@ -6,7 +6,7 @@ class TeamRankItem {
   int userId;
   String avatarImageURL;
   String name;
-  double distance;
+  int distance;
 
   TeamRankItem({
     this.userId,
@@ -18,10 +18,10 @@ class TeamRankItem {
             distance != null &&
             distance >= 0.0);
 
-  TeamRankItem.from(TeamLeaderboard t){
+  TeamRankItem.from(TeamLeaderboard t) {
     this.userId = t.userId;
     this.avatarImageURL = t.avatar;
     this.name = t.displayName;
-    this.distance = t.totalDistance.toDouble();
+    this.distance = t.totalDistance;
   }
 }

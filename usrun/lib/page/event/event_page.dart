@@ -81,7 +81,9 @@ class _EventPageState extends State<EventPage> {
   }
 
   _loadMoreEvent() async {
-    if (!_hasMoreResult) return;
+    if (!_hasMoreResult) {
+      return;
+    }
     _hasMoreResult = false;
 
     Response<dynamic> response =
@@ -123,14 +125,13 @@ class _EventPageState extends State<EventPage> {
       // join complex dialog
       // missing dropdown dialog
     } else {
-      // confirm leave dialog
       await showCustomAlertDialog(
         context,
-        title: "Confirmation",
-        content: "Are you sure you want to leave this event?",
-        firstButtonText: "LEAVE",
+        title: R.strings.notice,
+        content: R.strings.eventLeaveContent,
+        firstButtonText: R.strings.eventLeaveButton.toUpperCase(),
         firstButtonFunction: _handleLeave(index),
-        secondButtonText: "Cancel",
+        secondButtonText: R.strings.cancel,
         secondButtonFunction: () => pop(context),
       );
     }

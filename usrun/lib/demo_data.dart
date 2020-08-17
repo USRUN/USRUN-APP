@@ -785,91 +785,91 @@ class DemoData {
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến Quốc Trần Kiến",
-      distance: 421.34,
+      distance: 421,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Võ Thị Thanh Ngọc",
-      distance: 358.34,
+      distance: 358,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Trần Trọng Phúc",
-      distance: 285.34,
+      distance: 285,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Trần Minh Kha",
-      distance: 246.34,
+      distance: 246,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Nguyễn Anh Huy",
-      distance: 218.34,
+      distance: 218,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Ngô Hải Âu",
-      distance: 195.34,
+      distance: 195,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Đặng Huyền Mỹ",
-      distance: 175.34,
+      distance: 175,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Quách Ngọc Trang",
-      distance: 125.34,
+      distance: 125,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Trân Quách Gia",
-      distance: 119.34,
+      distance: 119,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Võ Minh Tú",
-      distance: 98.34,
+      distance: 98,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Thiên Địa Tú Linh",
-      distance: 63.34,
+      distance: 63,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "La Thành Ái",
-      distance: 38.51,
+      distance: 38,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Tô Thành Nghĩa",
-      distance: 28.41,
+      distance: 28,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Trần Quang Hưng",
-      distance: 24.51,
+      distance: 24,
     ),
     TeamRankItem(
       avatarImageURL:
           "https://i1121.photobucket.com/albums/l504/enriqueca03/Enrique%20Campos%20Homes/EnriqueCamposHomes1.jpg",
       name: "Lý Diệp Gia",
-      distance: 18.52,
+      distance: 18,
     ),
   ];
 

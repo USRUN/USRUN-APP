@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
@@ -14,8 +15,10 @@ import 'package:usrun/page/team/team_leaderboard.dart';
 import 'package:usrun/page/team/team_member.dart';
 import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
+import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/team_member_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -38,9 +41,9 @@ class TeamInfoPage extends StatefulWidget {
 class _TeamInfoPageState extends State<TeamInfoPage> {
   bool _isLoading;
 
-  String _teamBanner = R.images.drawerBackgroundDarker;
+  String _teamBanner = R.images.avatar;
   String _teamAvatar = R.images.avatar;
-  String _teamSymbol = R.images.avatarQuocTK;
+  String _teamSymbol = R.myIcons.hcmusLogo;
   String _teamName = R.strings.loading;
   bool _teamPublicStatus = true;
   String _teamLocation = R.strings.loading;
@@ -52,19 +55,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamLeadingDistance = -1;
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
+  bool _verificationStatus = false;
   TeamMemberType _teamMemberType = TeamMemberType.Guest;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-
-  /*
-    + userRole:
-      //  OWNER(1),
-      //  ADMIN(2),
-      //  MEMBER(3),
-      //  PENDING(4),
-      //  BLOCKED(5);
-      // GUESS (6);
-  */
 
   @override
   void initState() {
@@ -73,6 +67,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     _getTeamInfo();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 
   void _getTeamInfo() async {
@@ -94,8 +94,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = toMap.totalDistance;
-    _teamLeadingDistance = toMap.maxDistance;
+    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance, formatType: RunningUnit.KILOMETER).toInt();
+    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance, formatType: RunningUnit.KILOMETER).toInt();
     _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
     _teamActivities = toMap.totalActivity;
     _teamRank = toMap.rank;
@@ -105,6 +105,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   void mapTeamInfo(Team toMap) {
     if (!mounted) return;
     setState(() {
+      _verificationStatus = toMap.verified;
+      _teamSymbol = toMap.verified ? R.myIcons.hcmusLogo : null;
       _teamDescription =
           toMap.description == null ? R.strings.description : toMap.description;
       _teamName = toMap.teamName;
@@ -123,11 +125,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         _isLoading = !_isLoading;
       });
     });
-  }
-
-  _shareTeamInfo() {
-    // TODO: Code here
-    print("Pressing share team info");
   }
 
   _changeTeamPrivacy(bool privacy) async {
@@ -163,6 +160,23 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     _teamPublicStatus = privacy;
   }
 
+  Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
+    final CameraPicker _selectedCameraFile = CameraPicker();
+
+    bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+        maxWidth: 800, maxHeight: 600, imageQuality: 80);
+    if (!result) return "";
+
+    result = await _selectedCameraFile.cropImage(
+      cropStyle: cropStyle,
+      compressFormat: ImageCompressFormat.jpg,
+      androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+    );
+    if (!result) return "";
+
+    return _selectedCameraFile.toBase64();
+  }
+
   _changeTeamImage(String fieldToChange) async {
     Map<String, dynamic> reqParam = Map();
 
@@ -173,20 +187,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         title: R.strings.notice,
         content: R.strings.notAuthorizedTeamChange,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
       );
       return;
     }
 
     try {
-      var image;
+      String image;
 
-//      TODO: Open these code below
-//      if (fieldToChange == 'banner')
-//        image = await pickImageByShape(context, CropStyle.rectangle);
-//      else
-//        image = await pickImageByShape(context, CropStyle.circle);
+      if (fieldToChange.compareTo('banner') == 0)
+        image = await getUserImageAsBase64(CropStyle.rectangle);
+      else
+        image = await getUserImageAsBase64(CropStyle.circle);
 
+      if (checkStringNullOrEmpty(image)) {
+        return;
+      }
+
+      image = "data:image/jpg;base64," + image;
       reqParam[fieldToChange] = image;
       reqParam['teamId'] = widget.teamId;
       Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
@@ -199,7 +219,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           title: R.strings.notice,
           content: updatedTeam.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
+          firstButtonFunction: () {
+            pop(this.context);
+          },
         );
       }
     } catch (error) {
@@ -213,55 +235,46 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   _joinTeamFunction() async {
+    Response<dynamic> response;
+
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Pending, _teamMemberType)) {
-      Response<dynamic> response =
-          await TeamManager.cancelJoinTeam(widget.teamId);
-
-      if (response.success) {
-        if (!mounted) return;
-        setState(() {
-          _teamMemberType = TeamMemberType.Guest;
-        });
-      } else {
-        showCustomAlertDialog(
-          context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
-        );
-      }
-      return;
+      response = await TeamManager.cancelJoinTeam(widget.teamId);
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(
-            TeamMemberType.Guest, _teamMemberType) ||
-        TeamMemberUtil.authorizeEqualLevel(
-            TeamMemberType.Invited, _teamMemberType)) {
-      Response<dynamic> response =
-          await TeamManager.requestJoinTeam(widget.teamId);
+        TeamMemberType.Invited, _teamMemberType)) {
+      response = await TeamManager.acceptInvitation(widget.teamId);
+    }
 
-      if (response.success) {
-        if (!mounted) return;
-        setState(() {
-          _teamMemberType = TeamMemberType.Pending;
-        });
-      } else {
-        showCustomAlertDialog(
-          context,
-          title: R.strings.notice,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(this.context),
-        );
-      }
+    if (TeamMemberUtil.authorizeEqualLevel(
+        TeamMemberType.Guest, _teamMemberType)) {
+      response = await TeamManager.requestJoinTeam(widget.teamId);
+    }
+
+    if (response.success) {
+      if (!mounted) return;
+      setState(() {
+        _teamMemberType = TeamMemberType.Pending;
+      });
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () {
+          pop(this.context);
+        },
+      );
     }
   }
 
   Widget _renderJoinButton() {
     if (TeamMemberUtil.authorizeHigherLevel(
-        TeamMemberType.Member, _teamMemberType)) return null;
+        TeamMemberType.Member, _teamMemberType)) {
+      return null;
+    }
 
     String toDisplay;
     if (TeamMemberUtil.authorizeEqualLevel(
@@ -282,7 +295,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         gradient: R.colors.uiGradient,
         text: toDisplay,
         textSize: R.appRatio.appFontSize20,
-        onTap: () => _joinTeamFunction());
+        onTap: _joinTeamFunction);
   }
 
   String numberDisplayAdapter(dynamic toDisplay) {
@@ -315,7 +328,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         child: SmartRefresher(
           enablePullDown: true,
           controller: _refreshController,
-          onRefresh: () => {_getTeamInfo()},
+          onRefresh: _getTeamInfo,
           child: (_isLoading
               ? LoadingIndicator()
               : SingleChildScrollView(
@@ -336,7 +349,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   TeamMemberType.Admin, _teamMemberType)
                               ? Container()
                               : GestureDetector(
-                                  onTap: () => _changeTeamImage("banner"),
+                                  onTap: () {
+                                    _changeTeamImage("banner");
+                                  },
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                       right: R.appRatio.appSpacing15,
@@ -394,7 +409,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                         TeamMemberType.Admin, _teamMemberType)
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
-                            pressAvatarImage: () => _changeTeamImage("Avatar"),
+                            pressAvatarImage: () {
+                              _changeTeamImage("thumbnail");
+                            },
                           ),
                           title: _teamName,
                           enableAddedContent: true,
@@ -431,7 +448,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             )
                           : Container(),
                       // Symbol
-                      (_teamSymbol.length != 0
+                      (this._verificationStatus != false
                           ? Padding(
                               padding: EdgeInsets.only(
                                 bottom: R.appRatio.appSpacing25,
@@ -488,7 +505,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 ],
                               ),
                             )
-                          : Container),
+                          : Container()),
                       // Team stats
                       Padding(
                         padding: EdgeInsets.only(
@@ -511,9 +528,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               ),
                             ),
                             GestureDetector(
-                              // TODO: Pass teamId to pushPage!!!
-                              onTap: () => pushPage(context,
-                                  TeamLeaderBoardPage(teamId: widget.teamId)),
+                              onTap: () {
+                                pushPage(context,
+                                    TeamLeaderBoardPage(teamId: widget.teamId));
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
@@ -567,12 +585,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                       numberDisplayAdapter(_teamActivities),
                                   secondTitleLine: R.strings.activities,
                                   pressBox: (id) {
-                                    // TODO: Pass teamId to pushPage!!!
                                     pushPage(
-                                        context,
-                                        TeamActivityPage(
-                                            teamId: widget.teamId,
-                                            totalActivity: _teamActivities));
+                                      context,
+                                      TeamActivityPage(
+                                          teamId: widget.teamId,
+                                          totalActivity: _teamActivities),
+                                    );
                                   },
                                 ),
                               ],
@@ -637,7 +655,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: numberDisplayAdapter(_teamMembers),
                                   secondTitleLine: R.strings.members,
                                   pressBox: (id) {
-                                    // TODO: Pass teamId to pushPage!!!
                                     pushPage(
                                         context,
                                         TeamMemberPage(
@@ -652,7 +669,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         ),
                       ),
                       // Tool zone
-                      // TODO: Pass teamId to pushPage!!!
                       (TeamMemberUtil.authorizeLowerLevel(
                               TeamMemberType.Admin, _teamMemberType))
                           ? Container()
