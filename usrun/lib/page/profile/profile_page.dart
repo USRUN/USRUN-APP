@@ -41,7 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String _userCode;
 
 
-  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(
+      initialRefresh: false);
 
   @override
   void initState() {
@@ -58,6 +59,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _loadData() async {
     setState(() {
+      _avatarImageURL = R.images.avatar;
+      _supportImageURL = R.images.avatar;
+      _fullName = R.strings.na;
+      _userCode = R.strings.na;
     });
     _refreshController.refreshCompleted();
   }
@@ -74,87 +79,83 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _initNecessaryData() {
     _selectedTabIndex = 0;
-    _userInfo = widget.userInfo;
+    _userInfo = widget.userInfo == null? UserManager.currentUser: widget.userInfo;
     _avatarImageURL = "";
     _supportImageURL = "";
     _fullName = "";
     _userCode = "";
 
-    if (_userInfo == null)
-      {
-        _userInfo = UserManager.currentUser;
-      }
-
-
     _displayProfile();
+
   }
 
-  Widget _renderAppBar() {
-    if (!widget.enableAppBar) {
-      return null;
-    }
-
-    Widget _renderEditButton() {
-      if (_userInfo != null) {
-        return Container();
+    Widget _renderAppBar() {
+      if (!widget.enableAppBar) {
+        return null;
       }
 
-      return Container(
-        width: 50,
-        child: FlatButton(
-          onPressed: () => pushPage(context, EditProfilePage()),
-          padding: EdgeInsets.all(0.0),
-          splashColor: R.colors.lightBlurMajorOrange,
-          textColor: Colors.white,
-          child: ImageCacheManager.getImage(
-            url: R.myIcons.appBarEditBtn,
-            width: 18,
-            height: 18,
-            color: Colors.white,
+      Widget _renderEditButton() {
+        if (_userInfo != null) {
+          return Container();
+        }
+
+        return Container(
+          width: 50,
+          child: FlatButton(
+            onPressed: () => pushPage(context, EditProfilePage()),
+            padding: EdgeInsets.all(0.0),
+            splashColor: R.colors.lightBlurMajorOrange,
+            textColor: Colors.white,
+            child: ImageCacheManager.getImage(
+              url: R.myIcons.appBarEditBtn,
+              width: 18,
+              height: 18,
+              color: Colors.white,
+            ),
           ),
-        ),
+        );
+      }
+
+      return CustomGradientAppBar(
+        title: R.strings.profile,
+        actions: <Widget>[
+          _renderEditButton(),
+        ],
       );
     }
 
-    return CustomGradientAppBar(
-      title: R.strings.profile,
-      actions: <Widget>[
-        _renderEditButton(),
-      ],
-    );
-  }
+    dynamic _getContentItemWidget(int tabIndex) {
+      Widget widget;
+      // TODO: Pass the value of "_userInfo" as a param of these widget page
+      switch (tabIndex) {
+        case 0:
+          widget = ProfileStats();
+          break;
+        case 1:
+          widget = ProfileActivity();
+          break;
+        case 2:
+          widget = ProfileInfo(
+            userId: _userInfo.userId,
+          );
+          break;
+        default:
+          widget = ProfileStats();
+          break;
+      }
 
-  dynamic _getContentItemWidget(int tabIndex) {
-    Widget widget;
-
-    // TODO: Pass the value of "_userInfo" as a param of these widget page
-    switch (tabIndex) {
-      case 0:
-        widget = ProfileStats();
-        break;
-      case 1:
-        widget = ProfileActivity();
-        break;
-      case 2:
-        widget = ProfileInfo();
-        break;
-      default:
-        widget = ProfileStats();
-        break;
+      return widget;
     }
 
-    return widget;
-  }
+    _onSelectItem(int tabIndex) {
+      if (_selectedTabIndex == tabIndex) return;
+      setState(() {
+        _selectedTabIndex = tabIndex;
+      });
+    }
 
-  _onSelectItem(int tabIndex) {
-    if (_selectedTabIndex == tabIndex) return;
-    setState(() {
-      _selectedTabIndex = tabIndex;
-    });
-  }
-
-  _renderBodyContent(){
-    return SingleChildScrollView(
+    _renderBodyContent() {
+      return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -214,41 +215,41 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       );
+    }
 
-  }
+    @override
+    Widget build(BuildContext context) {
+      Widget smartRefresher = SmartRefresher(
+        enablePullUp: false,
+        controller: _refreshController,
+        child: _renderBodyContent(),
+        physics: BouncingScrollPhysics(),
+        footer: null,
+        onRefresh: () => _loadData(),
+        onLoading: () async {
+          await Future.delayed(Duration(milliseconds: 200));
+        },
+      );
 
-  @override
-  Widget build(BuildContext context) {
-
-    Widget smartRefresher = SmartRefresher(
-      enablePullUp: false,
-      controller: _refreshController,
-      child: _renderBodyContent(),
-      physics: BouncingScrollPhysics(),
-      footer: null,
-      onRefresh: () => _loadData(),
-      onLoading: () async {
-        await Future.delayed(Duration(milliseconds: 200));
-      },
-    );
-
-    Widget refreshConfigs = RefreshConfiguration(
-      child: smartRefresher,
-      headerBuilder: () => WaterDropMaterialHeader(
-        backgroundColor: R.colors.majorOrange,
-      ),
-      footerBuilder: null,
-      shouldFooterFollowWhenNotFull: (state) {
-        return false;
-      },
-      hideFooterWhenNotFull: true,
-    );
-
-    return NotificationListener<OverscrollIndicatorNotification>(
-        child: refreshConfigs,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
+      Widget refreshConfigs = RefreshConfiguration(
+        child: smartRefresher,
+        headerBuilder: () =>
+            WaterDropMaterialHeader(
+              backgroundColor: R.colors.majorOrange,
+            ),
+        footerBuilder: null,
+        shouldFooterFollowWhenNotFull: (state) {
           return false;
-        });
-  }
+        },
+        hideFooterWhenNotFull: true,
+      );
+
+      return NotificationListener<OverscrollIndicatorNotification>(
+          child: refreshConfigs,
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
+            return false;
+          });
+    }
 }
+

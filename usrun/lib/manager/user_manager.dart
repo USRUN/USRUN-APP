@@ -200,6 +200,8 @@ class UserManager {
       // User.type will be removed soon
       // Use login channel in SharedPreferences instead
       for (LoginChannel channel in LoginChannel.values) {
+        if (channel == LoginChannel.Strava)
+          continue;
         LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
 
         await adapter.logout();
