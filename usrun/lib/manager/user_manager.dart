@@ -20,6 +20,7 @@ class UserManager {
 
   // test tạm thời
   static User currentUser = new User();
+
   // ----------
 
   static ValueNotifier<List<Event>> events = ValueNotifier([]);
@@ -67,7 +68,6 @@ class UserManager {
       DataManager.setLoginChannel(int.parse(params["type"]));
       //sendDeviceToken();
       DataManager.setLastLoginUserId(result.object.userId);
-
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
@@ -85,7 +85,9 @@ class UserManager {
   }
 
   static Future<Response<User>> signIn(Map<String, dynamic> params) async {
-    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
+    Response<Map<String, dynamic>> response =
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/user/login', params);
 
     Response<User> result = Response();
     if (response.success) {
@@ -106,8 +108,6 @@ class UserManager {
     return result;
   }
 
-
-
   static Future<Map<String, dynamic>> adapterLogin(
       LoginChannel channel, Map<String, dynamic> params) async {
     LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
@@ -115,12 +115,14 @@ class UserManager {
     return res;
   }
 
-  static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
+  static Future<Response<User>> updateProfileInfo(
+      Map<String, dynamic> params) async {
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
 
     Response<Map<String, dynamic>> response =
-        await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/update', params);
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/user/update', params);
 
     Response<User> result = Response();
 
@@ -130,15 +132,12 @@ class UserManager {
       String accessToken = currentUser.accessToken;
       result.object = MapperObject.create<User>(response.object);
       saveUser(result.object);
-      if (accessToken!=null)
-        currentUser.accessToken = accessToken;
+      if (accessToken != null) currentUser.accessToken = accessToken;
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
     }
-    else
-      {
-        result.success = false;
-        result.errorCode = response.errorCode;
-        result.errorMessage = response.errorMessage;
-      }
     return result;
   }
 
@@ -170,7 +169,6 @@ class UserManager {
     DataManager.clearAskEventJoin();
     await RecordHelper.removeFile();
 
-
     if (currentUser != null) {
       // User.type will be removed soon
       // Use login channel in SharedPreferences instead
@@ -190,7 +188,8 @@ class UserManager {
     return message;
   }
 
-  static Future<List<dynamic>> getActivityTimelineList(int userID, {int limit = 30, int offset = 0}) async {
+  static Future<List<dynamic>> getActivityTimelineList(int userID,
+      {int limit = 30, int offset = 0}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
     params['userId'] = userID;
     params['limit'] = limit;
@@ -214,7 +213,7 @@ class UserManager {
         "calories": obj[i]['calories'].toString(),
         "distance": double.tryParse(obj[i]['totalDistance'].toString()),
         "elevation": obj[i]['elevGain'].toString() + "m",
-        "pace": secondToMinFormat(obj[i]['avgPace']~/1) + "/km",
+        "pace": secondToMinFormat(obj[i]['avgPace'] ~/ 1) + "/km",
         "time": secondToTimeFormat(obj[i]['totalTime']),
         "isLoved": false,
         "loveNumber": obj[i]['totalLove'],
@@ -239,14 +238,15 @@ class UserManager {
     return response.object;
   }
 
-  static Future<dynamic> getUserActivity(int userID, {int limit = 30, int offset = 0}) async {
+  static Future<dynamic> getUserActivity(int userID,
+      {int limit = 30, int offset = 0}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
     params['userId'] = userID;
     params['limit'] = limit;
     params['offset'] = offset;
 
     Response<dynamic> response =
-    await Client.post('/activity/getActivityByUser', params);
+        await Client.post('/activity/getActivityByUser', params);
 
     if (response.object == null || !response.success) {
       return null;
@@ -255,23 +255,40 @@ class UserManager {
     return response.object;
   }
 
-  static Future<dynamic> changePassword(String oldPassword, String newPassword) async{
+  static Future<dynamic> changePassword(
+      String oldPassword, String newPassword) async {
     Map<String, dynamic> params = {
       'oldPassword': oldPassword,
-      'newPassword': newPassword
+      'newPassword': newPassword,
     };
 
-    Response<dynamic> response = await Client.post('/user/changePassword',params);
+    Response<dynamic> response =
+        await Client.post('/user/changePassword', params);
     return response;
   }
 
-  static Future<dynamic> resetPassword(String email) async{
+  static Future<dynamic> resetPassword(String email) async {
     Map<String, dynamic> params = {
-      'email': email
+      'email': email,
     };
 
-    Response<dynamic> response = await Client.post('/user/resetPassword',params);
+    Response<dynamic> response =
+        await Client.post('/user/resetPassword', params);
+    return response;
+  }
+
+  static Future<dynamic> verifyAccount(String OTP) async {
+    Map<String, dynamic> params = {
+      'otp': OTP,
+    };
+
+    Response<dynamic> response =
+        await Client.post('/user/verifyStudentHcmus', params);
+    return response;
+  }
+
+  static Future<dynamic> resendOTP() async {
+    Response<dynamic> response = await Client.post('/user/resendOTP', null);
     return response;
   }
 }
-

@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamActivityPage extends StatefulWidget {
-
   final int perPage = 10;
   final int teamId;
   final int totalActivity;
@@ -32,7 +28,6 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
   bool _remainingResults;
   int _curPage;
 
-
   @override
   void initState() {
     super.initState();
@@ -50,14 +45,18 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
 
   _getProfileActivityData() async {
     if (!_isLoading) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(
+        () {
+          _isLoading = true;
+        },
+      );
     }
-    if(!_remainingResults) return;
+
+    if (!_remainingResults) return;
     _remainingResults = false;
 
-    Response<dynamic> response = await TeamManager.getTeamActivityByTeamId(widget.teamId, _curPage, widget.perPage);
+    Response<dynamic> response = await TeamManager.getTeamActivityByTeamId(
+        widget.teamId, _curPage, widget.perPage);
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<TeamActivityItem> toAdd = response.object;
@@ -70,13 +69,12 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
       });
     }
 
-
-    setState(() {
-      _isLoading = !_isLoading;
-    });
+    setState(
+      () {
+        _isLoading = !_isLoading;
+      },
+    );
   }
-
-
 
   void _pressEventBadge(data) {
     // TODO: Implement function here
@@ -121,57 +119,37 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
         appBar: CustomGradientAppBar(title: R.strings.activities),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        // Event Badges
-//        EventBadgeList(
-//          items: DemoData().eventBadgeList,
-//          labelTitle: R.strings.personalEventBadges,
-//          enableLabelShadow: true,
-//          enableScrollBackgroundColor: true,
-//          pressItemFunction: _pressEventBadge,
-//        ),
-//        SizedBox(
-//          height: R.appRatio.appSpacing20,
-//        ),
-        // Photo
-//        PhotoList(
-//          items: _photos,
-//          labelTitle: R.strings.personalPhotos,
-//          enableLabelShadow: true,
-//          enableScrollBackgroundColor: true,
-//        ),
-        SizedBox(
-          height: R.appRatio.appSpacing20,
-        ),
-        // Activity Timeline
-        Container(
-          padding: EdgeInsets.only(
-            left: R.appRatio.appSpacing15,
-            bottom: R.appRatio.appSpacing15,
-          ),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            R.strings.personalActivities +
-                ": ${widget.totalActivity}",
-            style: R.styles.shadowLabelStyle,
-          ),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: (_isLoading
-                ? Container(
+          children: <Widget>[
+            SizedBox(
+              height: R.appRatio.appSpacing20,
+            ),
+            // Activity Timeline
+            Container(
               padding: EdgeInsets.only(
-                top: R.appRatio.appSpacing15,
+                left: R.appRatio.appSpacing15,
+                bottom: R.appRatio.appSpacing15,
               ),
-              child: LoadingIndicator(),
-            )
-                : _renderList()),
-          ),
-        ),
-
-      ],
-    ));
+              alignment: Alignment.centerLeft,
+              child: Text(
+                R.strings.personalActivities + ": ${widget.totalActivity}",
+                style: R.styles.shadowLabelStyle,
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: (_isLoading
+                    ? Container(
+                        padding: EdgeInsets.only(
+                          top: R.appRatio.appSpacing15,
+                        ),
+                        child: LoadingIndicator(),
+                      )
+                    : _renderList()),
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget _renderList() {
@@ -182,28 +160,28 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
       ),
       child: AnimationLimiter(
         child: ListView.builder(
-    padding: EdgeInsets.all(0),
-    shrinkWrap: true,
-    physics: NeverScrollableScrollPhysics(),
-    scrollDirection: Axis.vertical,
-    itemCount: _activityTimelineList.length,
-    itemBuilder: (BuildContext ctxt, int index) {
-    dynamic item = _activityTimelineList[index];
+          padding: EdgeInsets.all(0),
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: _activityTimelineList.length,
+          itemBuilder: (BuildContext ctxt, int index) {
+            dynamic item = _activityTimelineList[index];
 
-    if (index == _activityTimelineList.length - 1) {
-    return GestureDetector(
-    onVerticalDragUpdate: (details) {
-    if (details.delta.dy >= -10.0) return;
-    _getProfileActivityData();
-    },
-    child: _renderActivityTimeline(item),
-    );
-    }
-
-    return _renderActivityTimeline(item);
-    },
+            if (index == _activityTimelineList.length - 1) {
+              return GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  if (details.delta.dy >= -10.0) return;
+                  _getProfileActivityData();
+                },
+                child: _renderActivityTimeline(item),
+              );
+            }
+            return _renderActivityTimeline(item);
+          },
+        ),
       ),
-    ));
+    );
   }
 
   Widget _renderActivityTimeline(TeamActivityItem item) {
@@ -212,7 +190,8 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
       dateTime: DateFormat("dd/mm/yyyy hh:mm:ss").format(item.createTime),
       title: item.title,
       calories: customToString(item.calories),
-      distance: (_isKM ? item.totalDistance.toDouble() : (item.totalDistance * 1000)),
+      distance:
+          (_isKM ? item.totalDistance.toDouble() : (item.totalDistance * 1000)),
       isKM: _isKM,
       elevation: customToString(item.elevGain),
       pace: customToString(item.avgPace),
@@ -228,8 +207,8 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
     );
   }
 
-  String customToString(dynamic input){
-    if(input == -1 || input == ""){
+  String customToString(dynamic input) {
+    if (input == -1 || input == "") {
       return "N/A";
     }
     return input.toString();

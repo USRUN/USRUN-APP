@@ -8,8 +8,12 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/toast_utils.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
@@ -46,12 +50,7 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
   }
 
   Future<void> _createOTPCode() async {
-    // TODO: Call API to re-send OTP Code to HCMUS email of user
-    print("Call API to re-send OTP Code to HCMUS email of user");
-    await Future.delayed(Duration(milliseconds: 1500), () {
-      print("Heavy job");
-    });
-    // -----
+    Response response = await UserManager.resendOTP();
   }
 
   void _startTimer() {
@@ -155,15 +154,16 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
     _codeFocusNode.unfocus();
     _showLoading();
 
-    // TODO: Call API to verify inputted code
-    print("Inputed code: $code");
     String resultCode = "SUCCESS";
-    await Future.delayed(Duration(milliseconds: 1500), () {
-      print("Heavy job");
-    });
-    // -----
+    Response response = await UserManager.verifyAccount(code);
 
     _hideLoading();
+
+    if (response.errorCode == 1004) {
+      resultCode = "INVALID_CODE";
+    } else if (response.errorCode != -1) {
+      resultCode = "ERROR_OCCURRED";
+    }
 
     if (resultCode.compareTo("INVALID_CODE") == 0) {
       showToastDefault(
@@ -186,6 +186,11 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
     }
 
     if (resultCode.compareTo("SUCCESS") == 0) {
+      User newUser = UserManager.currentUser;
+      newUser.hcmus = true;
+      UserManager.currentUser.copy(newUser);
+      DataManager.saveUser(newUser);
+
       Future.delayed(Duration(milliseconds: 600), () {
         pop(context, object: true);
       });
