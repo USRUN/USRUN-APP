@@ -75,8 +75,8 @@ class _EventInfoLineState extends State<EventInfoLine> {
   }
 
   void _goToDetailEventPage() {
-    // TODO: Go to detail event page with param "eventId"
-    print("[EVENT_INFO_LINE] Go to detail event page");
+    // TODO: Go to event_information page with param "eventId"
+    print("[EVENT_INFO_LINE] Go to event_information page");
     pushPage(context, Container());
   }
 
