@@ -237,16 +237,20 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       dropDowMenuList.add(
           DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
-    return DropDownMenu(
-      errorEmptyData: R.strings.nothingToShow,
-      enableFullWidth: true,
-      labelTitle: R.strings.events,
-      hintText: R.strings.events,
-      enableHorizontalLabelTitle: false,
-      onChanged: this._getSelectedDropDownMenuItem,
-      items: dropDowMenuList,
-      initialValue: dropDowMenuList[0].value,
-    );
+    return Padding(
+        padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
+        child: Container(
+        margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+        child: DropDownMenu(
+          errorEmptyData: R.strings.nothingToShow,
+          enableFullWidth: true,
+          labelTitle: R.strings.events,
+          hintText: R.strings.events,
+          enableHorizontalLabelTitle: false,
+          onChanged: this._getSelectedDropDownMenuItem,
+          items: dropDowMenuList,
+          initialValue: dropDowMenuList[0].value,
+        ),),);
   }
 
   _buildPhotoPicker() {

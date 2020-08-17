@@ -357,6 +357,7 @@
     "movingTime":"MOVINGTIME",
     "calories":"CALORIES",
     "total":"TOTAL",
+    "totalStep": "TOTAL STEPS",
     "timeUnit":"HH:MM:SS",
     "meters":"METERS",
     "km": "km",

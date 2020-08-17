@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/manager/login/login_adapter.dart';
@@ -8,7 +7,6 @@ class GoogleLoginAdapter extends LoginAdapter{
   String token;
   String idToken;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn google = GoogleSignIn();
 
   Future<Map<String, dynamic>> login(Map params) async {

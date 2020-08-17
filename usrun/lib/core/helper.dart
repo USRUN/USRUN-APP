@@ -215,12 +215,12 @@ Future<String> getUserImageAsBase64(
     CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
   bool result = await _selectedCameraFile.showCameraPickerActionSheet(context, maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality);
-  if (!result) return "";
+  if (result == null || !result ) return "";
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
     androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
   );
-  if (!result) return "";
+  if (!result || _selectedCameraFile.file == null) return "";
   return _selectedCameraFile.toBase64();
 }
 

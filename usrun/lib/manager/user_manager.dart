@@ -271,7 +271,7 @@ class UserManager {
     params['offset'] = offset;
 
     Response<dynamic> response =
-    await Client.post('/activity/getActivityByUser', params);
+    await Client.post('/activity/getUserFeed', params);
 
     if (response.object == null || !response.success) {
       return null;

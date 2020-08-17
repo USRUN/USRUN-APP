@@ -131,10 +131,10 @@ class _FeedPageState extends State<FeedPage> {
       padding: EdgeInsets.all(0.0),
       itemCount: _userActivityList.length,
       itemBuilder: (context, index) {
-        // TODO: Please open it after getting data from API in function above
-//        if (index == _userActivityList.length - 1) {
-//          _loadData();
-//        }
+
+        if (index == _userActivityList.length - 1) {
+          _loadData();
+        }
 
         return Container(
           margin: EdgeInsets.only(

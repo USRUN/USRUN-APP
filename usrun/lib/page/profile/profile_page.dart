@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -39,10 +40,26 @@ class _ProfilePageState extends State<ProfilePage> {
   String _fullName;
   String _userCode;
 
+
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
     _initNecessaryData();
+  }
+
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+    });
+    _refreshController.refreshCompleted();
   }
 
   void _displayProfile() {
@@ -136,12 +153,8 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget _buildElement = Scaffold(
-      backgroundColor: R.colors.appBackground,
-      appBar: _renderAppBar(),
-      body: SingleChildScrollView(
+  _renderBodyContent(){
+    return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -200,11 +213,39 @@ class _ProfilePageState extends State<ProfilePage> {
             _getContentItemWidget(_selectedTabIndex),
           ],
         ),
+      );
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget smartRefresher = SmartRefresher(
+      enablePullUp: false,
+      controller: _refreshController,
+      child: _renderBodyContent(),
+      physics: BouncingScrollPhysics(),
+      footer: null,
+      onRefresh: () => _loadData(),
+      onLoading: () async {
+        await Future.delayed(Duration(milliseconds: 200));
+      },
+    );
+
+    Widget refreshConfigs = RefreshConfiguration(
+      child: smartRefresher,
+      headerBuilder: () => WaterDropMaterialHeader(
+        backgroundColor: R.colors.majorOrange,
       ),
+      footerBuilder: null,
+      shouldFooterFollowWhenNotFull: (state) {
+        return false;
+      },
+      hideFooterWhenNotFull: true,
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
+        child: refreshConfigs,
         onNotification: (overScroll) {
           overScroll.disallowGlow();
           return false;

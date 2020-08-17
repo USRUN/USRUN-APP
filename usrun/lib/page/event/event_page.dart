@@ -43,6 +43,8 @@ class _EventPageState extends State<EventPage> {
     _events = List();
     _myTeamOptions = List();
 
+    EventManager.getUserEvents();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadMoreEvent());
     WidgetsBinding.instance.addPostFrameCallback((_) => _getMyTeam());
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());

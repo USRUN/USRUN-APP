@@ -87,7 +87,7 @@ class RecordHelper{
     List<String> photos = [];
     activityData.photos.forEach((p) {
       String imageB64 = base64Encode(p.readAsBytesSync());
-      photos.add(imageB64);
+      photos.add("data:image/png;base64,${imageB64}");
     });
 
 
@@ -102,7 +102,7 @@ class RecordHelper{
       "calories": data.calories,
       "elevGain": data.elevGain,
       "elevMax": data.elevMax,
-      "photo": photos,
+      "photosBase64": photos,
       "title": activityData.title,
       "description": activityData.description,
       "totalLove": activityData.totalLove,
@@ -165,7 +165,7 @@ class RecordHelper{
 
     RecordData data= new RecordData();
 
-    data.splitData = Map<String, double>.from(json.decode(content['trackRequest']['splitDistance']));
+    data.splitData = Map<String, int>.from(json.decode(content['trackRequest']['splitDistance']));
     data.trackId = content['trackId'];
     data.totalTime = content['totalTime'];
     data.totalMovingTime = content['totalMovingTime'];

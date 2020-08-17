@@ -403,7 +403,11 @@ class _EditActivityPageState extends State<EditActivityPage> {
   }
 
   Widget _renderMap() {
-    String mapPhoto = _userActivity.photos[0];
+    String mapPhoto;
+    if (_userActivity.photos.isEmpty)
+      mapPhoto = R.images.logoText;
+    else
+      mapPhoto = _userActivity.photos[0];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -421,7 +425,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           enableSwitchButton: true,
           switchButtonOnTitle: "On",
           switchButtonOffTitle: "Off",
-          initSwitchStatus: _userActivity.showMap,
+          initSwitchStatus: _userActivity.showMap!=null?_userActivity.showMap:false,
           switchFunction: (state) {
             _userActivity.showMap = state;
           },

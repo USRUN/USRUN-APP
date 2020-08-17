@@ -1117,6 +1117,7 @@ class Strings {
   String movingTime;
   String calories;
   String total;
+  String totalStep;
   String timeUnit;
   String meters;
   String km;

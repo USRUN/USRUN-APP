@@ -207,6 +207,9 @@ class Client {
             case FORCE_UPDATE:
               restartApp(code);
               break;
+            case USER_DOES_NOT_PERMISSION:
+              restartApp(code);
+              break;
             default:
               break;
           }
