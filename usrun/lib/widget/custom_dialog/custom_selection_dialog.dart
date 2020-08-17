@@ -10,12 +10,14 @@ class _CustomSelectionDialog extends StatefulWidget {
   final String title;
   final String description;
   final int selectedIndex;
+  final bool enableObjectIcon;
 
   _CustomSelectionDialog(
     this.objects,
     this.title,
     this.description,
     this.selectedIndex,
+    this.enableObjectIcon,
   ) : assert(objects != null &&
             objects.length != 0 &&
             selectedIndex != null &&
@@ -59,15 +61,30 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              filterItem.name,
-              overflow: TextOverflow.ellipsis,
-              textScaleFactor: 1.0,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                (widget.enableObjectIcon
+                    ? Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: ImageCacheManager.getImage(
+                          url: filterItem.iconURL,
+                          width: filterItem.iconSize,
+                          height: filterItem.iconSize,
+                        ),
+                      )
+                    : Container()),
+                Text(
+                  filterItem.name,
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: 1.0,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                  ),
+                )
+              ],
             ),
             (isSelected
                 ? ImageCacheManager.getImage(
@@ -278,9 +295,13 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   }
 }
 
-Future<T> showCustomSelectionDialog<T>(
-    BuildContext context, List<ObjectFilter> listObjects, int selectedIndex,
-    {String title, String description}) async {
+Future<T> showCustomSelectionDialog<T>(BuildContext context,
+    List<ObjectFilter> objectFilterList, int selectedIndex,
+    {String title, String description, bool enableObjectIcon: false}) async {
+  if (enableObjectIcon == null) {
+    enableObjectIcon = false;
+  }
+
   return await showGeneralDialog(
     context: context,
     barrierLabel: "Label",
@@ -307,10 +328,11 @@ Future<T> showCustomSelectionDialog<T>(
         child: Align(
           alignment: Alignment.center,
           child: _CustomSelectionDialog(
-            listObjects,
+            objectFilterList,
             title,
             description,
             selectedIndex,
+            enableObjectIcon,
           ),
         ),
       );
