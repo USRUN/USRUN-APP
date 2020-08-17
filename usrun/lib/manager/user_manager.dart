@@ -12,6 +12,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/util/date_time_utils.dart';
 
@@ -115,8 +116,31 @@ class UserManager {
     return res;
   }
 
-  static Future<Response<User>> updateProfileInfo(
-      Map<String, dynamic> params) async {
+  static Future<Response<User>> getUser(int userID) async {
+    Map<String, dynamic> params = {};
+    params["userId"] = userID;
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
+
+    Response<User> result = Response();
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      //sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
+      await logout();
+    }
+
+    return result;
+  }
+
+  static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
 
@@ -173,6 +197,8 @@ class UserManager {
       // User.type will be removed soon
       // Use login channel in SharedPreferences instead
       for (LoginChannel channel in LoginChannel.values) {
+        if (channel == LoginChannel.Strava)
+          continue;
         LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
 
         await adapter.logout();
@@ -226,8 +252,8 @@ class UserManager {
   static Future<dynamic> getUserActivityByTimeWithSum(
       DateTime fromTime, DateTime toTime) async {
     Map<String, dynamic> params = Map<String, dynamic>();
-    params['fromTime'] = localToUtc(fromTime).millisecondsSinceEpoch;
-    params['toTime'] = localToUtc(toTime).millisecondsSinceEpoch;
+    params['fromTime'] = fromTime.millisecondsSinceEpoch;
+    params['toTime'] = toTime.millisecondsSinceEpoch;
     Response<dynamic> response =
         await Client.post('/activity/getStatUser', params);
 
@@ -238,6 +264,7 @@ class UserManager {
     return response.object;
   }
 
+
   static Future<dynamic> getUserActivity(int userID,
       {int limit = 30, int offset = 0}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
@@ -246,14 +273,20 @@ class UserManager {
     params['offset'] = offset;
 
     Response<dynamic> response =
-        await Client.post('/activity/getActivityByUser', params);
+    await Client.post('/activity/getUserFeed', params);
 
     if (response.object == null || !response.success) {
       return null;
     }
 
-    return response.object;
+    List<UserActivity> obj = [];
+    if (response.object != null)
+      obj = (response.object as List)
+          .map((item)=> MapperObject.create<UserActivity>(item)).toList();
+
+    return obj;
   }
+
 
   static Future<dynamic> changePassword(
       String oldPassword, String newPassword) async {

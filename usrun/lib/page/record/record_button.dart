@@ -56,12 +56,13 @@ class RecordButton extends StatelessWidget {
         if (this.bloc.gpsStatus == GPSSignalStatus.NOT_AVAILABLE ||
             this.bloc.gpsStatus == GPSSignalStatus.CHECKING ||
             !isGPSEnable) {
-          if (!isGPSEnable) {
-            this.bloc.updateGPSStatus(GPSSignalStatus.NOT_AVAILABLE);
-            showRequestServiceDialog();
-            return;
-          }
-
+//          if (!isGPSEnable) {
+//            //this.bloc.updateGPSStatus(GPSSignalStatus.NOT_AVAILABLE);
+//            //showRequestServiceDialog();
+//            return;
+//          }
+         var check = await this.bloc.onGpsStatusChecking();
+         if (!check)
           showCustomAlertDialog(
             context,
             title: R.strings.notice,
@@ -69,6 +70,12 @@ class RecordButton extends StatelessWidget {
             firstButtonText: R.strings.ok.toUpperCase(),
             firstButtonFunction: () => pop(this.context),
           );
+         else
+           {
+             this.bloc.hideGPSView();
+             print(this.bloc.currentRecordState);
+             this.bloc.updateRecordStatus(RecordState.StatusStart);
+           }
         }
       }
     } catch (error) {}
@@ -228,13 +235,8 @@ class RecordButton extends StatelessWidget {
                                     disabled: false,
                                     icon: R.myIcons.icStartRecord,
                                     size: R.appRatio.deviceWidth / 5,
-                                    onPress: snapshot.data == null ||
-                                        snapshot.data !=
-                                            GPSSignalStatus.READY
-                                        ? () {
-                                      showRequestServiceDialog();
-                                    }
-                                        : () {
+                                    onPress:
+                                        () {
                                       onStartButtonTap();
                                     }),
                               ],

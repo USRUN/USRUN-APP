@@ -102,6 +102,8 @@ class _EditProfilePage extends State<EditProfilePage> {
       params['avatar'] = "data:image/png;base64,${editUser.avatar}";
     else
       params.remove('avatar');
+
+    params['birthday'] = editUser.birthday.millisecondsSinceEpoch;
     Response<User> res = await UserManager.updateProfileInfo(params);
     if (res.success) {
       showCustomAlertDialog(context,
