@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/page/event/tabbar_current_event.dart';
-import 'package:usrun/page/event/tabbar_history_event.dart';
+import 'package:usrun/page/event/tabbar_new_events.dart';
+import 'package:usrun/page/event/tabbar_your_history.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 
 class EventPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _EventPageState extends State<EventPage>
     );
 
     _tabBarViewItems = [
-      CurrentEventTabBar(),
+      NewEventTabBar(),
       HistoryEventTabBar(),
     ];
   }

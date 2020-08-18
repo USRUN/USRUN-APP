@@ -34,6 +34,9 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
     if (!_allowLoadMore) return;
 
     // TODO: Calling API here to get data, and use the variable "_page"
+    // + Sorting elements by 2 factors: Ongoing -> Opening -> Ended startTime (current to the oldest)
+    // + If user LEAVES any ongoing/opening events in this tabbar, this event won't be displayed in this tab anymore,
+    // it will be moved to the "new events tab".
     List<Event> result = [
       Event(
         eventId: 1,
@@ -67,7 +70,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
         eventId: 3,
         eventName: "US Racing for Health 2021",
         subtitle:
-        "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
+            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.Ended,
         sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
