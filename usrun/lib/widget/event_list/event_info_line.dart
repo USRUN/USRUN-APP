@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/model/event_list_item.dart';
+import 'package:usrun/model/event.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -12,7 +12,7 @@ import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class EventInfoLine extends StatefulWidget {
-  final EventListItem eventItem;
+  final Event eventItem;
   final bool enableActionButton;
 
   EventInfoLine({
@@ -25,7 +25,7 @@ class EventInfoLine extends StatefulWidget {
 }
 
 class _EventInfoLineState extends State<EventInfoLine> {
-  EventListItem _eventItem;
+  Event _eventItem;
   final double _avatarSize = R.appRatio.appWidth90;
 
   @override
@@ -82,7 +82,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
 
   Widget _renderEventAvatar() {
     return AvatarView(
-      avatarImageURL: _eventItem.avatar,
+      avatarImageURL: _eventItem.thumbnail,
       avatarImageSize: _avatarSize,
       pressAvatarImage: _goToDetailEventPage,
       avatarBoxBorder: Border.all(
@@ -102,7 +102,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
       children: <Widget>[
         // Title
         Text(
-          _eventItem.title,
+          _eventItem.eventName,
           textScaleFactor: 1.0,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
@@ -133,24 +133,23 @@ class _EventInfoLineState extends State<EventInfoLine> {
 
   Widget _renderEventRemainingInfo() {
     String startDate = formatDateTime(
-      _eventItem.startDate,
+      _eventItem.startTime,
       formatDisplay: formatTimeDateConst,
     );
 
     String endDate = formatDateTime(
-      _eventItem.endDate,
+      _eventItem.endTime,
       formatDisplay: formatTimeDateConst,
     );
 
     String eventStartEndDate = "$startDate - $endDate";
 
-    Widget _renderIconAndText(
-      String iconURL,
-      String text, {
-      Color givenColor,
-      FontWeight fontWeight,
-      bool enableExpanded: true,
-    }) {
+    Widget _renderIconAndText(String iconURL,
+        String text, {
+          Color givenColor,
+          FontWeight fontWeight,
+          bool enableExpanded: true,
+        }) {
       Widget iconWidget = ImageCacheManager.getImage(
         url: iconURL,
         width: R.appRatio.appIconSize20,
@@ -248,7 +247,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
             // Event status
             _renderIconAndText(
               R.myIcons.runnerIconByTheme,
-              _eventItem.status,
+              R.strings.eventStatus[_eventItem.status.index],
               givenColor: R.colors.majorOrange,
               fontWeight: FontWeight.bold,
               enableExpanded: false,
@@ -272,7 +271,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
         // Powered by
         _renderIconAndText(
           R.myIcons.rocketByTheme,
-          _eventItem.poweredBy,
+          _eventItem.sponsorName,
         ),
         // Register/Leave button
         _renderRegisterOrLeaveButton(),

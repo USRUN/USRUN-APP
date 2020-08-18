@@ -134,8 +134,8 @@
 
     "events": "Events",
     "event": "Event",
-    "currentEvents": "Current events",
-    "eventHistory": "Event history",
+    "newEvents": "New events",
+    "yourHistory": "Your history",
     "eventStatus": [
         "Opening",
         "Ongoing",

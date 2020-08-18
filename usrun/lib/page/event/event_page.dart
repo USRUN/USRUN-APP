@@ -25,8 +25,8 @@ class _EventPageState extends State<EventPage>
 
   void _initTabBarData() {
     _tabItems = [
-      R.strings.currentEvents,
-      R.strings.eventHistory,
+      R.strings.newEvents,
+      R.strings.yourHistory,
     ];
 
     _tabController = TabController(

@@ -1164,8 +1164,8 @@ class Strings {
 
   String events;
   String event;
-  String currentEvents;
-  String eventHistory;
+  String newEvents;
+  String yourHistory;
   List<String> eventStatus;
   String eventLeaveDescription;
   String leave;
