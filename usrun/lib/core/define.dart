@@ -210,3 +210,12 @@ enum EventCertificateType {
   None,
   Achieved,
 }
+
+@reflector
+enum SponsorType {
+  Powered,
+  Gold,
+  Silver,
+  Bronze,
+  Collaborated,
+}
