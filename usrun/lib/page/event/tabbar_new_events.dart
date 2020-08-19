@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/model/object_filter.dart';
+import 'package:usrun/model/team.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -37,6 +43,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     // + Sorting elements by 2 factors: Ongoing -> Opening & startTime (current to the farthest)
     // + If user REGISTERS any events in this tabbar, this event won't be displayed in this tab anymore,
     // it will be moved to the "history tab".
+    // + The value of "joined" variable must be "false".
     List<Event> result = [
       Event(
         eventId: 1,
@@ -54,7 +61,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
       ),
       Event(
         eventId: 2,
-        eventName: "US Racing for Health 2021",
+        eventName: "US Racing for Health 2022",
         subtitle:
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
@@ -68,9 +75,9 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
       ),
       Event(
         eventId: 3,
-        eventName: "US Racing for Health 2021",
+        eventName: "US Racing for Health 2023",
         subtitle:
-        "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
+            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.Opening,
         sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
@@ -105,6 +112,101 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
+  Future<Team> _chooseATeam() async {
+    // TODO: API get team list of users
+    List<Team> teamListOfUser = [
+      Team(
+        id: 1,
+        teamName: "Trường Đại học Khoa học Tự nhiên",
+        thumbnail: R.images.avatarQuocTK,
+      ),
+      Team(
+        id: 2,
+        teamName: "Công ty Cổ phần Tự Nghĩa",
+        thumbnail: R.images.avatarHuyTA,
+      ),
+      Team(
+        id: 3,
+        teamName: "ABCOL Corporation",
+        thumbnail: R.images.avatarNgocVTT,
+      ),
+    ];
+
+    List<ObjectFilter> objFilterList = List();
+    teamListOfUser.forEach((element) {
+      objFilterList.add(ObjectFilter(
+        name: element.teamName,
+        iconURL: element.thumbnail,
+        iconSize: 20,
+        value: element,
+      ));
+    });
+
+    int selectedIndex = await showCustomSelectionDialog(
+      context,
+      objFilterList,
+      -1,
+      title: R.strings.chooseTeamTitle,
+      description: R.strings.chooseTeamDescription,
+      enableObjectIcon: true,
+      enableScrollBar: true,
+      alwaysShowScrollBar: true,
+    );
+
+    return selectedIndex == null || selectedIndex < 0
+        ? null
+        : teamListOfUser[selectedIndex];
+  }
+
+  Future<void> _handleRegisterAnEvent(int arrayIndex) async {
+    Team userTeam = await _chooseATeam();
+    if (userTeam == null) return null;
+
+    showCustomLoadingDialog(
+      context,
+      text: R.strings.processing,
+    );
+
+    // TODO: Put your code here
+    // result: true (Registering successfully), false (Registering fail)
+    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
+      print("[EVENT_INFO_LINE] Finish processing about registering an event");
+      return true;
+    });
+
+    pop(context);
+
+    if (result) {
+      String message = R.strings.registerEventSuccessfully;
+      message = message.replaceAll(
+        "@@@",
+        _currentEventList[arrayIndex].eventName,
+      );
+      message = message.replaceAll("###", userTeam.teamName);
+
+      showCustomAlertDialog(
+        context,
+        title: R.strings.announcement,
+        content: message,
+        firstButtonText: R.strings.close.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+          setState(() {
+            _currentEventList.removeAt(arrayIndex);
+          });
+        },
+      );
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: R.strings.errorOccurred,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
+    }
+  }
+
   Widget _renderBodyContent() {
     return ListView.builder(
       shrinkWrap: true,
@@ -116,17 +218,21 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
 //          _loadData();
 //        }
 
+        Event event = _currentEventList[index];
         double marginBottom = 0;
         if (index != _currentEventList.length - 1) {
           marginBottom = R.appRatio.appSpacing15;
         }
 
         return Container(
+          key: Key(event.eventId.toString()),
           margin: EdgeInsets.only(
             bottom: marginBottom,
           ),
           child: EventInfoLine(
-            eventItem: _currentEventList[index],
+            eventItem: event,
+            enableActionButton: true,
+            registerCallback: () => _handleRegisterAnEvent(index),
           ),
         );
       },
@@ -148,105 +254,3 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     );
   }
 }
-
-// TODO (Code ko sử dụng): Khởi tạo biến ----------------------------------
-//  int perPage = 10;
-//  bool _isLoading;
-//  List<dynamic> _myTeamOptions;
-//  int _curPage;
-//  bool _hasMoreResult;
-//  User currentUser = UserManager.currentUser;
-// TODO (Code ko sử dụng): [InitState] ----------------------------------
-//    _curPage = 0;
-//    _hasMoreResult = true;
-//    _events = List();
-//    _myTeamOptions = List();
-// TODO (Code ko sử dụng): [Các hàm sử dụng] -------------------------------------------------------------------------------------------
-//  void _updateLoading() {
-//    Future.delayed(Duration(milliseconds: 1000), () {
-//      if (!mounted) return;
-//      setState(() {
-//        _isLoading = !_isLoading;
-//      });
-//    });
-//  }
-//
-//  _reloadData() async {
-//    _isLoading = true;
-//    _curPage = 0;
-//    _hasMoreResult = true;
-//    _events = List();
-//
-//    _loadMoreEvent();
-//    _updateLoading();
-//    _refreshController.refreshCompleted();
-//  }
-//
-//  _getMyTeam() async {
-//    Response<dynamic> response = await TeamManager.getMyTeam();
-//    if (response.success && (response.object as List).isNotEmpty) {
-//      response.object.forEach((Team t) => {
-//            _myTeamOptions
-//                .add(new DropDownObject(value: t.id, text: t.teamName))
-//          });
-//    }
-//  }
-//
-//  _loadMoreEvent() async {
-//    if (!_hasMoreResult) {
-//      return;
-//    }
-//    _hasMoreResult = false;
-//
-//    Response<dynamic> response =
-//        await EventManager.getAllEventsPaged(_curPage, widget.perPage);
-//    if (response.success && (response.object as List).isNotEmpty) {
-//      List<EventListItem> toAdd = List();
-//      response.object
-//          .forEach((Event e) => {toAdd.add(new EventListItem.fromEvent(e))});
-//
-//      setState(() {
-//        _events.addAll(toAdd);
-//      });
-//      _hasMoreResult = true;
-//    } else {
-//      _hasMoreResult = false;
-//    }
-//  }
-//
-//  _handleLeave(int index) async {
-//    Response<dynamic> response =
-//        await EventManager.leaveEvent(_events[index].id, 0, currentUser.userId);
-//
-//    if (response.success) {
-//      setState(() {
-//        _events[index].joined = false;
-//      });
-//    } else {
-//      await showCustomAlertDialog(
-//        context,
-//        title: R.strings.error,
-//        content: response.errorMessage,
-//        firstButtonText: R.strings.ok.toUpperCase(),
-//        firstButtonFunction: () => pop(context),
-//      );
-//    }
-//  }
-//
-//  _handleJoinButton(dynamic index) async {
-//    if (_events[index].joined) {
-//      // join complex dialog
-//      // missing dropdown dialog
-//    } else {
-//      await showCustomAlertDialog(
-//        context,
-//        title: R.strings.notice,
-//        content: R.strings.eventLeaveContent,
-//        firstButtonText: R.strings.eventLeaveButton.toUpperCase(),
-//        firstButtonFunction: _handleLeave(index),
-//        secondButtonText: R.strings.cancel,
-//        secondButtonFunction: () => pop(context),
-//      );
-//    }
-//  }
-// TODO: END UNUSED CODE ----------------------------------

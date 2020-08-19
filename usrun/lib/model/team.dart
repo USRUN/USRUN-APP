@@ -69,4 +69,20 @@ class Team with MapperObject {
     }
     return false;
   }
+
+  Team({
+    this.id,
+    this.teamName,
+    this.description,
+    this.banner,
+    this.thumbnail,
+    this.addDate,
+    this.updateDate,
+    this.province,
+    this.privacy,
+    this.verified,
+    this.deleted,
+    this.totalMember,
+    this.teamMemberType,
+  });
 }

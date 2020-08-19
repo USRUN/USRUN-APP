@@ -7,6 +7,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
+import 'package:usrun/page/event/event_search_page.dart';
 import 'package:usrun/page/feed/athlete_search_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
@@ -125,16 +126,13 @@ class _AppPageState extends State<AppPage> {
         list.add(
           wrapWidget(
             R.myIcons.appBarSearchBtn,
-                () {
-              // TODO: Code here
-              print("[APP_PAGE.dart] Code line 130, don't forget adding searching page");
-//              pushPage(
-//                context,
-//                TeamSearchPage(
-//                  autoFocusInput: true,
-//                  defaultList: null,
-//                ),
-//              );
+            () {
+              pushPage(
+                context,
+                EventSearchPage(
+                  autoFocusInput: true,
+                ),
+              );
             },
           ),
         );

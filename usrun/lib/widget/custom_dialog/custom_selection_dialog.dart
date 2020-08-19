@@ -70,32 +70,37 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
           _changeSelected(index);
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                (widget.enableObjectIcon
-                    ? Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: ImageCacheManager.getImage(
-                          url: filterItem.iconURL,
-                          width: filterItem.iconSize,
-                          height: filterItem.iconSize,
-                        ),
-                      )
-                    : Container()),
-                Text(
-                  filterItem.name,
-                  overflow: TextOverflow.ellipsis,
-                  textScaleFactor: 1.0,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  (widget.enableObjectIcon
+                      ? Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: ImageCacheManager.getImage(
+                            url: filterItem.iconURL,
+                            width: filterItem.iconSize,
+                            height: filterItem.iconSize,
+                          ),
+                        )
+                      : Container()),
+                  Expanded(
+                    child: Text(
+                      filterItem.name,
+                      overflow: TextOverflow.ellipsis,
+                      textScaleFactor: 1.0,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
             (isSelected
                 ? ImageCacheManager.getImage(
@@ -226,7 +231,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: R.colors.gray515151,
                 ),
               ),
             ),
@@ -343,7 +348,7 @@ Future<T> showCustomSelectionDialog<T>(
     alwaysShowScrollBar = false;
   }
 
-  return await showGeneralDialog(
+  return await showGeneralDialog<T>(
     context: context,
     barrierLabel: "Label",
     barrierDismissible: true,

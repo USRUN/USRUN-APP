@@ -1169,7 +1169,12 @@ class Strings {
   List<String> eventStatus;
   String eventLeaveDescription;
   String leave;
+  String announcement;
   String register;
+  String registerEventSuccessfully;
+  String leaveEventSuccessfully;
+  String chooseTeamTitle;
+  String chooseTeamDescription;
 
   String teams;
   String team;

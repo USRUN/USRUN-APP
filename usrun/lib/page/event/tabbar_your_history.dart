@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class HistoryEventTabBar extends StatefulWidget {
@@ -37,6 +40,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
     // + Sorting elements by 2 factors: Ongoing -> Opening -> Ended startTime (current to the oldest)
     // + If user LEAVES any ongoing/opening events in this tabbar, this event won't be displayed in this tab anymore,
     // it will be moved to the "new events tab".
+    // + The value of "joined" variable must be "true".
     List<Event> result = [
       Event(
         eventId: 1,
@@ -54,7 +58,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
       ),
       Event(
         eventId: 2,
-        eventName: "US Racing for Health 2021",
+        eventName: "US Racing for Health 2022",
         subtitle:
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
@@ -68,7 +72,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
       ),
       Event(
         eventId: 3,
-        eventName: "US Racing for Health 2021",
+        eventName: "US Racing for Health 2023",
         subtitle:
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
@@ -105,6 +109,63 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
+  Future<void> _handleLeaveAnEvent(int arrayIndex) async {
+    bool isLeave = await showCustomAlertDialog(
+      context,
+      title: R.strings.caution,
+      content: R.strings.eventLeaveDescription,
+      firstButtonText: R.strings.leave.toUpperCase(),
+      firstButtonFunction: () => pop(context, object: true),
+      secondButtonText: R.strings.cancel.toUpperCase(),
+      secondButtonFunction: () => pop(context),
+    );
+
+    if (isLeave == null) return;
+
+    showCustomLoadingDialog(
+      context,
+      text: R.strings.processing,
+    );
+
+    // TODO: Put your code here
+    // result: true (Leaving successfully), false (Leaving fail)
+    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
+      print("[EVENT_INFO_LINE] Finish processing about leaving an event");
+      return true;
+    });
+
+    pop(context);
+
+    if (result) {
+      String message = R.strings.leaveEventSuccessfully;
+      message = message.replaceAll(
+        "@@@",
+        _currentEventList[arrayIndex].eventName,
+      );
+
+      showCustomAlertDialog(
+        context,
+        title: R.strings.announcement,
+        content: message,
+        firstButtonText: R.strings.close.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+          setState(() {
+            _currentEventList.removeAt(arrayIndex);
+          });
+        },
+      );
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: R.strings.errorOccurred,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
+    }
+  }
+
   Widget _renderBodyContent() {
     return ListView.builder(
       shrinkWrap: true,
@@ -121,13 +182,21 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
           marginBottom = R.appRatio.appSpacing15;
         }
 
+        Event event = _currentEventList[index];
+        bool enableActionButton = false;
+        if (_currentEventList[index].status.index != EventStatus.Ended.index) {
+          enableActionButton = true;
+        }
+
         return Container(
+          key: Key(event.eventId.toString()),
           margin: EdgeInsets.only(
             bottom: marginBottom,
           ),
           child: EventInfoLine(
-            eventItem: _currentEventList[index],
-            enableActionButton: false,
+            eventItem: event,
+            enableActionButton: enableActionButton,
+            leaveCallback: () => _handleLeaveAnEvent(index),
           ),
         );
       },

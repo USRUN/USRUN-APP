@@ -143,7 +143,12 @@
     ],
     "eventLeaveDescription": "Are you sure you want to leave this event?",
     "leave": "Leave",
+    "announcement": "Announcement",
     "register": "Register",
+    "registerEventSuccessfully": "You have registered the '@@@' event successfully, and your team name is '###'",
+    "leaveEventSuccessfully": "You have left the '@@@' event successfully",
+    "chooseTeamTitle": "Choose team",
+    "chooseTeamDescription": "To join this event, you have to choose one team in the list below",
 
     "teams": "Teams",
     "team": "Team",

@@ -7,16 +7,18 @@ import 'package:usrun/model/event.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class EventInfoLine extends StatefulWidget {
   final Event eventItem;
+  final Function registerCallback;
+  final Function leaveCallback;
   final bool enableActionButton;
 
   EventInfoLine({
     @required this.eventItem,
+    this.registerCallback,
+    this.leaveCallback,
     this.enableActionButton = true,
   });
 
@@ -34,50 +36,10 @@ class _EventInfoLineState extends State<EventInfoLine> {
     _eventItem = widget.eventItem;
   }
 
-  Future<void> _handleRegisterAnEvent() async {
-    showCustomLoadingDialog(
-      context,
-      text: R.strings.processing,
-    );
-
-    // TODO: Put your code here
-    await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about registering an event");
-    });
-
-    pop(context);
-  }
-
-  Future<void> _handleLeaveAnEvent() async {
-    bool isLeave = await showCustomAlertDialog(
-      context,
-      title: R.strings.caution,
-      content: R.strings.eventLeaveDescription,
-      firstButtonText: R.strings.leave.toUpperCase(),
-      firstButtonFunction: () => pop(context, object: true),
-      secondButtonText: R.strings.cancel.toUpperCase(),
-      secondButtonFunction: () => pop(context),
-    );
-
-    if (isLeave == null) return;
-
-    showCustomLoadingDialog(
-      context,
-      text: R.strings.processing,
-    );
-
-    // TODO: Put your code here
-    await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about leaving an event");
-    });
-
-    pop(context);
-  }
-
   void _goToDetailEventPage() {
     // TODO: Go to event_information page with param "eventId"
+    // =====> Trang này chưa build hiện giờ <=====
     print("[EVENT_INFO_LINE] Go to event_information page");
-    pushPage(context, Container());
   }
 
   Widget _renderEventAvatar() {
@@ -144,12 +106,13 @@ class _EventInfoLineState extends State<EventInfoLine> {
 
     String eventStartEndDate = "$startDate - $endDate";
 
-    Widget _renderIconAndText(String iconURL,
-        String text, {
-          Color givenColor,
-          FontWeight fontWeight,
-          bool enableExpanded: true,
-        }) {
+    Widget _renderIconAndText(
+      String iconURL,
+      String text, {
+      Color givenColor,
+      FontWeight fontWeight,
+      bool enableExpanded: true,
+    }) {
       Widget iconWidget = ImageCacheManager.getImage(
         url: iconURL,
         width: R.appRatio.appIconSize20,
@@ -210,12 +173,12 @@ class _EventInfoLineState extends State<EventInfoLine> {
       if (!widget.enableActionButton) return Container();
 
       String text = R.strings.join;
-      Function callback = () => _handleRegisterAnEvent();
+      Function callback = widget.registerCallback;
       bool enableGradient = true;
 
       if (_eventItem.joined) {
         text = R.strings.leave;
-        callback = () => _handleLeaveAnEvent();
+        callback = widget.leaveCallback;
         enableGradient = false;
       }
 
