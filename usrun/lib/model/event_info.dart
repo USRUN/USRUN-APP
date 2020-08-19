@@ -13,6 +13,7 @@ class EventInfo with MapperObject {
   String thumbnail;
   String poster;
   String banner;
+  String rewards;
   int totalDistance;
   int totalTeamParticipant;
   int totalParticipant;
@@ -39,6 +40,7 @@ class EventInfo with MapperObject {
     this.thumbnail,
     this.poster,
     this.banner,
+    this.rewards,
     this.totalDistance,
     this.totalTeamParticipant,
     this.totalParticipant,
