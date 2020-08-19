@@ -221,7 +221,11 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
   }
 
   Widget _renderPhotos() {
-    String mapPhoto = _userActivity.photos[0];
+    String mapPhoto;
+    if (_userActivity.photos.isEmpty)
+      mapPhoto = R.images.logoText;
+    else
+      mapPhoto = _userActivity.photos[0];
 
     List<PhotoItem> photoList;
     if (_userActivity.photos.length > 1) {
@@ -527,7 +531,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           _renderPhotos(),
           _renderStatisticBox(),
           _renderDetailVisualization(),
-          _renderEventInfoBox(),
+          //_renderEventInfoBox(),
           _renderInteractionBox(),
           _renderSplits()
         ],

@@ -47,43 +47,29 @@ class RecordReport extends StatelessWidget {
                 R.strings.time,
                 (Duration(seconds: snapshot.data.totalTime).toString())
                     .substring(0, 7),
-                unit: "HH:MM:SS",
+                unit: R.strings.timeUnit,
               ),
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.distance,
                 snapshot.data.totalDistance,
-                unit: "Meters",
+                unit: R.strings.meters,
               ),
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.avgPace,
                 snapshot.data.avgPace == -1
-                    ? "N/A"
+                    ? R.strings.na
                     : (Duration(seconds: snapshot.data.avgPace.toInt())
                             .toString())
                         .substring(0, 7),
-                unit: "per KM",
+                unit: R.strings.avgPaceUnit,
               ),
               SizedBox(width: 10),
               _buildInfoBox(
-                "Moving Time",
-                (Duration(seconds: snapshot.data.totalMovingTime ~/ 1000)
-                        .toString())
-                    .substring(0, 7),
-                unit: "HH:MM:SS",
-              ),
-              SizedBox(width: 10),
-              _buildInfoBox(
-                "Total Step",
-                snapshot.data.totalStep == -1 ? "N/A" : snapshot.data.totalStep,
-                unit: "steps",
-              ),
-              SizedBox(width: 10),
-              _buildInfoBox(
-                "Acceleration",
-                snapshot.data.acceleration,
-                unit: "m/s2",
+                R.strings.totalStep,
+                snapshot.data.totalStep == -1 ? R.strings.na : snapshot.data.totalStep,
+                unit: R.strings.totalStepsUnit,
               ),
               SizedBox(width: 10),
             ],

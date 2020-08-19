@@ -279,7 +279,11 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
   }
 
   Widget _renderPhotos() {
-    String mapPhoto = _userActivity.photos[0];
+    String mapPhoto;
+    if (_userActivity.photos.isEmpty)
+      mapPhoto = R.images.logoText;
+    else
+      mapPhoto = _userActivity.photos[0];
 
     List<PhotoItem> photoList;
     if (_userActivity.photos.length > 1) {
@@ -381,7 +385,7 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
 
     Widget _avgPaceWidget = _wrapWidgetData(
       firstTitle: R.strings.avgPace,
-      data: _userActivity.avgPace.toString(),
+      data: secondToMinFormat(_userActivity.avgPace.toInt()),
       unitTitle: R.strings.avgPaceUnit,
     );
 

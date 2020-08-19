@@ -221,6 +221,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         titleWidget: InputField(
           controller: _textSearchController,
           focusNode: _searchFocusNode,
+          cursorColor: Colors.white,
           hintText: R.strings.search,
           hintStyle: TextStyle(
             fontSize: R.appRatio.appFontSize18,

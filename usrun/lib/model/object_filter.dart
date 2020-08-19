@@ -5,9 +5,17 @@ import 'package:usrun/util/reflector.dart';
 class ObjectFilter with MapperObject {
   int value;
   String name;
+  String iconURL;
+  double iconSize;
 
   ObjectFilter({
     this.value = 0,
     this.name = "",
-  }) : assert(value != null && name != null);
+    this.iconURL = "",
+    this.iconSize = 20,
+  }) : assert(value != null &&
+            name != null &&
+            iconURL != null &&
+            iconSize != null &&
+            iconSize > 0);
 }

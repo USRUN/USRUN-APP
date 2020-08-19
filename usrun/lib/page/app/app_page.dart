@@ -122,7 +122,22 @@ class _AppPageState extends State<AppPage> {
         break;
         break;
       case 2: // Event page
-        list.add(Container());
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarSearchBtn,
+                () {
+              // TODO: Code here
+              print("[APP_PAGE.dart] Code line 130, don't forget adding searching page");
+//              pushPage(
+//                context,
+//                TeamSearchPage(
+//                  autoFocusInput: true,
+//                  defaultList: null,
+//                ),
+//              );
+            },
+          ),
+        );
         break;
       case 3: // Team page
         list.add(
@@ -131,7 +146,10 @@ class _AppPageState extends State<AppPage> {
             () {
               pushPage(
                 context,
-                TeamSearchPage(autoFocusInput: true, defaultList: null),
+                TeamSearchPage(
+                  autoFocusInput: true,
+                  defaultList: null,
+                ),
               );
             },
           ),

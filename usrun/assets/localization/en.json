@@ -134,6 +134,16 @@
 
     "events": "Events",
     "event": "Event",
+    "newEvents": "New events",
+    "yourHistory": "Your history",
+    "eventStatus": [
+        "Opening",
+        "Ongoing",
+        "Ended"
+    ],
+    "eventLeaveDescription": "Are you sure you want to leave this event?",
+    "leave": "Leave",
+    "register": "Register",
 
     "teams": "Teams",
     "team": "Team",
@@ -217,14 +227,6 @@
     "hotContact": "Hot Contact",
     "legal": "Legal",
     "faqs": "FAQs",
-
-    "eventStatus": [
-        "Opening",
-        "Ongoing",
-        "Ended"
-    ],
-    "eventLeave": "Are you sure you want to leave this event?",
-    "eventLeaveButton": "LEAVE",
 
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",
@@ -381,6 +383,7 @@
     "movingTime":"MOVINGTIME",
     "calories":"CALORIES",
     "total":"TOTAL",
+    "totalStep": "TOTAL STEPS",
     "timeUnit":"HH:MM:SS",
     "meters":"METERS",
     "km": "km",

@@ -231,20 +231,26 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
+    dropDowMenuList.add(
+        DropDownObject<int>(value: -1, text: R.strings.no));
     EventManager.userEvents.forEach((event) {
       dropDowMenuList.add(
           DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
-    return DropDownMenu(
-      errorEmptyData: R.strings.nothingToShow,
-      enableFullWidth: true,
-      labelTitle: R.strings.events,
-      hintText: R.strings.events,
-      enableHorizontalLabelTitle: false,
-      onChanged: this._getSelectedDropDownMenuItem,
-      items: dropDowMenuList,
-      initialValue: dropDowMenuList.isEmpty ? '' : dropDowMenuList[0].value,
-    );
+    return Padding(
+        padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
+        child: Container(
+        margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+        child: DropDownMenu(
+          errorEmptyData: R.strings.nothingToShow,
+          enableFullWidth: true,
+          labelTitle: R.strings.events,
+          hintText: R.strings.events,
+          enableHorizontalLabelTitle: false,
+          onChanged: this._getSelectedDropDownMenuItem,
+          items: dropDowMenuList,
+          initialValue: dropDowMenuList[0].value,
+        ),),);
   }
 
   _buildPhotoPicker() {
@@ -382,7 +388,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
     String requestTime =
-        localToUtc(DateTime.now()).millisecondsSinceEpoch.toString();
+        DateTime.now().millisecondsSinceEpoch.toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
@@ -403,8 +409,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     return result;
   }
 
+  void getEventOfUser() async {
+    await EventManager.getUserEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
+    getEventOfUser();
     var appBar = CustomGradientAppBar(
       titleWidget: Container(
         margin: EdgeInsets.only(right: R.appRatio.appAppBarIconSize),

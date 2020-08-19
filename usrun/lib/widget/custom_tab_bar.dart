@@ -185,6 +185,8 @@ class CustomTabBarStyle03 extends StatelessWidget {
   final List<Widget> tabBarViewList;
   final void Function(int tabIndex) pressTab;
 
+  final double _tabHeight = 45.0;
+
   CustomTabBarStyle03({
     @required this.tabController,
     @required this.tabBarTitleList,
@@ -214,7 +216,7 @@ class CustomTabBarStyle03 extends StatelessWidget {
     });
 
     return Container(
-      height: 45,
+      height: _tabHeight,
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
         boxShadow: [
@@ -242,7 +244,8 @@ class CustomTabBarStyle03 extends StatelessWidget {
   }
 
   Widget _renderTabBarView() {
-    return Expanded(
+    return Padding(
+      padding: EdgeInsets.only(top: _tabHeight),
       child: TabBarView(
         children: tabBarViewList,
         controller: tabController,
@@ -252,13 +255,11 @@ class CustomTabBarStyle03 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Stack(
+      alignment: Alignment.topCenter,
       children: <Widget>[
-        _renderTabBar(),
         _renderTabBarView(),
+        _renderTabBar(),
       ],
     );
   }

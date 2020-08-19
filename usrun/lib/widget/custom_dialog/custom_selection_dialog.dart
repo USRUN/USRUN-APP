@@ -10,12 +10,18 @@ class _CustomSelectionDialog extends StatefulWidget {
   final String title;
   final String description;
   final int selectedIndex;
+  final bool enableObjectIcon;
+  final bool enableScrollBar;
+  final bool alwaysShowScrollBar;
 
   _CustomSelectionDialog(
     this.objects,
     this.title,
     this.description,
     this.selectedIndex,
+    this.enableObjectIcon,
+    this.enableScrollBar,
+    this.alwaysShowScrollBar,
   ) : assert(objects != null &&
             objects.length != 0 &&
             selectedIndex != null &&
@@ -29,6 +35,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   final double _radius = 7.0;
   final double _spacing = 15.0;
   final double _buttonHeight = 50.0;
+  final ScrollController _scrollController = ScrollController();
 
   int _selectedIndex;
 
@@ -36,6 +43,12 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _changeSelected(int index) {
@@ -59,15 +72,30 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              filterItem.name,
-              overflow: TextOverflow.ellipsis,
-              textScaleFactor: 1.0,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                (widget.enableObjectIcon
+                    ? Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: ImageCacheManager.getImage(
+                          url: filterItem.iconURL,
+                          width: filterItem.iconSize,
+                          height: filterItem.iconSize,
+                        ),
+                      )
+                    : Container()),
+                Text(
+                  filterItem.name,
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: 1.0,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                  ),
+                )
+              ],
             ),
             (isSelected
                 ? ImageCacheManager.getImage(
@@ -84,32 +112,48 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   }
 
   Widget _renderObjects() {
-    List<Widget> listItemWidgets = List<Widget>();
     int size = widget.objects.length;
-    for (int i = 0; i < size; i++) {
-      listItemWidgets.add(_renderRow(i, _selectedIndex == i));
-      if (i < size - 1) {
-        listItemWidgets.add(
-          Divider(
-            color: R.colors.blurMajorOrange,
-            height: 2,
-            thickness: 0.4,
-          ),
-        );
-      }
-    }
-
-    return Padding(
+    Widget _buildElement = ListView.builder(
+      shrinkWrap: true,
+      itemCount: size,
+      controller: _scrollController,
       padding: EdgeInsets.only(
         left: _spacing,
         right: _spacing,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: listItemWidgets,
-      ),
+      itemBuilder: (context, index) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _renderRow(index, _selectedIndex == index),
+            (index < size - 1
+                ? Divider(
+                    color: R.colors.blurMajorOrange,
+                    height: 2,
+                    thickness: 0.4,
+                  )
+                : Container()),
+          ],
+        );
+      },
+    );
+
+    double extendRightPadding = 0;
+    if (widget.enableScrollBar) {
+      extendRightPadding = 4;
+      _buildElement = CupertinoScrollbar(
+        isAlwaysShown: widget.alwaysShowScrollBar,
+        controller: _scrollController,
+        child: _buildElement,
+      );
+    }
+
+    return Container(
+      constraints: BoxConstraints(maxHeight: 250),
+      padding: EdgeInsets.only(right: extendRightPadding),
+      child: _buildElement,
     );
   }
 
@@ -241,46 +285,64 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
         color: Colors.white,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // Title
-            _renderTitle(),
-            // Description
-            _renderDescription(),
-            SizedBox(
-              height: 8,
-            ),
-            // Languages
-            _renderObjects(),
-            // Horizontal divider
-            Divider(
-              color: R.colors.blurMajorOrange,
-              height: 1,
-              thickness: 1.0,
-            ),
-            // Button
-            _renderButton(),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // Title
+          _renderTitle(),
+          // Description
+          _renderDescription(),
+          SizedBox(
+            height: 8,
+          ),
+          // Objects
+          _renderObjects(),
+          // Horizontal divider
+          Divider(
+            color: R.colors.blurMajorOrange,
+            height: 1,
+            thickness: 1.0,
+          ),
+          // Button
+          _renderButton(),
+        ],
       ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }
 
 Future<T> showCustomSelectionDialog<T>(
-    BuildContext context, List<ObjectFilter> listObjects, int selectedIndex,
-    {String title, String description}) async {
+  BuildContext context,
+  List<ObjectFilter> objectFilterList,
+  int selectedIndex, {
+  String title,
+  String description,
+  bool enableObjectIcon: false,
+  bool enableScrollBar: false,
+  bool alwaysShowScrollBar: false,
+}) async {
+  if (enableObjectIcon == null) {
+    enableObjectIcon = false;
+  }
+
+  if (enableScrollBar == null) {
+    enableScrollBar = false;
+  }
+
+  if (alwaysShowScrollBar == null) {
+    alwaysShowScrollBar = false;
+  }
+
   return await showGeneralDialog(
     context: context,
     barrierLabel: "Label",
@@ -307,10 +369,13 @@ Future<T> showCustomSelectionDialog<T>(
         child: Align(
           alignment: Alignment.center,
           child: _CustomSelectionDialog(
-            listObjects,
+            objectFilterList,
             title,
             description,
             selectedIndex,
+            enableObjectIcon,
+            enableScrollBar,
+            alwaysShowScrollBar,
           ),
         ),
       );

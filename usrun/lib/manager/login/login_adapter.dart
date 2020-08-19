@@ -38,7 +38,8 @@ abstract class LoginAdapter {
         return GoogleLoginAdapter();
       case LoginChannel.UsRun:
        return UsRunLoginAdapter();
+      default:
+        throw "does not support: $channel";
     }
-    throw "does not support: $channel";
   }
 }

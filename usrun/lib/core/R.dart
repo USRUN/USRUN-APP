@@ -876,6 +876,8 @@ class _MyIcons {
   String keyIconByTheme = 'assets/myicons/icon-black-key.png';
   String hcmusLogo = 'assets/myicons/khtn.png';
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
+  String calendarByTheme = 'assets/myicons/icon-black-calendar.png';
+  String rocketByTheme = 'assets/myicons/icon-black-rocket.png';
 
   // User wants to change theme
   void changeTheme(AppTheme theme) {
@@ -905,6 +907,8 @@ class _MyIcons {
       gpsIconByTheme = 'assets/myicons/icon-black-gps.png';
       keyIconByTheme = 'assets/myicons/icon-black-key.png';
       starIconByTheme = 'assets/myicons/icon-black-star.png';
+      calendarByTheme = 'assets/myicons/icon-black-calendar.png';
+      rocketByTheme = 'assets/myicons/icon-black-rocket.png';
 
       // TODO: Light theme (Black color)
     } else {
@@ -933,6 +937,8 @@ class _MyIcons {
       gpsIconByTheme = 'assets/myicons/icon-white-gps.png';
       keyIconByTheme = 'assets/myicons/icon-white-key.png';
       starIconByTheme = 'assets/myicons/icon-white-star.png';
+      calendarByTheme = 'assets/myicons/icon-white-calendar.png';
+      rocketByTheme = 'assets/myicons/icon-white-rocket.png';
 
       // TODO: Black theme (Light color)
     }
@@ -1120,6 +1126,7 @@ class Strings {
   String movingTime;
   String calories;
   String total;
+  String totalStep;
   String timeUnit;
   String meters;
   String km;
@@ -1157,6 +1164,12 @@ class Strings {
 
   String events;
   String event;
+  String newEvents;
+  String yourHistory;
+  List<String> eventStatus;
+  String eventLeaveDescription;
+  String leave;
+  String register;
 
   String teams;
   String team;
@@ -1242,10 +1255,6 @@ class Strings {
   String faqs;
   String selectDefaultTabTitle;
   String selectDefaultTabContent;
-
-  List<String> eventStatus;
-  String eventLeaveContent;
-  String eventLeaveButton;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1475,8 +1484,8 @@ class _Styles {
 
 class _ImagePickerDefaults {
   // Sizes are in kilobytes
-  final int maxWidth = 800;
-  final int maxHeight = 600;
+  final double maxWidth = 800;
+  final double maxHeight = 600;
   final int imageQuality = 80;
   final int maxOutputSize = 75;
   final int minInputSize = 500;

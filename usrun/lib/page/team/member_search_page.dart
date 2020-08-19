@@ -323,6 +323,7 @@ class _MemberSearchPageState extends State<MemberSearchPage>
       appBar: CustomGradientAppBar(
         titleWidget: InputField(
           controller: _textSearchController,
+          cursorColor: Colors.white,
           hintText: R.strings.search,
           hintStyle: TextStyle(
             fontSize: R.appRatio.appFontSize18,

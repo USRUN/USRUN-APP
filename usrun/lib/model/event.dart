@@ -19,4 +19,22 @@ class Event with MapperObject {
   DateTime endTime;
   String sponsorName;
   bool joined;
+
+  Event({
+    this.eventId,
+    this.status,
+    this.createTime,
+    this.eventName,
+    this.subtitle,
+    this.thumbnail,
+    this.poster,
+    this.banner,
+    this.totalDistance,
+    this.totalTeamParticipant,
+    this.totalParticipant,
+    this.startTime,
+    this.endTime,
+    this.sponsorName,
+    this.joined,
+  });
 }
