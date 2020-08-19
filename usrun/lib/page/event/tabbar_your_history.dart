@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class HistoryEventTabBar extends StatefulWidget {
+
   @override
   _HistoryEventTabBarState createState() => _HistoryEventTabBarState();
 }
@@ -17,10 +21,12 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
   List<Event> _currentEventList;
   int _page;
   bool _allowLoadMore;
+  int userId;
 
   @override
   void initState() {
     super.initState();
+    userId = UserManager.currentUser.userId;
     _getNecessaryData();
   }
 
@@ -45,7 +51,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.OnGoing,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 44284,
         totalTeamParticipant: 456,
         joined: true,
@@ -59,7 +65,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.Ended,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 194729,
         totalTeamParticipant: 1048,
         joined: true,
@@ -73,7 +79,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.Ended,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 194729,
         totalTeamParticipant: 1048,
         joined: true,
@@ -81,6 +87,11 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
         endTime: DateTime.now().subtract(Duration(days: 5)),
       ),
     ];
+
+    Response<dynamic> response = await EventManager.getUserEventsPaged(userId, _page, 10);
+    if(response.success){
+      result = response.object;
+    }
 
     if (!mounted) return;
     if (result != null && result.length != 0) {

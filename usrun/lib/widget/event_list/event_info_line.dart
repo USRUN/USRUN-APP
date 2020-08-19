@@ -271,7 +271,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
         // Powered by
         _renderIconAndText(
           R.myIcons.rocketByTheme,
-          _eventItem.sponsorName,
+          _eventItem.poweredBy,
         ),
         // Register/Leave button
         _renderRegisterOrLeaveButton(),

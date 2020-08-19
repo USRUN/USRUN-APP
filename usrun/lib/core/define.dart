@@ -112,6 +112,9 @@ enum UserRole { Owner, Admin, Member }
 enum TeamMemberType { Owner, Admin, Member, Pending, Invited, Blocked, Guest }
 
 @reflector
+enum SponsorType {Powered, Gold, Silver, Bronze, Collaborated}
+
+@reflector
 enum TeamVerifyStatus {
   None,
   Verified,

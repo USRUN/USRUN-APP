@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -32,7 +34,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
 
   Future<void> _loadData() async {
     if (!_allowLoadMore) return;
-
+    
     // + TODO: Calling API here to get data, and use the variable "_page".
     // + Sorting elements by 2 factors: Ongoing -> Opening & startTime (current to the farthest)
     // + If user REGISTERS any events in this tabbar, this event won't be displayed in this tab anymore,
@@ -45,7 +47,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.OnGoing,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 44284,
         totalTeamParticipant: 456,
         joined: false,
@@ -59,7 +61,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
             "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.OnGoing,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 194729,
         totalTeamParticipant: 1048,
         joined: false,
@@ -73,7 +75,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
         "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
         thumbnail: R.images.avatar,
         status: EventStatus.Opening,
-        sponsorName: "Powered by Trường Đại học Khoa học Tự nhiên",
+        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
         totalParticipant: 194729,
         totalTeamParticipant: 1048,
         joined: false,
@@ -81,6 +83,11 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
         endTime: DateTime.now().add(Duration(days: 5)),
       ),
     ];
+
+    Response<dynamic> response = await EventManager.getNewEventsPaged(_page, 10);
+    if(response.success){
+      result = response.object;
+    }
 
     if (!mounted) return;
     if (result != null && result.length != 0) {
