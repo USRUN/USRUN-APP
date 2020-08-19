@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -14,12 +13,14 @@ class EventInfoLine extends StatefulWidget {
   final Function registerCallback;
   final Function leaveCallback;
   final bool enableActionButton;
+  final bool enableBoxShadow;
 
   EventInfoLine({
     @required this.eventItem,
     this.registerCallback,
     this.leaveCallback,
     this.enableActionButton = true,
+    this.enableBoxShadow = true,
   });
 
   @override
@@ -204,12 +205,12 @@ class _EventInfoLineState extends State<EventInfoLine> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // Total participants & Event status
+        // Event status & Total participants & Total team participants
         Row(
           children: <Widget>[
             // Event status
             _renderIconAndText(
-              R.myIcons.runnerIconByTheme,
+              R.myIcons.caloriesStatsIconByTheme,
               R.strings.eventStatus[_eventItem.status.index],
               givenColor: R.colors.majorOrange,
               fontWeight: FontWeight.bold,
@@ -218,8 +219,15 @@ class _EventInfoLineState extends State<EventInfoLine> {
             SizedBox(width: R.appRatio.appSpacing25),
             // Total participants
             _renderIconAndText(
-              R.myIcons.peopleIconByTheme,
+              R.myIcons.runnerIconByTheme,
               _eventItem.totalParticipant.toString(),
+              enableExpanded: false,
+            ),
+            SizedBox(width: R.appRatio.appSpacing25),
+            // Total team participants
+            _renderIconAndText(
+              R.myIcons.peopleIconByTheme,
+              _eventItem.totalTeamParticipant.toString(),
               enableExpanded: false,
             ),
           ],
@@ -272,13 +280,15 @@ class _EventInfoLineState extends State<EventInfoLine> {
       child: Container(
         decoration: BoxDecoration(
           color: R.colors.appBackground,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4.0,
-              offset: Offset(0.0, 0.0),
-              color: R.colors.textShadow,
-            ),
-          ],
+          boxShadow: (widget.enableBoxShadow
+              ? [
+                  BoxShadow(
+                    blurRadius: 4.0,
+                    offset: Offset(0.0, 0.0),
+                    color: R.colors.textShadow,
+                  ),
+                ]
+              : null),
         ),
         padding: EdgeInsets.all(R.appRatio.appSpacing20),
         child: _renderBodyContent(),

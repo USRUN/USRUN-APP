@@ -2,13 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
-import 'package:usrun/model/object_filter.dart';
-import 'package:usrun/model/team.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
+import 'package:usrun/page/event/register_leave_event_util.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -112,101 +107,6 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
-  Future<Team> _chooseATeam() async {
-    // TODO: API get team list of users
-    List<Team> teamListOfUser = [
-      Team(
-        id: 1,
-        teamName: "Trường Đại học Khoa học Tự nhiên",
-        thumbnail: R.images.avatarQuocTK,
-      ),
-      Team(
-        id: 2,
-        teamName: "Công ty Cổ phần Tự Nghĩa",
-        thumbnail: R.images.avatarHuyTA,
-      ),
-      Team(
-        id: 3,
-        teamName: "ABCOL Corporation",
-        thumbnail: R.images.avatarNgocVTT,
-      ),
-    ];
-
-    List<ObjectFilter> objFilterList = List();
-    teamListOfUser.forEach((element) {
-      objFilterList.add(ObjectFilter(
-        name: element.teamName,
-        iconURL: element.thumbnail,
-        iconSize: 20,
-        value: element,
-      ));
-    });
-
-    int selectedIndex = await showCustomSelectionDialog(
-      context,
-      objFilterList,
-      -1,
-      title: R.strings.chooseTeamTitle,
-      description: R.strings.chooseTeamDescription,
-      enableObjectIcon: true,
-      enableScrollBar: true,
-      alwaysShowScrollBar: true,
-    );
-
-    return selectedIndex == null || selectedIndex < 0
-        ? null
-        : teamListOfUser[selectedIndex];
-  }
-
-  Future<void> _handleRegisterAnEvent(int arrayIndex) async {
-    Team userTeam = await _chooseATeam();
-    if (userTeam == null) return null;
-
-    showCustomLoadingDialog(
-      context,
-      text: R.strings.processing,
-    );
-
-    // TODO: Put your code here
-    // result: true (Registering successfully), false (Registering fail)
-    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about registering an event");
-      return true;
-    });
-
-    pop(context);
-
-    if (result) {
-      String message = R.strings.registerEventSuccessfully;
-      message = message.replaceAll(
-        "@@@",
-        _currentEventList[arrayIndex].eventName,
-      );
-      message = message.replaceAll("###", userTeam.teamName);
-
-      showCustomAlertDialog(
-        context,
-        title: R.strings.announcement,
-        content: message,
-        firstButtonText: R.strings.close.toUpperCase(),
-        firstButtonFunction: () {
-          pop(context);
-          setState(() {
-            _currentEventList.removeAt(arrayIndex);
-          });
-        },
-      );
-    } else {
-      showCustomAlertDialog(
-        context,
-        title: R.strings.error,
-        content: R.strings.errorOccurred,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(context),
-      );
-    }
-  }
-
   Widget _renderBodyContent() {
     return ListView.builder(
       shrinkWrap: true,
@@ -232,7 +132,19 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
           child: EventInfoLine(
             eventItem: event,
             enableActionButton: true,
-            registerCallback: () => _handleRegisterAnEvent(index),
+            registerCallback: () async {
+              bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
+                context: context,
+                arrayIndex: index,
+                eventList: _currentEventList,
+              );
+
+              if (result != null && result) {
+                setState(() {
+                  _currentEventList.removeAt(index);
+                });
+              }
+            },
           ),
         );
       },

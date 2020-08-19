@@ -4,6 +4,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/page/event/register_leave_event_util.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
@@ -109,63 +110,6 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
-  Future<void> _handleLeaveAnEvent(int arrayIndex) async {
-    bool isLeave = await showCustomAlertDialog(
-      context,
-      title: R.strings.caution,
-      content: R.strings.eventLeaveDescription,
-      firstButtonText: R.strings.leave.toUpperCase(),
-      firstButtonFunction: () => pop(context, object: true),
-      secondButtonText: R.strings.cancel.toUpperCase(),
-      secondButtonFunction: () => pop(context),
-    );
-
-    if (isLeave == null) return;
-
-    showCustomLoadingDialog(
-      context,
-      text: R.strings.processing,
-    );
-
-    // TODO: Put your code here
-    // result: true (Leaving successfully), false (Leaving fail)
-    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about leaving an event");
-      return true;
-    });
-
-    pop(context);
-
-    if (result) {
-      String message = R.strings.leaveEventSuccessfully;
-      message = message.replaceAll(
-        "@@@",
-        _currentEventList[arrayIndex].eventName,
-      );
-
-      showCustomAlertDialog(
-        context,
-        title: R.strings.announcement,
-        content: message,
-        firstButtonText: R.strings.close.toUpperCase(),
-        firstButtonFunction: () {
-          pop(context);
-          setState(() {
-            _currentEventList.removeAt(arrayIndex);
-          });
-        },
-      );
-    } else {
-      showCustomAlertDialog(
-        context,
-        title: R.strings.error,
-        content: R.strings.errorOccurred,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(context),
-      );
-    }
-  }
-
   Widget _renderBodyContent() {
     return ListView.builder(
       shrinkWrap: true,
@@ -196,7 +140,19 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
           child: EventInfoLine(
             eventItem: event,
             enableActionButton: enableActionButton,
-            leaveCallback: () => _handleLeaveAnEvent(index),
+            leaveCallback: () async {
+              bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
+                context: context,
+                arrayIndex: index,
+                eventList: _currentEventList,
+              );
+
+              if (result != null && result) {
+                setState(() {
+                  _currentEventList.removeAt(index);
+                });
+              }
+            },
           ),
         );
       },

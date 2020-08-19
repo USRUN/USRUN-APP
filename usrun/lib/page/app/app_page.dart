@@ -129,9 +129,7 @@ class _AppPageState extends State<AppPage> {
             () {
               pushPage(
                 context,
-                EventSearchPage(
-                  autoFocusInput: true,
-                ),
+                EventSearchPage(),
               );
             },
           ),
