@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -308,6 +309,7 @@ class _AppPageState extends State<AppPage> {
           }),
     );
 
+    //return _buildElement;ch
     return WillPopScope(
       child: _buildElement,
       onWillPop: () async {
@@ -316,7 +318,8 @@ class _AppPageState extends State<AppPage> {
           return false;
         } else {
           // TODO: return await showCustomExitDialog(context);
-          return false;
+          await SystemShortcuts.home();
+          return true;
         }
       },
     );
