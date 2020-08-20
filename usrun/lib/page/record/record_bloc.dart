@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/life_cycle.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
@@ -298,7 +299,7 @@ class RecordBloc extends BlocBase {
 //      this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
 //      return false;s
 //    }
-    bool hasPermission = await this.hasApprovedGPSPermission();
+    bool hasPermission = await ph.Permission.locationAlways.isGranted;
     print("test"+hasPermission.toString());
     if (!hasPermission) {
       hasPermission = await this.requestGPSPermission();
@@ -341,8 +342,7 @@ class RecordBloc extends BlocBase {
   }
 
   Future<bool> requestGPSPermission() async {
-    return await this._locationListener.requestPermission() ==
-        PermissionStatus.granted;
+    return await ph.Permission.locationAlways.request().isGranted;
   }
 
   Future<bool> hasApprovedGPSPermission() async {
