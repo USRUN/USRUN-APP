@@ -190,7 +190,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
           textColor: Colors.white,
           textSize: R.appRatio.appFontSize18,
           fontWeight: FontWeight.bold,
-          height: R.appRatio.appHeight50,
+          height: R.appRatio.appHeight45,
           width: double.infinity,
           gradient: (enableGradient ? R.colors.uiGradient : null),
           color: (enableGradient ? null : R.colors.grayButtonColor),

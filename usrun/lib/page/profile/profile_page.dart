@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         return Container(
-          width: 50,
+          width: 55,
           child: FlatButton(
             onPressed: () => pushPage(context, EditProfilePage()),
             padding: EdgeInsets.all(0.0),
