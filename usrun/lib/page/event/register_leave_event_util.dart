@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/object_filter.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
@@ -10,24 +14,13 @@ import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 
 class RegisterLeaveEventUtil {
   static Future<Team> _chooseATeam(BuildContext context) async {
-    // TODO: API get team list of users
-    List<Team> teamListOfUser = [
-      Team(
-        id: 1,
-        teamName: "Trường Đại học Khoa học Tự nhiên",
-        thumbnail: R.images.avatarQuocTK,
-      ),
-      Team(
-        id: 2,
-        teamName: "Công ty Cổ phần Tự Nghĩa",
-        thumbnail: R.images.avatarHuyTA,
-      ),
-      Team(
-        id: 3,
-        teamName: "ABCOL Corporation",
-        thumbnail: R.images.avatarNgocVTT,
-      ),
-    ];
+    List<Team> teamListOfUser = List();
+
+    Response response = await TeamManager.getTeamByUser(UserManager.currentUser.userId);
+
+    if(response.success && (response.object as List).isNotEmpty){
+      teamListOfUser = response.object;
+    }
 
     List<ObjectFilter> objFilterList = List();
     teamListOfUser.forEach((element) {
@@ -72,12 +65,13 @@ class RegisterLeaveEventUtil {
       text: R.strings.processing,
     );
 
-    // TODO: Put your code here
-    // result: true (Registering successfully), false (Registering fail)
-    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about registering an event");
-      return true;
-    });
+    bool result = false;
+
+    Response<dynamic> response = await EventManager.joinEvent(eventList[arrayIndex].eventId,userTeam.id);
+
+    if(response.success && response.errorCode == 0){
+      result = true;
+    };
 
     pop(context);
 
@@ -139,12 +133,13 @@ class RegisterLeaveEventUtil {
       text: R.strings.processing,
     );
 
-    // TODO: Put your code here
-    // result: true (Leaving successfully), false (Leaving fail)
-    bool result = await Future.delayed(Duration(milliseconds: 2500), () {
-      print("[EVENT_INFO_LINE] Finish processing about leaving an event");
-      return true;
-    });
+    bool result = false;
+
+    Response response = await EventManager.leaveEvent(eventList[arrayIndex].eventId);
+
+    if(response.success && response.errorCode == 0){
+      result = true;
+    }
 
     pop(context);
 

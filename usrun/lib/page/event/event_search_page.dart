@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
 import 'package:usrun/page/record/timer.dart';
 import 'package:usrun/util/validator.dart';
@@ -70,26 +72,13 @@ class _EventSearchPageState extends State<EventSearchPage> {
   }
 
   Future<List<Event>> _callSearchApi() async {
-    // TODO: Call API "search_event" here
-    // Note: Param of API will contains: _currentSearchKey, _currentPage & _pageSize
-    List<Event> result = await Future.delayed(Duration(milliseconds: 2000), () {
-      return [
-        Event(
-          eventId: 3,
-          eventName: "US Racing for Health 2023",
-          subtitle:
-              "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
-          thumbnail: R.images.avatar,
-          status: EventStatus.Opening,
-          poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
-          totalParticipant: 194729,
-          totalTeamParticipant: 1048,
-          joined: false,
-          startTime: DateTime.now(),
-          endTime: DateTime.now().add(Duration(days: 5)),
-        ),
-      ];
-    });
+    List<Event> result = List();
+
+    Response<dynamic> response = await EventManager.findEventByName(_currentSearchKey, _currentPage, _pageSize);
+
+    if(response.success && (response.object as List).isNotEmpty){
+      result = response.object;
+    }
 
     return result;
   }

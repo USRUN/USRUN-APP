@@ -1,4 +1,5 @@
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -48,8 +49,7 @@ class TeamManager {
   static Future<Response> getTeamSuggestion(int howMany) async {
     Map<String, dynamic> params = {
       // TODO: Resolve User location
-      'district': null,
-      'province': null,
+      'province': UserManager.currentUser.province ?? 0,
       'howMany': howMany,
     };
 

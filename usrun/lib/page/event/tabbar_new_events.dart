@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -34,11 +37,6 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
   Future<void> _loadData() async {
     if (!_allowLoadMore) return;
 
-    // + TODO: Calling API here to get data, and use the variable "_page".
-    // + Sorting elements by 2 factors: Ongoing -> Opening & startTime (current to the farthest)
-    // + If user REGISTERS any events in this tabbar, this event won't be displayed in this tab anymore,
-    // it will be moved to the "history tab".
-    // + The value of "joined" variable must be "false".
     List<Event> result = [
       Event(
         eventId: 1,
@@ -84,6 +82,11 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
       ),
     ];
 
+    Response<dynamic> response = await EventManager.getNewEventsPaged(_page, 5);
+    if(response.success && (response.object as List).isNotEmpty) {
+      result = response.object;
+    }
+
     if (!mounted) return;
     if (result != null && result.length != 0) {
       setState(() {
@@ -113,10 +116,9 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
       padding: EdgeInsets.all(0.0),
       itemCount: _currentEventList.length,
       itemBuilder: (context, index) {
-//        TODO: Open this code after adding "API codes"
-//        if (index == _currentEventList.length - 1) {
-//          _loadData();
-//        }
+        if (index == _currentEventList.length - 1) {
+          _loadData();
+        }
 
         Event event = _currentEventList[index];
         double marginBottom = 0;
