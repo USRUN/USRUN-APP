@@ -8,8 +8,10 @@ class EventInfo with MapperObject {
   int status;
   String eventName;
   String subtitle;
+  String description;
   String thumbnail;
   String poster;
+  String banner;
   int totalDistance;
   int totalTeamParticipant;
   int totalParticipant;
@@ -31,8 +33,10 @@ class EventInfo with MapperObject {
     this.status,
     this.eventName,
     this.subtitle,
+    this.description,
     this.thumbnail,
     this.poster,
+    this.banner,
     this.totalDistance,
     this.totalTeamParticipant,
     this.totalParticipant,

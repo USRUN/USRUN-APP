@@ -7,12 +7,16 @@ class EventOrganization with MapperObject {
   int organizationId;
   String name;
   String avatar;
+  String website;
+  String description;
   SponsorType sponsorType;
 
   EventOrganization({
     this.organizationId,
     this.name,
     this.avatar,
+    this.website,
+    this.description,
     this.sponsorType,
   });
 }
