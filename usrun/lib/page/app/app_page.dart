@@ -8,6 +8,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
+import 'package:usrun/page/event/event_search_page.dart';
 import 'package:usrun/page/feed/athlete_search_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
@@ -123,7 +124,17 @@ class _AppPageState extends State<AppPage> {
         break;
         break;
       case 2: // Event page
-        list.add(Container());
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarSearchBtn,
+            () {
+              pushPage(
+                context,
+                EventSearchPage(),
+              );
+            },
+          ),
+        );
         break;
       case 3: // Team page
         list.add(
@@ -132,7 +143,10 @@ class _AppPageState extends State<AppPage> {
             () {
               pushPage(
                 context,
-                TeamSearchPage(autoFocusInput: true, defaultList: null),
+                TeamSearchPage(
+                  autoFocusInput: true,
+                  defaultList: null,
+                ),
               );
             },
           ),

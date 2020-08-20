@@ -21,9 +21,9 @@ class TimerService {
     }
   }
 
-  void start() {
+  void start({int interval: 1}) {
     if (_timer != null) return;
-    _timer = Timer.periodic(Duration(seconds: 1), _onTick);
+    _timer = Timer.periodic(Duration(seconds: interval), _onTick);
     isRunning = true;
   }
 

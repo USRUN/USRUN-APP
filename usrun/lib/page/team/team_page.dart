@@ -193,7 +193,9 @@ class _TeamPageState extends State<TeamPage> {
                         enableScrollBackgroundColor: true,
                         pressItemFunction: (teamItem) {
                           pushPage(
-                              context, TeamInfoPage(teamId: teamItem.teamId));
+                            context,
+                            TeamInfoPage(teamId: teamItem.teamId),
+                          );
                         },
                       ),
                       (checkListIsNullOrEmpty(_myInvitedTeamList)
@@ -210,8 +212,12 @@ class _TeamPageState extends State<TeamPage> {
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,
                               pressItemFunction: (teamItem) {
-                                pushPage(context,
-                                    TeamInfoPage(teamId: teamItem.teamId));
+                                pushPage(
+                                  context,
+                                  TeamInfoPage(
+                                    teamId: teamItem.teamId,
+                                  ),
+                                );
                               },
                             )),
                       (checkListIsNullOrEmpty(_myRequestingTeamList)
@@ -243,7 +249,9 @@ class _TeamPageState extends State<TeamPage> {
                         enableSplitListToTwo: false,
                         pressItemFunction: (teamItem) {
                           pushPage(
-                              context, TeamInfoPage(teamId: teamItem.teamId));
+                            context,
+                            TeamInfoPage(teamId: teamItem.teamId),
+                          );
                         },
                       ),
                       SizedBox(
@@ -262,8 +270,9 @@ class _TeamPageState extends State<TeamPage> {
                           pushPage(
                             context,
                             TeamSearchPage(
-                                autoFocusInput: false,
-                                defaultList: _teamSuggestionList),
+                              autoFocusInput: false,
+                              defaultList: _teamSuggestionList,
+                            ),
                           );
                         },
                       ),

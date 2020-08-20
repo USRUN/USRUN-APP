@@ -134,6 +134,21 @@
 
     "events": "Events",
     "event": "Event",
+    "newEvents": "New events",
+    "yourHistory": "Your history",
+    "eventStatus": [
+        "Opening",
+        "Ongoing",
+        "Ended"
+    ],
+    "eventLeaveDescription": "Are you sure you want to leave this event?",
+    "leave": "Leave",
+    "announcement": "Announcement",
+    "register": "Register",
+    "registerEventSuccessfully": "You have registered the '@@@' event successfully, and your team name is '###'",
+    "leaveEventSuccessfully": "You have left the '@@@' event successfully",
+    "chooseTeamTitle": "Choose team",
+    "chooseTeamDescription": "To join this event, you have to choose one team in the list below",
 
     "teams": "Teams",
     "team": "Team",
@@ -217,14 +232,6 @@
     "hotContact": "Hot Contact",
     "legal": "Legal",
     "faqs": "FAQs",
-
-    "eventStatus": [
-        "Opening",
-        "Ongoing",
-        "Ended"
-    ],
-    "eventLeave": "Are you sure you want to leave this event?",
-    "eventLeaveButton": "LEAVE",
 
     "notiActLabel": "Activities",
     "notiActReactionTitle": "Reaction (Like)",

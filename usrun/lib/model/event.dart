@@ -6,17 +6,29 @@ import 'package:usrun/model/mapper_object.dart';
 class Event with MapperObject {
   int eventId;
   EventStatus status;
-  DateTime createTime;
   String eventName;
   String subtitle;
   String thumbnail;
-  String poster;
   String banner;
-  int totalDistance;
   int totalTeamParticipant;
   int totalParticipant;
   DateTime startTime;
   DateTime endTime;
-  String sponsorName;
+  String poweredBy;
   bool joined;
+
+  Event({
+    this.eventId,
+    this.status,
+    this.eventName,
+    this.subtitle,
+    this.thumbnail,
+    this.banner,
+    this.totalTeamParticipant,
+    this.totalParticipant,
+    this.startTime,
+    this.endTime,
+    this.poweredBy,
+    this.joined,
+  });
 }
