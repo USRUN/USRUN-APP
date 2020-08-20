@@ -19,7 +19,7 @@ class HeaderRankLead extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            width: R.appRatio.appWidth60,
+            width: R.appRatio.appWidth50,
             child: Text(
               firstTitle,
               textAlign: TextAlign.center,

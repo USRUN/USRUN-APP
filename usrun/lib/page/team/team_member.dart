@@ -197,7 +197,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         title: R.strings.teamMember,
         actions: <Widget>[
           Container(
-            width: 50,
+            width: 55,
             child: (TeamMemberUtil.authorizeHigherLevel(
                     TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
@@ -217,7 +217,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
                 : Container(),
           ),
           Container(
-            width: 50,
+            width: 55,
             child: (TeamMemberUtil.authorizeHigherLevel(
                     TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
