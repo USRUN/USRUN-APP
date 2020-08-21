@@ -203,8 +203,8 @@
     "notAuthorizedTeamChange": "You are not authorized to change this information.",
     "promoteAPerson": "Promote to admin",
     "demoteAPerson": "Demote to user",
-    "requestTeamListTitle": "You are requesting to join",
-    "inviteTeamListTitle": "You are invited to",
+    "requestTeamListTitle": "You Are Requesting To Join",
+    "inviteTeamListTitle": "You Are Invited To",
     "emptyMemberList": "There is no member in this list",
     "emptyMemberListSubtitle": "Try reloading the page or invite more members",
 

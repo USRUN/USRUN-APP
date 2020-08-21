@@ -4,9 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event_leaderboard.dart';
 import 'package:usrun/model/object_filter.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_info.dart';
+import 'package:usrun/page/profile/profile_page.dart';
+import 'package:usrun/page/team/team_info.dart';
+import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/util/validator.dart';
@@ -18,6 +25,10 @@ import 'package:usrun/widget/header_rank_lead.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class EventLeaderboardPage extends StatefulWidget {
+  final int eventId;
+
+  EventLeaderboardPage({@required this.eventId});
+
   @override
   _EventLeaderboardPageState createState() => _EventLeaderboardPageState();
 }
@@ -62,49 +73,18 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
 
     List<EventLeaderboard> result = List();
     if (_selectedFilter.value == LeaderBoardType.Individual) {
-      // TODO: Use API of "Individual"
-      result = [
-        EventLeaderboard(
-          name: "Quốc Trần Kiến",
-          avatar: R.images.avatarQuocTK,
-          distance: 285000,
-          itemId: 1,
-        ),
-        EventLeaderboard(
-          name: "Võ Thị Thanh Ngọc",
-          avatar: R.images.avatarNgocVTT,
-          distance: 272000,
-          itemId: 2,
-        ),
-        EventLeaderboard(
-          name: "Trần Minh Kha",
-          avatar: R.images.avatarKhaTM,
-          distance: 185900,
-          itemId: 3,
-        ),
-      ];
+      Response<dynamic> response = await EventManager.getEventLeaderboard(widget.eventId, true, 10);
+
+      if(response.success && (response.object as List).isNotEmpty){
+        result = response.object;
+      }
+
     } else {
-      // TODO: Use API of "Team"
-      result = [
-        EventLeaderboard(
-          name: "Trường Đại học Khoa học Tự nhiên - ĐHQG HCM",
-          avatar: R.images.avatarHuyTA,
-          distance: 285000,
-          itemId: 1,
-        ),
-        EventLeaderboard(
-          name: "Công ty Cổ phần Hải Âu",
-          avatar: R.images.avatarPhucTT,
-          distance: 272000,
-          itemId: 2,
-        ),
-        EventLeaderboard(
-          name: "Tập đoàn Tôn Đông Âu",
-          avatar: R.images.logo,
-          distance: 185900,
-          itemId: 3,
-        ),
-      ];
+      Response<dynamic> response = await EventManager.getEventLeaderboard(widget.eventId, false, 10);
+
+      if(response.success && (response.object as List).isNotEmpty){
+        result = response.object;
+      }
     }
 
     setState(() {
@@ -151,13 +131,22 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
     _getNecessaryData();
   }
 
-  void _goToAthleteOrTeamPage() {
+  void _goToAthleteOrTeamPage(int id) {
     if (_selectedFilter.value == LeaderBoardType.Individual) {
       // TODO: Push "Profile" page - Nhớ push đúng page, thắc mắc, liên hệ Ngọc
       print("[EVENT_LEADERBOARD] Push 'Profile' page");
+
+//      pushPage(
+//        context,
+//        ProfilePage(
+//          userInfo: User(
+//            userId: 2,
+//          ),
+//          enableAppBar: false,
+//        ),
+//      );
     } else {
-      // TODO: Push "Team" page - Nhớ push đúng page, thắc mắc, liên hệ Kha
-      print("[EVENT_LEADERBOARD] Push 'Team' page");
+      pushPage(context, TeamInfoPage(teamId: id));
     }
   }
 
@@ -227,18 +216,11 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
             formatType: RunningUnit.KILOMETER,
           ),
         );
-
-        /*
-            TODO: Nếu như "id" là userId (UserManager.currentUser.userId)
-             hoặc là teamId (duy nhất 1 team mà user đã chọn khi đăng ký tham gia sự kiện)
-        */
         Color contentColor = R.colors.contentText;
         if (_selectedFilter.value == LeaderBoardType.Individual) {
           if (id == UserManager.currentUser.userId) {
             contentColor = R.colors.majorOrange;
           }
-        } else {
-          // TODO: Không biết phải check thế nào khi thiếu dữ kiện!!!
         }
 
         return Container(
@@ -277,7 +259,9 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
                       width: 1,
                       color: R.colors.majorOrange,
                     ),
-                    pressAvatarImage: _goToAthleteOrTeamPage,
+                    pressAvatarImage: () {
+                      _goToAthleteOrTeamPage(id);
+                    },
                   ),
                   // Content
                   title: name,
@@ -286,7 +270,9 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
                     color: contentColor,
                   ),
                   enableAddedContent: false,
-                  pressInfo: _goToAthleteOrTeamPage,
+                  pressInfo: () {
+                    _goToAthleteOrTeamPage(id);
+                  },
                 ),
               ),
               // Distance

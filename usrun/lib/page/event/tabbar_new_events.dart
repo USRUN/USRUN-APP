@@ -37,50 +37,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
   Future<void> _loadData() async {
     if (!_allowLoadMore) return;
 
-    List<Event> result = [
-      Event(
-        eventId: 1,
-        eventName: "US Racing for Health 2021",
-        subtitle:
-            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
-        thumbnail: R.images.avatar,
-        status: EventStatus.OnGoing,
-        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
-        totalParticipant: 44284,
-        totalTeamParticipant: 456,
-        joined: false,
-        startTime: DateTime.now().subtract(Duration(days: 4)),
-        endTime: DateTime.now().add(Duration(days: 5)),
-      ),
-      Event(
-        eventId: 2,
-        eventName: "US Racing for Health 2022",
-        subtitle:
-            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
-        thumbnail: R.images.avatar,
-        status: EventStatus.OnGoing,
-        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
-        totalParticipant: 194729,
-        totalTeamParticipant: 1048,
-        joined: false,
-        startTime: DateTime.now().subtract(Duration(days: 1)),
-        endTime: DateTime.now().add(Duration(days: 6)),
-      ),
-      Event(
-        eventId: 3,
-        eventName: "US Racing for Health 2023",
-        subtitle:
-            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
-        thumbnail: R.images.avatar,
-        status: EventStatus.Opening,
-        poweredBy: "Powered by Trường Đại học Khoa học Tự nhiên",
-        totalParticipant: 194729,
-        totalTeamParticipant: 1048,
-        joined: false,
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(Duration(days: 5)),
-      ),
-    ];
+    List<Event> result = List();
 
     Response<dynamic> response = await EventManager.getNewEventsPaged(_page, 5);
     if(response.success && (response.object as List).isNotEmpty) {

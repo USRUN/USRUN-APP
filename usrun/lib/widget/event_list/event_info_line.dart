@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/page/event/event_info.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/ui_button.dart';
 
@@ -41,6 +44,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
     // TODO: Go to event_information page with param "eventId"
     // =====> Trang này chưa build hiện giờ <=====
     print("[EVENT_INFO_LINE] Go to event_information page");
+    pushPage(context, EventInfoPage(eventId: widget.eventItem.eventId));
   }
 
   Widget _renderEventAvatar() {
@@ -240,10 +244,12 @@ class _EventInfoLineState extends State<EventInfoLine> {
         ),
         SizedBox(height: R.appRatio.appSpacing15),
         // Powered by
-        _renderIconAndText(
-          R.myIcons.rocketByTheme,
-          _eventItem.poweredBy,
-        ),
+        !checkStringNullOrEmpty(_eventItem.poweredBy)
+            ? _renderIconAndText(
+                R.myIcons.rocketByTheme,
+                _eventItem.poweredBy,
+              )
+            : Container(),
         // Register/Leave button
         _renderRegisterOrLeaveButton(),
       ],
