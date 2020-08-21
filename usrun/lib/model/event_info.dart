@@ -5,56 +5,44 @@ import 'package:usrun/model/mapper_object.dart';
 
 @reflector
 class EventInfo with MapperObject {
-  int eventId;
-  EventStatus status;
-  DateTime createTime;
+  int status;
   String eventName;
   String subtitle;
+  String description;
   String thumbnail;
   String poster;
   String banner;
-  String rewards;
   int totalDistance;
   int totalTeamParticipant;
   int totalParticipant;
-  int totalActivities;
-  int leadingDistance;
-  DateTime leadingTime;
   DateTime startTime;
   DateTime endTime;
-  String description;
-  List<EventOrganization> organization;
+  String reward;
 
-  bool joined;
-  bool finished;
-  int userRank;
-  int userDistance;
-  int userTime;
+  /*
+    Sponsor Type: Powered, Gold, Silver, Bronze, Collaborated
+    sponsorIds[0]: List of powered-by sponsors
+    [1]: List of Gold sponsors
+    [2]: List of Silver sponsors
+    [3]: Bronze
+    [4]: Collaborated
+   */
+  List<List<EventOrganization>> sponsorIds;
 
   EventInfo({
-    this.eventId,
     this.status,
-    this.createTime,
     this.eventName,
     this.subtitle,
+    this.description,
     this.thumbnail,
     this.poster,
     this.banner,
-    this.rewards,
     this.totalDistance,
     this.totalTeamParticipant,
     this.totalParticipant,
-    this.totalActivities,
-    this.leadingDistance,
-    this.leadingTime,
     this.startTime,
     this.endTime,
-    this.joined,
-    this.finished,
-    this.description,
-    this.organization,
-    this.userRank,
-    this.userDistance,
-    this.userTime,
+    this.reward,
+    this.sponsorIds,
   });
 }

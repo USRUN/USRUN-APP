@@ -59,10 +59,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _loadData() async {
     setState(() {
-      _avatarImageURL = R.images.avatar;
-      _supportImageURL = R.images.avatar;
-      _fullName = R.strings.na;
-      _userCode = R.strings.na;
+      _avatarImageURL = _userInfo.avatar;
+      _supportImageURL =
+      _userInfo.hcmus ? R.myIcons.hcmusLogo : null;
+      _fullName = _userInfo.name;
+      _userCode = _userInfo.code == null
+          ? "USRUN${_userInfo.userId}"
+          : _userInfo.code;
     });
     _refreshController.refreshCompleted();
   }
@@ -100,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         return Container(
-          width: 50,
+          width: 55,
           child: FlatButton(
             onPressed: () => pushPage(context, EditProfilePage()),
             padding: EdgeInsets.all(0.0),

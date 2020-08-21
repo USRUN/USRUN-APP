@@ -29,7 +29,7 @@ class FormatProfileStats {
     result.add({
       "id": "2",
       "title": "AVG Time",
-      "data": secondToTimeFormat(userActivity["avgTime"]),
+      "data": secondToMinFormat(userActivity["avgTime"]),
       "unit": "",
       "iconURL": R.myIcons.timeStatsIcon,
     });
@@ -65,7 +65,7 @@ class FormatProfileStats {
     result.add({
       "id": "6",
       "title": "AVG Pace",
-      "data": NumberFormat("#,##0.##", "en_US").format(userActivity['avgPace']),
+      "data": secondToMinFormat(userActivity['avgPace']),
       "unit": "/km",
       "iconURL": R.myIcons.paceStatsIcon,
       "enableImageStyle": true,
@@ -147,8 +147,7 @@ class FormatProfileStats {
     result.add({
       "id": "5",
       "subTitle": "AVG Pace",
-      "dataTitle":
-          NumberFormat("#,##0.##", "en_US").format(userActivity['avgPace']),
+      "dataTitle":secondToMinFormat(userActivity['avgPace']),
       "unitTitle": "/km",
     });
 
@@ -232,7 +231,7 @@ class FormatProfileStats {
 
     result.add({
       "title": "Avg Time",
-      "data": secondToTimeFormat(userActivity["avgTime"]),
+      "data": secondToMinFormat(userActivity["avgTime"]),
       "unit": "min",
       "iconURL": R.myIcons.timeStatsIconByTheme,
       "enableBottomBorder": false,
@@ -242,7 +241,7 @@ class FormatProfileStats {
 
     result.add({
       "title": "Avg Pace",
-      "data": NumberFormat("#,##0.##", "en_US").format(userActivity['avgPace']),
+      "data": secondToMinFormat(userActivity['avgPace']),
       "unit": "/km",
       "iconURL": R.myIcons.paceStatsIconByTheme,
       "enableBottomBorder": true,
