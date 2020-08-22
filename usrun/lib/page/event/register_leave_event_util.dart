@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/model/event.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -60,6 +59,7 @@ class RegisterLeaveEventUtil {
   static Future<bool> handleRegisterAnEvent({
     @required BuildContext context,
     String eventName,
+    int eventId,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
@@ -117,6 +117,7 @@ class RegisterLeaveEventUtil {
   static Future<bool> handleLeaveAnEvent({
     @required BuildContext context,
     String eventName,
+    int eventId,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
