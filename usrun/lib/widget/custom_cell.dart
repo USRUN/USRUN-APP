@@ -208,7 +208,7 @@ class CustomCell extends StatelessWidget {
         // Title
         Text(
           this.title,
-          maxLines: 2,
+          maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: (this.titleStyle ??
               TextStyle(
@@ -225,7 +225,7 @@ class CustomCell extends StatelessWidget {
                 ),
                 child: Text(
                   this.subTitle,
-                  maxLines: 2,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: (this.subTitleStyle ??
                       TextStyle(

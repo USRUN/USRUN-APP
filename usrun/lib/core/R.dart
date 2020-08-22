@@ -878,6 +878,9 @@ class _MyIcons {
   String starIconByTheme = 'assets/myicons/icon-black-star.png';
   String calendarByTheme = 'assets/myicons/icon-black-calendar.png';
   String rocketByTheme = 'assets/myicons/icon-black-rocket.png';
+  String posterByTheme = 'assets/myicons/icon-black-poster.png';
+  String infoByTheme = 'assets/myicons/icon-black-info02.png';
+  String laurelByTheme = 'assets/myicons/icon-black-laurel.png';
 
   // User wants to change theme
   void changeTheme(AppTheme theme) {
@@ -909,6 +912,9 @@ class _MyIcons {
       starIconByTheme = 'assets/myicons/icon-black-star.png';
       calendarByTheme = 'assets/myicons/icon-black-calendar.png';
       rocketByTheme = 'assets/myicons/icon-black-rocket.png';
+      posterByTheme = 'assets/myicons/icon-black-poster.png';
+      infoByTheme = 'assets/myicons/icon-black-info02.png';
+      laurelByTheme = 'assets/myicons/icon-black-laurel.png';
 
       // TODO: Light theme (Black color)
     } else {
@@ -939,6 +945,9 @@ class _MyIcons {
       starIconByTheme = 'assets/myicons/icon-white-star.png';
       calendarByTheme = 'assets/myicons/icon-white-calendar.png';
       rocketByTheme = 'assets/myicons/icon-white-rocket.png';
+      posterByTheme = 'assets/myicons/icon-white-poster.png';
+      infoByTheme = 'assets/myicons/icon-white-info02.png';
+      laurelByTheme = 'assets/myicons/icon-white-laurel.png';
 
       // TODO: Black theme (Light color)
     }
@@ -1139,6 +1148,7 @@ class Strings {
   String totalStepsUnit;
   String stats;
   String title;
+  String yourDescription;
   String description;
   String elevGain;
   String maxElev;
@@ -1169,6 +1179,7 @@ class Strings {
   String yourHistory;
   List<String> eventStatus;
   String eventLeaveDescription;
+  String confirm;
   String leave;
   String announcement;
   String register;
@@ -1180,6 +1191,11 @@ class Strings {
   String individuals;
   String changeLeaderboardTypeTitle;
   String changeLeaderboardTypeDescription;
+  String eventInformation;
+  String information;
+  String rewards;
+  String eventPoster;
+  String eventStatusTitle;
 
   String teams;
   String team;

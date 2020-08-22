@@ -239,7 +239,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
       child: InputField(
         controller: _descriptionTextController,
         focusNode: _descriptionNode,
-        labelTitle: R.strings.description,
+        labelTitle: R.strings.yourDescription,
         enableLabelShadow: true,
         enableFullWidth: true,
         enableMaxLines: true,
@@ -441,7 +441,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = uppercaseFirstLetterEachWord(
+    String appBarTitle = StringUtils.uppercaseFirstLetterEachWord(
       content: R.strings.editActivity,
       pattern: " ",
     );

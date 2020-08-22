@@ -40,18 +40,19 @@ class _EventInfoLineState extends State<EventInfoLine> {
     _eventItem = widget.eventItem;
   }
 
-  void _goToDetailEventPage() {
-    // TODO: Go to event_information page with param "eventId"
-    // =====> Trang này chưa build hiện giờ <=====
-    print("[EVENT_INFO_LINE] Go to event_information page");
-    pushPage(context, EventInfoPage(eventId: widget.eventItem.eventId));
+  void _goToEventInfoPage() {
+    if (_eventItem == null) return;
+    pushPage(
+      context,
+      EventInfoPage(),
+    );
   }
 
   Widget _renderEventAvatar() {
     return AvatarView(
       avatarImageURL: _eventItem.thumbnail,
       avatarImageSize: _avatarSize,
-      pressAvatarImage: _goToDetailEventPage,
+      pressAvatarImage: _goToEventInfoPage,
       avatarBoxBorder: Border.all(
         width: 1.5,
         color: R.currentAppTheme == AppTheme.LIGHT
@@ -177,7 +178,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
     Widget _renderRegisterOrLeaveButton() {
       if (!widget.enableActionButton) return Container();
 
-      String text = R.strings.join;
+      String text = R.strings.register;
       Function callback = widget.registerCallback;
       bool enableGradient = true;
 
@@ -282,7 +283,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _goToDetailEventPage,
+      onTap: _goToEventInfoPage,
       child: Container(
         decoration: BoxDecoration(
           color: R.colors.appBackground,

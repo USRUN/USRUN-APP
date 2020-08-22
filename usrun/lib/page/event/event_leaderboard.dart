@@ -9,11 +9,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event_leaderboard.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/model/user.dart';
-import 'package:usrun/page/profile/profile_info.dart';
-import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/team/team_info.dart';
-import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/util/validator.dart';
@@ -331,7 +327,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = uppercaseFirstLetterEachWord(
+    String appBarTitle = StringUtils.uppercaseFirstLetterEachWord(
       content: R.strings.eventLeaderboard,
       pattern: " ",
     );

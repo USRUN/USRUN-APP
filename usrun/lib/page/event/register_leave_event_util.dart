@@ -9,8 +9,10 @@ import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
+import 'package:usrun/widget/input_field.dart';
 
 class RegisterLeaveEventUtil {
   static Future<Team> _chooseATeam(BuildContext context) async {
@@ -50,8 +52,7 @@ class RegisterLeaveEventUtil {
 
   static Future<bool> handleRegisterAnEvent({
     @required BuildContext context,
-    List<Event> eventList,
-    int arrayIndex,
+    String eventName,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
@@ -79,7 +80,7 @@ class RegisterLeaveEventUtil {
       String message = R.strings.registerEventSuccessfully;
       message = message.replaceAll(
         "@@@",
-        eventList[arrayIndex].eventName,
+        eventName,
       );
       message = message.replaceAll("###", userTeam.teamName);
 
@@ -109,21 +110,43 @@ class RegisterLeaveEventUtil {
 
   static Future<bool> handleLeaveAnEvent({
     @required BuildContext context,
-    List<Event> eventList,
-    int arrayIndex,
+    String eventName,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
     */
-
-    bool isLeave = await showCustomAlertDialog(
+    TextEditingController confirmController = TextEditingController();
+    String description = R.strings.eventLeaveDescription;
+    description = description.replaceAll(
+      '@@@',
+      eventName,
+    );
+    bool isLeave = await showCustomComplexDialog<bool>(
       context,
-      title: R.strings.caution,
-      content: R.strings.eventLeaveDescription,
+      headerContent: R.strings.caution,
+      descriptionContent: description,
       firstButtonText: R.strings.leave.toUpperCase(),
-      firstButtonFunction: () => pop(context, object: true),
+      firstButtonFunction: () {
+        String text = confirmController.text.trim().toLowerCase();
+        if (text.compareTo(R.strings.confirm.toLowerCase()) == 0) {
+          pop(context, object: true);
+        }
+      },
       secondButtonText: R.strings.cancel.toUpperCase(),
       secondButtonFunction: () => pop(context),
+      inputFieldList: [
+        InputField(
+          controller: confirmController,
+          enableFullWidth: true,
+          hintText: R.strings.confirm.toLowerCase(),
+          autoFocus: true,
+          hintStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize18,
+            color: R.colors.grayABABAB,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
     );
 
     if (isLeave == null) return false;
@@ -147,7 +170,7 @@ class RegisterLeaveEventUtil {
       String message = R.strings.leaveEventSuccessfully;
       message = message.replaceAll(
         "@@@",
-        eventList[arrayIndex].eventName,
+        eventName,
       );
 
       showCustomAlertDialog(
