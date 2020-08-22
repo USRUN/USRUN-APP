@@ -1154,6 +1154,9 @@ class Strings {
   String discard;
   String upload;
   String na;
+  String successfullyUploaded;
+  String failToUpload;
+  String discardActivity;
 
   String uFeed;
   String readMore;

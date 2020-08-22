@@ -19,13 +19,13 @@ import 'package:usrun/widget/team_list/team_list.dart';
 class ProfileInfo extends StatefulWidget {
   final int userId;
 
-  ProfileInfo({@required this.userId});
+  ProfileInfo({@required this.userId, Key key}): super(key: key);
 
   @override
-  _ProfileInfoState createState() => _ProfileInfoState();
+  ProfileInfoState createState() => ProfileInfoState();
 }
 
-class _ProfileInfoState extends State<ProfileInfo> {
+class ProfileInfoState extends State<ProfileInfo> {
   bool _isLoading;
   int _followingNumber;
   int _followerNumber;

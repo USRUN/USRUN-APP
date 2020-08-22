@@ -40,10 +40,10 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
     _photos = List();
 
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => _getProfileActivityData());
+        .addPostFrameCallback((_) => getProfileActivityData());
   }
 
-  _getProfileActivityData() async {
+  getProfileActivityData() async {
     if (!_isLoading) {
       setState(
         () {
@@ -172,7 +172,7 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
               return GestureDetector(
                 onVerticalDragUpdate: (details) {
                   if (details.delta.dy >= -10.0) return;
-                  _getProfileActivityData();
+                  getProfileActivityData();
                 },
                 child: _renderActivityTimeline(item),
               );
