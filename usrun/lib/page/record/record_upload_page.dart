@@ -370,6 +370,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () async {
           pop(this.context);
+          await RecordHelper.removeFile();
+          this.widget.bloc.resetAll();
           Navigator.pop(context);
         },
       );
