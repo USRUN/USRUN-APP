@@ -141,7 +141,7 @@
         "Ongoing",
         "Ended"
     ],
-    "eventLeaveDescription": "All registered information and running statistical results will be deleted permanently when you leave the '@@@' event. Please type \"confirm\" to the box below if you were sure",
+    "eventLeaveDescription": "All registered information and running statistical results will be deleted permanently when you leave the '@@@' event. Please type 'confirm' to the box below if you were sure",
     "confirm": "Confirm",
     "leave": "Leave",
     "announcement": "Announcement",
@@ -154,6 +154,7 @@
     "individuals": "Individuals",
     "changeLeaderboardTypeTitle": "Change leaderboard type",
     "changeLeaderboardTypeDescription": "There are 2 options for you, individuals or teams, please choose one leaderboard type",
+    "eventInformation": "Event information",
 
     "teams": "Teams",
     "team": "Team",

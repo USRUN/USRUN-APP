@@ -19,6 +19,7 @@ import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_dialog/custom_exit_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {
@@ -331,9 +332,7 @@ class _AppPageState extends State<AppPage> {
           pop(context);
           return false;
         } else {
-          // TODO: return await showCustomExitDialog(context);
           await SystemShortcuts.home();
-          return true;
         }
       },
     );

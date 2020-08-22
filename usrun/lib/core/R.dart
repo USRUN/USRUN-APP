@@ -1180,6 +1180,7 @@ class Strings {
   String individuals;
   String changeLeaderboardTypeTitle;
   String changeLeaderboardTypeDescription;
+  String eventInformation;
 
   String teams;
   String team;
