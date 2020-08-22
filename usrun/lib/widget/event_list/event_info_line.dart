@@ -43,7 +43,9 @@ class _EventInfoLineState extends State<EventInfoLine> {
     if (_eventItem == null) return;
     pushPage(
       context,
-      EventInfoPage(),
+      EventInfoPage(
+        eventId: _eventItem.eventId,
+      ),
     );
   }
 
