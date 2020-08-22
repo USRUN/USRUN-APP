@@ -141,7 +141,7 @@
         "Ongoing",
         "Ended"
     ],
-    "eventLeaveDescription": "Are you sure you want to leave this event?",
+    "eventLeaveDescription": "All registered information and running statistical results will be deleted permanently when you leave the event. Are you sure?",
     "leave": "Leave",
     "announcement": "Announcement",
     "register": "Register",
@@ -149,6 +149,10 @@
     "leaveEventSuccessfully": "You have left the '@@@' event successfully",
     "chooseTeamTitle": "Choose team",
     "chooseTeamDescription": "To join this event, you have to choose one team in the list below",
+    "eventLeaderboard": "Event leaderboard",
+    "individuals": "Individuals",
+    "changeLeaderboardTypeTitle": "Change leaderboard type",
+    "changeLeaderboardTypeDescription": "There are 2 options for you, individuals or teams, please choose one leaderboard type",
 
     "teams": "Teams",
     "team": "Team",

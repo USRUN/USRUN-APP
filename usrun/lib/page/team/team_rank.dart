@@ -213,6 +213,7 @@ class _TeamRankState extends State<TeamRank> {
                           // Custom cell
                           Expanded(
                             child: CustomCell(
+                              enableSplashColor: false,
                               avatarView: AvatarView(
                                 avatarImageURL: avatarImageURL,
                                 avatarImageSize: R.appRatio.appWidth50,

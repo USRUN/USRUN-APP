@@ -168,6 +168,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                           // Custom cell
                           Expanded(
                             child: CustomCell(
+                              enableSplashColor: false,
                               avatarView: AvatarView(
                                 avatarImageURL: avatarImageURL,
                                 avatarImageSize: R.appRatio.appWidth50,

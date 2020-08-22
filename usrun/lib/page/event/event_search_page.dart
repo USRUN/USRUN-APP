@@ -152,7 +152,9 @@ class _EventSearchPageState extends State<EventSearchPage> {
   void _onSubmittedFunction(data) {
     if (!mounted) return;
     String key = data.toString();
-    if (key.length == 0) return;
+    if (key.length == 0 || key.compareTo(_currentSearchKey) == 0) {
+      return;
+    }
     _timerService.stop();
     _searchStream.sink.add(key);
   }

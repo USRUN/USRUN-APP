@@ -166,22 +166,6 @@ enum TeamType {
   SCHOOL,
 }
 
-// List<String> sportTypesTitle = [
-//   R.strings.other,
-//   R.strings.cycling,
-//   R.strings.running,
-//   R.strings.walking,
-//   R.strings.triathlon,
-//   R.strings.swimming,
-// ];
-
-// List<String> leagueTypesTitle = [
-//   "",
-//   R.strings.company,
-//   R.strings.sportClub,
-//   R.strings.school,
-// ];
-
 @reflector
 enum PushType {
   ActivityComplete,

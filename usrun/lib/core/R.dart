@@ -768,6 +768,7 @@ class _MyIcons {
   final String appBarSearchBtn = 'assets/myicons/icon-white-search.png';
   final String appBarEditBtn = 'assets/myicons/icon-white-edit.png';
   final String appBarPopupMenuIcon = 'assets/myicons/icon-white-3-dots.png';
+  final String appBarFunnelBtn = 'assets/myicons/icon-white-funnel.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
   final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
@@ -805,7 +806,6 @@ class _MyIcons {
   final String englishColor = 'assets/myicons/icon-color-en.png';
   final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
   final String greenCheck = 'assets/myicons/icon-green-check.png';
-
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   final String menuIcon = 'assets/myicons/icon-white-hamburger-menu.png';
@@ -1175,6 +1175,10 @@ class Strings {
   String leaveEventSuccessfully;
   String chooseTeamTitle;
   String chooseTeamDescription;
+  String eventLeaderboard;
+  String individuals;
+  String changeLeaderboardTypeTitle;
+  String changeLeaderboardTypeDescription;
 
   String teams;
   String team;
