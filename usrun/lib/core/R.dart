@@ -1168,6 +1168,7 @@ class Strings {
   String yourHistory;
   List<String> eventStatus;
   String eventLeaveDescription;
+  String confirm;
   String leave;
   String announcement;
   String register;

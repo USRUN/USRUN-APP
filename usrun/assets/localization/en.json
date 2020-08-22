@@ -141,7 +141,8 @@
         "Ongoing",
         "Ended"
     ],
-    "eventLeaveDescription": "All registered information and running statistical results will be deleted permanently when you leave the event. Are you sure?",
+    "eventLeaveDescription": "All registered information and running statistical results will be deleted permanently when you leave the event. Please type \"confirm\" to the box below if you were sure",
+    "confirm": "Confirm",
     "leave": "Leave",
     "announcement": "Announcement",
     "register": "Register",

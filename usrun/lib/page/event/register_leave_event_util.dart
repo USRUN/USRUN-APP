@@ -5,8 +5,10 @@ import 'package:usrun/model/event.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_complex_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
+import 'package:usrun/widget/input_field.dart';
 
 class RegisterLeaveEventUtil {
   static Future<Team> _chooseATeam(BuildContext context) async {
@@ -121,15 +123,32 @@ class RegisterLeaveEventUtil {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
     */
-
-    bool isLeave = await showCustomAlertDialog(
+    TextEditingController confirmController = TextEditingController();
+    bool isLeave = await showCustomComplexDialog<bool>(
       context,
-      title: R.strings.caution,
-      content: R.strings.eventLeaveDescription,
+      headerContent: R.strings.caution,
+      descriptionContent: R.strings.eventLeaveDescription,
       firstButtonText: R.strings.leave.toUpperCase(),
-      firstButtonFunction: () => pop(context, object: true),
+      firstButtonFunction: () {
+        String text = confirmController.text.trim().toLowerCase();
+        if (text.compareTo(R.strings.confirm.toLowerCase()) == 0) {
+          pop(context, object: true);
+        }
+      },
       secondButtonText: R.strings.cancel.toUpperCase(),
       secondButtonFunction: () => pop(context),
+      inputFieldList: [
+        InputField(
+          controller: confirmController,
+          enableFullWidth: true,
+          hintText: R.strings.confirm.toLowerCase(),
+          hintStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize18,
+            color: R.colors.grayABABAB,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
     );
 
     if (isLeave == null) return false;

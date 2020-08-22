@@ -374,8 +374,8 @@ class _ComplexDialogState extends State<_ComplexDialog> {
   }
 }
 
-Future<void> showCustomComplexDialog({
-  BuildContext context,
+Future<T> showCustomComplexDialog<T>(
+  BuildContext context, {
   double maxWidth = 320,
   double maxHeight = 450,
   @required String headerContent,
