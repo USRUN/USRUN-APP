@@ -98,6 +98,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
               bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
                 context: context,
                 eventName: _currentEventList[index].eventName,
+                eventId: _currentEventList[index].eventId,
               );
 
               if (result != null && result) {

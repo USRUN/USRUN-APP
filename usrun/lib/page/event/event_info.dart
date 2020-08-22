@@ -16,6 +16,12 @@ import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class EventInfoPage extends StatefulWidget {
+  final int eventId;
+
+  EventInfoPage({
+    @required this.eventId,
+  }) : assert(eventId >= 0);
+
   @override
   _EventInfoPageState createState() => _EventInfoPageState();
 }
@@ -38,7 +44,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
   }
 
   void _getNecessaryData() async {
-    // TODO: Call API here
+    // TODO: Call API here, based on "widget.eventId"
     EventInfo result = await Future.delayed(Duration(milliseconds: 2500), () {
       return EventInfo(
         eventName: "US Racing for Health 2023",

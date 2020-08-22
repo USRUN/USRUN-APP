@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/manager/event_manager.dart';
-import 'package:usrun/manager/team_manager.dart';
-import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/event.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -53,6 +49,7 @@ class RegisterLeaveEventUtil {
   static Future<bool> handleRegisterAnEvent({
     @required BuildContext context,
     String eventName,
+    int eventId,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
@@ -111,6 +108,7 @@ class RegisterLeaveEventUtil {
   static Future<bool> handleLeaveAnEvent({
     @required BuildContext context,
     String eventName,
+    int eventId,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)

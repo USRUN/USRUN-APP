@@ -95,6 +95,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
               bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
                 context: context,
                 eventName: _currentEventList[index].eventName,
+                eventId: _currentEventList[index].eventId,
               );
 
               if (result != null && result) {
