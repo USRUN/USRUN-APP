@@ -43,9 +43,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
     if (_eventItem == null) return;
     pushPage(
       context,
-      EventInfoPage(
-        eventInfo: _eventItem,
-      ),
+      EventInfoPage(),
     );
   }
 
@@ -179,7 +177,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
     Widget _renderRegisterOrLeaveButton() {
       if (!widget.enableActionButton) return Container();
 
-      String text = R.strings.join;
+      String text = R.strings.register;
       Function callback = widget.registerCallback;
       bool enableGradient = true;
 

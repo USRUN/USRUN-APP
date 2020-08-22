@@ -108,7 +108,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       _verificationStatus = toMap.verified;
       _teamSymbol = toMap.verified ? R.myIcons.hcmusLogo : null;
       _teamDescription =
-          toMap.description == null ? R.strings.description : toMap.description;
+          toMap.description == null ? R.strings.yourDescription : toMap.description;
       _teamName = toMap.teamName;
       _teamBanner = toMap.banner;
       _teamMembers = toMap.totalMember;

@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
-import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class HistoryEventTabBar extends StatefulWidget {
@@ -143,8 +140,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
             leaveCallback: () async {
               bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
                 context: context,
-                arrayIndex: index,
-                eventList: _currentEventList,
+                eventName: _currentEventList[index].eventName,
               );
 
               if (result != null && result) {

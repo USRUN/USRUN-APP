@@ -171,7 +171,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
       child: InputField(
         controller: _descriptionController,
-        labelTitle: R.strings.description,
+        labelTitle: R.strings.yourDescription,
         enableMaxLines: true,
       ),
     ));

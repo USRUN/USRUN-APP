@@ -59,8 +59,7 @@ class RegisterLeaveEventUtil {
 
   static Future<bool> handleRegisterAnEvent({
     @required BuildContext context,
-    List<Event> eventList,
-    int arrayIndex,
+    String eventName,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
@@ -87,7 +86,7 @@ class RegisterLeaveEventUtil {
       String message = R.strings.registerEventSuccessfully;
       message = message.replaceAll(
         "@@@",
-        eventList[arrayIndex].eventName,
+        eventName,
       );
       message = message.replaceAll("###", userTeam.teamName);
 
@@ -117,8 +116,7 @@ class RegisterLeaveEventUtil {
 
   static Future<bool> handleLeaveAnEvent({
     @required BuildContext context,
-    List<Event> eventList,
-    int arrayIndex,
+    String eventName,
   }) async {
     /*
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
@@ -127,7 +125,7 @@ class RegisterLeaveEventUtil {
     String description = R.strings.eventLeaveDescription;
     description = description.replaceAll(
       '@@@',
-      eventList[arrayIndex].eventName,
+      eventName,
     );
     bool isLeave = await showCustomComplexDialog<bool>(
       context,
@@ -177,7 +175,7 @@ class RegisterLeaveEventUtil {
       String message = R.strings.leaveEventSuccessfully;
       message = message.replaceAll(
         "@@@",
-        eventList[arrayIndex].eventName,
+        eventName,
       );
 
       showCustomAlertDialog(

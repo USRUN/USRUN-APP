@@ -239,7 +239,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
       child: InputField(
         controller: _descriptionTextController,
         focusNode: _descriptionNode,
-        labelTitle: R.strings.description,
+        labelTitle: R.strings.yourDescription,
         enableLabelShadow: true,
         enableFullWidth: true,
         enableMaxLines: true,
