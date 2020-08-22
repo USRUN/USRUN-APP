@@ -7,8 +7,10 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -93,14 +95,18 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     _refreshController.refreshCompleted();
   }
 
-  _pressAvatar(index) {
-    // TODO: Implement function here
-    print("Pressing avatar image");
+  _pressAvatar(index) async {
+    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
   }
 
-  _pressUserInfo(index) {
-    // TODO: Implement function here
-    print("Pressing info");
+  _pressUserInfo(index) async {
+    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
   }
 
   _pressCloseBtn(index) {

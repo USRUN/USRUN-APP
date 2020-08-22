@@ -324,4 +324,22 @@ class UserManager {
     Response<dynamic> response = await Client.post('/user/resendOTP', null);
     return response;
   }
+
+  static Future<dynamic> getUserInfo(int userId) async {
+    Map<String,dynamic> params = {
+      'userId': userId,
+    };
+
+    Response<dynamic> response = await Client.post('/user/info',params);
+
+    if(!response.success || response.errorCode != -1){
+      return response;
+    }
+
+    User user = MapperObject.create<User>(response.object);
+
+    response.object = user;
+
+    return response;
+  }
 }

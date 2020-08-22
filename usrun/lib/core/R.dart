@@ -996,6 +996,7 @@ class Strings {
   String passwordNotice;
   String reset;
   String resetPasswordNotice;
+  String resetPasswordSuccessful;
   String email;
   String emailHint;
   String country;

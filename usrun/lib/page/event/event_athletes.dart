@@ -225,11 +225,10 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
                 color: R.colors.contentText,
               ),
               pressInfo: () async {
-                // TODO: PUSH PROFILE PAGE
-//                Response<dynamic> response = await UserManager.getUser(athlete.userId);
-//                User user = response.object;
+                Response<dynamic> response = await UserManager.getUserInfo(athlete.userId);
+                User user = response.object;
 
-                pushPage(context, ProfilePage(enableAppBar: true));
+                pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
               },
               centerVerticalSuffix: true,
             ),

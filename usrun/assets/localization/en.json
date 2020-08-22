@@ -87,7 +87,7 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
-
+    "resetPasswordSuccessful": "Your password has been reset.",
     "warning": "Warning",
     "caution": "Caution",
     "exitApp": "Do you want to exit USRUN app?",
