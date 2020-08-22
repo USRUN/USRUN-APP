@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
@@ -321,7 +322,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     Widget _distanceWidget = _wrapWidgetData(
       firstTitle: R.strings.distance,
       data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
-      unitTitle: R.strings.km,
+      unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
     Widget _timeWidget = _wrapWidgetData(
@@ -332,7 +333,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _avgPaceWidget = _wrapWidgetData(
       firstTitle: R.strings.avgPace,
-      data: _userActivity.avgPace.toString(),
+      data: secondToMinFormat(_userActivity.avgPace.toInt()).toString(),
       unitTitle: R.strings.avgPaceUnit,
     );
 

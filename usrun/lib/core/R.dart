@@ -1013,6 +1013,7 @@ class Strings {
   String unFollow;
 
   List<String> provinces;
+  List<String> distanceUnit;
 
   String inviteNewMember;
   String inviteNewMemberContent;
@@ -1154,6 +1155,9 @@ class Strings {
   String discard;
   String upload;
   String na;
+  String successfullyUploaded;
+  String failToUpload;
+  String discardActivity;
 
   String uFeed;
   String readMore;

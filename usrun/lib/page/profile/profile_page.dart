@@ -39,6 +39,9 @@ class _ProfilePageState extends State<ProfilePage> {
   String _supportImageURL;
   String _fullName;
   String _userCode;
+  GlobalKey<ProfileStatsState> _statKey = GlobalKey();
+  GlobalKey<ProfileInfoState> _profileKey = GlobalKey();
+  GlobalKey<ProfileActivityState> _actKey = GlobalKey();
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -126,18 +129,19 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO: Pass the value of "_userInfo" as a param of these widget page
     switch (tabIndex) {
       case 0:
-        widget = ProfileStats();
+        widget = ProfileStats(userId: _userInfo.userId ,key: _statKey,);
         break;
       case 1:
-        widget = ProfileActivity();
+        widget = ProfileActivity(userId: _userInfo.userId, key: _actKey,);
         break;
       case 2:
         widget = ProfileInfo(
           userId: _userInfo.userId,
+          key: _profileKey,
         );
         break;
       default:
-        widget = ProfileStats();
+        widget = ProfileStats(userId: _userInfo.userId, key: _statKey,);
         break;
     }
 
@@ -214,12 +218,51 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+
+  Future<void> _reloadData() async {
+    setState(() {
+      try{
+        _statKey.currentState.getProfileStatsData();
+        _actKey.currentState.getProfileActivityData();
+      }catch(e){
+        _refreshController.refreshCompleted();
+      }
+    });
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    Widget smartRefresher = SmartRefresher(
+      enablePullUp: false,
+      controller: _refreshController,
+      child:  _renderBodyContent(),
+      physics: BouncingScrollPhysics(),
+      footer: null,
+      onRefresh: () => _reloadData(),
+      onLoading: () async {
+        await Future.delayed(Duration(milliseconds: 200));
+      },
+    );
+
+
+    Widget refreshConfigs = RefreshConfiguration(
+      child: smartRefresher,
+      headerBuilder: () => WaterDropMaterialHeader(
+        backgroundColor: R.colors.majorOrange,
+      ),
+      footerBuilder: null,
+      shouldFooterFollowWhenNotFull: (state) {
+        return false;
+      },
+      hideFooterWhenNotFull: true,
+    );
+
     Widget _buildElement = Scaffold(
       backgroundColor: R.colors.appBackground,
       appBar: _renderAppBar(),
-      body: _renderBodyContent(),
+      body: refreshConfigs,
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(

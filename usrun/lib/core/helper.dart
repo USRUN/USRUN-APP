@@ -268,6 +268,7 @@ int getPlatform() {
 }
 
 double switchBetweenMeterAndKm(int meters, {RunningUnit formatType}) {
+
   double _computeValue(RunningUnit data) {
     if (data == RunningUnit.METER) {
       return meters * 1.0;
@@ -277,7 +278,7 @@ double switchBetweenMeterAndKm(int meters, {RunningUnit formatType}) {
       return 0;
     }
   }
-
+  formatType =  DataManager.getUserRunningUnit();
   if (formatType != null) {
     return _computeValue(formatType);
   } else {

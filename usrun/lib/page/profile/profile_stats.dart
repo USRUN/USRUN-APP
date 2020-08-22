@@ -15,6 +15,11 @@ import 'package:usrun/widget/stats_section/format_profile_stats.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class ProfileStats extends StatefulWidget {
+
+  final int userId;
+
+  ProfileStats({@required this.userId, Key key}): super(key: key);
+
   final tabBarItems = [
     R.strings.day,
     R.strings.week,
@@ -23,10 +28,10 @@ class ProfileStats extends StatefulWidget {
   ];
 
   @override
-  _ProfileStatsState createState() => _ProfileStatsState();
+  ProfileStatsState createState() => ProfileStatsState();
 }
 
-class _ProfileStatsState extends State<ProfileStats> {
+class ProfileStatsState extends State<ProfileStats> {
   bool _isLoading;
   int _selectedTabIndex;
   DateTime _selectedDay;
@@ -56,10 +61,10 @@ class _ProfileStatsState extends State<ProfileStats> {
     _statsSectionItems = List();
     _chartItems = List();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _getProfileStatsData());
+    WidgetsBinding.instance.addPostFrameCallback((_) => getProfileStatsData());
   }
 
-  void _getProfileStatsData() async {
+  void getProfileStatsData() async {
     if (!_isLoading) {
       if (!mounted) return;
       setState(() {
@@ -74,7 +79,7 @@ class _ProfileStatsState extends State<ProfileStats> {
       DateTime toTime = DateTime(
           _selectedDay.year, _selectedDay.month, _selectedDay.day, 23, 59, 59);
 
-      await UserManager.getUserActivityByTimeWithSum(fromTime, toTime)
+      await UserManager.getUserActivityByTimeWithSum(widget.userId, fromTime, toTime)
           .then((value) {
         var newValue = FormatProfileStats.formatDayObject(value);
         if (!mounted) return;
@@ -142,8 +147,8 @@ class _ProfileStatsState extends State<ProfileStats> {
       var futures = List<Future>();
 
       futures.add(
-          UserManager.getUserActivityByTimeWithSum(chartFromTime, chartToTime));
-      futures.add(UserManager.getUserActivityByTimeWithSum(
+          UserManager.getUserActivityByTimeWithSum(widget.userId, chartFromTime, chartToTime));
+      futures.add(UserManager.getUserActivityByTimeWithSum(widget.userId,
           statsSectionFromTime, statsSectionToTime));
 
       await Future.wait(futures).then((resultList) {
@@ -178,7 +183,7 @@ class _ProfileStatsState extends State<ProfileStats> {
 
     setState(() {
       _selectedTabIndex = tabIndex;
-      _getProfileStatsData();
+      getProfileStatsData();
 
       switch (tabIndex) {
         case 0: // Day
@@ -260,7 +265,7 @@ class _ProfileStatsState extends State<ProfileStats> {
               _stringSelectedDate =
                   formatDate(datePick, [dd, '/', mm, '/', yyyy]);
             });
-            _getProfileStatsData();
+            getProfileStatsData();
           }
         }
         break;
@@ -279,7 +284,7 @@ class _ProfileStatsState extends State<ProfileStats> {
               _selectedWeek = datePick as WeekDateTime;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
-            _getProfileStatsData();
+            getProfileStatsData();
           }
         }
         break;
@@ -298,7 +303,7 @@ class _ProfileStatsState extends State<ProfileStats> {
               _selectedMonth = datePick;
               _stringSelectedDate = formatDate(datePick, [mm, '/', yyyy]);
             });
-            _getProfileStatsData();
+            getProfileStatsData();
           }
         }
         break;
@@ -317,7 +322,7 @@ class _ProfileStatsState extends State<ProfileStats> {
               _selectedYear = datePick;
               _stringSelectedDate = formatDate(datePick, [yyyy]);
             });
-            _getProfileStatsData();
+            getProfileStatsData();
           }
         }
         break;

@@ -8,6 +8,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
@@ -99,8 +100,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          data.totalDistance.toString(),
-                          R.strings.meters,
+                          switchBetweenMeterAndKm(data.totalDistance).toString(),
+                          R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
                         ),
                         _buildStatsBox(
                             R.strings.time,
@@ -341,7 +342,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     showCustomAlertDialog(
       context,
       title: R.strings.notice,
-      content: "Discard this activity?",
+      content: R.strings.discardActivity,
       firstButtonText: R.strings.ok.toUpperCase(),
       firstButtonFunction: () async {
         pop(this.context);
@@ -356,7 +357,11 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     );
   }
 
+  bool isUploading = false;
   _uploadActivity() async {
+    if (isUploading == true)
+      return;
+    isUploading = true;
     //this.widget.activity.recordData = await RecordHelper.loadFromFile();
     Response<ActivityData> response = await upload();
     if (response.success) {
@@ -366,10 +371,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
-        content: "Seccessfully uploaded!",
+        content: R.strings.successfullyUploaded,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () async {
           pop(this.context);
+          await RecordHelper.removeFile();
+          this.widget.bloc.resetAll();
+          isUploading = false;
           Navigator.pop(context);
         },
       );
@@ -378,9 +386,12 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
-        content: "Fail to upload, please try again later",
+        content: R.strings.failToUpload,
         firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () => pop(this.context),
+        firstButtonFunction: () {
+          isUploading = false;
+          pop(this.context);
+          },
       );
     }
   }

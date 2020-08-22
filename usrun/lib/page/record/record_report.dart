@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_data.dart';
@@ -52,8 +54,8 @@ class RecordReport extends StatelessWidget {
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.distance,
-                snapshot.data.totalDistance,
-                unit: R.strings.meters,
+                switchBetweenMeterAndKm(snapshot.data.totalDistance),
+                unit: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
               ),
               SizedBox(width: 10),
               _buildInfoBox(

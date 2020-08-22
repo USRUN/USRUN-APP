@@ -422,6 +422,10 @@
     "upload": "Upload",
     "na": "N/A",
 
+    "successfullyUploaded": "Successfully uploaded!",
+    "failToUpload": "Fail to upload, please try again later",
+    "discardActivity": "Discard this activity?",
+
     "search": "Search",
 
     "chooseLanguageTitle": "Choose display language",
@@ -544,6 +548,11 @@
         "8002": "Track timed out",
         "8003": "Invalid track signature"
       },
+
+    "distanceUnit": [
+        "METERS",
+        "KILOMETERS"
+    ],
 
     "provinces":[
         "Unknown",
