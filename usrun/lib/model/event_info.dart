@@ -17,6 +17,7 @@ class EventInfo with MapperObject {
   int totalParticipant;
   DateTime startTime;
   DateTime endTime;
+  int teamId;
   String reward;
 
   /*
@@ -27,7 +28,7 @@ class EventInfo with MapperObject {
     [3]: Bronze
     [4]: Collaborated
    */
-  List<List<EventOrganization>> sponsorIds;
+  List<dynamic> sponsorIds;
 
   EventInfo({
     this.status,

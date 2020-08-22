@@ -118,7 +118,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       setState(
         () {
           _reloadItems();

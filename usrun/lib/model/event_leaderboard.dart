@@ -7,11 +7,13 @@ class EventLeaderboard with MapperObject {
   String avatar;
   String name;
   int distance;
+  int rank;
 
   EventLeaderboard({
     this.itemId,
     this.avatar,
     this.name,
     this.distance,
+    this.rank,
   });
 }

@@ -22,7 +22,6 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class EventTeamSearchPage extends StatefulWidget {
-
   final int eventId;
 
   EventTeamSearchPage({@required this.eventId});
@@ -207,6 +206,14 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
                   width: 1,
                   color: R.colors.majorOrange,
                 ),
+                pressAvatarImage: () {
+                  pushPage(
+                    context,
+                    TeamInfoPage(
+                      teamId: team.id,
+                    ),
+                  );
+                },
               ),
               // Content
               title: team.teamName,
@@ -230,13 +237,6 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
                 );
               },
             ),
-            (!isLastElement
-                ? Divider(
-                    color: R.colors.majorOrange,
-                    thickness: 0.8,
-                    height: 1,
-                  )
-                : Container()),
           ],
         );
       },

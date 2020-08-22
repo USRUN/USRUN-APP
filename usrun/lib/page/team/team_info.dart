@@ -94,8 +94,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance, formatType: RunningUnit.KILOMETER).toInt();
-    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance, formatType: RunningUnit.KILOMETER).toInt();
+    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
+            formatType: RunningUnit.KILOMETER)
+        .toInt();
+    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
+            formatType: RunningUnit.KILOMETER)
+        .toInt();
     _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
     _teamActivities = toMap.totalActivity;
     _teamRank = toMap.rank;
@@ -113,7 +117,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       _teamBanner = toMap.banner;
       _teamMembers = toMap.totalMember;
       _teamPublicStatus = (toMap.privacy == 0 ? true : false);
-      _teamLocation = toMap.province.toString();
+      _teamLocation = R.strings.provinces[toMap.province];
       _teamAvatar = toMap.thumbnail;
     });
   }
@@ -252,7 +256,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       response = await TeamManager.requestJoinTeam(widget.teamId);
     }
 
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       if (!mounted) return;
       setState(() {
         _teamMemberType = TeamMemberType.Pending;
@@ -414,15 +418,21 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             },
                           ),
                           title: _teamName,
-                          enableAddedContent: true,
-                          firstAddedTitle: (_teamPublicStatus
-                              ? R.strings.public
-                              : R.strings.private),
-                          firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
-                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
-                          secondAddedTitle: _teamLocation,
-                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
-                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
+                          enableAddedContent: false,
+                          subTitle: _teamLocation,
+                          subTitleStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: R.appRatio.appFontSize14,
+                            color: R.colors.contentText,
+                          ),
+//                          firstAddedTitle: (_teamPublicStatus
+//                              ? R.strings.public
+//                              : R.strings.private),
+//                          firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
+//                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
+//                          secondAddedTitle: _teamLocation,
+//                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
+//                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
                         ),
                       ),
                       // Description
@@ -669,76 +679,76 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         ),
                       ),
                       // Tool zone
-                      (TeamMemberUtil.authorizeLowerLevel(
-                              TeamMemberType.Admin, _teamMemberType))
-                          ? Container()
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: R.appRatio.appSpacing15,
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: Text(
-                                    R.strings.toolZone,
-                                    style: R.styles.shadowLabelStyle,
-                                  ),
-                                ),
-                                // Make team public
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: LineButton(
-                                    mainText: R.strings.makeTeamPublicTitle,
-                                    mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize16,
-                                    subText: R.strings.makeTeamPublicSubtitle,
-                                    enableBottomUnderline: true,
-                                    textPadding: EdgeInsets.all(15),
-                                    enableSwitchButton: true,
-                                    initSwitchStatus: _teamPublicStatus,
-                                    switchButtonOffTitle: "Off",
-                                    switchButtonOnTitle: "On",
-                                    switchFunction: (status) =>
-                                        _changeTeamPrivacy(status),
-                                  ),
-                                ),
-                                // Transfer ownership
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: LineButton(
-                                    mainText: R.strings.transferOwnershipTitle,
-                                    mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize16,
-                                    subText:
-                                        R.strings.transferOwnershipSubtitle,
-                                    enableBottomUnderline: true,
-                                    textPadding: EdgeInsets.all(15),
-                                    enableBoxButton: true,
-                                    boxButtonTitle: R.strings.transfer,
-                                    boxButtonFunction: _transferOwnership,
-                                  ),
-                                ),
-                                // Delete team
-                                LineButton(
-                                  mainText: R.strings.deleteTeamTitle,
-                                  mainTextFontSize: R.appRatio.appFontSize18,
-                                  subTextFontSize: R.appRatio.appFontSize16,
-                                  subText: R.strings.deleteTeamSubtitle,
-                                  enableBottomUnderline: true,
-                                  textPadding: EdgeInsets.all(15),
-                                  enableBoxButton: true,
-                                  boxButtonTitle: R.strings.delete,
-                                  boxButtonFunction: _deleteTeam,
-                                ),
-                              ],
-                            )
+//                      (TeamMemberUtil.authorizeLowerLevel(
+//                              TeamMemberType.Admin, _teamMemberType))
+//                          ? Container()
+//                          : Column(
+//                              crossAxisAlignment: CrossAxisAlignment.stretch,
+//                              mainAxisAlignment: MainAxisAlignment.start,
+//                              mainAxisSize: MainAxisSize.min,
+//                              children: <Widget>[
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    left: R.appRatio.appSpacing15,
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: Text(
+//                                    R.strings.toolZone,
+//                                    style: R.styles.shadowLabelStyle,
+//                                  ),
+//                                ),
+//                                // Make team public
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: LineButton(
+//                                    mainText: R.strings.makeTeamPublicTitle,
+//                                    mainTextFontSize: R.appRatio.appFontSize18,
+//                                    subTextFontSize: R.appRatio.appFontSize16,
+//                                    subText: R.strings.makeTeamPublicSubtitle,
+//                                    enableBottomUnderline: true,
+//                                    textPadding: EdgeInsets.all(15),
+//                                    enableSwitchButton: true,
+//                                    initSwitchStatus: _teamPublicStatus,
+//                                    switchButtonOffTitle: "Off",
+//                                    switchButtonOnTitle: "On",
+//                                    switchFunction: (status) =>
+//                                        _changeTeamPrivacy(status),
+//                                  ),
+//                                ),
+//                                // Transfer ownership
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: LineButton(
+//                                    mainText: R.strings.transferOwnershipTitle,
+//                                    mainTextFontSize: R.appRatio.appFontSize18,
+//                                    subTextFontSize: R.appRatio.appFontSize16,
+//                                    subText:
+//                                        R.strings.transferOwnershipSubtitle,
+//                                    enableBottomUnderline: true,
+//                                    textPadding: EdgeInsets.all(15),
+//                                    enableBoxButton: true,
+//                                    boxButtonTitle: R.strings.transfer,
+//                                    boxButtonFunction: _transferOwnership,
+//                                  ),
+//                                ),
+//                                // Delete team
+//                                LineButton(
+//                                  mainText: R.strings.deleteTeamTitle,
+//                                  mainTextFontSize: R.appRatio.appFontSize18,
+//                                  subTextFontSize: R.appRatio.appFontSize16,
+//                                  subText: R.strings.deleteTeamSubtitle,
+//                                  enableBottomUnderline: true,
+//                                  textPadding: EdgeInsets.all(15),
+//                                  enableBoxButton: true,
+//                                  boxButtonTitle: R.strings.delete,
+//                                  boxButtonFunction: _deleteTeam,
+//                                ),
+//                              ],
+//                            )
                     ],
                   ),
                 )),

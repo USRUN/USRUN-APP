@@ -1,8 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event_athlete.dart';
+import 'package:usrun/model/event_info.dart';
 import 'package:usrun/model/event_team.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/event_athletes.dart';
 import 'package:usrun/page/event/event_leaderboard.dart';
 import 'package:usrun/page/event/event_teams.dart';
@@ -19,6 +23,24 @@ class EventInfoPage extends StatefulWidget {
 }
 
 class _EventInfoPageState extends State<EventInfoPage> {
+
+  EventInfo info;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadInfo();
+  }
+
+  _loadInfo() async {
+    Response<dynamic> response = await EventManager.getEventInfo(widget.eventId, UserManager.currentUser.userId);
+    if(response.success && response.object != null){
+      info = response.object;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,7 +49,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
         LineButton(
           mainText: "Leaderboard",
           lineFunction: () {
-            pushPage(context, EventLeaderboardPage(eventId: widget.eventId));
+            pushPage(context, EventLeaderboardPage(eventId: widget.eventId, teamId: info.teamId,));
           },
         ),
         LineButton(

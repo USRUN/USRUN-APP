@@ -6,11 +6,14 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/event_athlete.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
+import 'package:usrun/model/user.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/record/timer.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/page/team/team_search_item.dart';
@@ -194,6 +197,12 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CustomCell(
+              padding: EdgeInsets.only(
+                top: R.appRatio.appSpacing15 - 2,
+                bottom: R.appRatio.appSpacing15 - 2,
+                left: R.appRatio.appSpacing15,
+                right: R.appRatio.appSpacing15,
+              ),
               avatarView: AvatarView(
                 avatarImageURL: athlete.avatar,
                 avatarImageSize: R.appRatio.appWidth60,
@@ -215,18 +224,15 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
                 fontSize: R.appRatio.appFontSize14,
                 color: R.colors.contentText,
               ),
-              pressInfo: () {
+              pressInfo: () async {
                 // TODO: PUSH PROFILE PAGE
+//                Response<dynamic> response = await UserManager.getUser(athlete.userId);
+//                User user = response.object;
+
+                pushPage(context, ProfilePage(enableAppBar: true));
               },
               centerVerticalSuffix: true,
             ),
-            (!isLastElement
-                ? Divider(
-                    color: R.colors.majorOrange,
-                    thickness: 0.8,
-                    height: 1,
-                  )
-                : Container()),
           ],
         );
       },

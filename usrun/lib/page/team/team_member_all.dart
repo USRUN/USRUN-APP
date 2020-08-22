@@ -183,7 +183,7 @@ class _AllMemberPageState extends State<AllMemberPage>
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       setState(() {
         _reloadItems();
       });
@@ -234,6 +234,7 @@ class _AllMemberPageState extends State<AllMemberPage>
         enablePullDown: true,
         controller: _refreshController,
         onRefresh: _reloadItems,
+        footer: null,
         child: Container(
           padding: EdgeInsets.only(
             left: R.appRatio.appSpacing25,
@@ -285,6 +286,7 @@ class _AllMemberPageState extends State<AllMemberPage>
                 onRefresh: _reloadItems,
                 enablePullUp: true,
                 onLoading: loadMoreData,
+                footer: null,
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,

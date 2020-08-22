@@ -90,7 +90,7 @@ class EventManager {
 
     Response<dynamic> res = await Client.post('/event/getEventInfo', params);
 
-    if (!res.success) return res;
+    if (!res.success || res.errorCode != -1) return res;
 
     EventInfo info = MapperObject.create<EventInfo>(res.object);
 
@@ -108,17 +108,19 @@ class EventManager {
     Map<String, dynamic> params = {
       'eventId': eventId,
       'name': keyword,
-      'offset': offset,
+      'offset': (offset - 1) * count,
       'count': count,
     };
 
-    Response<dynamic> res = await Client.post('/event/getEventAthlete', params);
+    Response<dynamic> res = await Client.post('/event/getEventAthletes', params);
 
-    if (!res.success) return res;
+    if (!res.success || (res.object as List).isEmpty) return res;
 
-    EventAthlete athletes = MapperObject.create<EventAthlete>(res.object);
+    List<EventAthlete> athletes = (res.object as List)
+        .map((item) => MapperObject.create<EventAthlete>(item))
+        .toList();
 
-    Response<EventAthlete> response = new Response(
+    Response<List<EventAthlete>> response = new Response(
       errorCode: res.errorCode,
       success: res.success,
       object: athletes,
@@ -132,7 +134,7 @@ class EventManager {
     Map<String, dynamic> params = {
       'eventId': eventId,
       'name': keyword,
-      'offset': offset,
+      'offset': (offset - 1) * count,
       'limit': count,
     };
 
@@ -152,27 +154,6 @@ class EventManager {
 
     return response;
   }
-
-//  static Future<Response> getEventSponsor(int organizationId) async {
-//    Map<String, dynamic> params = {
-//      'organizationId': organizationId,
-//    };
-//
-//    Response<dynamic> res = await Client.post('/event/getEventSponsor', params);
-//
-//    if (!res.success) return res;
-//
-//    EventOrganization sponsors =
-//        MapperObject.create<EventOrganization>(res.object);
-//
-//    Response<EventOrganization> response = new Response(
-//      errorCode: res.errorCode,
-//      success: res.success,
-//      object: sponsors,
-//    );
-//
-//    return response;
-//  }
 
   static Future<Response> joinEvent(int eventId, int teamId) async {
     Map<String, dynamic> params = {

@@ -26,8 +26,9 @@ import 'package:usrun/widget/loading_dot.dart';
 
 class EventLeaderboardPage extends StatefulWidget {
   final int eventId;
+  final int teamId;
 
-  EventLeaderboardPage({@required this.eventId});
+  EventLeaderboardPage({@required this.eventId, @required this.teamId});
 
   @override
   _EventLeaderboardPageState createState() => _EventLeaderboardPageState();
@@ -210,6 +211,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         int id = data.itemId;
         String avatar = data.avatar;
         String name = data.name;
+        int rank = data.rank;
         String formattedDistance = NumberFormat("#,##0.##", "en_US").format(
           switchBetweenMeterAndKm(
             data.distance,
@@ -219,6 +221,10 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         Color contentColor = R.colors.contentText;
         if (_selectedFilter.value == LeaderBoardType.Individual) {
           if (id == UserManager.currentUser.userId) {
+            contentColor = R.colors.majorOrange;
+          }
+        } else {
+          if(id == widget.teamId){
             contentColor = R.colors.majorOrange;
           }
         }
@@ -239,7 +245,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
                 alignment: Alignment.center,
                 child: FittedBox(
                   child: Text(
-                    (index + 1).toString(),
+                    rank.toString(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: contentColor,

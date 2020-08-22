@@ -50,7 +50,7 @@ class TeamManager {
     Map<String, dynamic> params = {
       // TODO: Resolve User location
       'province': UserManager.currentUser.province ?? 0,
-      'howMany': howMany,
+      'count': howMany,
     };
 
     Response<dynamic> res = await Client.post(

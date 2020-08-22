@@ -69,9 +69,9 @@ class RegisterLeaveEventUtil {
 
     Response<dynamic> response = await EventManager.joinEvent(eventList[arrayIndex].eventId,userTeam.id);
 
-    if(response.success && response.errorCode == 0){
+    if(response.success && response.errorCode == -1){
       result = true;
-    };
+    }
 
     pop(context);
 
