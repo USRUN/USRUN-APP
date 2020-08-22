@@ -124,10 +124,15 @@ class RegisterLeaveEventUtil {
       + NOTE: The return value: true (eventList.removeAt(arrayIndex)), false (do nothing)
     */
     TextEditingController confirmController = TextEditingController();
+    String description = R.strings.eventLeaveDescription;
+    description = description.replaceAll(
+      '@@@',
+      eventList[arrayIndex].eventName,
+    );
     bool isLeave = await showCustomComplexDialog<bool>(
       context,
       headerContent: R.strings.caution,
-      descriptionContent: R.strings.eventLeaveDescription,
+      descriptionContent: description,
       firstButtonText: R.strings.leave.toUpperCase(),
       firstButtonFunction: () {
         String text = confirmController.text.trim().toLowerCase();
@@ -142,6 +147,7 @@ class RegisterLeaveEventUtil {
           controller: confirmController,
           enableFullWidth: true,
           hintText: R.strings.confirm.toLowerCase(),
+          autoFocus: true,
           hintStyle: TextStyle(
             fontSize: R.appRatio.appFontSize18,
             color: R.colors.grayABABAB,

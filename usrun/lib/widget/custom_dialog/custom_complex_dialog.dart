@@ -328,7 +328,6 @@ class _ComplexDialogState extends State<_ComplexDialog> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus();
     Widget _buildElement = Container(
       constraints: BoxConstraints(
         maxWidth: widget.maxWidth,
