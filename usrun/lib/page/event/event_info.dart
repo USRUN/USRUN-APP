@@ -2,17 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event_info.dart';
 import 'package:usrun/model/event_organization.dart';
+import 'package:usrun/page/event/event_leaderboard.dart';
 import 'package:usrun/page/event/event_poster.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/string_utils.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
+import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class EventInfoPage extends StatefulWidget {
@@ -27,14 +31,13 @@ class EventInfoPage extends StatefulWidget {
 }
 
 class _EventInfoPageState extends State<EventInfoPage> {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController;
   EventInfo _eventInfo;
 
   @override
   void initState() {
     super.initState();
-    _getNecessaryData();
+    _refreshController = RefreshController(initialRefresh: true);
   }
 
   @override
@@ -280,6 +283,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
       bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
         context: context,
         eventName: _eventInfo.eventName,
+        eventId: widget.eventId,
       );
 
       if (result != null && result) {
@@ -295,6 +299,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
 //        bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
 //          context: context,
 //          eventName: _eventInfo.eventName,
+//          eventId: widget.eventId,
 //        );
 //
 //        if (result != null && result) {
@@ -327,7 +332,213 @@ class _EventInfoPageState extends State<EventInfoPage> {
   }
 
   Widget _renderOrganizations() {
-    return Container();
+    Widget _renderOrgInfo(
+      EventOrganization org,
+      String title,
+      Color titleColor,
+    ) {
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: R.appRatio.appSpacing15,
+        ),
+        child: CustomCell(
+          enableSplashColor: false,
+          enableAddedContent: false,
+          title: title,
+          titleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize18,
+            color: titleColor,
+            fontWeight: FontWeight.bold,
+          ),
+          subTitle: org.name,
+          subTitleStyle: TextStyle(
+            fontSize: R.appRatio.appFontSize16,
+            fontWeight: FontWeight.normal,
+            color: R.colors.contentText,
+          ),
+          avatarView: AvatarView(
+            avatarImageSize: R.appRatio.appAvatarSize60,
+            avatarImageURL: org.avatar,
+          ),
+        ),
+      );
+    }
+
+    Widget _renderOrgList(
+      List<EventOrganization> orgList,
+      String title,
+      Color titleColor,
+    ) {
+      if (checkListIsNullOrEmpty(orgList)) {
+        return Container();
+      }
+
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: orgList.length,
+        itemBuilder: (context, index) {
+          EventOrganization org = orgList[index];
+          return _renderOrgInfo(org, title, titleColor);
+        },
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: R.appRatio.appSpacing15,
+        right: R.appRatio.appSpacing15,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Label
+          Text(
+            R.strings.organizations,
+            style: R.styles.shadowLabelStyle,
+          ),
+          SizedBox(height: R.appRatio.appSpacing15),
+          // Org 0: Powered by
+          _renderOrgList(
+            _eventInfo.sponsorIds[0],
+            R.strings.poweredBy,
+            R.colors.redPink,
+          ),
+          // Org 1: Gold
+          _renderOrgList(
+            _eventInfo.sponsorIds[1],
+            R.strings.goldSponsor,
+            Color(0xFFFFD700),
+          ),
+          // Org 2: Silver
+          _renderOrgList(
+            _eventInfo.sponsorIds[2],
+            R.strings.silverSponsor,
+            R.colors.normalNoteText,
+          ),
+          // Org 3: Bronze
+          _renderOrgList(
+            _eventInfo.sponsorIds[3],
+            R.strings.bronzeSponsor,
+            Color(0xFFCD7F32),
+          ),
+          // Org 4: Collaborated
+          _renderOrgList(
+            _eventInfo.sponsorIds[4],
+            R.strings.collaborator,
+            R.colors.contentText,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderEventStats() {
+    String labelTitle = StringUtils.uppercaseFirstLetterEachWord(
+      content: R.strings.eventStats,
+      pattern: " ",
+    );
+
+    String totalParticipants = _eventInfo.totalParticipant.toString();
+    String distance = switchBetweenMeterAndKm(
+      _eventInfo.totalDistance,
+      formatType: RunningUnit.KILOMETER,
+    ).toString();
+    String totalTeams = _eventInfo.totalTeamParticipant.toString();
+
+    return Padding(
+      padding: EdgeInsets.only(
+        top: R.appRatio.appSpacing5,
+        left: R.appRatio.appSpacing15,
+        right: R.appRatio.appSpacing15,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Label
+          Text(
+            labelTitle,
+            style: R.styles.shadowLabelStyle,
+          ),
+          SizedBox(height: R.appRatio.appSpacing15),
+          // Leaderboard button
+          GestureDetector(
+            onTap: () {
+              pushPage(context, EventLeaderboardPage());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ImageCacheManager.getImage(
+                  url: R.myIcons.starIconByTheme,
+                  width: R.appRatio.appIconSize20,
+                  height: R.appRatio.appIconSize20,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(width: R.appRatio.appSpacing15),
+                Text(
+                  R.strings.leaderboard,
+                  textScaleFactor: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: R.appRatio.appSpacing15),
+          // Statistical boxes
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Total runners/participants
+              NormalInfoBox(
+                id: "0",
+                boxSize: R.appRatio.appWidth100,
+                dataLine: totalParticipants,
+                secondTitleLine: R.strings.runners.toUpperCase(),
+                pressBox: (id) {
+                  // TODO: Push page here
+                },
+              ),
+              SizedBox(width: R.appRatio.appSpacing15),
+              // Distance
+              NormalInfoBox(
+                id: "1",
+                boxSize: R.appRatio.appWidth100,
+                dataLine: distance,
+                secondTitleLine: "KM",
+                pressBox: (id) {
+                  // TODO: Push page here
+                },
+              ),
+              SizedBox(width: R.appRatio.appSpacing15),
+              // Total teams
+              NormalInfoBox(
+                id: "2",
+                boxSize: R.appRatio.appWidth100,
+                dataLine: totalTeams,
+                secondTitleLine: R.strings.teams.toUpperCase(),
+                pressBox: (id) {
+                  // TODO: Push page here
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _renderBodyContent() {
@@ -352,7 +563,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Event organizations
           _renderOrganizations(),
           // Event stats
-          // TODO: Code here
+          _renderEventStats(),
+          SizedBox(height: R.appRatio.appSpacing30),
         ],
       ),
     );
