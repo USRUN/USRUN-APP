@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -65,7 +68,7 @@ class RegisterLeaveEventUtil {
 
     bool result = false;
 
-    Response<dynamic> response = await EventManager.joinEvent(eventList[arrayIndex].eventId,userTeam.id);
+    Response<dynamic> response = await EventManager.joinEvent(eventId,userTeam.id);
 
     if(response.success && response.errorCode == -1){
       result = true;
@@ -156,7 +159,7 @@ class RegisterLeaveEventUtil {
 
     bool result = false;
 
-    Response response = await EventManager.leaveEvent(eventList[arrayIndex].eventId);
+    Response response = await EventManager.leaveEvent(eventId);
 
     if(response.success && response.errorCode == 0){
       result = true;
