@@ -341,6 +341,7 @@ class _AppRatio {
   final double _figmaEventBadgeSize = 80;
   final double _figmaPhotoThumbnailSize = 80;
 
+  final double _figmaAvatarSize60 = 60;
   final double _figmaAvatarSize80 = 80;
   final double _figmaAvatarSize130 = 130;
   final double _figmaAvatarSize150 = 150;
@@ -477,6 +478,7 @@ class _AppRatio {
   double appEventBadgeSize;
   double appPhotoThumbnailSize;
 
+  double appAvatarSize60;
   double appAvatarSize80;
   double appAvatarSize130;
   double appAvatarSize150;
@@ -655,6 +657,7 @@ class _AppRatio {
     appPhotoThumbnailSize = _computeWidth(this._figmaPhotoThumbnailSize);
 
     // Find size of avatars
+    appAvatarSize60 = _computeWidth(this._figmaAvatarSize60);
     appAvatarSize80 = _computeWidth(this._figmaAvatarSize80);
     appAvatarSize130 = _computeWidth(this._figmaAvatarSize130);
     appAvatarSize150 = _computeWidth(this._figmaAvatarSize150);
@@ -1195,6 +1198,16 @@ class Strings {
   String rewards;
   String eventPoster;
   String eventStatusTitle;
+  String eventStats;
+  String yourStatus;
+  String organizations;
+  String runners;
+
+  String poweredBy;
+  String goldSponsor;
+  String silverSponsor;
+  String bronzeSponsor;
+  String collaborator;
 
   String teams;
   String team;

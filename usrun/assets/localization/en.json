@@ -159,6 +159,16 @@
     "rewards": "Rewards",
     "eventPoster": "Event poster",
     "eventStatusTitle": "Event status",
+    "eventStats": "Event stats",
+    "yourStatus": "Your status",
+    "organizations": "Organizations",
+    "runners": "Runners",
+
+    "poweredBy": "Powered by",
+    "goldSponsor": "Gold sponsor",
+    "silverSponsor": "Silver sponsor",
+    "bronzeSponsor": "Bronze sponsor",
+    "collaborator": "Collaborator",
 
     "teams": "Teams",
     "team": "Team",
