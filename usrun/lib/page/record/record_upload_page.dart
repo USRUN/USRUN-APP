@@ -8,6 +8,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
@@ -99,8 +100,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          data.totalDistance.toString(),
-                          R.strings.meters,
+                          switchBetweenMeterAndKm(data.totalDistance).toString(),
+                          R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
                         ),
                         _buildStatsBox(
                             R.strings.time,

@@ -549,6 +549,11 @@
         "8003": "Invalid track signature"
       },
 
+    "distanceUnit": [
+        "METERS",
+        "KILOMETERS"
+    ],
+
     "provinces":[
         "Unknown",
         "Hà Nội",

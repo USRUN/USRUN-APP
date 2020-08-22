@@ -1013,6 +1013,7 @@ class Strings {
   String unFollow;
 
   List<String> provinces;
+  List<String> distanceUnit;
 
   String inviteNewMember;
   String inviteNewMemberContent;
