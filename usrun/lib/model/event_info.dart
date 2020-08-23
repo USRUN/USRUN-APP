@@ -42,6 +42,7 @@ class EventInfo with MapperObject {
     this.totalParticipant,
     this.startTime,
     this.endTime,
+    this.teamId,
     this.reward,
     this.sponsorIds,
   });

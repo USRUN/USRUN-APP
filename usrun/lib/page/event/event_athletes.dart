@@ -220,6 +220,7 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
               ),
               enableAddedContent: false,
               subTitle: R.strings.provinces[athlete.province],
+              enableSplashColor: false,
               subTitleStyle: TextStyle(
                 fontSize: R.appRatio.appFontSize14,
                 color: R.colors.contentText,

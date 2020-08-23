@@ -199,6 +199,7 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
                 left: R.appRatio.appSpacing15,
                 right: R.appRatio.appSpacing15,
               ),
+              enableSplashColor: false,
               avatarView: AvatarView(
                 avatarImageURL: team.thumbnail,
                 avatarImageSize: R.appRatio.appWidth60,

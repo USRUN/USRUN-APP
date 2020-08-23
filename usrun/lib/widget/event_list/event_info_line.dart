@@ -46,6 +46,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
       context,
       EventInfoPage(
         eventId: _eventItem.eventId,
+        joined: _eventItem.joined,
       ),
     );
   }

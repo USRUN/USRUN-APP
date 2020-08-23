@@ -161,7 +161,7 @@ class RegisterLeaveEventUtil {
 
     Response response = await EventManager.leaveEvent(eventId);
 
-    if(response.success && response.errorCode == 0){
+    if(response.success && response.errorCode == -1){
       result = true;
     }
 

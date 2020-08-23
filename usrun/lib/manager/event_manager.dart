@@ -218,8 +218,6 @@ class EventManager {
         .map((item) => MapperObject.create<Event>(item))
         .toList();
 
-    events.forEach((element) {element.joined = false; element.poweredBy="By Mr.X";});
-
     Response<List<Event>> response = new Response(
       errorCode: res.errorCode,
       success: res.success,
