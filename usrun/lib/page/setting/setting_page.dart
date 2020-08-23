@@ -73,12 +73,12 @@ class _SettingPageState extends State<SettingPage> {
     }
 
     if(_enableHcmusEmailVerficationFeature == false){
-      _accountType = "Normal";
+      _accountType = R.strings.normal;
     } else {
       if(_userBelongsToHcmus){
-        _accountType = "HCMUS";
+        _accountType = R.strings.hcmus;
       } else {
-        _accountType = "HCMUS (Unverified)";
+        _accountType = R.strings.unVerifiedHCMUS;
       }
     }
   }

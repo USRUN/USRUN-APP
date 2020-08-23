@@ -1,5 +1,6 @@
 {
     "usrun":"USRUN",
+    "hcmus": "HCMUS",
 
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -369,6 +370,8 @@
     "settingsVerifyButton": "Verify",
     "settingsAskForRestart": "Do you want to restart the app to apply the changes?",
     "verificationNotice": "An OTP has been sent to your email. Do you want to verify your account now?\n You can always verify it later by visiting the settings page.",
+    "normal": "Normal",
+    "unVerifiedHCMUS": "HCMUS (Unverified)",
 
     "appInfoUSRUNTitle": "About USRUN",
     "appInfoUSRUNSubtitle": "Both you and USRUN are flawless!",

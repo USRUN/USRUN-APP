@@ -1,5 +1,6 @@
 {
     "usrun":"USRUN",
+    "hcmus": "HCMUS",
 
     "firstName": "Tên",
     "lastName": "Họ",
@@ -368,6 +369,8 @@
     "settingsVerifyButton": "Xác thực",
     "settingsAskForRestart": "Bạn có muốn khởi động lại ứng dụng để áp dụng các thay đổi?",
     "verificationNotice": "OTP đã được gửi đến email của bạn. Bạn có muốn xác thực tài khoản của mình ngay bây giờ không?\n Bạn luôn có thể xác thực tài khoản sau bằng cách truy cập trang cài đặt.",
+    "normal": "Bình thường",
+    "unVerifiedHCMUS": "HCMUS (Chưa xác thực)",
 
     "appInfoUSRUNTitle": "Về USRUN",
     "appInfoUSRUNSubtitle": "Cả bạn và USRUN đều hoàn hảo!",
@@ -407,8 +410,8 @@
     "time":"THỜI GIAN",
     "distance":"QUÃNG ĐƯỜNG",
     "pace": "Tốc độ",
-    "avgPace":"TỐC ĐỘ TRUNG BÌNH",
-    "avgHeart":"NHỊP TIM TRUNG BÌNH",
+    "avgPace":"TỐC ĐỘ TB",
+    "avgHeart":"NHỊP TIM TB",
     "maxHeart": "NHỊP TIM CAO NHẤT",
     "movingTime":"THỜI GIAN DI CHUYỂN",
     "calories":"NHIỆT LƯỢNG",

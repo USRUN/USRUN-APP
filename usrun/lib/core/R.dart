@@ -996,6 +996,7 @@ class _Images {
 @reflector
 class Strings {
   String usrun;
+  String hcmus;
 
   String firstName;
   String lastName;
@@ -1225,7 +1226,6 @@ class Strings {
   String teamFooterNoMoreData;
   String teamFooterFailed;
 
-
   String public;
   String private;
   String join;
@@ -1417,6 +1417,8 @@ class Strings {
   String settingsVerifyButton;
   String settingsAskForRestart;
   String verificationNotice;
+  String normal;
+  String unVerifiedHCMUS;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
