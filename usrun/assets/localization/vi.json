@@ -97,7 +97,7 @@
     "close": "Đóng",
     "back": "Trở về",
 
-    "profile": "Hồ sơ của bạn",
+    "profile": "Hồ sơ",
     "editProfile": "Chỉnh sửa hồ sơ",
     "discardEditedChanges": "Nếu bạn quay lại trang trước mà không cập nhập các thay đổi, dữ liệu thay  đổi sẽ bị mất. Bạn có chắn chắn?",
 
@@ -132,7 +132,7 @@
     "confirmActivityDeletion": "Bạn có chắc chắn xóa hoạt động này khỏi USRUN?",
     "askToRemoveOldOnlinePhoto": "Để đăng tải ảnh mới, trước tiên bạn phải xóa ảnh cũ. Bạn có muốn xóa ảnh?",
 
-    "events": "Các sự kiện",
+    "events": "Sự Kiện",
     "event": "Sự kiện",
     "newEvents": "Các sự kiện mới",
     "yourHistory": "Lịch sử của bạn",
