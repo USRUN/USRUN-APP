@@ -177,15 +177,15 @@ class _SettingPageState extends State<SettingPage> {
                       },
                     )
                   : Container(),
-              LineButton(
-                mainText: R.strings.settingsAccountPrivacyProfileTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  pushPage(context, PrivacyProfile());
-                },
-              ),
+//              LineButton(
+//                mainText: R.strings.settingsAccountPrivacyProfileTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                lineFunction: () {
+//                  pushPage(context, PrivacyProfile());
+//                },
+//              ),
               (_enableHcmusEmailVerficationFeature
                   ? LineButton(
                       mainText: R.strings.settingsAccountVerifyHcmusEmailTitle,
@@ -219,32 +219,32 @@ class _SettingPageState extends State<SettingPage> {
                       },
                     )
                   : Container()),
-              LineButton(
-                mainText: R.strings.settingsAccountConnectGoogleTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.connected,
-                resultTextFontSize: R.appRatio.appFontSize16,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                enableSplashColor: false,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              LineButton(
-                mainText: R.strings.settingsAccountConnectFacebookTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                resultText: R.strings.disconnected,
-                resultTextFontSize: R.appRatio.appFontSize16,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                enableSplashColor: false,
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
+//              LineButton(
+//                mainText: R.strings.settingsAccountConnectGoogleTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                resultText: R.strings.connected,
+//                resultTextFontSize: R.appRatio.appFontSize16,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                enableSplashColor: false,
+//                lineFunction: () {
+//                  // TODO: Implement function here
+//                  print("Line function");
+//                },
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsAccountConnectFacebookTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                resultText: R.strings.disconnected,
+//                resultTextFontSize: R.appRatio.appFontSize16,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                enableSplashColor: false,
+//                lineFunction: () {
+//                  // TODO: Implement function here
+//                  print("Line function");
+//                },
+//              ),
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
@@ -340,87 +340,87 @@ class _SettingPageState extends State<SettingPage> {
               /*
                   NOTIFICATIONS
               */
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 15,
-                ),
-                child: Text(
-                  R.strings.settingsNotiLabel,
-                  textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
-                ),
-              ),
-              LineButton(
-                mainText: R.strings.settingsNotiInAppTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  pushPage(context, InAppNotifications());
-                },
-              ),
-              LineButton(
-                mainText: R.strings.settingsNotiEmailTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                subText: R.strings.settingsNotiEmailSubtitle,
-                subTextFontSize: R.appRatio.appFontSize16,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                enableSwitchButton: true,
-                switchButtonOnTitle: "On",
-                switchButtonOffTitle: "Off",
-                initSwitchStatus: false,
-                switchFunction: (state) {
-                  // TODO: Implementing here
-                  print('Current State of SWITCH IS: $state');
-                },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
+//              Padding(
+//                padding: EdgeInsets.only(
+//                  left: 15,
+//                ),
+//                child: Text(
+//                  R.strings.settingsNotiLabel,
+//                  textAlign: TextAlign.start,
+//                  style: R.styles.shadowLabelStyle,
+//                ),
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsNotiInAppTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                lineFunction: () {
+//                  pushPage(context, InAppNotifications());
+//                },
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsNotiEmailTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                subText: R.strings.settingsNotiEmailSubtitle,
+//                subTextFontSize: R.appRatio.appFontSize16,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                enableSwitchButton: true,
+//                switchButtonOnTitle: "On",
+//                switchButtonOffTitle: "Off",
+//                initSwitchStatus: false,
+//                switchFunction: (state) {
+//                  // TODO: Implementing here
+//                  print('Current State of SWITCH IS: $state');
+//                },
+//              ),
+//              SizedBox(
+//                height: R.appRatio.appSpacing25,
+//              ),
               /*
                   SUPPORT & OTHERS
               */
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 15,
-                ),
-                child: Text(
-                  R.strings.settingsSOLabel,
-                  textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
-                ),
-              ),
-              LineButton(
-                mainText: R.strings.settingsSOFAQsTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              LineButton(
-                mainText: R.strings.settingsSOContactTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
-              LineButton(
-                mainText: R.strings.settingsSOLegalTitle,
-                mainTextFontSize: R.appRatio.appFontSize18,
-                enableBottomUnderline: true,
-                textPadding: EdgeInsets.all(15),
-                lineFunction: () {
-                  // TODO: Implement function here
-                  print("Line function");
-                },
-              ),
+//              Padding(
+//                padding: EdgeInsets.only(
+//                  left: 15,
+//                ),
+//                child: Text(
+//                  R.strings.settingsSOLabel,
+//                  textAlign: TextAlign.start,
+//                  style: R.styles.shadowLabelStyle,
+//                ),
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsSOFAQsTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                lineFunction: () {
+//                  // TODO: Implement function here
+//                  print("Line function");
+//                },
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsSOContactTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                lineFunction: () {
+//                  // TODO: Implement function here
+//                  print("Line function");
+//                },
+//              ),
+//              LineButton(
+//                mainText: R.strings.settingsSOLegalTitle,
+//                mainTextFontSize: R.appRatio.appFontSize18,
+//                enableBottomUnderline: true,
+//                textPadding: EdgeInsets.all(15),
+//                lineFunction: () {
+//                  // TODO: Implement function here
+//                  print("Line function");
+//                },
+//              ),
               LineButton(
                 mainText: R.strings.settingsSOAppInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,

@@ -7,6 +7,7 @@ import 'package:usrun/model/event.dart';
 import 'package:usrun/page/event/event_info.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/ui_button.dart';
 
@@ -45,6 +46,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
       context,
       EventInfoPage(
         eventId: _eventItem.eventId,
+        joined: _eventItem.joined,
       ),
     );
   }
@@ -246,10 +248,12 @@ class _EventInfoLineState extends State<EventInfoLine> {
         ),
         SizedBox(height: R.appRatio.appSpacing15),
         // Powered by
-        _renderIconAndText(
-          R.myIcons.rocketByTheme,
-          _eventItem.poweredBy,
-        ),
+        !checkStringNullOrEmpty(_eventItem.poweredBy)
+            ? _renderIconAndText(
+                R.myIcons.rocketByTheme,
+                _eventItem.poweredBy,
+              )
+            : Container(),
         // Register/Leave button
         _renderRegisterOrLeaveButton(),
       ],

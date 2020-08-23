@@ -4,10 +4,15 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event_info.dart';
 import 'package:usrun/model/event_organization.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/page/event/event_athletes.dart';
 import 'package:usrun/page/event/event_leaderboard.dart';
 import 'package:usrun/page/event/event_poster.dart';
+import 'package:usrun/page/event/event_teams.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -21,9 +26,11 @@ import 'package:usrun/widget/ui_button.dart';
 
 class EventInfoPage extends StatefulWidget {
   final int eventId;
+  final bool joined;
 
   EventInfoPage({
     @required this.eventId,
+    @required this.joined,
   }) : assert(eventId >= 0);
 
   @override
@@ -48,58 +55,13 @@ class _EventInfoPageState extends State<EventInfoPage> {
 
   void _getNecessaryData() async {
     // TODO: Call API here, based on "widget.eventId"
-    EventInfo result = await Future.delayed(Duration(milliseconds: 2500), () {
-      return EventInfo(
-        eventName: "US Racing for Health 2023",
-        subtitle:
-            "Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D",
-        description:
-            "Đẩy là phần mô tả ngắn gọn chỉ hiển thị thông tin về sự kiện này. Chạy bộ nào các bạn trẻ ơi, siêng năng chăm chỉ tập luyện vì sức khỏe của bạn :D.",
-        thumbnail: R.images.avatar,
-        status: 0,
-        banner: R.images.avatarNgocVTT,
-        poster: R.images.avatarNgocVTT,
-        reward:
-            "<1> Tiền mặt 500.000 VND, quà tặng từ Công ty Cổ phẩn MAK\n\n<2> Tiền mặt 300.000 VND, quà tặng từ KoLAP\n\n<3> Tiền mặt 100.000 VND\n\n<KK> Giấy chứng nhận Online",
-        sponsorIds: [
-          [
-            EventOrganization(
-              avatar: R.images.avatarQuocTK,
-              name: "Công ty Cổ phần MAK",
-            ),
-          ],
-          [
-            EventOrganization(
-              avatar: R.images.avatarHuyTA,
-              name: "Công ty Cổ phần QAS",
-            ),
-          ],
-          [
-            EventOrganization(
-              avatar: R.images.avatarPhucTT,
-              name: "Công ty Cổ phần POL",
-            ),
-          ],
-          [
-            EventOrganization(
-              avatar: R.images.avatar,
-              name: "Công ty Cổ phần TYC",
-            ),
-          ],
-          [
-            EventOrganization(
-              avatar: R.images.appIcon,
-              name: "Công ty Cổ phần PQOM",
-            ),
-          ],
-        ],
-        totalParticipant: 194729,
-        totalTeamParticipant: 1048,
-        totalDistance: 859175,
-        startTime: DateTime.now().subtract(Duration(days: 7)),
-        endTime: DateTime.now().subtract(Duration(days: 5)),
-      );
-    });
+    EventInfo result;
+
+    Response<dynamic> response = await EventManager.getEventInfo(widget.eventId, UserManager.currentUser.userId);
+
+    if(response.success && response.errorCode == -1){
+      result = response.object;
+    }
 
     setState(() {
       _eventInfo = result;
@@ -287,26 +249,25 @@ class _EventInfoPageState extends State<EventInfoPage> {
       );
 
       if (result != null && result) {
-        // TODO: Register successfully
+       text = R.strings.leave;
       }
     };
 
-//    TODO: Chưa có biến "joined" để check
-//    if (_eventItem.joined) {
-//      text = R.strings.leave;
-//      enableGradient = false;
-//      callback = () async {
-//        bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
-//          context: context,
-//          eventName: _eventInfo.eventName,
-//          eventId: widget.eventId,
-//        );
-//
-//        if (result != null && result) {
-//          // TODO: Leave successfully
-//        }
-//      };
-//    }
+    if(widget.joined) {
+      text = R.strings.leave;
+      enableGradient = false;
+      callback = () async {
+        bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
+          context: context,
+          eventName: _eventInfo.eventName,
+          eventId: widget.eventId,
+        );
+
+        if (result != null && result) {
+          text = R.strings.register;
+        }
+      };
+    }
 
     return Padding(
       padding: EdgeInsets.only(
@@ -365,7 +326,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
     }
 
     Widget _renderOrgList(
-      List<EventOrganization> orgList,
+      List<dynamic> orgList,
       String title,
       Color titleColor,
     ) {
@@ -468,7 +429,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Leaderboard button
           GestureDetector(
             onTap: () {
-              pushPage(context, EventLeaderboardPage());
+              pushPage(context, EventLeaderboardPage(eventId: widget.eventId, teamId: _eventInfo.teamId,));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -509,7 +470,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalParticipants,
                 secondTitleLine: R.strings.runners.toUpperCase(),
                 pressBox: (id) {
-                  // TODO: Push page here
+                  pushPage(context, EventAthleteSearchPage(eventId: widget.eventId));
                 },
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -520,7 +481,6 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: distance,
                 secondTitleLine: "KM",
                 pressBox: (id) {
-                  // TODO: Push page here
                 },
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -531,7 +491,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalTeams,
                 secondTitleLine: R.strings.teams.toUpperCase(),
                 pressBox: (id) {
-                  // TODO: Push page here
+                  pushPage(context, EventTeamSearchPage(eventId: widget.eventId));
                 },
               ),
             ],

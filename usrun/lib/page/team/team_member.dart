@@ -102,9 +102,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   TabController _tabController;
   List<Widget> tabBarViewItems;
   bool renderAsMember;
-  final TextEditingController _nameController = TextEditingController();
 
-  final String _nameLabel = "User Code or Email";
+
 
   @override
   void initState() {
@@ -201,8 +200,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
             child: (TeamMemberUtil.authorizeHigherLevel(
                     TeamMemberType.Member, widget.teamMemberType))
                 ? FlatButton(
-                    onPressed: () {
-                      _showCustomDialog(0);
+                    onPressed: () async {
+                      await _showCustomDialog(context, widget.teamId);
                     },
                     padding: EdgeInsets.all(0.0),
                     splashColor: R.colors.lightBlurMajorOrange,
@@ -264,38 +263,55 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     );
   }
 
-  final FocusNode _inviteNode = FocusNode();
+//  final FocusNode _inviteNode = FocusNode();
 
-  void _showCustomDialog(index) async {
-    switch (index) {
-      case 0: // Invite
-        await showCustomComplexDialog(
-          context,
-          headerContent: R.strings.inviteNewMember,
-          descriptionContent: R.strings.inviteNewMemberContent,
-          inputFieldList: [
-            InputField(
-              controller: _nameController,
-              enableFullWidth: true,
-              labelTitle: _nameLabel,
-              hintText: _nameLabel,
-              focusNode: _inviteNode,
-            ),
-          ],
-          firstButtonText: R.strings.invite.toUpperCase(),
-          firstButtonFunction: () {
-            _inviteMember(_nameController.text);
-            _nameController.clear();
-          },
-          secondButtonText: R.strings.cancel.toUpperCase(),
-          secondButtonFunction: () {
-            _nameController.clear();
-            pop(context);
-          },
-        );
-        break;
-      default:
-        break;
-    }
+  static Future<void> _showCustomDialog(BuildContext context, int teamId) async {
+    TextEditingController _nameController = TextEditingController();
+
+    bool result = await showCustomComplexDialog<bool>(
+      context,
+      headerContent: R.strings.inviteNewMember,
+      descriptionContent: R.strings.inviteNewMemberContent,
+      inputFieldList: [
+        InputField(
+          controller: _nameController,
+          enableFullWidth: true,
+          labelTitle: R.strings.invitationFieldTitle,
+          hintText: R.strings.invitationFieldTitle,
+          autoFocus: true,
+        ),
+      ],
+      firstButtonText: R.strings.invite.toUpperCase(),
+      firstButtonFunction: () async {
+        Response<dynamic> res =
+            await TeamManager.inviteNewMember(teamId, _nameController.text.trim());
+
+        if (res.success) {
+          pop(context);
+          showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: R.strings.invitationSent,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context);
+            },
+          );
+        } else {
+          pop(context);
+          showCustomAlertDialog(
+            context,
+            title: R.strings.error,
+            content: res.errorMessage,
+            firstButtonText: R.strings.ok.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context);
+            },
+          );
+        }
+      },
+      secondButtonText: R.strings.cancel.toUpperCase(),
+      secondButtonFunction: () => pop(context),
+    );
   }
 }

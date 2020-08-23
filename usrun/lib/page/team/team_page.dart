@@ -75,7 +75,7 @@ class _TeamPageState extends State<TeamPage> {
   }
 
   List<dynamic> _getBannerList() {
-    if (_teamSuggestionList == null) {
+    if (checkListIsNullOrEmpty(_teamSuggestionList)) {
       List<dynamic> bannerList = List<dynamic>();
       return bannerList;
     }
