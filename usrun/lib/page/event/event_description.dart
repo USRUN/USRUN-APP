@@ -3,6 +3,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -55,7 +56,7 @@ class _EventDescriptionState extends State<EventDescriptionPage> {
   }
 
   _loadEvent() async {
-    Response<dynamic> response = await EventManager.getEventInfo(eventId);
+    Response<dynamic> response = await EventManager.getEventInfo(eventId,UserManager.currentUser.userId);
     if (response.success && response.object != null) {
       event = response.object;
     } else {

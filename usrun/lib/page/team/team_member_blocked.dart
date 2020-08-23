@@ -7,8 +7,10 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -93,14 +95,18 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
     _refreshController.refreshCompleted();
   }
 
-  _pressAvatar(index) {
-    // TODO: Implement function here
-    print("Pressing avatar image");
+  _pressAvatar(index) async {
+    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
   }
 
-  _pressUserInfo(index) {
-    // TODO: Implement function here
-    print("Pressing info");
+  _pressUserInfo(index) async {
+    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
   }
 
   _releaseFromBlock(index) {
@@ -118,7 +124,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       setState(
         () {
           _reloadItems();
@@ -224,6 +230,25 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
           onRefresh: _reloadItems,
           enablePullUp: true,
           onLoading: loadMoreData,
+          footer: CustomFooter(
+              builder: (BuildContext context, LoadStatus mode) {
+                Widget body;
+                if (mode == LoadStatus.idle) {
+                  body = Text(R.strings.teamFooterIdle);
+                } else if (mode == LoadStatus.loading) {
+                  body = LoadingIndicator();
+                } else if (mode == LoadStatus.failed) {
+                  body = Text(R.strings.teamFooterFailed);
+                } else if (mode == LoadStatus.canLoading) {
+                  body = Text(R.strings.teamFooterCanLoading);
+                } else {
+                  body = Text(R.strings.teamFooterNoMoreData);
+                }
+                return Container(
+                  height: 55.0,
+                  child: Center(child: body),
+                );
+              }),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -236,12 +261,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
                   verticalOffset: 100.0,
                   child: FadeInAnimation(
                     child: Container(
-                      padding: EdgeInsets.only(
-                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                        bottom: R.appRatio.appSpacing15,
-                        left: R.appRatio.appSpacing15,
-                        right: R.appRatio.appSpacing15,
-                      ),
+
                       child: _renderCustomCell(index),
                     ),
                   ),
@@ -260,6 +280,12 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
     String name = items[index].name;
 
     return CustomCell(
+      padding: EdgeInsets.only(
+        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+        bottom: R.appRatio.appSpacing15,
+        left: R.appRatio.appSpacing15,
+        right: R.appRatio.appSpacing15,
+      ),
       avatarView: AvatarView(
         avatarImageURL: avatarImageURL,
         avatarImageSize: R.appRatio.appWidth60,
@@ -278,6 +304,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
         color: R.colors.contentText,
         fontWeight: FontWeight.w500,
       ),
+      enableSplashColor: false,
       enableAddedContent: false,
       pressInfo: () {
         _pressUserInfo(index);

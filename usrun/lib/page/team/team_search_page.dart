@@ -158,7 +158,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                   String teamName = teamList[index].name;
                   String athleteQuantity = NumberFormat("#,##0", "en_US")
                       .format(teamList[index].athleteQuantity);
-                  String location = teamList[index].location.toString();
+                  int location = teamList[index].location;
 
                   return AnimationConfiguration.staggeredList(
                     position: index,
@@ -191,7 +191,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                           firstAddedTitle: athleteQuantity,
                           firstAddedTitleIconURL: R.myIcons.peopleIconByTheme,
                           firstAddedTitleIconSize: R.appRatio.appIconSize15,
-                          secondAddedTitle: location,
+                          secondAddedTitle: R.strings.provinces[location],
                           secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
                           secondAddedTitleIconSize: R.appRatio.appIconSize15,
                           pressInfo: () {

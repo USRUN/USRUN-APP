@@ -418,7 +418,7 @@ class _MemberSearchPageState extends State<MemberSearchPage>
     int listMemberTypeIndex = allMemberList[index].teamMemberType - 1;
     String avatarImageURL = allMemberList[index].avatar;
     String name = allMemberList[index].name;
-    String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
+    String listTeamMemberType = R.strings.teamMemberTypes[listMemberTypeIndex];
 
     return CustomCell(
       avatarView: AvatarView(

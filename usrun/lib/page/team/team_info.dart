@@ -24,7 +24,6 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/expandable_text.dart';
-import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
@@ -94,8 +93,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance, formatType: RunningUnit.KILOMETER).toInt();
-    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance, formatType: RunningUnit.KILOMETER).toInt();
+    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
+            formatType: RunningUnit.KILOMETER)
+        .toInt();
+    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
+            formatType: RunningUnit.KILOMETER)
+        .toInt();
     _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
     _teamActivities = toMap.totalActivity;
     _teamRank = toMap.rank;
@@ -107,13 +110,14 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     setState(() {
       _verificationStatus = toMap.verified;
       _teamSymbol = toMap.verified ? R.myIcons.hcmusLogo : null;
-      _teamDescription =
-          toMap.description == null ? R.strings.description : toMap.description;
+      _teamDescription = toMap.description == null
+          ? R.strings.yourDescription
+          : toMap.description;
       _teamName = toMap.teamName;
       _teamBanner = toMap.banner;
       _teamMembers = toMap.totalMember;
       _teamPublicStatus = (toMap.privacy == 0 ? true : false);
-      _teamLocation = toMap.province.toString();
+      _teamLocation = R.strings.provinces[toMap.province];
       _teamAvatar = toMap.thumbnail;
     });
   }
@@ -236,26 +240,30 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
   _joinTeamFunction() async {
     Response<dynamic> response;
+    TeamMemberType result;
 
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Pending, _teamMemberType)) {
       response = await TeamManager.cancelJoinTeam(widget.teamId);
+      result = TeamMemberType.Guest;
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Invited, _teamMemberType)) {
       response = await TeamManager.acceptInvitation(widget.teamId);
+      result = TeamMemberType.Pending;
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Guest, _teamMemberType)) {
       response = await TeamManager.requestJoinTeam(widget.teamId);
+      result = TeamMemberType.Pending;
     }
 
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       if (!mounted) return;
       setState(() {
-        _teamMemberType = TeamMemberType.Pending;
+        _teamMemberType = result;
       });
     } else {
       showCustomAlertDialog(
@@ -317,7 +325,6 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -339,47 +346,47 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: <Widget>[
-                          ImageCacheManager.getImage(
-                            url: _teamBanner,
-                            width: R.appRatio.deviceWidth,
-                            height: R.appRatio.appHeight250,
-                            fit: BoxFit.cover,
+                          GestureDetector(
+                            onTap: () {
+                              _changeTeamImage("banner");
+                            },
+                            child: ImageCacheManager.getImage(
+                              url: _teamBanner,
+                              width: R.appRatio.deviceWidth,
+                              height: R.appRatio.appHeight250,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           (TeamMemberUtil.authorizeLowerLevel(
-                                  TeamMemberType.Admin, _teamMemberType)
+                                  TeamMemberType.Member, _teamMemberType)
                               ? Container()
-                              : GestureDetector(
-                                  onTap: () {
-                                    _changeTeamImage("banner");
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      right: R.appRatio.appSpacing15,
-                                      bottom: R.appRatio.appSpacing15,
-                                    ),
-                                    child: Container(
-                                      width: R.appRatio.appIconSize30,
-                                      height: R.appRatio.appIconSize30,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(30),
+                              : Padding(
+                                  padding: EdgeInsets.only(
+                                    right: R.appRatio.appSpacing15,
+                                    bottom: R.appRatio.appSpacing15,
+                                  ),
+                                  child: Container(
+                                    width: R.appRatio.appIconSize30,
+                                    height: R.appRatio.appIconSize30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(30),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 2.0,
+                                          offset: Offset(0.0, 0.0),
+                                          color: R.colors.majorOrange,
                                         ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 2.0,
-                                            offset: Offset(0.0, 0.0),
-                                            color: R.colors.majorOrange,
-                                          ),
-                                        ],
-                                      ),
-                                      child: ImageCacheManager.getImage(
-                                        url: R.myIcons.colorEditIcon,
-                                        fit: BoxFit.cover,
-                                        width: R.appRatio.appIconSize15,
-                                        height: R.appRatio.appIconSize15,
-                                      ),
+                                      ],
+                                    ),
+                                    child: ImageCacheManager.getImage(
+                                      url: R.myIcons.colorEditIcon,
+                                      fit: BoxFit.cover,
+                                      width: R.appRatio.appIconSize15,
+                                      height: R.appRatio.appIconSize15,
                                     ),
                                   ),
                                 )),
@@ -406,7 +413,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             ),
                             supportImageURL:
                                 (TeamMemberUtil.authorizeLowerLevel(
-                                        TeamMemberType.Admin, _teamMemberType)
+                                        TeamMemberType.Member, _teamMemberType)
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
                             pressAvatarImage: () {
@@ -414,15 +421,21 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             },
                           ),
                           title: _teamName,
-                          enableAddedContent: true,
-                          firstAddedTitle: (_teamPublicStatus
-                              ? R.strings.public
-                              : R.strings.private),
-                          firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
-                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
-                          secondAddedTitle: _teamLocation,
-                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
-                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
+                          enableAddedContent: false,
+                          subTitle: _teamLocation,
+                          subTitleStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: R.appRatio.appFontSize14,
+                            color: R.colors.contentText,
+                          ),
+//                          firstAddedTitle: (_teamPublicStatus
+//                              ? R.strings.public
+//                              : R.strings.private),
+//                          firstAddedTitleIconURL: R.myIcons.keyIconByTheme,
+//                          firstAddedTitleIconSize: R.appRatio.appIconSize15,
+//                          secondAddedTitle: _teamLocation,
+//                          secondAddedTitleIconURL: R.myIcons.gpsIconByTheme,
+//                          secondAddedTitleIconSize: R.appRatio.appIconSize15,
                         ),
                       ),
                       // Description
@@ -448,64 +461,64 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             )
                           : Container(),
                       // Symbol
-                      (this._verificationStatus != false
-                          ? Padding(
-                              padding: EdgeInsets.only(
-                                bottom: R.appRatio.appSpacing25,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: R.appRatio.appSpacing15,
-                                      bottom: R.appRatio.appSpacing15,
-                                    ),
-                                    child: Text(
-                                      R.strings.symbol,
-                                      style: R.styles.shadowLabelStyle,
-                                    ),
-                                  ),
-                                  Container(
-                                    color: R.colors.sectionBackgroundLayer,
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                      top: R.appRatio.appSpacing10,
-                                      bottom: R.appRatio.appSpacing10,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        // Symbol image
-                                        ImageCacheManager.getImage(
-                                          url: _teamSymbol,
-                                          fit: BoxFit.cover,
-                                          width: R.appRatio.appWidth50,
-                                          height: R.appRatio.appWidth50,
-                                        ),
-                                        SizedBox(
-                                            height: R.appRatio.appSpacing10),
-                                        // "Verified" string
-                                        Text(
-                                          R.strings.verifiedByUsrun,
-                                          style: TextStyle(
-                                            color: R.colors.contentText,
-                                            fontSize: R.appRatio.appFontSize14,
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container()),
+//                      (this._verificationStatus != false
+//                          ? Padding(
+//                              padding: EdgeInsets.only(
+//                                bottom: R.appRatio.appSpacing25,
+//                              ),
+//                              child: Column(
+//                                mainAxisAlignment: MainAxisAlignment.start,
+//                                crossAxisAlignment: CrossAxisAlignment.stretch,
+//                                mainAxisSize: MainAxisSize.min,
+//                                children: <Widget>[
+//                                  Padding(
+//                                    padding: EdgeInsets.only(
+//                                      left: R.appRatio.appSpacing15,
+//                                      bottom: R.appRatio.appSpacing15,
+//                                    ),
+//                                    child: Text(
+//                                      R.strings.symbol,
+//                                      style: R.styles.shadowLabelStyle,
+//                                    ),
+//                                  ),
+//                                  Container(
+//                                    color: R.colors.sectionBackgroundLayer,
+//                                    alignment: Alignment.center,
+//                                    padding: EdgeInsets.only(
+//                                      top: R.appRatio.appSpacing10,
+//                                      bottom: R.appRatio.appSpacing10,
+//                                    ),
+//                                    child: Column(
+//                                      mainAxisAlignment:
+//                                          MainAxisAlignment.center,
+//                                      crossAxisAlignment:
+//                                          CrossAxisAlignment.center,
+//                                      children: <Widget>[
+//                                        // Symbol image
+//                                        ImageCacheManager.getImage(
+//                                          url: _teamSymbol,
+//                                          fit: BoxFit.cover,
+//                                          width: R.appRatio.appWidth50,
+//                                          height: R.appRatio.appWidth50,
+//                                        ),
+//                                        SizedBox(
+//                                            height: R.appRatio.appSpacing10),
+//                                        // "Verified" string
+//                                        Text(
+//                                          R.strings.verifiedByUsrun,
+//                                          style: TextStyle(
+//                                            color: R.colors.contentText,
+//                                            fontSize: R.appRatio.appFontSize14,
+//                                            fontStyle: FontStyle.italic,
+//                                          ),
+//                                        ),
+//                                      ],
+//                                    ),
+//                                  ),
+//                                ],
+//                              ),
+//                            )
+//                          : Container()),
                       // Team stats
                       Padding(
                         padding: EdgeInsets.only(
@@ -669,76 +682,76 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                         ),
                       ),
                       // Tool zone
-                      (TeamMemberUtil.authorizeLowerLevel(
-                              TeamMemberType.Admin, _teamMemberType))
-                          ? Container()
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: R.appRatio.appSpacing15,
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: Text(
-                                    R.strings.toolZone,
-                                    style: R.styles.shadowLabelStyle,
-                                  ),
-                                ),
-                                // Make team public
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: LineButton(
-                                    mainText: R.strings.makeTeamPublicTitle,
-                                    mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize16,
-                                    subText: R.strings.makeTeamPublicSubtitle,
-                                    enableBottomUnderline: true,
-                                    textPadding: EdgeInsets.all(15),
-                                    enableSwitchButton: true,
-                                    initSwitchStatus: _teamPublicStatus,
-                                    switchButtonOffTitle: "Off",
-                                    switchButtonOnTitle: "On",
-                                    switchFunction: (status) =>
-                                        _changeTeamPrivacy(status),
-                                  ),
-                                ),
-                                // Transfer ownership
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: R.appRatio.appSpacing15,
-                                  ),
-                                  child: LineButton(
-                                    mainText: R.strings.transferOwnershipTitle,
-                                    mainTextFontSize: R.appRatio.appFontSize18,
-                                    subTextFontSize: R.appRatio.appFontSize16,
-                                    subText:
-                                        R.strings.transferOwnershipSubtitle,
-                                    enableBottomUnderline: true,
-                                    textPadding: EdgeInsets.all(15),
-                                    enableBoxButton: true,
-                                    boxButtonTitle: R.strings.transfer,
-                                    boxButtonFunction: _transferOwnership,
-                                  ),
-                                ),
-                                // Delete team
-                                LineButton(
-                                  mainText: R.strings.deleteTeamTitle,
-                                  mainTextFontSize: R.appRatio.appFontSize18,
-                                  subTextFontSize: R.appRatio.appFontSize16,
-                                  subText: R.strings.deleteTeamSubtitle,
-                                  enableBottomUnderline: true,
-                                  textPadding: EdgeInsets.all(15),
-                                  enableBoxButton: true,
-                                  boxButtonTitle: R.strings.delete,
-                                  boxButtonFunction: _deleteTeam,
-                                ),
-                              ],
-                            )
+//                      (TeamMemberUtil.authorizeLowerLevel(
+//                              TeamMemberType.Admin, _teamMemberType))
+//                          ? Container()
+//                          : Column(
+//                              crossAxisAlignment: CrossAxisAlignment.stretch,
+//                              mainAxisAlignment: MainAxisAlignment.start,
+//                              mainAxisSize: MainAxisSize.min,
+//                              children: <Widget>[
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    left: R.appRatio.appSpacing15,
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: Text(
+//                                    R.strings.toolZone,
+//                                    style: R.styles.shadowLabelStyle,
+//                                  ),
+//                                ),
+//                                // Make team public
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: LineButton(
+//                                    mainText: R.strings.makeTeamPublicTitle,
+//                                    mainTextFontSize: R.appRatio.appFontSize18,
+//                                    subTextFontSize: R.appRatio.appFontSize16,
+//                                    subText: R.strings.makeTeamPublicSubtitle,
+//                                    enableBottomUnderline: true,
+//                                    textPadding: EdgeInsets.all(15),
+//                                    enableSwitchButton: true,
+//                                    initSwitchStatus: _teamPublicStatus,
+//                                    switchButtonOffTitle: "Off",
+//                                    switchButtonOnTitle: "On",
+//                                    switchFunction: (status) =>
+//                                        _changeTeamPrivacy(status),
+//                                  ),
+//                                ),
+//                                // Transfer ownership
+//                                Padding(
+//                                  padding: EdgeInsets.only(
+//                                    bottom: R.appRatio.appSpacing15,
+//                                  ),
+//                                  child: LineButton(
+//                                    mainText: R.strings.transferOwnershipTitle,
+//                                    mainTextFontSize: R.appRatio.appFontSize18,
+//                                    subTextFontSize: R.appRatio.appFontSize16,
+//                                    subText:
+//                                        R.strings.transferOwnershipSubtitle,
+//                                    enableBottomUnderline: true,
+//                                    textPadding: EdgeInsets.all(15),
+//                                    enableBoxButton: true,
+//                                    boxButtonTitle: R.strings.transfer,
+//                                    boxButtonFunction: _transferOwnership,
+//                                  ),
+//                                ),
+//                                // Delete team
+//                                LineButton(
+//                                  mainText: R.strings.deleteTeamTitle,
+//                                  mainTextFontSize: R.appRatio.appFontSize18,
+//                                  subTextFontSize: R.appRatio.appFontSize16,
+//                                  subText: R.strings.deleteTeamSubtitle,
+//                                  enableBottomUnderline: true,
+//                                  textPadding: EdgeInsets.all(15),
+//                                  enableBoxButton: true,
+//                                  boxButtonTitle: R.strings.delete,
+//                                  boxButtonFunction: _deleteTeam,
+//                                ),
+//                              ],
+//                            )
                     ],
                   ),
                 )),

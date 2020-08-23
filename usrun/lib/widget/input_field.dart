@@ -59,8 +59,29 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> {
+  FocusNode _focusNode;
+
   String _capitalizeTheFirstLetter(String str) {
     return (str[0].toUpperCase() + str.substring(1).toLowerCase());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initFocusNode();
+  }
+
+  void _initFocusNode() {
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode();
+    } else {
+      _focusNode = widget.focusNode;
+    }
+
+    if (!widget.autoFocus) return;
+    Future.delayed(Duration(milliseconds: 400), () {
+      _focusNode.requestFocus();
+    });
   }
 
   @override
@@ -84,11 +105,11 @@ class _InputFieldState extends State<InputField> {
                   )),
           ),
           TextField(
-            focusNode: widget.focusNode,
+            focusNode: _focusNode,
             controller: widget.controller,
             obscureText: widget.obscureText,
             keyboardType: widget.textInputType,
-            autofocus: widget.autoFocus,
+            autofocus: false,
             cursorColor: widget.cursorColor ?? R.colors.majorOrange,
             onSubmitted: (data) {
               if (widget.onSubmittedFunction != null) {

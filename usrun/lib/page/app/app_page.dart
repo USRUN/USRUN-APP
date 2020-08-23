@@ -331,7 +331,6 @@ class _AppPageState extends State<AppPage> {
           pop(context);
           return false;
         } else {
-          // TODO: return await showCustomExitDialog(context);
           await SystemShortcuts.home();
           return true;
         }
