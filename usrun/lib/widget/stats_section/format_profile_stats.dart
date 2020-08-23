@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/util/date_time_utils.dart';
 
 class FormatProfileStats {
@@ -57,8 +59,8 @@ class FormatProfileStats {
       "id": "5",
       "title": "Total Distance",
       "data": NumberFormat("#,##0.00", "en_US")
-          .format(userActivity['totalDistance']/1000),
-      "unit": "km",
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIcon,
     });
 
@@ -118,8 +120,8 @@ class FormatProfileStats {
       "id": "1",
       "subTitle": "Total Dist",
       "dataTitle": NumberFormat("#,##0.00", "en_US")
-          .format(userActivity['totalDistance']/1000),
-      "unitTitle": "km",
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
     result.add({
@@ -200,8 +202,8 @@ class FormatProfileStats {
     result.add({
       "title": "Total Dist",
       "data": NumberFormat("#,##0.00", "en_US")
-          .format(userActivity['totalDistance']/1000),
-      "unit": "km",
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIconByTheme,
       "enableBottomBorder": true,
       "isSuffixIcon": true,

@@ -103,7 +103,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   List<Widget> tabBarViewItems;
   bool renderAsMember;
 
-  final String _nameLabel = "User Code or Email";
+
 
   @override
   void initState() {
@@ -276,10 +276,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
         InputField(
           controller: _nameController,
           enableFullWidth: true,
-          labelTitle: "User code or Email",
-          hintText: "User code or Email",
+          labelTitle: R.strings.invitationFieldTitle,
+          hintText: R.strings.invitationFieldTitle,
           autoFocus: true,
-//              focusNode: _inviteNode,
         ),
       ],
       firstButtonText: R.strings.invite.toUpperCase(),

@@ -1026,6 +1026,8 @@ class Strings {
   String unFollow;
 
   List<String> provinces;
+  List<String> distanceUnit;
+  List<String> teamMemberTypes;
 
   String inviteNewMember;
   String inviteNewMemberContent;
@@ -1168,6 +1170,9 @@ class Strings {
   String discard;
   String upload;
   String na;
+  String successfullyUploaded;
+  String failToUpload;
+  String discardActivity;
 
   String uFeed;
   String readMore;
@@ -1213,6 +1218,7 @@ class Strings {
   String teams;
   String team;
   String invitationSent;
+  String invitationFieldTitle;
   String teamFooterIdle;
   String teamFooterCanLoading;
   String teamFooterNoMoreData;

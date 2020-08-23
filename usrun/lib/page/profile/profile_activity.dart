@@ -5,11 +5,15 @@ import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 
 class ProfileActivity extends StatefulWidget {
+
+  final int userId;
+
+  ProfileActivity({@required this.userId, Key key}): super(key: key);
   @override
-  _ProfileActivityState createState() => _ProfileActivityState();
+  ProfileActivityState createState() => ProfileActivityState();
 }
 
-class _ProfileActivityState extends State<ProfileActivity> {
+class ProfileActivityState extends State<ProfileActivity> {
   bool _isLoading;
   bool _isKM;
   List _activityTimelineList;
@@ -23,10 +27,10 @@ class _ProfileActivityState extends State<ProfileActivity> {
     _isKM = true;
     _activityTimelineList = List();
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => _getProfileActivityData());
+        .addPostFrameCallback((_) => getProfileActivityData());
   }
 
-  _getProfileActivityData() async {
+  getProfileActivityData() async {
     if (!_isLoading) {
       if (!mounted) return;
       setState(() {
@@ -37,7 +41,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
     var futures = List<Future>();
 
     // Function: Get activityTimeline data
-    futures.add(UserManager.getActivityTimelineList(UserManager.currentUser.userId,
+    futures.add(UserManager.getActivityTimelineList(widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ));
@@ -65,7 +69,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
   }
 
   _loadMoreActivityTimelineItems() async {
-    await UserManager.getActivityTimelineList(UserManager.currentUser.userId,
+    await UserManager.getActivityTimelineList(widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ).then((value) {

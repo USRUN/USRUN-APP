@@ -395,7 +395,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     int listMemberTypeIndex = items[index].teamMemberType - 1;
     String avatarImageURL = items[index].avatar;
     String name = items[index].name;
-    String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
+    String listTeamMemberType = R.strings.teamMemberTypes[listMemberTypeIndex];
     bool enablePopUpMenu =
         !checkListIsNullOrEmpty(options[listMemberTypeIndex]);
     List<PopupItem> popUpItems = options[listMemberTypeIndex];

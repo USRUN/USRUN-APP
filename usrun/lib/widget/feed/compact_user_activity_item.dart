@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
@@ -374,7 +375,7 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     Widget _distanceWidget = _wrapWidgetData(
       firstTitle: R.strings.distance,
       data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
-      unitTitle: R.strings.km,
+      unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
     Widget _timeWidget = _wrapWidgetData(

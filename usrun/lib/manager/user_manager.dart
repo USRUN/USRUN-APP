@@ -249,9 +249,10 @@ class UserManager {
     return result;
   }
 
-  static Future<dynamic> getUserActivityByTimeWithSum(
+  static Future<dynamic> getUserActivityByTimeWithSum(int userID,
       DateTime fromTime, DateTime toTime) async {
     Map<String, dynamic> params = Map<String, dynamic>();
+    params['userId'] = userID;
     params['fromTime'] = fromTime.millisecondsSinceEpoch;
     params['toTime'] = toTime.millisecondsSinceEpoch;
     Response<dynamic> response =

@@ -678,6 +678,8 @@ class RecordBloc extends BlocBase {
   void resetAll() {
     this.recordData = RecordData();
     this._streamRecordData.add(this.recordData);
+    this.polylineCoordinates.clear();
+    this.lData.clear();
     this.onGpsStatusChecking();
     this.updateRecordStatus(RecordState.StatusNone);
     if (this._timeService != null) {
