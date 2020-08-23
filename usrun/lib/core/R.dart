@@ -1008,6 +1008,7 @@ class Strings {
   String passwordNotice;
   String reset;
   String resetPasswordNotice;
+  String resetPasswordSuccessful;
   String email;
   String emailHint;
   String country;
@@ -1026,6 +1027,7 @@ class Strings {
 
   List<String> provinces;
   List<String> distanceUnit;
+  List<String> teamMemberTypes;
 
   String inviteNewMember;
   String inviteNewMemberContent;
@@ -1216,6 +1218,12 @@ class Strings {
   String teams;
   String team;
   String invitationSent;
+  String invitationFieldTitle;
+  String teamFooterIdle;
+  String teamFooterCanLoading;
+  String teamFooterNoMoreData;
+  String teamFooterFailed;
+
 
   String public;
   String private;

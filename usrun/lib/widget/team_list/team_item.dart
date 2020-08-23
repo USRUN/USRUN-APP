@@ -8,7 +8,7 @@ class TeamItem {
   String avatarImageURL;
   String supportImageURL;
   String bannerImageURL;
-  String location;
+  int location;
   int teamMemberType;
   bool verificationStatus;
 
@@ -33,7 +33,7 @@ class TeamItem {
     avatarImageURL = t.thumbnail;
     supportImageURL = null;
     bannerImageURL = t.banner;
-    location = t.province.toString();
+    location = t.province;
     teamMemberType = t.teamMemberType;
     verificationStatus = t.verified;
   }

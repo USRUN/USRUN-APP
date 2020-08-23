@@ -3,25 +3,31 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
-import 'package:usrun/model/event.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/event_athlete.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/page/event/register_leave_event_util.dart';
+import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/record/timer.dart';
 import 'package:usrun/util/validator.dart';
+import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
-import 'package:usrun/widget/event_list/event_info_line.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
-class EventSearchPage extends StatefulWidget {
+class EventAthleteSearchPage extends StatefulWidget {
+  final int eventId;
+
+  EventAthleteSearchPage({@required this.eventId});
+
   @override
-  _EventSearchPageState createState() => _EventSearchPageState();
+  _EventAthleteSearchPageState createState() => _EventAthleteSearchPageState();
 }
 
-class _EventSearchPageState extends State<EventSearchPage> {
+class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _textSearchController = TextEditingController();
 
@@ -32,7 +38,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
   bool _allowLoadMore = true;
 
   bool _isLoading;
-  List<Event> _originalList;
+  List<EventAthlete> _originalList;
 
   final int _interval = 1;
   TimerService _timerService;
@@ -71,12 +77,13 @@ class _EventSearchPageState extends State<EventSearchPage> {
     }
   }
 
-  Future<List<Event>> _callSearchApi() async {
-    List<Event> result = List();
+  Future<List<EventAthlete>> _callSearchApi() async {
+    List<EventAthlete> result = List();
 
-    Response<dynamic> response = await EventManager.findEventByName(_currentSearchKey, _currentPage, _pageSize);
+    Response<dynamic> response = await EventManager.getEventAthlete(
+        widget.eventId, _currentSearchKey, _currentPage, _pageSize);
 
-    if(response.success && (response.object as List).isNotEmpty){
+    if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
     }
 
@@ -86,7 +93,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
   void _loadMoreData() async {
     if (!_allowLoadMore) return;
 
-    List<Event> result = await _callSearchApi();
+    List<EventAthlete> result = await _callSearchApi();
 
     if (result == null || result.length == 0) {
       _allowLoadMore = false;
@@ -116,7 +123,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
     _currentPage = 1;
     _allowLoadMore = true;
 
-    List<Event> result = await _callSearchApi();
+    List<EventAthlete> result = await _callSearchApi();
 
     if (result == null || result.length == 0) {
       _allowLoadMore = false;
@@ -173,72 +180,52 @@ class _EventSearchPageState extends State<EventSearchPage> {
           _loadMoreData();
         }
 
-        Event event = _originalList[index];
+        EventAthlete athlete = _originalList[index];
         bool isLastElement = index == _originalList.length - 1;
-        bool enableActionButton = false;
-        Function callback;
-
-        if (event.status.index != EventStatus.Ended.index) {
-          enableActionButton = true;
-          if (!event.joined) {
-            // Register function
-            callback = () async {
-              _searchFocusNode.unfocus();
-
-              bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
-                context: context,
-                eventName: _originalList[index].eventName,
-                eventId: _originalList[index].eventId,
-              );
-
-              if (result != null && result) {
-                if (!mounted) return;
-                setState(() {
-                  _originalList[index].joined = true;
-                });
-              }
-            };
-          } else {
-            // Leave function
-            callback = () async {
-              _searchFocusNode.unfocus();
-
-              bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
-                context: context,
-                eventName: _originalList[index].eventName,
-                eventId: _originalList[index].eventId,
-              );
-
-              if (result != null && result) {
-                if (!mounted) return;
-                setState(() {
-                  _originalList[index].joined = false;
-                });
-              }
-            };
-          }
-        }
 
         return Column(
-          key: Key(event.eventId.toString()),
+          key: Key(athlete.userId.toString()),
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            EventInfoLine(
-              eventItem: event,
-              enableActionButton: enableActionButton,
-              registerCallback: callback,
-              leaveCallback: callback,
-              enableBoxShadow: false,
+            CustomCell(
+              padding: EdgeInsets.only(
+                top: R.appRatio.appSpacing15 - 2,
+                bottom: R.appRatio.appSpacing15 - 2,
+                left: R.appRatio.appSpacing15,
+                right: R.appRatio.appSpacing15,
+              ),
+              avatarView: AvatarView(
+                avatarImageURL: athlete.avatar,
+                avatarImageSize: R.appRatio.appWidth60,
+                avatarBoxBorder: Border.all(
+                  width: 1,
+                  color: R.colors.majorOrange,
+                ),
+              ),
+              // Content
+              title: athlete.name,
+              titleStyle: TextStyle(
+                fontSize: R.appRatio.appFontSize16,
+                color: R.colors.contentText,
+                fontWeight: FontWeight.w500,
+              ),
+              enableAddedContent: false,
+              subTitle: R.strings.provinces[athlete.province],
+              enableSplashColor: false,
+              subTitleStyle: TextStyle(
+                fontSize: R.appRatio.appFontSize14,
+                color: R.colors.contentText,
+              ),
+              pressInfo: () async {
+                Response<dynamic> response = await UserManager.getUserInfo(athlete.userId);
+                User user = response.object;
+
+                pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+              },
+              centerVerticalSuffix: true,
             ),
-            (!isLastElement
-                ? Divider(
-                    color: R.colors.majorOrange,
-                    thickness: 0.8,
-                    height: 1,
-                  )
-                : Container()),
           ],
         );
       },

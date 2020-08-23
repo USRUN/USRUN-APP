@@ -54,3 +54,21 @@ class StringUtils {
     return newFirstLetter + longString;
   }
 }
+
+String uppercaseOnlyFirstLetterOfFirstWord({
+  String content,
+}) {
+  if (content == null || content.length == 0) {
+    return "";
+  }
+
+  String firstLetter = content[0];
+  String newFirstLetter = firstLetter.toUpperCase();
+
+  String longString = "";
+  if (content.length > 1) {
+    longString = content.substring(1)[1];
+  }
+
+  return newFirstLetter + longString;
+}

@@ -162,7 +162,7 @@ class TeamList extends StatelessWidget {
               AvatarView(
                 avatarImageURL: avatarImageURL,
                 avatarImageSize: this._avatarSize,
-                supportImageURL: supportImageURL,
+//                supportImageURL: supportImageURL,
                 enableSquareAvatarImage: true,
                 pressAvatarImage: () {
                   if (this.pressItemFunction != null) {

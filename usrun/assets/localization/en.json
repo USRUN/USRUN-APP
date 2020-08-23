@@ -87,7 +87,7 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
-
+    "resetPasswordSuccessful": "Your password has been reset.",
     "warning": "Warning",
     "caution": "Caution",
     "exitApp": "Do you want to exit USRUN app?",
@@ -173,6 +173,12 @@
     "teams": "Teams",
     "team": "Team",
     "invitationSent":  "Invitation sent",
+    "invitationFieldTitle": "User Code or Email",
+    "teamFooterIdle":  "Pull up to load more",
+    "teamFooterCanLoading": "Release to load more",
+    "teamFooterNoMoreData":  "Loaded all data",
+    "teamFooterFailed": "Load failed",
+
 
     "public": "Public",
     "private": "Private",
@@ -219,8 +225,8 @@
     "notAuthorizedTeamChange": "You are not authorized to change this information.",
     "promoteAPerson": "Promote to admin",
     "demoteAPerson": "Demote to user",
-    "requestTeamListTitle": "You are requesting to join",
-    "inviteTeamListTitle": "You are invited to",
+    "requestTeamListTitle": "You Are Requesting To Join",
+    "inviteTeamListTitle": "You Are Invited To",
     "emptyMemberList": "There is no member in this list",
     "emptyMemberListSubtitle": "Try reloading the page or invite more members",
 
@@ -569,6 +575,12 @@
     "distanceUnit": [
         "METERS",
         "KILOMETERS"
+    ],
+
+    "teamMemberTypes": [
+        "Owner",
+        "Admin",
+        "Member"
     ],
 
     "provinces":[
