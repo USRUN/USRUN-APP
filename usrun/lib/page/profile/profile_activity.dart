@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
@@ -24,7 +26,7 @@ class ProfileActivityState extends State<ProfileActivity> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _isKM = true;
+    _isKM = DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? true : false;
     _activityTimelineList = List();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => getProfileActivityData());
