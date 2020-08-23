@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/event.dart';
+import 'package:usrun/page/event/event_info.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/avatar_view.dart';
@@ -37,17 +39,21 @@ class _EventInfoLineState extends State<EventInfoLine> {
     _eventItem = widget.eventItem;
   }
 
-  void _goToDetailEventPage() {
-    // TODO: Go to event_information page with param "eventId"
-    // =====> Trang này chưa build hiện giờ <=====
-    print("[EVENT_INFO_LINE] Go to event_information page");
+  void _goToEventInfoPage() {
+    if (_eventItem == null) return;
+    pushPage(
+      context,
+      EventInfoPage(
+        eventId: _eventItem.eventId,
+      ),
+    );
   }
 
   Widget _renderEventAvatar() {
     return AvatarView(
       avatarImageURL: _eventItem.thumbnail,
       avatarImageSize: _avatarSize,
-      pressAvatarImage: _goToDetailEventPage,
+      pressAvatarImage: _goToEventInfoPage,
       avatarBoxBorder: Border.all(
         width: 1.5,
         color: R.currentAppTheme == AppTheme.LIGHT
@@ -173,7 +179,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
     Widget _renderRegisterOrLeaveButton() {
       if (!widget.enableActionButton) return Container();
 
-      String text = R.strings.join;
+      String text = R.strings.register;
       Function callback = widget.registerCallback;
       bool enableGradient = true;
 
@@ -276,7 +282,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _goToDetailEventPage,
+      onTap: _goToEventInfoPage,
       child: Container(
         decoration: BoxDecoration(
           color: R.colors.appBackground,

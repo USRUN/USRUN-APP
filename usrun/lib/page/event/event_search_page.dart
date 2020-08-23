@@ -198,8 +198,8 @@ class _EventSearchPageState extends State<EventSearchPage> {
 
               bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
                 context: context,
-                arrayIndex: index,
-                eventList: _originalList,
+                eventName: _originalList[index].eventName,
+                eventId: _originalList[index].eventId,
               );
 
               if (result != null && result) {
@@ -216,8 +216,8 @@ class _EventSearchPageState extends State<EventSearchPage> {
 
               bool result = await RegisterLeaveEventUtil.handleLeaveAnEvent(
                 context: context,
-                arrayIndex: index,
-                eventList: _originalList,
+                eventName: _originalList[index].eventName,
+                eventId: _originalList[index].eventId,
               );
 
               if (result != null && result) {

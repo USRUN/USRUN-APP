@@ -270,28 +270,29 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     switch (index) {
       case 0: // Invite
         await showCustomComplexDialog(
-            context: context,
-            headerContent: R.strings.inviteNewMember,
-            descriptionContent: R.strings.inviteNewMemberContent,
-            inputFieldList: [
-              InputField(
-                controller: _nameController,
-                enableFullWidth: true,
-                labelTitle: _nameLabel,
-                hintText: _nameLabel,
-                focusNode: _inviteNode,
-              ),
-            ],
-            firstButtonText: R.strings.invite.toUpperCase(),
-            firstButtonFunction: () {
-              _inviteMember(_nameController.text);
-              _nameController.clear();
-            },
-            secondButtonText: R.strings.cancel.toUpperCase(),
-            secondButtonFunction: () {
-              _nameController.clear();
-              pop(context);
-            });
+          context,
+          headerContent: R.strings.inviteNewMember,
+          descriptionContent: R.strings.inviteNewMemberContent,
+          inputFieldList: [
+            InputField(
+              controller: _nameController,
+              enableFullWidth: true,
+              labelTitle: _nameLabel,
+              hintText: _nameLabel,
+              focusNode: _inviteNode,
+            ),
+          ],
+          firstButtonText: R.strings.invite.toUpperCase(),
+          firstButtonFunction: () {
+            _inviteMember(_nameController.text);
+            _nameController.clear();
+          },
+          secondButtonText: R.strings.cancel.toUpperCase(),
+          secondButtonFunction: () {
+            _nameController.clear();
+            pop(context);
+          },
+        );
         break;
       default:
         break;

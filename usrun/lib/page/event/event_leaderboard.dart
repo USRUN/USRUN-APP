@@ -339,7 +339,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = uppercaseFirstLetterEachWord(
+    String appBarTitle = StringUtils.uppercaseFirstLetterEachWord(
       content: R.strings.eventLeaderboard,
       pattern: " ",
     );

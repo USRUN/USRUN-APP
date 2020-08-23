@@ -1,4 +1,3 @@
-import 'package:usrun/core/define.dart';
 import 'package:usrun/model/event_organization.dart';
 import 'package:usrun/util/reflector.dart';
 import 'package:usrun/model/mapper_object.dart';
@@ -21,11 +20,11 @@ class EventInfo with MapperObject {
 
   /*
     Sponsor Type: Powered, Gold, Silver, Bronze, Collaborated
-    sponsorIds[0]: List of powered-by sponsors
+    sponsorIds[0]: List of powered-by
     [1]: List of Gold sponsors
     [2]: List of Silver sponsors
-    [3]: Bronze
-    [4]: Collaborated
+    [3]: List of Bronze sponsors
+    [4]: List of Collaborators
    */
   List<List<EventOrganization>> sponsorIds;
 

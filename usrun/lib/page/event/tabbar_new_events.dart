@@ -135,8 +135,8 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
             registerCallback: () async {
               bool result = await RegisterLeaveEventUtil.handleRegisterAnEvent(
                 context: context,
-                arrayIndex: index,
-                eventList: _currentEventList,
+                eventName: _currentEventList[index].eventName,
+                eventId: _currentEventList[index].eventId,
               );
 
               if (result != null && result) {
