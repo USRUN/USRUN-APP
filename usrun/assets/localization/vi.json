@@ -1,8 +1,8 @@
 {
     "usrun":"USRUN",
 
-    "firstName": "Họ và tên đệm",
-    "lastName": "Tên",
+    "firstName": "Tên",
+    "lastName": "Họ",
     "password": "Mật khẩu",
     "passwordHint": "Nhập mật khẩu của bạn tại đây",
     "currentPassword": "Mật khẩu hiện tại",
@@ -186,7 +186,7 @@
     "rank": "Hạng",
     "activities": "Các hoạt động",
     "activity": "Hoạt động",
-    "splits": "Chia ra",
+    "splits": "Splits",
     "members": "Thành viên",
     "leadingTime": "Thời gian dẫn đầu",
     "leadingDist": "Quãng đường dẫn đầu",
@@ -413,7 +413,7 @@
     "meters":"MÉT",
     "km": "km",
     "m": "m",
-    "avgPaceUnit":"PER KM",
+    "avgPaceUnit":"MỖI KM",
     "avgHeartUnit":"BMP",
     "movingTimeUnit":"HH:MM:SS",
     "caloriesUnit":"KCAL",
