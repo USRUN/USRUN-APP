@@ -76,14 +76,21 @@ class _TeamPageState extends State<TeamPage> {
 
   List<dynamic> _getBannerList() {
     if (checkListIsNullOrEmpty(_teamSuggestionList)) {
-      List<dynamic> bannerList = List<dynamic>();
+      List<dynamic> bannerList = [
+        ImageCacheManager.getImageData(
+          url: R.images.defaultBackground,
+        ),
+      ];
       return bannerList;
     }
 
     List<dynamic> bannerList = List<dynamic>();
     for (int i = 0; i < _teamSuggestionList.length; ++i) {
-      bannerList.add(ImageCacheManager.getImageData(
-          url: _teamSuggestionList[i].bannerImageURL));
+      bannerList.add(
+        ImageCacheManager.getImage(
+          url: _teamSuggestionList[i].bannerImageURL,
+        ),
+      );
     }
 
     return bannerList;

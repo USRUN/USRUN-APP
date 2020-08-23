@@ -212,6 +212,7 @@ class _InputFieldState extends State<InputField> {
               hintStyle: (widget.hintStyle ??
                   TextStyle(
                     fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.normal,
                     color: R.colors.grayABABAB,
                   )),
               errorText: (widget.errorText.length == 0

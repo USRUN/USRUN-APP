@@ -70,16 +70,17 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
 
     List<EventLeaderboard> result = List();
     if (_selectedFilter.value == LeaderBoardType.Individual) {
-      Response<dynamic> response = await EventManager.getEventLeaderboard(widget.eventId, true, 10);
+      Response<dynamic> response =
+          await EventManager.getEventLeaderboard(widget.eventId, true, 10);
 
-      if(response.success && (response.object as List).isNotEmpty){
+      if (response.success && (response.object as List).isNotEmpty) {
         result = response.object;
       }
-
     } else {
-      Response<dynamic> response = await EventManager.getEventLeaderboard(widget.eventId, false, 10);
+      Response<dynamic> response =
+          await EventManager.getEventLeaderboard(widget.eventId, false, 10);
 
-      if(response.success && (response.object as List).isNotEmpty){
+      if (response.success && (response.object as List).isNotEmpty) {
         result = response.object;
       }
     }
@@ -220,7 +221,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
             contentColor = R.colors.majorOrange;
           }
         } else {
-          if(id == widget.teamId){
+          if (id == widget.teamId) {
             contentColor = R.colors.majorOrange;
           }
         }
@@ -327,16 +328,11 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = StringUtils.uppercaseFirstLetterEachWord(
-      content: R.strings.eventLeaderboard,
-      pattern: " ",
-    );
-
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
-        title: appBarTitle,
+        title: R.strings.eventLeaderboard,
         actions: <Widget>[
           _renderFilterButton(),
         ],

@@ -96,35 +96,11 @@ class SplashPage extends StatefulWidget {
   State<StatefulWidget> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<StatefulWidget>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
-
+class _SplashPageState extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
-    _initAnimationController();
     WidgetsBinding.instance.addPostFrameCallback((_) => _initPage());
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  void _initAnimationController() {
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
-    _animation = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    Future.delayed(Duration(milliseconds: 1000), () => _controller.forward());
   }
 
   Future<void> _initPage() async {
@@ -134,10 +110,7 @@ class _SplashPageState extends State<StatefulWidget>
       await loadCurrentLanguage();
     }
 
-    Future.delayed(
-      Duration(milliseconds: 2500),
-      () => openStartPage(),
-    );
+    openStartPage();
   }
 
   void openStartPage() async {
@@ -160,13 +133,10 @@ class _SplashPageState extends State<StatefulWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
-      body: FadeTransition(
-        opacity: _animation,
-        child: Center(
-          child: Image.asset(
-            R.images.logoText,
-            width: 200,
-          ),
+      body: Center(
+        child: Image.asset(
+          R.images.logoText,
+          width: 180,
         ),
       ),
     );

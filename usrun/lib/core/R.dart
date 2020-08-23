@@ -980,6 +980,7 @@ class _Images {
   final String drawerBackgroundDarkTheme =
       'assets/images/drawer-background-dark-theme.png';
   final String smallDefaultImage = 'assets/images/small-default-image.png';
+  final String defaultBackground = 'assets/images/default-background.png';
   final String staticStatsChart01 = 'assets/images/static-stats-chart-01.png';
   final String staticStatsChart02 = 'assets/images/static-stats-chart-02.png';
   final String staticStatsChart03 = 'assets/images/static-stats-chart-03.png';

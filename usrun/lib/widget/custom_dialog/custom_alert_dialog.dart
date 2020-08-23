@@ -49,7 +49,7 @@ class _CustomAlertDialog extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: R.appRatio.appFontSize20,
           color: Colors.white,
         ),
       ),
@@ -73,7 +73,7 @@ class _CustomAlertDialog extends StatelessWidget {
         maxLines: 100,
         style: TextStyle(
           fontWeight: FontWeight.normal,
-          fontSize: 15,
+          fontSize: R.appRatio.appFontSize16,
           color: Colors.black,
         ),
       ),
@@ -108,7 +108,7 @@ class _CustomAlertDialog extends StatelessWidget {
                 this.secondButtonText,
                 textScaleFactor: 1.0,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
                   color: R.colors.gray515151,
                 ),
@@ -158,7 +158,7 @@ class _CustomAlertDialog extends StatelessWidget {
                 this.firstButtonText,
                 textScaleFactor: 1.0,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
                   color: R.colors.majorOrange,
                 ),
