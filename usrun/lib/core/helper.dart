@@ -25,6 +25,7 @@ T cast<T>(x) => x is T ? x : null;
 Future<void> initializeConfigs(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
+  DataManager.removeAllData(); // TODO: Test
   loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
