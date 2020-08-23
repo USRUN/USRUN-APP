@@ -93,7 +93,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                       textScaleFactor: 1.0,
                       maxLines: 1,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: R.appRatio.appFontSize16,
                         fontWeight: FontWeight.normal,
                         color: Colors.black,
                       ),
@@ -176,7 +176,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         textAlign: TextAlign.justify,
         style: TextStyle(
           fontWeight: FontWeight.normal,
-          fontSize: 15,
+          fontSize: R.appRatio.appFontSize16,
           color: Colors.black,
         ),
       ),
@@ -201,7 +201,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: R.appRatio.appFontSize20,
           color: Colors.white,
         ),
       ),
@@ -229,7 +229,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                 R.strings.cancel.toUpperCase(),
                 textScaleFactor: 1.0,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
                   color: R.colors.gray515151,
                 ),
@@ -266,7 +266,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                 R.strings.yes.toUpperCase(),
                 textScaleFactor: 1.0,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
                   color: R.colors.majorOrange,
                 ),

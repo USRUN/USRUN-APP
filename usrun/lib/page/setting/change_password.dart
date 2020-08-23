@@ -152,9 +152,10 @@ class ChangePasswordPage extends StatelessWidget {
                 Text(
                   R.strings.passwordNotice,
                   style: TextStyle(
-                      color: R.colors.orangeNoteText,
-                      fontStyle: FontStyle.italic,
-                      fontSize: R.appRatio.appFontSize14),
+                    color: R.colors.orangeNoteText,
+                    fontStyle: FontStyle.italic,
+                    fontSize: R.appRatio.appFontSize16,
+                  ),
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

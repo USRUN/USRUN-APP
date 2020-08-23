@@ -24,6 +24,11 @@ class SignInPage extends StatelessWidget {
   final FocusNode _emailNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
 
+  void _unFocusAllFields() {
+    _emailNode.unfocus();
+    _passwordNode.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget _buildElement = Scaffold(
@@ -70,7 +75,13 @@ class SignInPage extends StatelessWidget {
                       ),
                       Center(
                         child: GestureDetector(
-                          onTap: () => pushPage(context, ResetPasswordPage()),
+                          onTap: () {
+                            _unFocusAllFields();
+                            pushPage(
+                              context,
+                              ResetPasswordPage(),
+                            );
+                          },
                           child: Text(
                             R.strings.forgotPassword,
                             style: R.styles.shadowLabelStyle,
@@ -93,11 +104,14 @@ class SignInPage extends StatelessWidget {
                 ),
                 child: UIButton(
                   width: R.appRatio.appWidth381,
-                  height: R.appRatio.appHeight60,
+                  height: R.appRatio.appHeight50,
                   gradient: R.colors.uiGradient,
                   text: R.strings.signIn,
-                  textSize: R.appRatio.appFontSize22,
-                  onTap: () => _getSignInInfo(context),
+                  textSize: R.appRatio.appFontSize18,
+                  onTap: () {
+                    _unFocusAllFields();
+                    _getSignInInfo(context);
+                  },
                 ),
               ),
             ),
@@ -132,11 +146,13 @@ class SignInPage extends StatelessWidget {
         DataManager.setLoginChannel(channel.index);
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
-        showPage(
-          context,
-          AppPage(),
-          popUntilFirstRoutes: true,
-        );
+        Future.delayed(Duration(milliseconds: 350), () {
+          showPage(
+            context,
+            AppPage(),
+            popUntilFirstRoutes: true,
+          );
+        });
       }
     } else {
       // call channel logout with
