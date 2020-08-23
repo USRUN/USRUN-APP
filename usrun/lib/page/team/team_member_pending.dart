@@ -265,12 +265,6 @@ class _PendingMemberPageState extends State<PendingMemberPage>
                   verticalOffset: 100.0,
                   child: FadeInAnimation(
                     child: Container(
-                      padding: EdgeInsets.only(
-                        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
-                        bottom: R.appRatio.appSpacing15,
-                        left: R.appRatio.appSpacing15,
-                        right: R.appRatio.appSpacing15,
-                      ),
                       child: _renderCustomCell(index),
                     ),
                   ),
@@ -289,6 +283,12 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     String name = items[index].name;
 
     return CustomCell(
+      padding: EdgeInsets.only(
+        top: (index == 0 ? R.appRatio.appSpacing15 : 0),
+        bottom: R.appRatio.appSpacing15,
+        left: R.appRatio.appSpacing15,
+        right: R.appRatio.appSpacing15,
+      ),
       avatarView: AvatarView(
         avatarImageURL: avatarImageURL,
         avatarImageSize: R.appRatio.appWidth60,
