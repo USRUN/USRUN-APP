@@ -110,8 +110,7 @@ class PhotoList extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        "USRUN: Record and upload activity with photos to build your own gallery.";
+    String systemNoti = R.strings.usrunPhotoListMessage;
 
     return Center(
       child: Container(
@@ -124,7 +123,7 @@ class PhotoList extends StatelessWidget {
           textAlign: TextAlign.justify,
           style: TextStyle(
             color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+            fontSize: R.appRatio.appFontSize16,
           ),
         ),
       ),

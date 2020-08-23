@@ -328,8 +328,7 @@ class TeamPlanList extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        "USRUN: You can only join a team plan when you become a member of the teams";
+    String systemNoti = R.strings.usrunTeamPlanListMessage;
 
     return Center(
       child: Container(
@@ -342,7 +341,7 @@ class TeamPlanList extends StatelessWidget {
           textAlign: TextAlign.justify,
           style: TextStyle(
             color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+            fontSize: R.appRatio.appFontSize16,
           ),
         ),
       ),

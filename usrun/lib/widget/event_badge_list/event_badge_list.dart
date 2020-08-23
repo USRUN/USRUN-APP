@@ -65,8 +65,7 @@ class EventBadgeList extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        "USRUN: Let's join an event to get your first new badge!";
+    String systemNoti = R.strings.usrunEventBadgeListMessage;
 
     return Center(
       child: Container(
@@ -79,7 +78,7 @@ class EventBadgeList extends StatelessWidget {
           textAlign: TextAlign.justify,
           style: TextStyle(
             color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+            fontSize: R.appRatio.appFontSize16,
           ),
         ),
       ),

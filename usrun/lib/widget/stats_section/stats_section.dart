@@ -172,7 +172,7 @@ class StatsSection extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = "Nothing to show";
+    String systemNoti = R.strings.nothingToShow;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -195,7 +195,7 @@ class StatsSection extends StatelessWidget {
         Text(
           systemNoti,
           style: TextStyle(
-            fontSize: R.appRatio.appFontSize18,
+            fontSize: R.appRatio.appFontSize16,
             color: R.colors.normalNoteText,
           ),
         ),

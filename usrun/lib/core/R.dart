@@ -1491,6 +1491,14 @@ class Strings {
   String errorEmailPassword;
   String errorOccurred;
   String requestTimeOut;
+
+  String usrunPhotoListMessage;
+  String usrunTeamPlanListMessage;
+  String usrunEventBadgeListMessage;
+  String usrunEventListMessage;
+  String usrunFollowedListMessage;
+  String usrunFollowingListMessage;
+  String usrunTeamListMessage;
 }
 
 class _Styles {

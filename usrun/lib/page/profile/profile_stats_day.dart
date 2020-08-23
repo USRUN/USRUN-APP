@@ -53,13 +53,13 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = "Nothing to show";
+    String systemNoti = R.strings.nothingToShow;
 
     return Center(
       child: Text(
         systemNoti,
         style: TextStyle(
-          fontSize: R.appRatio.appFontSize18,
+          fontSize: R.appRatio.appFontSize16,
           color: R.colors.normalNoteText,
         ),
       ),
