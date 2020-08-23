@@ -1213,6 +1213,11 @@ class Strings {
   String teams;
   String team;
   String invitationSent;
+  String teamFooterIdle;
+  String teamFooterCanLoading;
+  String teamFooterNoMoreData;
+  String teamFooterFailed;
+
 
   String public;
   String private;

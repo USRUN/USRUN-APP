@@ -173,6 +173,10 @@
     "teams": "Teams",
     "team": "Team",
     "invitationSent":  "Invitation sent",
+    "teamFooterIdle":  "Pull up to load more",
+    "teamFooterCanLoading": "Release to load more",
+    "teamFooterNoMoreData":  "Loaded all data",
+    "teamFooterFailed": "Load failed",
 
     "public": "Public",
     "private": "Private",

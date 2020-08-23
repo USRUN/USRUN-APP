@@ -234,6 +234,25 @@ class _PendingMemberPageState extends State<PendingMemberPage>
           onRefresh: _reloadItems,
           enablePullUp: true,
           onLoading: loadMoreData,
+          footer: CustomFooter(
+              builder: (BuildContext context, LoadStatus mode) {
+                Widget body;
+                if (mode == LoadStatus.idle) {
+                  body = Text(R.strings.teamFooterIdle);
+                } else if (mode == LoadStatus.loading) {
+                  body = LoadingIndicator();
+                } else if (mode == LoadStatus.failed) {
+                  body = Text(R.strings.teamFooterFailed);
+                } else if (mode == LoadStatus.canLoading) {
+                  body = Text(R.strings.teamFooterCanLoading);
+                } else {
+                  body = Text(R.strings.teamFooterNoMoreData);
+                }
+                return Container(
+                  height: 55.0,
+                  child: Center(child: body),
+                );
+              }),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -289,6 +308,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
         fontWeight: FontWeight.w500,
       ),
       enableAddedContent: false,
+      enableSplashColor: false,
       pressInfo: () {
         _pressUserInfo(index);
       },

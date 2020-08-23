@@ -24,7 +24,6 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/expandable_text.dart';
-import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';

@@ -166,17 +166,19 @@ class _AllMemberPageState extends State<AllMemberPage>
   }
 
   _pressAvatar(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   _pressUserInfo(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   void changeMemberRole(int index, int newMemberType) async {
@@ -292,7 +294,25 @@ class _AllMemberPageState extends State<AllMemberPage>
                 onRefresh: _reloadItems,
                 enablePullUp: true,
                 onLoading: loadMoreData,
-                footer: null,
+                footer: CustomFooter(
+                    builder: (BuildContext context, LoadStatus mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
+                    body = Text(R.strings.teamFooterIdle);
+                  } else if (mode == LoadStatus.loading) {
+                    body = LoadingIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text(R.strings.teamFooterFailed);
+                  } else if (mode == LoadStatus.canLoading) {
+                    body = Text(R.strings.teamFooterCanLoading);
+                  } else {
+                    body = Text(R.strings.teamFooterNoMoreData);
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child: body),
+                  );
+                }),
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -353,6 +373,7 @@ class _AllMemberPageState extends State<AllMemberPage>
         color: R.colors.contentText,
         fontWeight: FontWeight.w500,
       ),
+      enableSplashColor: false,
       enableAddedContent: false,
       subTitle: listTeamMemberType,
       subTitleStyle: TextStyle(
@@ -397,6 +418,7 @@ class _AllMemberPageState extends State<AllMemberPage>
         color: R.colors.contentText,
         fontWeight: FontWeight.w500,
       ),
+      enableSplashColor: false,
       enableAddedContent: false,
       subTitle: listTeamMemberType,
       subTitleStyle: TextStyle(
