@@ -17,6 +17,7 @@ class CustomGradientAppBar extends StatelessWidget
   final bool centerTitle;
   final Function leadingFunction;
   final String leadingIconUrl;
+  final double elevation;
 
   const CustomGradientAppBar({
     this.title = "",
@@ -29,6 +30,7 @@ class CustomGradientAppBar extends StatelessWidget
     this.centerTitle = true,
     this.leadingFunction,
     this.leadingIconUrl = "",
+    this.elevation = 4,
   }) : assert(leadingIconUrl != null);
 
   Widget _renderAppBarTitle() {
@@ -57,6 +59,7 @@ class CustomGradientAppBar extends StatelessWidget
       gradient: R.colors.uiGradient,
       title: _renderAppBarTitle(),
       actions: this.actions,
+      elevation: this.elevation,
       leading: FlatButton(
         onPressed: () {
           if (leadingFunction != null) {
@@ -74,6 +77,7 @@ class CustomGradientAppBar extends StatelessWidget
               : this.leadingIconUrl),
           width: 18,
           height: 18,
+          fit: BoxFit.contain,
         ),
       ),
     );
