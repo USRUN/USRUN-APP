@@ -54,6 +54,14 @@ class _TeamRankState extends State<TeamRank> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
+  void loadTeamInfo(int index) {
+    pushPage(
+        context,
+        TeamInfoPage(
+          teamId: items[index].teamId,
+        ));
+  }
+
   void getTeamRank() async {
     Response<dynamic> teamRank =
         await TeamManager.getTeamStatRank(widget.teamId);
@@ -222,9 +230,7 @@ class _TeamRankState extends State<TeamRank> {
                                   color: R.colors.majorOrange,
                                 ),
                                 pressAvatarImage: () {
-                                  // TODO: Implement here
-                                  print(
-                                      "Pressing avatar image with index $index, no. ${index + 1}");
+                                  loadTeamInfo(index);
                                 },
                               ),
                               // Content
@@ -237,10 +243,7 @@ class _TeamRankState extends State<TeamRank> {
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
-                                // TODO: Implement here
-                                print(
-                                    "Pressing info with index $index, no. ${index + 1}");
-                                pushPage(context, TeamInfoPage(teamId: teamId));
+                                loadTeamInfo(index);
                               },
                             ),
                           ),

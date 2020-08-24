@@ -251,7 +251,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Invited, _teamMemberType)) {
       response = await TeamManager.acceptInvitation(widget.teamId);
-      result = TeamMemberType.Pending;
+      result = TeamMemberType.Member;
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(

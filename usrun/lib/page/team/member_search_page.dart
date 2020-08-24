@@ -6,8 +6,10 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -165,9 +167,21 @@ class _MemberSearchPageState extends State<MemberSearchPage>
     }
   }
 
-  void _pressAvatar(index) {}
+  void loadTeamMemberProfile(int index) async {
+    Response<dynamic> response =
+        await UserManager.getUserInfo(memberList[index].userId);
+    User user = response.object;
 
-  void _pressUserInfo(index) {}
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
+  }
+
+  void _pressAvatar(index) {
+    loadTeamMemberProfile(index);
+  }
+
+  void _pressUserInfo(index) {
+    loadTeamMemberProfile(index);
+  }
 
   void _onChangedFunction(data) {}
 
