@@ -313,15 +313,13 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       return toDisplay.toString();
   }
 
-  _transferOwnership() {
-    // TODO: Code here
-    print("Transferring ownership");
-  }
-
-  _deleteTeam() {
-    // TODO: Code here
-    print("Deleting team");
-  }
+//  _transferOwnership() {
+//    print("Transferring ownership");
+//  }
+//
+//  _deleteTeam() {
+//    print("Deleting team");
+//  }
 
   @override
   Widget build(BuildContext context) {

@@ -77,7 +77,7 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     if (checkListIsNullOrEmpty(_teamSuggestionList)) {
       List<dynamic> bannerList = [
-        ImageCacheManager.getImageData(
+        ImageCacheManager.getImage(
           url: R.images.defaultBackground,
         ),
       ];
@@ -188,6 +188,7 @@ class _TeamPageState extends State<TeamPage> {
                           indicatorBgPadding: 5.0,
                           animationDuration: Duration(milliseconds: 500),
                           autoplayDuration: Duration(seconds: 8),
+                          borderRadius: true,
                         ),
                       ),
                       SizedBox(

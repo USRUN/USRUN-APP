@@ -59,7 +59,7 @@ class _SettingPageState extends State<SettingPage> {
     // User email info
     String email = _currentUser.email;
     if (checkStringNullOrEmpty(email)) return;
-    if (email.contains(_hcmusEmailSuffix)) {
+    if (email.split('@')[1].contains(_hcmusEmailSuffix)) {
       _enableHcmusEmailVerficationFeature = true;
     } else {
       _enableHcmusEmailVerficationFeature = false;

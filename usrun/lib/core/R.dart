@@ -1011,6 +1011,7 @@ class Strings {
   String reset;
   String resetPasswordNotice;
   String resetPasswordSuccessful;
+  String invalidEmail;
   String email;
   String emailHint;
   String country;
@@ -1185,6 +1186,7 @@ class Strings {
 
   String events;
   String event;
+  String mustJoinATeam;
   String newEvents;
   String yourHistory;
   List<String> eventStatus;

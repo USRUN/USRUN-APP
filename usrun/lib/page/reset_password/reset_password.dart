@@ -9,6 +9,7 @@ import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
+import 'package:usrun/util/validator.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -59,13 +60,28 @@ class ResetPasswordPage extends StatelessWidget {
                 text: R.strings.reset,
                 textSize: R.appRatio.appFontSize18,
                 onTap: () async {
+                  String email = _emailController.text.trim();
+                  if(checkStringNullOrEmpty(email) || !validateEmail(email)){
+                    await showCustomAlertDialog(
+                      context,
+                      title: R.strings.error,
+                      content: "Please input a valid email.",
+                      firstButtonText: R.strings.ok,
+                      firstButtonFunction: () {
+                        pop(context);
+                      },
+                    );
+
+                    return;
+                  }
+
                   FocusScope.of(context).requestFocus(new FocusNode());
 
                   Response<dynamic> response = await UserManager.resetPassword(
                       _emailController.text.trim());
                   if (response.success && response.errorCode == -1) {
                     //success
-                    showCustomAlertDialog(
+                    await showCustomAlertDialog(
                       context,
                       title: R.strings.notice,
                       content: R.strings.resetPasswordSuccessful,
@@ -76,7 +92,7 @@ class ResetPasswordPage extends StatelessWidget {
                     );
                   } else {
                     // fail
-                    showCustomAlertDialog(
+                    await showCustomAlertDialog(
                       context,
                       title: R.strings.error,
                       content: response.errorMessage,
@@ -86,7 +102,6 @@ class ResetPasswordPage extends StatelessWidget {
                       },
                     );
                   }
-                  //_yourFunction('yourParameter'),
                 }),
           ],
         ),

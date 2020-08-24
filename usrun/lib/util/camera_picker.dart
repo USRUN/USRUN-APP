@@ -268,7 +268,7 @@ class CameraPicker {
               SizedBox(height: _spacing),
               _renderButton(
                 text: R.strings.close,
-                func: () => pop(context, object: null),
+                func: () => pop(context, object: false),
               ),
             ],
           ),

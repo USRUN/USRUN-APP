@@ -88,7 +88,8 @@
     "signIn": "Đăng nhập",
     "signUp": "Đăng ký",
     "resetPassword": "Đặt lại mật khẩu",
-
+    "resetPasswordSuccessful": "Đặt lại thành công. Một email chứa mật khẩu tạm thời đã được gửi đến hộp thư của bạn.",
+    "invalidEmail": "Vui lòng nhập đúng địa chỉ email.",
     "warning": "Cảnh báo",
     "caution": "Thận trọng",
     "exitApp": "Bạn có muốn thoát ứng dụng USRUN?",
@@ -135,6 +136,7 @@
 
     "events": "Sự kiện",
     "event": "Sự kiện",
+    "mustJoinATeam": "Bạn phải tham gia ít nhất 1 đội để có thể tham gia vào các sự kiện.",
     "newEvents": "Các sự kiện mới",
     "yourHistory": "Lịch sử của bạn",
     "eventStatus": [
@@ -532,7 +534,7 @@
         "2017": "Đăng nhập thất bại",
         "2018": "Người dùng đang tham gia sự kiện",
         "2022": "Đặt lại mật khẩu thất bại. Vui lòng thử lại!",
-        "2023": "Email này chưa được sử dụng. Bạn có muốn tạo tài khoản bằng email này không?",
+        "2023": "Địa chỉ email này chưa được liên kết với bất kỳ tài khoản nào của hệ thống.",
         "2024": "Tài khoản liên quan đến email này không có mật khẩu để đặt lại vì nó được đăng nhập bằng Facebook/Google",
         "2025": "Tài khoản đã được xác thực rồi.",
         "2026": "Địa chỉ email này không phải là một email giáo dục",
