@@ -107,8 +107,7 @@ class TeamList extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti =
-        "USRUN: Let's join various teams to make new friends and challenge events together.";
+    String systemNoti = R.strings.usrunTeamListMessage;
 
     return Container(
       height: R.appRatio.appHeight60,
@@ -122,7 +121,7 @@ class TeamList extends StatelessWidget {
         textAlign: TextAlign.justify,
         style: TextStyle(
           color: R.colors.contentText,
-          fontSize: R.appRatio.appFontSize14,
+          fontSize: R.appRatio.appFontSize16,
         ),
       ),
     );
@@ -144,7 +143,8 @@ class TeamList extends StatelessWidget {
         String athleteQuantity = NumberFormat("#,##0", "en_US")
             .format(element[index].athleteQuantity);
         String avatarImageURL = element[index].avatarImageURL;
-        String supportImageURL = element[index].verificationStatus?R.myIcons.greenCheck:null;
+        String supportImageURL =
+            element[index].verificationStatus ? R.myIcons.greenCheck : null;
 
         return Container(
           margin: EdgeInsets.only(

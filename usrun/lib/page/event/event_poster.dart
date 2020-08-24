@@ -49,15 +49,10 @@ class EventPosterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String appTitle = StringUtils.uppercaseFirstLetterEachWord(
-      content: R.strings.eventPoster,
-      pattern: " ",
-    );
-
     return Scaffold(
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
-        title: appTitle,
+        title: R.strings.eventPoster,
       ),
       body: Container(
         width: R.appRatio.deviceWidth,

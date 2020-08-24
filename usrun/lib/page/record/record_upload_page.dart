@@ -370,7 +370,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       this.widget.bloc.resetAll();
       showCustomAlertDialog(
         context,
-        title: R.strings.notice,
+        title: R.strings.announcement,
         content: R.strings.successfullyUploaded,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () async {

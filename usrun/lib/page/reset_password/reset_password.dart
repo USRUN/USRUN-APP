@@ -47,16 +47,17 @@ class ResetPasswordPage extends StatelessWidget {
               controller: _emailController,
               enableFullWidth: true,
               hintText: R.strings.email,
+              autoFocus: true,
             ),
             SizedBox(
               height: R.appRatio.appSpacing40,
             ),
             UIButton(
                 width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
+                height: R.appRatio.appHeight50,
                 gradient: R.colors.uiGradient,
                 text: R.strings.reset,
-                textSize: R.appRatio.appFontSize22,
+                textSize: R.appRatio.appFontSize18,
                 onTap: () async {
                   FocusScope.of(context).requestFocus(new FocusNode());
 
@@ -64,7 +65,6 @@ class ResetPasswordPage extends StatelessWidget {
                       _emailController.text.trim());
                   if (response.success && response.errorCode == -1) {
                     //success
-
                     showCustomAlertDialog(
                       context,
                       title: R.strings.notice,

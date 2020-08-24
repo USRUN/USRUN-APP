@@ -69,7 +69,7 @@ class EventList extends StatelessWidget {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = "USRUN: You haven't participated any events yet.";
+    String systemNoti = R.strings.usrunEventListMessage;
 
     return Center(
       child: Container(
@@ -82,7 +82,7 @@ class EventList extends StatelessWidget {
           textAlign: TextAlign.justify,
           style: TextStyle(
             color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize14,
+            fontSize: R.appRatio.appFontSize16,
           ),
         ),
       ),

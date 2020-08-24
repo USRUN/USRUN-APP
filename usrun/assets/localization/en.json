@@ -1,5 +1,6 @@
 {
     "usrun":"USRUN",
+    "hcmus": "HCMUS",
 
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -214,15 +215,15 @@
     "delete": "Delete",
     "deleteTeamTitle": "Delete this team",
     "deleteTeamSubtitle": "Your team’ll be deleted after your deletion is confirmed and you receive the acceptance from the UA. There is no going back, please be certain",
-    "noResult": "We couldn't find any result.",
-    "noResultSubtitle": "Please make sure that you typed the name correctly and try again.",
+    "noResult": "We couldn't find any result",
+    "noResultSubtitle": "Please make sure that you typed the name correctly and try again",
     "noMemberInList": "This list is empty",
-    "noMemberInListSubtitle": "There is no member in this list.",
+    "noMemberInListSubtitle": "There is no member in this list",
     "memberOnly": "Only Members Can See This List",
     "memberOnlySubtitle": "Try sending a join request!",
     "startSearch": "Start searching",
-    "startSearchSubtitle": "Try enter any name into the field above.",
-    "notAuthorizedTeamChange": "You are not authorized to change this information.",
+    "startSearchSubtitle": "Try enter any name into the field above",
+    "notAuthorizedTeamChange": "You are not authorized to change this information",
     "promoteAPerson": "Promote to admin",
     "demoteAPerson": "Demote to user",
     "requestTeamListTitle": "You Are Requesting To Join",
@@ -369,6 +370,8 @@
     "settingsVerifyButton": "Verify",
     "settingsAskForRestart": "Do you want to restart the app to apply the changes?",
     "verificationNotice": "An OTP has been sent to your email. Do you want to verify your account now?\n You can always verify it later by visiting the settings page.",
+    "normal": "Normal",
+    "unVerifiedHCMUS": "HCMUS (Unverified)",
 
     "appInfoUSRUNTitle": "About USRUN",
     "appInfoUSRUNSubtitle": "Both you and USRUN are flawless!",
@@ -648,5 +651,13 @@
         "Vinh Long",
         "Vinh Phuc",
         "Yen Bai"
-    ]
+    ],
+
+    "usrunPhotoListMessage": "USRUN: Record and upload activity with photos to build your own gallery",
+    "usrunTeamPlanListMessage": "USRUN: You can join team plans when you become a member of that team",
+    "usrunEventBadgeListMessage": "USRUN: Let's join an event to get your first new badge!",
+    "usrunEventListMessage": "USRUN: You haven't participated any events yet",
+    "usrunFollowedListMessage": "USRUN: Be active and passionate, everyone will follow you",
+    "usrunFollowingListMessage": "USRUN: Find someone and follow them to know what happening around you",
+    "usrunTeamListMessage": "USRUN: Let's join various teams to make new friends and challenge events together"
 }

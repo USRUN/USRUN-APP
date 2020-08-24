@@ -116,9 +116,10 @@ class SignUpPage extends StatelessWidget {
                         Text(
                           R.strings.passwordNotice,
                           style: TextStyle(
-                              color: R.colors.orangeNoteText,
-                              fontStyle: FontStyle.italic,
-                              fontSize: R.appRatio.appFontSize14),
+                            color: R.colors.orangeNoteText,
+                            fontStyle: FontStyle.italic,
+                            fontSize: R.appRatio.appFontSize16,
+                          ),
                         )
                       ],
                     ),
@@ -140,10 +141,10 @@ class SignUpPage extends StatelessWidget {
               ),
               child: UIButton(
                 width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
+                height: R.appRatio.appHeight50,
                 gradient: R.colors.uiGradient,
                 text: R.strings.signUp,
-                textSize: R.appRatio.appFontSize22,
+                textSize: R.appRatio.appFontSize18,
                 onTap: () => _validateSignUpInfo(context),
               ),
             ),
@@ -173,7 +174,6 @@ class SignUpPage extends StatelessWidget {
         // userId==null => prepare create user
         //showPage(context, ProfileEditPage(userInfo: response.object, loginChannel: channel, exParams: params, type: ProfileEditType.SignUp)); // pass empty user
       } else {
-
         if (channel == LoginChannel.UsRun &&
             response.object.email.contains("hcmus.edu.vn")) {
           await showCustomAlertDialog(
@@ -203,7 +203,13 @@ class SignUpPage extends StatelessWidget {
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
 
-        showPage(context, AppPage());
+        Future.delayed(Duration(milliseconds: 350), () {
+          showPage(
+            context,
+            AppPage(),
+            popUntilFirstRoutes: true,
+          );
+        });
       }
     }
     // else {

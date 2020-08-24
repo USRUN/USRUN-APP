@@ -257,7 +257,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
                       widget.secondButtonText,
                       textScaleFactor: 1.0,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: R.appRatio.appFontSize16,
                         fontWeight: FontWeight.bold,
                         color: R.colors.gray515151,
                       ),
@@ -298,7 +298,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
                 widget.firstButtonText,
                 textScaleFactor: 1.0,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
                   color: R.colors.majorOrange,
                 ),

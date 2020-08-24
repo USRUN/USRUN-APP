@@ -441,16 +441,11 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = StringUtils.uppercaseFirstLetterEachWord(
-      content: R.strings.editActivity,
-      pattern: " ",
-    );
-
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
-        title: appBarTitle,
+        title: R.strings.editActivity,
         leadingFunction: _doTapBack,
         actions: <Widget>[
           _renderUpdatingButton(),

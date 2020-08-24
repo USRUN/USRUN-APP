@@ -139,10 +139,9 @@ class FollowerFollowingList extends StatelessWidget {
     String systemNoti = "";
 
     if (this.isFollowingList) {
-      systemNoti =
-          "USRUN: Find someone and follow them to know what happening around you.";
+      systemNoti = R.strings.usrunFollowingListMessage;
     } else {
-      systemNoti = "USRUN: Be active and passionate, everyone will follow you.";
+      systemNoti = R.strings.usrunFollowedListMessage;
     }
 
     return Container(
@@ -157,7 +156,7 @@ class FollowerFollowingList extends StatelessWidget {
         textAlign: TextAlign.justify,
         style: TextStyle(
           color: R.colors.contentText,
-          fontSize: R.appRatio.appFontSize14,
+          fontSize: R.appRatio.appFontSize16,
         ),
       ),
     );

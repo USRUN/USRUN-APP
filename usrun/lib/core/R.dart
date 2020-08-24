@@ -980,6 +980,7 @@ class _Images {
   final String drawerBackgroundDarkTheme =
       'assets/images/drawer-background-dark-theme.png';
   final String smallDefaultImage = 'assets/images/small-default-image.png';
+  final String defaultBackground = 'assets/images/default-background.png';
   final String staticStatsChart01 = 'assets/images/static-stats-chart-01.png';
   final String staticStatsChart02 = 'assets/images/static-stats-chart-02.png';
   final String staticStatsChart03 = 'assets/images/static-stats-chart-03.png';
@@ -995,6 +996,7 @@ class _Images {
 @reflector
 class Strings {
   String usrun;
+  String hcmus;
 
   String firstName;
   String lastName;
@@ -1224,7 +1226,6 @@ class Strings {
   String teamFooterNoMoreData;
   String teamFooterFailed;
 
-
   String public;
   String private;
   String join;
@@ -1416,6 +1417,8 @@ class Strings {
   String settingsVerifyButton;
   String settingsAskForRestart;
   String verificationNotice;
+  String normal;
+  String unVerifiedHCMUS;
 
   String appInfoUSRUNTitle;
   String appInfoUSRUNSubtitle;
@@ -1490,6 +1493,14 @@ class Strings {
   String errorEmailPassword;
   String errorOccurred;
   String requestTimeOut;
+
+  String usrunPhotoListMessage;
+  String usrunTeamPlanListMessage;
+  String usrunEventBadgeListMessage;
+  String usrunEventListMessage;
+  String usrunFollowedListMessage;
+  String usrunFollowingListMessage;
+  String usrunTeamListMessage;
 }
 
 class _Styles {

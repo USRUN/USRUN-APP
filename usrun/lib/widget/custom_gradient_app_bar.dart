@@ -42,7 +42,7 @@ class CustomGradientAppBar extends StatelessWidget
       style: this.titleStyle ??
           TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: R.appRatio.appFontSize20,
             fontWeight: FontWeight.w600,
           ),
     );

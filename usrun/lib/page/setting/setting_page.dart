@@ -73,12 +73,12 @@ class _SettingPageState extends State<SettingPage> {
     }
 
     if(_enableHcmusEmailVerficationFeature == false){
-      _accountType = "Normal";
+      _accountType = R.strings.normal;
     } else {
       if(_userBelongsToHcmus){
-        _accountType = "HCMUS";
+        _accountType = R.strings.hcmus;
       } else {
-        _accountType = "HCMUS (Unverified)";
+        _accountType = R.strings.unVerifiedHCMUS;
       }
     }
   }
@@ -97,6 +97,8 @@ class _SettingPageState extends State<SettingPage> {
       _currentDefaultTab,
       title: R.strings.settingsDefaultTabTitle,
       description: R.strings.settingsDefaultTabDescription,
+      enableScrollBar: true,
+      alwaysShowScrollBar: true,
     );
 
     if (selectedIndex != null) {
@@ -381,16 +383,16 @@ class _SettingPageState extends State<SettingPage> {
               /*
                   SUPPORT & OTHERS
               */
-//              Padding(
-//                padding: EdgeInsets.only(
-//                  left: 15,
-//                ),
-//                child: Text(
-//                  R.strings.settingsSOLabel,
-//                  textAlign: TextAlign.start,
-//                  style: R.styles.shadowLabelStyle,
-//                ),
-//              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 15,
+                ),
+                child: Text(
+                  R.strings.settingsSOLabel,
+                  textAlign: TextAlign.start,
+                  style: R.styles.shadowLabelStyle,
+                ),
+              ),
 //              LineButton(
 //                mainText: R.strings.settingsSOFAQsTitle,
 //                mainTextFontSize: R.appRatio.appFontSize18,
