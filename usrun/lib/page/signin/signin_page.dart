@@ -146,7 +146,7 @@ class SignInPage extends StatelessWidget {
         DataManager.setLoginChannel(channel.index);
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
-        Future.delayed(Duration(milliseconds: 350), () {
+        Future.delayed(Duration(milliseconds: 250), () {
           showPage(
             context,
             AppPage(),

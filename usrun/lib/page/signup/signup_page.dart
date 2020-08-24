@@ -203,7 +203,7 @@ class SignUpPage extends StatelessWidget {
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
 
-        Future.delayed(Duration(milliseconds: 350), () {
+        Future.delayed(Duration(milliseconds: 250), () {
           showPage(
             context,
             AppPage(),

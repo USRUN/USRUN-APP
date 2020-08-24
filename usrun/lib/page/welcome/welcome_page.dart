@@ -11,6 +11,7 @@ import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/signin/signin_page.dart';
 import 'package:usrun/page/signup/signup_page.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
@@ -29,15 +30,15 @@ class _WelcomePageState extends State<WelcomePage>
   void initState() {
     super.initState();
     _controller =
-    AnimationController(vsync: this, duration: Duration(seconds: 1))
-      ..forward();
+        AnimationController(vsync: this, duration: Duration(seconds: 1))
+          ..forward();
     _offset =
         Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Curves.easeIn,
-          ),
-        );
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn,
+      ),
+    );
   }
 
   @override
@@ -56,24 +57,24 @@ class _WelcomePageState extends State<WelcomePage>
             SizedBox(
               height: R.appRatio.appSpacing10,
             ),
-            Image.asset(
-              R.images.logoText,
+            ImageCacheManager.getImage(
+              url: R.images.logoText,
               width: R.appRatio.appWelcomPageLogoTextSize,
             ),
-            Image.asset(
-              R.images.pageBackground,
+            ImageCacheManager.getImage(
+              url: R.images.pageBackground,
               width: R.appRatio.deviceWidth,
               fit: BoxFit.fitWidth,
             ),
             Expanded(
-              child: SlideTransition(
-                position: _offset,
-                child: Container(
-                  color: Color.fromRGBO(253, 99, 44, 0.075),
-                  padding: EdgeInsets.only(
-                    left: R.appRatio.appSpacing25,
-                    right: R.appRatio.appSpacing25,
-                  ),
+              child: Container(
+                color: Color.fromRGBO(253, 99, 44, 0.075),
+                padding: EdgeInsets.only(
+                  left: R.appRatio.appSpacing25,
+                  right: R.appRatio.appSpacing25,
+                ),
+                child: SlideTransition(
+                  position: _offset,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +133,7 @@ class _WelcomePageState extends State<WelcomePage>
                       Container(
                         decoration: BoxDecoration(
                           border:
-                          Border.all(color: R.colors.majorOrange, width: 2),
+                              Border.all(color: R.colors.majorOrange, width: 2),
                         ),
                         child: UIImageButton(
                           width: R.appRatio.appWidth381,
