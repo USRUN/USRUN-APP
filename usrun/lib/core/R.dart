@@ -963,9 +963,8 @@ class _Images {
   final String logoText = 'assets/usrunlogo/logo-text.png';
   final String logo = 'assets/usrunlogo/logo.png';
 
-  // Common images
-  final String welcomeBanner = 'assets/images/welcome.png';
-
+  // Common image
+  final String pageBackground = 'assets/images/page-background.png';
   final String loginFacebookEnglish = 'assets/images/login-fb-en.png';
   final String loginFacebookVietnam = 'assets/images/login-fb-vi.png';
   final String loginGoogleEnglish = 'assets/images/login-gg-en.png';
@@ -973,7 +972,6 @@ class _Images {
   final String loginEmailEnglish = 'assets/images/login-email-en.png';
   final String loginEmailVietnam = 'assets/images/login-email-vi.png';
   final String orLine = 'assets/images/or-line.png';
-  final String pageBackground = 'assets/images/page-background.png';
 
   final String drawerBackgroundLightTheme =
       'assets/images/drawer-background-light-theme.png';
