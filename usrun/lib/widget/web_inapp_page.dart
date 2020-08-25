@@ -143,21 +143,23 @@ class _WebInAppPageState extends State<WebInAppPage> {
           _loadingValue = 0.25;
         });
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(Duration(milliseconds: 120), () {
         setState(() {
           _loadingValue = 0.45;
         });
       });
-      Future.delayed(Duration(milliseconds: 150), () {
+      Future.delayed(Duration(milliseconds: 180), () {
         setState(() {
           _loadingValue = 0.65;
         });
       });
     } else {
-      setState(() {
-        _loadingValue = 1.0;
+      Future.delayed(Duration(milliseconds: 250), () {
+        setState(() {
+          _loadingValue = 1.0;
+        });
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(Duration(milliseconds: 500), () {
         setState(() {
           _isLoading = status;
           _loadingValue = 0.0;
@@ -204,7 +206,7 @@ class _WebInAppPageState extends State<WebInAppPage> {
           url: R.myIcons.chevronLeftIcon,
           width: R.appRatio.appAppBarIconSize,
           height: R.appRatio.appAppBarIconSize,
-          color: (_canGoBack ? Colors.white : R.colors.gray515151),
+          color: (_canGoBack ? Colors.white : R.colors.blurMajorOrange),
         ),
       ),
     );
@@ -225,7 +227,7 @@ class _WebInAppPageState extends State<WebInAppPage> {
           url: R.myIcons.chevronRightIcon,
           width: R.appRatio.appAppBarIconSize,
           height: R.appRatio.appAppBarIconSize,
-          color: (_canForward ? Colors.white : R.colors.gray515151),
+          color: (_canForward ? Colors.white : R.colors.blurMajorOrange),
         ),
       ),
     );
@@ -246,6 +248,7 @@ class _WebInAppPageState extends State<WebInAppPage> {
           url: R.myIcons.repeatIcon,
           width: R.appRatio.appAppBarIconSize - 1,
           height: R.appRatio.appAppBarIconSize - 1,
+          color: Colors.white,
         ),
       ),
     );
@@ -272,6 +275,7 @@ class _WebInAppPageState extends State<WebInAppPage> {
               ),
         ),
         centerTitle: widget.appBarCenterTitle,
+        titleSpacing: 0,
         brightness: widget.appBarBrightness ?? Brightness.dark,
         gradient: widget.appBarBackgroundGradient,
         leading: FlatButton(
@@ -372,9 +376,10 @@ class _WebInAppPageState extends State<WebInAppPage> {
             ),
             (_isLoading
                 ? LinearProgressIndicator(
-                    backgroundColor: R.colors.blurMajorOrange,
+                    backgroundColor: R.colors.lightBlurMajorOrange,
                     valueColor:
                         AlwaysStoppedAnimation<Color>(R.colors.majorOrange),
+                    minHeight: 5,
                     value: _loadingValue,
                   )
                 : Container()),

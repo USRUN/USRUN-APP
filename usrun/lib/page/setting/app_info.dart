@@ -21,7 +21,7 @@ class AppInfo extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: CustomGradientAppBar(title: R.strings.appInfo),
+      appBar: CustomGradientAppBar(title: R.strings.appInformation),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(

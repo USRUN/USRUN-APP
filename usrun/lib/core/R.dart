@@ -30,6 +30,8 @@ class R {
   static String buildNumber = "";
   static String androidAppId = "vn.hcmus.usrun";
   static String iOSAppId = "vn.hcmus.usrun";
+  static final String policyURL = "http://128.199.168.137:2309/policy";
+  static final String termAndConditionURL = "http://128.199.168.137:2309/termAndCondition";
   static final Map<String, String> _modelAppleMapper = {
     "i386": "32-bit Simulator",
     "x86_64": "64-bit Simulator",
@@ -1296,14 +1298,12 @@ class Strings {
 
   String settings;
   String changePassword;
-  String appInfo;
+  String appInformation;
   String inAppNotifications;
   String privacyProfile;
   String hotContact;
   String legal;
   String faqs;
-  String selectDefaultTabTitle;
-  String selectDefaultTabContent;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1397,8 +1397,9 @@ class Strings {
   String settingsSOLabel;
   String settingsSOFAQsTitle;
   String settingsSOContactTitle;
-  String settingsSOLegalTitle;
   String settingsSOAppInfoTitle;
+  String settingsSOPrivacyPolicyTitle;
+  String settingsSOTermAndConditionTitle;
   String settingsSOLogOutTitle;
   String settingsChangePasswordSuccessful;
   String settingsCPEmptyField;
