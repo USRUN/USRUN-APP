@@ -85,9 +85,7 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     pushPage(
       context,
       ProfilePage(
-        userInfo: User(
-          userId: _userActivity.userId,
-        ),
+        userInfo: UserManager.currentUser,
         enableAppBar: true,
       ),
     );
