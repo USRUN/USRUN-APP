@@ -74,7 +74,7 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
       child: ComplexInfoBox(
         id: (item.containsKey('id') ? item['id'] : itemPos.toString()),
         boxTitle: (item.containsKey('title') ? item['title'] : "N/A"),
-        dataTitle: (item.containsKey('data') ? item['data'] : "N/A"),
+        dataTitle: (item.containsKey('data') ? item['data'].toString() : "N/A"),
         unitTitle: (item.containsKey('unit') ? item['unit'] : "N/A"),
         boxIconURL: (item.containsKey('iconURL') ? item['iconURL'] : null),
         boxIconSize: (item.containsKey('iconSize')

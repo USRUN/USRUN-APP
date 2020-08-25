@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/util/date_time_utils.dart';
@@ -12,7 +13,7 @@ class FormatProfileStats {
 
     result.add({
       "id": "0",
-      "title": "Activities",
+      "title": R.strings.activity,
       "data": userActivity["numberActivity"].toString(),
       "unit": "",
       "iconURL": R.myIcons.activitiesStatsIcon,
@@ -22,7 +23,7 @@ class FormatProfileStats {
     // double minute = (DateTime.parse(obj['totalTime']).millisecondsSinceEpoch / 1000) / 60;
     result.add({
       "id": "1",
-      "title": "Total Time",
+      "title": R.strings.time,
       "data": secondToTimeFormat(userActivity["totalTime"]), //minute.toString(),
       "unit": secondToTimeFormat(userActivity["totalTime"]).contains(":")?"":R.strings.day,
       "iconURL": R.myIcons.timeStatsIcon,
@@ -30,17 +31,17 @@ class FormatProfileStats {
 
     result.add({
       "id": "2",
-      "title": "AVG Time",
+      "title": R.strings.avgTime,
       "data": secondToMinFormat(userActivity["avgTime"]),
-      "unit": "",
+      "unit": R.strings.minutes,
       "iconURL": R.myIcons.timeStatsIcon,
     });
 
     result.add({
       "id": "3",
-      "title": "AVG Heart",
+      "title": R.strings.avgHeart,
       "data": userActivity['avgHeart'].toString(),
-      "unit": "bpm",
+      "unit": R.strings.avgHeartUnit,
       "iconURL": R.myIcons.heartBeatStatsIcon,
       "enableImageStyle": true,
       "imageURL": R.images.staticStatsChart02,
@@ -48,7 +49,7 @@ class FormatProfileStats {
 
     result.add({
       "id": "4",
-      "title": "Total Steps",
+      "title": R.strings.totalStep,
       "data": userActivity['totalStep'].toString(),
       "unit": "",
       "iconURL": R.myIcons.footStepStatsIcon,
@@ -57,18 +58,18 @@ class FormatProfileStats {
 
     result.add({
       "id": "5",
-      "title": "Total Distance",
-      "data": NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "title": R.strings.distance,
+      "data": DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIcon,
     });
 
     result.add({
       "id": "6",
-      "title": "AVG Pace",
+      "title": R.strings.avgPace,
       "data": secondToMinFormat(userActivity['avgPace']),
-      "unit": "/km",
+      "unit": R.strings.avgPaceUnit,
       "iconURL": R.myIcons.paceStatsIcon,
       "enableImageStyle": true,
       "imageURL": R.images.staticStatsChart01,
@@ -76,18 +77,18 @@ class FormatProfileStats {
 
     result.add({
       "id": "7",
-      "title": "Total Cal",
+      "title": R.strings.calories,
       "data": userActivity['totalCal'].toString(),
-      "unit": "kcal",
+      "unit": R.strings.caloriesUnit,
       "iconURL": R.myIcons.caloriesStatsIcon,
       "enableCircleStyle": true,
     });
 
     result.add({
       "id": "8",
-      "title": "AVG Elev",
-      "data": userActivity['avgElev'].toString(),
-      "unit": "meters",
+      "title": R.strings.avgElev,
+      "data": switchBetweenMeterAndKm(userActivity['avgElev'] ~/1),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIcon,
       "enableImageStyle": true,
       "imageURL": R.images.staticStatsChart03,
@@ -95,9 +96,9 @@ class FormatProfileStats {
 
     result.add({
       "id": "9",
-      "title": "Max Elev",
-      "data": userActivity['maxElev'].toString(),
-      "unit": "meters",
+      "title": R.strings.maxElev,
+      "data": switchBetweenMeterAndKm(userActivity['maxElev'] ~/1),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIcon,
     });
 
@@ -111,22 +112,22 @@ class FormatProfileStats {
 
     result.add({
       "id": "0",
-      "subTitle": "Activities",
+      "subTitle": R.strings.activity,
       "dataTitle": userActivity["numberActivity"].toString(),
       "unitTitle": "",
     });
 
     result.add({
       "id": "1",
-      "subTitle": "Total Dist",
-      "dataTitle": NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "subTitle": R.strings.distance,
+      "dataTitle":  DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
       "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
     result.add({
       "id": "2",
-      "subTitle": "Total Steps",
+      "subTitle": R.strings.totalStep,
       "dataTitle": userActivity['totalStep'].toString(),
       "unitTitle": "",
     });
@@ -134,51 +135,51 @@ class FormatProfileStats {
     // double minute = (DateTime.parse(obj['totalTime']).millisecondsSinceEpoch / 1000) / 60;
     result.add({
       "id": "3",
-      "subTitle": "Total Time",
+      "subTitle": R.strings.time,
       "dataTitle": secondToTimeFormat(userActivity["totalTime"]), //minute.toString(),
       "unitTitle": secondToTimeFormat(userActivity["totalTime"]).contains(":")?"":R.strings.day,
     });
 
     result.add({
       "id": "4",
-      "subTitle": "AVG Time",
+      "subTitle": R.strings.avgTime,
       "dataTitle": secondToTimeFormat(userActivity["avgTime"]),
       "unitTitle": "",
     });
 
     result.add({
       "id": "5",
-      "subTitle": "AVG Pace",
+      "subTitle": R.strings.avgPace,
       "dataTitle":secondToMinFormat(userActivity['avgPace']),
-      "unitTitle": "/km",
+      "unitTitle": R.strings.avgPaceUnit,
     });
 
     result.add({
       "id": "6",
-      "subTitle": "AVG Heart",
+      "subTitle": R.strings.avgHeart,
       "dataTitle": userActivity['avgHeart'].toString(),
-      "unitTitle": "bpm",
+      "unitTitle": R.strings.avgHeartUnit,
     });
 
     result.add({
       "id": "7",
-      "subTitle": "Total Cal",
+      "subTitle": R.strings.calories,
       "dataTitle": userActivity['totalCal'].toString(),
-      "unitTitle": "kcal",
+      "unitTitle": R.strings.caloriesUnit,
     });
 
     result.add({
       "id": "8",
-      "subTitle": "AVG Elev",
-      "dataTitle": userActivity['avgElev'].toString(),
-      "unitTitle": "m",
+      "subTitle": R.strings.avgElev,
+      "dataTitle":  switchBetweenMeterAndKm(userActivity['avgElev']~/1),
+      "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
     result.add({
       "id": "9",
-      "subTitle": "Max Elev",
-      "dataTitle": userActivity['maxElev'].toString(),
-      "unitTitle": "m",
+      "subTitle": R.strings.maxElev,
+      "dataTitle":  switchBetweenMeterAndKm(userActivity['maxElev']~/1),
+      "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
     return result;
@@ -190,7 +191,7 @@ class FormatProfileStats {
     List<dynamic> result = List();
 
     result.add({
-      "title": "Activities",
+      "title": R.strings.activity,
       "data": userActivity["numberActivity"].toString(),
       "unit": "",
       "iconURL": R.myIcons.activitiesStatsIconByTheme,
@@ -200,9 +201,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Total Dist",
-      "data": NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])),
+      "title": R.strings.distance,
+      "data": DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
+          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIconByTheme,
       "enableBottomBorder": true,
@@ -211,7 +212,7 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Total Steps",
+      "title": R.strings.totalStep,
       "data": userActivity['totalStep'].toString(),
       "unit": "",
       "iconURL": R.myIcons.footStepStatsIconByTheme,
@@ -222,7 +223,7 @@ class FormatProfileStats {
 
     // double minute = (DateTime.parse(obj['totalTime']).millisecondsSinceEpoch / 1000) / 60;
     result.add({
-      "title": "Total Time",
+      "title": R.strings.time,
       "data":  secondToTimeFormat(userActivity["totalTime"]), //minute.toString(),
       "unit": secondToTimeFormat(userActivity["totalTime"]).contains(":")?"":R.strings.day,
       "iconURL": R.myIcons.timeStatsIconByTheme,
@@ -232,9 +233,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Avg Time",
+      "title": R.strings.avgTime,
       "data": secondToMinFormat(userActivity["avgTime"]),
-      "unit": "min",
+      "unit": R.strings.minutes,
       "iconURL": R.myIcons.timeStatsIconByTheme,
       "enableBottomBorder": false,
       "isSuffixIcon": true,
@@ -242,9 +243,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Avg Pace",
+      "title": R.strings.avgPace,
       "data": secondToMinFormat(userActivity['avgPace']),
-      "unit": "/km",
+      "unit": R.strings.avgPaceUnit,
       "iconURL": R.myIcons.paceStatsIconByTheme,
       "enableBottomBorder": true,
       "isSuffixIcon": false,
@@ -252,9 +253,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Avg Heart",
+      "title": R.strings.avgHeart,
       "data": userActivity['avgHeart'].toString(),
-      "unit": "bpm",
+      "unit": R.strings.avgHeartUnit,
       "iconURL": R.myIcons.heartBeatStatsIconByTheme,
       "enableBottomBorder": true,
       "isSuffixIcon": false,
@@ -262,9 +263,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Total Cal",
+      "title": R.strings.calories,
       "data": userActivity['totalCal'].toString(),
-      "unit": "/kcal",
+      "unit": R.strings.caloriesUnit,
       "iconURL": R.myIcons.caloriesStatsIconByTheme,
       "enableBottomBorder": true,
       "isSuffixIcon": false,
@@ -272,9 +273,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Avg Elev",
-      "data": userActivity['avgElev'].toString(),
-      "unit": "m",
+      "title": R.strings.avgElev,
+      "data": switchBetweenMeterAndKm(userActivity['avgElev'] ~/1),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIconByTheme,
       "enableBottomBorder": true,
       "isSuffixIcon": false,
@@ -282,9 +283,9 @@ class FormatProfileStats {
     });
 
     result.add({
-      "title": "Max Elev",
-      "data": userActivity['maxElev'].toString(),
-      "unit": "m",
+      "title": R.strings.maxElev,
+      "data": switchBetweenMeterAndKm(userActivity['maxElev'] ~/1),
+      "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIconByTheme,
       "enableBottomBorder": false,
       "isSuffixIcon": false,

@@ -205,7 +205,7 @@ class StatsSection extends StatelessWidget {
 
   Widget _renderStatsSectionBox(dynamic item, bool isLastItem) {
     return _StatsSectionBox(
-      data: (item.containsKey('data') ? item['data'] : "N/A"),
+      data: (item.containsKey('data') ? item['data'].toString() : "N/A"),
       title: (item.containsKey('title') ? item['title'] : "N/A"),
       unit: (item.containsKey('unit') ? item['unit'] : ""),
       enableBottomBorder: (item.containsKey('enableBottomBorder')
