@@ -68,9 +68,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     pushPage(
       context,
       ProfilePage(
-        userInfo: User(
-          userId: _userActivity.userId,
-        ),
+        userInfo: UserManager.currentUser,
         enableAppBar: true,
       ),
     );
@@ -352,7 +350,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _avgTotalStepWidget = _wrapWidgetData(
       firstTitle: R.strings.total,
-      data: _userActivity.totalStep.toString(),
+      data: _userActivity.totalStep!=-1?_userActivity.totalStep.toString():R.strings.na,
       unitTitle: R.strings.totalStepsUnit,
     );
 
@@ -371,7 +369,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _caloriesWidget = _wrapWidgetData(
       firstTitle: R.strings.calories,
-      data: _userActivity.calories.toString(),
+      data: _userActivity.calories!=-1?_userActivity.calories.toString():R.strings.na,
       unitTitle: R.strings.caloriesUnit,
     );
 

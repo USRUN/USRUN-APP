@@ -1137,9 +1137,12 @@ class Strings {
   String pace;
   String avgPace;
   String avgHeart;
+  String avgElev;
+  String avgTime;
   String maxHeart;
   String movingTime;
   String calories;
+  String minutes;
   String total;
   String totalStep;
   String timeUnit;

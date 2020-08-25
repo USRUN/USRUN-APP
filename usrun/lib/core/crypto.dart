@@ -15,8 +15,7 @@ class UsrunCrypto{
     
     var hmac = new Hmac(sha256, secretBytes);
     Digest sha256Result = hmac.convert(messageBytes);
-    
-    print("Activity sig: "+sha256Result.toString());
+
     return sha256Result.toString();
   }
 
@@ -27,7 +26,6 @@ class UsrunCrypto{
     
     var hmac = new Hmac(sha256, secretBytes);
     Digest sha256Result = hmac.convert(messageBytes);
-    
-      print("Track sig: "+sha256Result.toString());
+
   }
 }
