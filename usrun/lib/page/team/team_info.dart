@@ -93,16 +93,21 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
-            formatType: RunningUnit.KILOMETER)
-        .toInt();
-    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
-            formatType: RunningUnit.KILOMETER)
-        .toInt();
-    _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
-    _teamActivities = toMap.totalActivity;
-    _teamRank = toMap.rank;
-    _teamNewMemThisWeek = toMap.memInWeek;
+    if (!mounted) return;
+    setState(
+      () {
+        _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
+                formatType: RunningUnit.KILOMETER)
+            .toInt();
+        _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
+                formatType: RunningUnit.KILOMETER)
+            .toInt();
+        _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
+        _teamActivities = toMap.totalActivity;
+        _teamRank = toMap.rank;
+        _teamNewMemThisWeek = toMap.memInWeek;
+      },
+    );
   }
 
   void mapTeamInfo(Team toMap) {
@@ -599,8 +604,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                     pushPage(
                                       context,
                                       TeamActivityPage(
-                                          teamId: widget.teamId,
-                                          totalActivity: _teamActivities),
+                                        teamId: widget.teamId,
+                                      ),
                                     );
                                   },
                                 ),

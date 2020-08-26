@@ -4,6 +4,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/feed/edit_activity_page.dart';
@@ -32,6 +33,7 @@ class FullUserActivityItem extends StatefulWidget {
 
 class _FullUserActivityItemState extends State<FullUserActivityItem> {
   final double _spacing = 15.0;
+  bool isPushing = false;
   final double _textSpacing = 5.0;
   final List<PopupItem<int>> _popupItemList = [
     PopupItem<int>(
@@ -64,14 +66,41 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     _userActivity = widget.userActivity;
   }
 
-  _goToUserProfile() {
-    pushPage(
-      context,
-      ProfilePage(
-        userInfo: UserManager.currentUser,
-        enableAppBar: true,
-      ),
-    );
+  _goToUserProfile() async {
+    if (isPushing) {
+      return;
+    }
+    isPushing = true;
+
+    if (_userActivity.userId == UserManager.currentUser.userId) {
+      await pushPage(
+        context,
+        ProfilePage(
+          userInfo: UserManager.currentUser,
+          enableAppBar: true,
+        ),
+      );
+    } else {
+      Response<dynamic> response =
+          await UserManager.getUserInfo(_userActivity.userId);
+      if (response.success && response.errorCode == -1) {
+        User user = response.object;
+
+        await pushPage(
+            context, ProfilePage(userInfo: user, enableAppBar: true));
+      } else {
+        await showCustomAlertDialog(
+          context,
+          title: R.strings.error,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () {
+            pop(context);
+          },
+        );
+      }
+    }
+    isPushing = false;
   }
 
   void _onSelectedPopup(var value) async {
@@ -350,7 +379,9 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _avgTotalStepWidget = _wrapWidgetData(
       firstTitle: R.strings.total,
-      data: _userActivity.totalStep!=-1?_userActivity.totalStep.toString():R.strings.na,
+      data: _userActivity.totalStep != -1
+          ? _userActivity.totalStep.toString()
+          : R.strings.na,
       unitTitle: R.strings.totalStepsUnit,
     );
 
@@ -369,7 +400,9 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _caloriesWidget = _wrapWidgetData(
       firstTitle: R.strings.calories,
-      data: _userActivity.calories!=-1?_userActivity.calories.toString():R.strings.na,
+      data: _userActivity.calories != -1
+          ? _userActivity.calories.toString()
+          : R.strings.na,
       unitTitle: R.strings.caloriesUnit,
     );
 

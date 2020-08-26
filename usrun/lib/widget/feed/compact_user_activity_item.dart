@@ -4,6 +4,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/feed/edit_activity_page.dart';
@@ -35,6 +36,7 @@ class CompactUserActivityItem extends StatefulWidget {
 class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
   final double _spacing = 15.0;
   final double _textSpacing = 5.0;
+  bool isPushing = false;
   final List<PopupItem<int>> _popupItemList = [
     PopupItem<int>(
       title: R.strings.editActivity,
@@ -81,14 +83,41 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     }
   }
 
-  _goToUserProfile() {
-    pushPage(
-      context,
-      ProfilePage(
-        userInfo: UserManager.currentUser,
-        enableAppBar: true,
-      ),
-    );
+  _goToUserProfile() async {
+    if (isPushing) {
+      return;
+    }
+    isPushing = true;
+
+    if (_userActivity.userId == UserManager.currentUser.userId) {
+      await pushPage(
+        context,
+        ProfilePage(
+          userInfo: UserManager.currentUser,
+          enableAppBar: true,
+        ),
+      );
+    } else {
+      Response<dynamic> response =
+          await UserManager.getUserInfo(_userActivity.userId);
+      if (response.success && response.errorCode == -1) {
+        User user = response.object;
+
+        await pushPage(
+            context, ProfilePage(userInfo: user, enableAppBar: true));
+      } else {
+        await showCustomAlertDialog(
+          context,
+          title: R.strings.error,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () {
+            pop(context);
+          },
+        );
+      }
+    }
+    isPushing = false;
   }
 
   void _onSelectedPopup(var value) async {
