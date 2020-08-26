@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -55,6 +56,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
   bool _verificationStatus = false;
+  String currentRunningUnit = R.strings.distanceUnit[DataManager.getUserRunningUnit().index];
   TeamMemberType _teamMemberType = TeamMemberType.Guest;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -96,12 +98,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (!mounted) return;
     setState(
       () {
-        _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
-                formatType: RunningUnit.KILOMETER)
-            .toInt();
-        _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
-                formatType: RunningUnit.KILOMETER)
-            .toInt();
+        _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance).toInt();
+        _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance).toInt();
         _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
         _teamActivities = toMap.totalActivity;
         _teamRank = toMap.rank;
@@ -623,7 +621,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine:
                                       numberDisplayAdapter(_teamTotalDistance),
-                                  secondTitleLine: "KM",
+                                  secondTitleLine: currentRunningUnit,
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -644,7 +642,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: numberDisplayAdapter(
                                       _teamLeadingDistance),
                                   secondTitleLine:
-                                      "KM\n" + R.strings.leadingDist,
+                                      currentRunningUnit + "\n" + R.strings.leadingDist,
                                 ),
                               ],
                             ),

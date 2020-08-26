@@ -277,10 +277,7 @@ class _TeamPageState extends State<TeamPage> {
                         lineFunction: () {
                           pushPage(
                             context,
-                            TeamSearchPage(
-                              autoFocusInput: false,
-                              defaultList: _teamSuggestionList,
-                            ),
+                            TeamSearchPage(),
                           );
                         },
                       ),
