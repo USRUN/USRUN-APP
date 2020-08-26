@@ -434,7 +434,7 @@
     "description": "Mô tả",
     "elevGain": "ĐỘ CAO",
     "avgElev": "ĐỘ CAO TB",
-    "maxElev": "ĐỘ CAO CAO NHẤT",
+    "maxElev": "ĐỘ CAO L.NHẤT",
     "yourPhotos":"Hình ảnh của bạn",
     "yourMaps":"Bản đồ của bạn",
     "paceChart": "Biểu đồ tốc độ",
