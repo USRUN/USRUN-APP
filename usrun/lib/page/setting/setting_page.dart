@@ -111,12 +111,10 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  void handleChangeRunningUnit(state) async {
-    if (state) {
-      DataManager.setUserRunningUnit(RunningUnit.METER);
-    } else {
-      DataManager.setUserRunningUnit(RunningUnit.KILOMETER);
-    }
+  void handleChangeRunningUnit(index) async {
+    RunningUnit newRunningUnit = RunningUnit.values[index];
+    if(newRunningUnit == DataManager.getUserRunningUnit())
+    DataManager.setUserRunningUnit(newRunningUnit);
 
     await showCustomAlertDialog(
       context,
@@ -131,6 +129,19 @@ class _SettingPageState extends State<SettingPage> {
         pop(context);
       },
     );
+  }
+
+  List<ObjectFilter> loadRunningUnit() {
+    List<ObjectFilter> runningUnits = List();
+    for(int i = 0; i < R.strings.distanceUnit.length; i++){
+      runningUnits.add(
+        ObjectFilter(
+          name: R.strings.distanceUnit[i],
+          value: i,
+        ),
+      );
+    }
+    return runningUnits;
   }
 
   @override
@@ -231,7 +242,6 @@ class _SettingPageState extends State<SettingPage> {
 //                textPadding: EdgeInsets.all(15),
 //                enableSplashColor: false,
 //                lineFunction: () {
-//                  // TODO: Implement function here
 //                  print("Line function");
 //                },
 //              ),
@@ -244,7 +254,6 @@ class _SettingPageState extends State<SettingPage> {
 //                textPadding: EdgeInsets.all(15),
 //                enableSplashColor: false,
 //                lineFunction: () {
-//                  // TODO: Implement function here
 //                  print("Line function");
 //                },
 //              ),
@@ -280,13 +289,18 @@ class _SettingPageState extends State<SettingPage> {
                 mainTextFontSize: R.appRatio.appFontSize18,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
-                enableSwitchButton: true,
-                switchButtonOnTitle: "M",
-                switchButtonOffTitle: "Km",
-                initSwitchStatus:
-                    DataManager.getUserRunningUnit() == RunningUnit.METER,
-                switchFunction: (state) {
-                  handleChangeRunningUnit(state);
+                lineFunction: () async {
+                  int index = await showCustomSelectionDialog(
+                    context,
+                    loadRunningUnit(),
+                    DataManager.getUserRunningUnit().index,
+                    title: R.strings.chooseAppThemeTitle,
+                    description: R.strings.chooseAppThemeDescription,
+                  );
+
+                  if (index != null) {
+                    handleChangeRunningUnit(index);
+                  }
                 },
               ),
               LineButton(

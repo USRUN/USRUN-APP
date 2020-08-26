@@ -185,7 +185,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     Map<String, dynamic> reqParam = Map();
 
     if (!TeamMemberUtil.authorizeHigherLevel(
-        TeamMemberType.Admin, _teamMemberType)) {
+        TeamMemberType.Owner, _teamMemberType)) {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
@@ -356,7 +356,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             ),
                           ),
                           (TeamMemberUtil.authorizeLowerLevel(
-                                  TeamMemberType.Member, _teamMemberType)
+                                  TeamMemberType.Admin, _teamMemberType)
                               ? Container()
                               : Padding(
                                   padding: EdgeInsets.only(
@@ -411,7 +411,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             ),
                             supportImageURL:
                                 (TeamMemberUtil.authorizeLowerLevel(
-                                        TeamMemberType.Member, _teamMemberType)
+                                        TeamMemberType.Admin, _teamMemberType)
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
                             pressAvatarImage: () {
