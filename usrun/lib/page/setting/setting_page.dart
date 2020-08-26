@@ -22,6 +22,7 @@ import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_language_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_selection_dialog.dart';
 import 'package:usrun/widget/line_button.dart';
+import 'package:usrun/widget/web_inapp_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -72,10 +73,10 @@ class _SettingPageState extends State<SettingPage> {
       _userBelongsToHcmus = false;
     }
 
-    if(_enableHcmusEmailVerficationFeature == false){
+    if (_enableHcmusEmailVerficationFeature == false) {
       _accountType = R.strings.normal;
     } else {
-      if(_userBelongsToHcmus){
+      if (_userBelongsToHcmus) {
         _accountType = R.strings.hcmus;
       } else {
         _accountType = R.strings.unVerifiedHCMUS;
@@ -413,16 +414,6 @@ class _SettingPageState extends State<SettingPage> {
 //                  print("Line function");
 //                },
 //              ),
-//              LineButton(
-//                mainText: R.strings.settingsSOLegalTitle,
-//                mainTextFontSize: R.appRatio.appFontSize18,
-//                enableBottomUnderline: true,
-//                textPadding: EdgeInsets.all(15),
-//                lineFunction: () {
-//                  // TODO: Implement function here
-//                  print("Line function");
-//                },
-//              ),
               LineButton(
                 mainText: R.strings.settingsSOAppInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
@@ -430,6 +421,54 @@ class _SettingPageState extends State<SettingPage> {
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () {
                   pushPage(context, AppInfo());
+                },
+              ),
+              LineButton(
+                mainText: R.strings.settingsSOPrivacyPolicyTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
+                lineFunction: () {
+                  pushPage(
+                    context,
+                    WebInAppPage(
+                      webUrl: R.policyURL,
+                      enableAppBar: true,
+                      hasLoadingIndicator: true,
+                      appBarBackgroundGradient: R.colors.uiGradient,
+                      appBarTitle: R.strings.settingsSOPrivacyPolicyTitle,
+                      appBarCenterTitle: false,
+                      appBarTextStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: R.appRatio.appFontSize18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              LineButton(
+                mainText: R.strings.settingsSOTermAndConditionTitle,
+                mainTextFontSize: R.appRatio.appFontSize18,
+                enableBottomUnderline: true,
+                textPadding: EdgeInsets.all(15),
+                lineFunction: () {
+                  pushPage(
+                    context,
+                    WebInAppPage(
+                      webUrl: R.termAndConditionURL,
+                      enableAppBar: true,
+                      hasLoadingIndicator: true,
+                      appBarBackgroundGradient: R.colors.uiGradient,
+                      appBarTitle: R.strings.settingsSOTermAndConditionTitle,
+                      appBarCenterTitle: false,
+                      appBarTextStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: R.appRatio.appFontSize18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
                 },
               ),
               LineButton(

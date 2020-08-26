@@ -11,6 +11,7 @@ import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/signin/signin_page.dart';
 import 'package:usrun/page/signup/signup_page.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
@@ -49,143 +50,137 @@ class _WelcomePageState extends State<WelcomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: <Widget>[
-            Image.asset(
-              R.images.welcomeBanner,
-              width: R.appRatio.deviceWidth,
-              height: R.appRatio.deviceHeight,
-              fit: BoxFit.cover,
+            SizedBox(
+              height: R.appRatio.appSpacing10,
             ),
-            Center(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: R.appRatio.appSpacing10,
-                  ),
-                  Image.asset(
-                    R.images.logoText,
-                    width: R.appRatio.appWelcomPageLogoTextSize,
-                  ),
-                  Spacer(),
-                  SlideTransition(
-                    position: _offset,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: R.appRatio.appSpacing25,
-                        right: R.appRatio.appSpacing25,
-                        bottom: R.appRatio.appSpacing25,
+            ImageCacheManager.getImage(
+              url: R.images.logoText,
+              width: R.appRatio.appWelcomPageLogoTextSize,
+            ),
+            ImageCacheManager.getImage(
+              url: R.images.pageBackground,
+              width: R.appRatio.deviceWidth,
+              fit: BoxFit.fitWidth,
+            ),
+            Expanded(
+              child: Container(
+                color: Color.fromRGBO(253, 99, 44, 0.075),
+                padding: EdgeInsets.only(
+                  left: R.appRatio.appSpacing25,
+                  right: R.appRatio.appSpacing25,
+                ),
+                child: SlideTransition(
+                  position: _offset,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      UIImageButton(
+                        onTap: () {
+                          _adapterSignUp(
+                            LoginChannel.Facebook,
+                            null,
+                            context,
+                          );
+                        },
+                        width: R.appRatio.appWidth381,
+                        image: Image.asset(
+                          (R.currentAppLanguage == "en"
+                              ? R.images.loginFacebookEnglish
+                              : R.images.loginFacebookVietnam),
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      child: Container(
-                        color: Colors.white.withOpacity(0.5),
-                        child: Column(
+                      SizedBox(
+                        height: R.appRatio.appSpacing15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: R.colors.majorOrange,
+                            width: 2,
+                          ),
+                        ),
+                        child: UIImageButton(
+                          onTap: () {
+                            _adapterSignUp(LoginChannel.Google, null, context);
+                          },
+                          width: R.appRatio.appWidth381,
+                          image: Image.asset(
+                            (R.currentAppLanguage == "en"
+                                ? R.images.loginGoogleEnglish
+                                : R.images.loginGoogleVietnam),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing15,
+                      ),
+                      Image.asset(
+                        R.images.orLine,
+                        width: R.appRatio.appWidth300,
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: R.colors.majorOrange, width: 2),
+                        ),
+                        child: UIImageButton(
+                          width: R.appRatio.appWidth381,
+                          onTap: () => pushPage(context, SignUpPage()),
+                          image: Image.asset(
+                            (R.currentAppLanguage == "en"
+                                ? R.images.loginEmailEnglish
+                                : R.images.loginEmailVietnam),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: R.appRatio.appSpacing15,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            UIImageButton(
-                              onTap: () {
-                                _adapterSignUp(
-                                    LoginChannel.Facebook, null, context);
-                              },
-                              width: R.appRatio.appWidth381,
-                              image: Image.asset(
-                                (R.currentAppLanguage == "en"
-                                    ? R.images.loginFacebookEnglish
-                                    : R.images.loginFacebookVietnam),
-                                fit: BoxFit.contain,
+                            Text(
+                              R.strings.alreadyAMember,
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize18,
                               ),
                             ),
                             SizedBox(
-                              height: R.appRatio.appSpacing15,
+                              width: R.appRatio.appSpacing15,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                            GestureDetector(
+                              child: Text(
+                                R.strings.signIn,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: R.appRatio.appFontSize18,
                                   color: R.colors.majorOrange,
-                                  width: 2,
                                 ),
                               ),
-                              child: UIImageButton(
-                                onTap: () {
-                                  _adapterSignUp(
-                                      LoginChannel.Google, null, context);
-                                },
-                                width: R.appRatio.appWidth381,
-                                image: Image.asset(
-                                  (R.currentAppLanguage == "en"
-                                      ? R.images.loginGoogleEnglish
-                                      : R.images.loginGoogleVietnam),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                              onTap: () => pushPage(context, SignInPage()),
                             ),
-                            SizedBox(
-                              height: R.appRatio.appSpacing15,
-                            ),
-                            Image.asset(
-                              R.images.orLine,
-                              width: R.appRatio.appWidth300,
-                              color: Colors.black.withOpacity(0.4),
-                            ),
-                            SizedBox(
-                              height: R.appRatio.appSpacing15,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: R.colors.majorOrange, width: 2),
-                              ),
-                              child: UIImageButton(
-                                width: R.appRatio.appWidth381,
-                                onTap: () => pushPage(context, SignUpPage()),
-                                image: Image.asset(
-                                  (R.currentAppLanguage == "en"
-                                      ? R.images.loginEmailEnglish
-                                      : R.images.loginEmailVietnam),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: R.appRatio.appSpacing15,
-                            ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    R.strings.alreadyAMember,
-                                    style: TextStyle(
-                                        fontSize: R.appRatio.appFontSize18),
-                                  ),
-                                  SizedBox(
-                                    width: R.appRatio.appSpacing15,
-                                  ),
-                                  GestureDetector(
-                                    child: Text(
-                                      R.strings.signIn,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: R.appRatio.appFontSize18,
-                                          color: R.colors.majorOrange),
-                                    ),
-                                    onTap: () =>
-                                        pushPage(context, SignInPage()),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: R.appRatio.appSpacing15,
-                            )
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

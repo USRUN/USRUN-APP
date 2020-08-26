@@ -30,6 +30,8 @@ class R {
   static String buildNumber = "";
   static String androidAppId = "vn.hcmus.usrun";
   static String iOSAppId = "vn.hcmus.usrun";
+  static final String policyURL = "http://128.199.168.137:2309/policy";
+  static final String termAndConditionURL = "http://128.199.168.137:2309/termAndCondition";
   static final Map<String, String> _modelAppleMapper = {
     "i386": "32-bit Simulator",
     "x86_64": "64-bit Simulator",
@@ -963,9 +965,8 @@ class _Images {
   final String logoText = 'assets/usrunlogo/logo-text.png';
   final String logo = 'assets/usrunlogo/logo.png';
 
-  // Common images
-  final String welcomeBanner = 'assets/images/welcome.png';
-
+  // Common image
+  final String pageBackground = 'assets/images/page-background.png';
   final String loginFacebookEnglish = 'assets/images/login-fb-en.png';
   final String loginFacebookVietnam = 'assets/images/login-fb-vi.png';
   final String loginGoogleEnglish = 'assets/images/login-gg-en.png';
@@ -973,7 +974,6 @@ class _Images {
   final String loginEmailEnglish = 'assets/images/login-email-en.png';
   final String loginEmailVietnam = 'assets/images/login-email-vi.png';
   final String orLine = 'assets/images/or-line.png';
-  final String pageBackground = 'assets/images/page-background.png';
 
   final String drawerBackgroundLightTheme =
       'assets/images/drawer-background-light-theme.png';
@@ -1140,9 +1140,12 @@ class Strings {
   String pace;
   String avgPace;
   String avgHeart;
+  String avgElev;
+  String avgTime;
   String maxHeart;
   String movingTime;
   String calories;
+  String minutes;
   String total;
   String totalStep;
   String timeUnit;
@@ -1300,14 +1303,12 @@ class Strings {
 
   String settings;
   String changePassword;
-  String appInfo;
+  String appInformation;
   String inAppNotifications;
   String privacyProfile;
   String hotContact;
   String legal;
   String faqs;
-  String selectDefaultTabTitle;
-  String selectDefaultTabContent;
 
   String notiActLabel;
   String notiActReactionTitle;
@@ -1401,8 +1402,9 @@ class Strings {
   String settingsSOLabel;
   String settingsSOFAQsTitle;
   String settingsSOContactTitle;
-  String settingsSOLegalTitle;
   String settingsSOAppInfoTitle;
+  String settingsSOPrivacyPolicyTitle;
+  String settingsSOTermAndConditionTitle;
   String settingsSOLogOutTitle;
   String settingsChangePasswordSuccessful;
   String settingsCPEmptyField;
