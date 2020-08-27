@@ -73,18 +73,21 @@ class ComplexInfoBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: R.appRatio.appWidth60,
-                    child: Text(
-                      boxTitle,
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: R.appRatio.appFontSize14,
-                        color: Colors.black,
+                  Expanded(
+                    child: Container(
+                      width: R.appRatio.appWidth60,
+                      child: Text(
+                        boxTitle,
+                        maxLines: 2,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: R.appRatio.appFontSize14,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
+                  SizedBox(width: 3,),
                   ImageCacheManager.getImage(
                     url: this.boxIconURL,
                     width: this.boxIconSize,

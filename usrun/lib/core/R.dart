@@ -1250,6 +1250,7 @@ class Strings {
   String rank;
   String activities;
   String activity;
+  String activityTitle;
   String splits;
   String members;
   String leadingTime;
