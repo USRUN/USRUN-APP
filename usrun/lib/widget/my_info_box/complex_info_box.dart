@@ -18,6 +18,7 @@ class ComplexInfoBox extends StatelessWidget {
   final String imageURL;
 
   final Color _boxBackgroundColor = Color(0xFFFFECDA);
+
   /*
     + This widget has some displayed styles with the priority as below:
       1. circleStyle

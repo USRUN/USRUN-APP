@@ -12,10 +12,10 @@ import 'package:usrun/widget/input_field.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _emailNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -44,6 +44,7 @@ class ResetPasswordPage extends StatelessWidget {
               height: R.appRatio.appSpacing30,
             ),
             InputField(
+              focusNode: _emailNode,
               controller: _emailController,
               enableFullWidth: true,
               hintText: R.strings.email,
@@ -59,8 +60,6 @@ class ResetPasswordPage extends StatelessWidget {
                 text: R.strings.reset,
                 textSize: R.appRatio.appFontSize18,
                 onTap: () async {
-                  FocusScope.of(context).requestFocus(new FocusNode());
-
                   Response<dynamic> response = await UserManager.resetPassword(
                       _emailController.text.trim());
                   if (response.success && response.errorCode == -1) {

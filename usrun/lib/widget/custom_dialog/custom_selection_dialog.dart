@@ -32,7 +32,7 @@ class _CustomSelectionDialog extends StatefulWidget {
 }
 
 class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
-  final double _radius = 7.0;
+  final double _radius = 5.0;
   final double _spacing = 15.0;
   final double _buttonHeight = 50.0;
   final ScrollController _scrollController = ScrollController();
@@ -95,7 +95,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                       style: TextStyle(
                         fontSize: R.appRatio.appFontSize16,
                         fontWeight: FontWeight.normal,
-                        color: Colors.black,
+                        color: R.colors.contentText,
                       ),
                     ),
                   ),
@@ -136,7 +136,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
             (index < size - 1
                 ? Divider(
                     color: R.colors.blurMajorOrange,
-                    height: 2,
+                    height: 1,
                     thickness: 0.4,
                   )
                 : Container()),
@@ -177,7 +177,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         style: TextStyle(
           fontWeight: FontWeight.normal,
           fontSize: R.appRatio.appFontSize16,
-          color: Colors.black,
+          color: R.colors.contentText,
         ),
       ),
     );
@@ -218,7 +218,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () => pop(context, object: null),
@@ -231,7 +231,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                 style: TextStyle(
                   fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.gray515151,
+                  color: R.colors.secondButtonDialogColor,
                 ),
               ),
             ),
@@ -252,7 +252,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () {
@@ -268,7 +268,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                 style: TextStyle(
                   fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.majorOrange,
+                  color: R.colors.firstButtonDialogColor,
                 ),
               ),
             ),
@@ -281,14 +281,14 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     Widget _buildElement = Container(
-      constraints: BoxConstraints(maxWidth: 320, maxHeight: 500),
+      constraints: BoxConstraints(maxWidth: R.appRatio.appWidth360, maxHeight: 600),
       margin: EdgeInsets.only(
         left: _spacing,
         right: _spacing,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

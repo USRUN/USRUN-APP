@@ -725,6 +725,9 @@ class _Colors {
   Color discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color supportAvatarBorder = Color(0xFF01458E);
+  Color dialogBackground = Color(0xFFFFFFFF);
+  Color firstButtonDialogColor = Color(0xFFFD632C);
+  Color secondButtonDialogColor = Color(0xFF515151);
 
   // User need to change theme
   void changeTheme(AppTheme theme) {
@@ -743,6 +746,9 @@ class _Colors {
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
       notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
       supportAvatarBorder = Color(0xFF01458E);
+      dialogBackground = Color(0xFFFFFFFF);
+      firstButtonDialogColor = Color(0xFFFD632C);
+      secondButtonDialogColor = Color(0xFF515151);
     } else {
       // #212121 = RGB(33, 33, 33)
       // #FFFFFF = RGB(255, 255, 255)
@@ -761,6 +767,9 @@ class _Colors {
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
       supportAvatarBorder = Colors.transparent;
+      dialogBackground = Color(0xFF505050);
+      firstButtonDialogColor = Color(0xFFFD632C);
+      secondButtonDialogColor = Color(0xFFF2F2F2);
     }
   }
 }
@@ -1298,6 +1307,7 @@ class Strings {
   String updating;
   String loading;
   String loadingTeamInfo;
+  String developingFeature;
 
   String settings;
   String changePassword;

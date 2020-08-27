@@ -54,7 +54,6 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
     _isLoading = false;
     _originalList = List();
     _listenTextChanged();
-    _delayRequestFocus();
     _searchFunction("");
   }
 
@@ -63,12 +62,6 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
     _searchStream?.close();
     _timerService?.stop();
     super.dispose();
-  }
-
-  void _delayRequestFocus() {
-    Future.delayed(Duration(milliseconds: 400), () {
-      _searchFocusNode.requestFocus();
-    });
   }
 
   void _listenTextChanged() async {
@@ -219,10 +212,12 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
                 color: R.colors.contentText,
               ),
               pressInfo: () async {
-                Response<dynamic> response = await UserManager.getUserInfo(athlete.userId);
+                Response<dynamic> response =
+                    await UserManager.getUserInfo(athlete.userId);
                 User user = response.object;
 
-                pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+                pushPage(
+                    context, ProfilePage(userInfo: user, enableAppBar: true));
               },
               centerVerticalSuffix: true,
             ),
@@ -240,6 +235,7 @@ class _EventAthleteSearchPageState extends State<EventAthleteSearchPage> {
       appBar: CustomGradientAppBar(
         leadingFunction: _delayPop,
         titleWidget: InputField(
+          autoFocus: true,
           controller: _textSearchController,
           focusNode: _searchFocusNode,
           cursorColor: Colors.white,

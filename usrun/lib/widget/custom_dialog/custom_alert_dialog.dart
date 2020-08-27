@@ -27,7 +27,7 @@ class _CustomAlertDialog extends StatelessWidget {
   final String secondButtonText;
   final Function secondButtonFunction;
 
-  final double _radius = 10;
+  final double _radius = 5;
   final double _spacing = 15.0;
   final double _buttonHeight = 50.0;
 
@@ -61,8 +61,8 @@ class _CustomAlertDialog extends StatelessWidget {
       margin: EdgeInsets.only(
         left: _spacing + 5,
         right: _spacing + 5,
-        top: _spacing * 1.25,
-        bottom: _spacing * 1.25,
+        top: _spacing * 1.5,
+        bottom: _spacing * 1.5,
       ),
       child: Text(
         this.content,
@@ -74,7 +74,7 @@ class _CustomAlertDialog extends StatelessWidget {
         style: TextStyle(
           fontWeight: FontWeight.normal,
           fontSize: R.appRatio.appFontSize16,
-          color: Colors.black,
+          color: R.colors.contentText,
         ),
       ),
     );
@@ -92,7 +92,7 @@ class _CustomAlertDialog extends StatelessWidget {
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () => this.secondButtonFunction(),
@@ -105,12 +105,12 @@ class _CustomAlertDialog extends StatelessWidget {
                 ),
               ),
               child: Text(
-                this.secondButtonText,
+                this.secondButtonText.toUpperCase(),
                 textScaleFactor: 1.0,
                 style: TextStyle(
                   fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.gray515151,
+                  color: R.colors.secondButtonDialogColor,
                 ),
               ),
             ),
@@ -139,7 +139,7 @@ class _CustomAlertDialog extends StatelessWidget {
                     : Radius.circular(0.0)),
                 bottomRight: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () => this.firstButtonFunction(),
@@ -155,12 +155,12 @@ class _CustomAlertDialog extends StatelessWidget {
                 ),
               ),
               child: Text(
-                this.firstButtonText,
+                this.firstButtonText.toUpperCase(),
                 textScaleFactor: 1.0,
                 style: TextStyle(
                   fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.majorOrange,
+                  color: R.colors.firstButtonDialogColor,
                 ),
               ),
             ),
@@ -179,10 +179,10 @@ class _CustomAlertDialog extends StatelessWidget {
     }
 
     return Container(
-      constraints: BoxConstraints(maxWidth: 280),
+      constraints: BoxConstraints(maxWidth: R.appRatio.appWidth340),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

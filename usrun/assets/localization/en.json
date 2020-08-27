@@ -180,7 +180,6 @@
     "teamFooterNoMoreData":  "Loaded all data",
     "teamFooterFailed": "Load failed",
 
-
     "public": "Public",
     "private": "Private",
     "join": "Join",
@@ -250,6 +249,7 @@
     "updating": "Updating...",
     "loading": "Loading...",
     "loadingTeamInfo": "Loading team info...",
+    "developingFeature": "This feature is being developed",
 
     "settings": "Settings",
     "changePassword": "Change password",
@@ -413,7 +413,7 @@
     "distance":"DISTANCE",
     "pace": "Pace",
     "avgPace":"AVG.PACE",
-    "avgPace":"AVG.TIME",
+    "avgTime":"AVG.TIME",
     "avgElev": "AVG.ELEV",
     "avgHeart":"AVG.HEART",
     "maxHeart": "MAX.HEART",

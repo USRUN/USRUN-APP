@@ -92,7 +92,6 @@ class _TeamPageState extends State<TeamPage> {
         ),
       );
     }
-
     return bannerList;
   }
 

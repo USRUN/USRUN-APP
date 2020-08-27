@@ -10,7 +10,7 @@ class _CustomLanguageDialog extends StatefulWidget {
 }
 
 class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
-  final double _radius = 7.0;
+  final double _radius = 5.0;
   final double _spacing = 15.0;
   final double _buttonHeight = 50.0;
 
@@ -69,7 +69,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.normal,
-            color: Colors.black,
+            color: R.colors.contentText,
           ),
         ),
         (isSelected
@@ -154,7 +154,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
         style: TextStyle(
           fontWeight: FontWeight.normal,
           fontSize: 15,
-          color: Colors.black,
+          color: R.colors.contentText,
         ),
       ),
     );
@@ -194,7 +194,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () => pop(context, object: null),
@@ -212,7 +212,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: R.colors.secondButtonDialogColor,
                 ),
               ),
             ),
@@ -233,7 +233,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(_radius),
               ),
-              color: Colors.white,
+              color: R.colors.dialogBackground,
             ),
             child: FlatButton(
               onPressed: () {
@@ -255,7 +255,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.majorOrange,
+                  color: R.colors.firstButtonDialogColor,
                 ),
               ),
             ),
@@ -275,7 +275,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

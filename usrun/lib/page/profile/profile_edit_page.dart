@@ -27,6 +27,11 @@ class _EditProfilePage extends State<EditProfilePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
+
+  final FocusNode _nameNode = FocusNode();
+  final FocusNode _heightNode = FocusNode();
+  final FocusNode _weightNode = FocusNode();
+
   User editUser = new User();
 
   final _dropdownGender = [
@@ -50,17 +55,14 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   void _getDOBFunction(DateTime picker) {
-    print("Birthday/DOB: ${picker.day}/${picker.month}/${picker.year}");
     editUser.birthday = picker;
   }
 
   void _getSelectedDropDownGender<T>(T value) {
-    print("Selected item with value: $value");
     editUser.gender = value as Gender;
   }
 
   void _getSelectedDropDownCities<T>(T value) {
-    print("Selected item with value: $value");
     editUser.province = value as int;
   }
 
@@ -77,7 +79,6 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   Future<void> _updateProfile(BuildContext context) async {
-    FocusScope.of(context).requestFocus(new FocusNode());
     editUser.name = _nameController.text;
     if (editUser.name.isEmpty) {
       showInvalidFieldDialog(context, R.strings.name);
@@ -143,11 +144,175 @@ class _EditProfilePage extends State<EditProfilePage> {
     editUser.copy(UserManager.currentUser);
   }
 
+  void _unFocusAllFields() {
+    _nameNode.unfocus();
+    _heightNode.unfocus();
+    _weightNode.unfocus();
+  }
+
+  Widget _renderBodyContent() {
+    List<DropDownObject<int>> _dropdownCities = _setUpValue();
+
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing15,
+          right: R.appRatio.appSpacing15,
+        ),
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: AvatarView(
+                  avatarImageURL: editUser.avatar,
+                  avatarImageSize: 120,
+                  enableSquareAvatarImage: false,
+                  pressAvatarImage: () {
+                    openSelectPhoto(context);
+                  },
+                  avatarBoxBorder: Border.all(
+                    color: R.colors.majorOrange,
+                    width: 2,
+                  ),
+                  supportImageURL: editUser.hcmus ? R.myIcons.hcmusLogo : null,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              Text(
+                UserManager.currentUser.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: R.colors.contentText,
+                  fontSize: R.appRatio.appFontSize18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing5,
+              ),
+              Text(
+                UserManager.currentUser.code == null
+                    ? "USRUN${UserManager.currentUser.userId}"
+                    : UserManager.currentUser.code,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              Container(
+                width: R.appRatio.appWidth181,
+                child: InputField(
+                  focusNode: _nameNode,
+                  controller: _nameController,
+                  enableFullWidth: false,
+                  labelTitle: R.strings.name,
+                  hintText: R.strings.name,
+                ),
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              DropDownMenu(
+                errorEmptyData: R.strings.nothingToShow,
+                labelTitle: R.strings.city,
+                hintText: R.strings.city,
+                enableHorizontalLabelTitle: false,
+                onChanged: this._getSelectedDropDownCities,
+                items: _dropdownCities,
+                initialValue:
+                    _dropdownCities[UserManager.currentUser.province].value,
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: R.appRatio.appWidth181,
+                    child: InputCalendar(
+                      labelTitle: R.strings.birthday,
+                      defaultDay: editUser.birthday != null
+                          ? formatDateTime(editUser.birthday)
+                          : formatDateConst,
+                      enableFullWidth: false,
+                      getDOBFunc: this._getDOBFunction,
+                    ),
+                  ),
+                  DropDownMenu(
+                    errorEmptyData: R.strings.nothingToShow,
+                    enableFullWidth: false,
+                    labelTitle: R.strings.gender,
+                    hintText: R.strings.gender,
+                    enableHorizontalLabelTitle: false,
+                    onChanged: this._getSelectedDropDownGender,
+                    items: this._dropdownGender,
+                    initialValue:
+                        _dropdownGender[UserManager.currentUser.gender.index]
+                            .value,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: R.appRatio.appWidth181,
+                    child: InputField(
+                      focusNode: _heightNode,
+                      controller: _heightController,
+                      enableFullWidth: false,
+                      labelTitle: R.strings.height,
+                      hintText: R.strings.height,
+                      suffixText: "cm",
+                      textInputType: TextInputType.number,
+                    ),
+                  ),
+                  Container(
+                    width: R.appRatio.appWidth181,
+                    child: InputField(
+                      focusNode: _weightNode,
+                      controller: _weightController,
+                      enableFullWidth: false,
+                      labelTitle: R.strings.weight,
+                      hintText: R.strings.weight,
+                      suffixText: "kg",
+                      textInputType: TextInputType.number,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: R.appRatio.appSpacing25,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<DropDownObject<int>> _dropdownCities = _setUpValue();
-    FocusScope.of(context).requestFocus(new FocusNode());
-    Widget _buildElement = Scaffold(
+    Widget _smallElement = GestureDetector(
+      onTap: () => _unFocusAllFields(),
+      child: _renderBodyContent(),
+    );
+
+    Widget _bigElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(
@@ -170,161 +335,15 @@ class _EditProfilePage extends State<EditProfilePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(
-            left: R.appRatio.appSpacing15,
-            right: R.appRatio.appSpacing15,
-          ),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: AvatarView(
-                    avatarImageURL: editUser.avatar,
-                    avatarImageSize: 120,
-                    enableSquareAvatarImage: false,
-                    pressAvatarImage: () {
-                      openSelectPhoto(context);
-                    },
-                    avatarBoxBorder: Border.all(
-                      color: R.colors.majorOrange,
-                      width: 2,
-                    ),
-                    supportImageURL:
-                        editUser.hcmus ? R.myIcons.hcmusLogo : null,
-                  ),
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Text(
-                  UserManager.currentUser.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: R.colors.contentText,
-                    fontSize: R.appRatio.appFontSize18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing5,
-                ),
-                Text(
-                  UserManager.currentUser.code == null
-                      ? "USRUN${UserManager.currentUser.userId}"
-                      : UserManager.currentUser.code,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: R.colors.contentText,
-                      fontSize: R.appRatio.appFontSize18),
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Container(
-                  width: R.appRatio.appWidth181,
-                  child: InputField(
-                    controller: _nameController,
-                    enableFullWidth: false,
-                    labelTitle: R.strings.name,
-                    hintText: R.strings.name,
-                  ),
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                DropDownMenu(
-                  errorEmptyData: R.strings.nothingToShow,
-                  labelTitle: R.strings.city,
-                  hintText: R.strings.city,
-                  enableHorizontalLabelTitle: false,
-                  onChanged: this._getSelectedDropDownCities,
-                  items: _dropdownCities,
-                  initialValue:
-                      _dropdownCities[UserManager.currentUser.province].value,
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputCalendar(
-                        labelTitle: R.strings.birthday,
-                        defaultDay: editUser.birthday != null
-                            ? formatDateTime(editUser.birthday)
-                            : formatDateConst,
-                        enableFullWidth: false,
-                        getDOBFunc: this._getDOBFunction,
-                      ),
-                    ),
-                    DropDownMenu(
-                      errorEmptyData: R.strings.nothingToShow,
-                      enableFullWidth: false,
-                      labelTitle: R.strings.gender,
-                      hintText: R.strings.gender,
-                      enableHorizontalLabelTitle: false,
-                      onChanged: this._getSelectedDropDownGender,
-                      items: this._dropdownGender,
-                      initialValue:
-                          _dropdownGender[UserManager.currentUser.gender.index]
-                              .value,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _heightController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.height,
-                        hintText: R.strings.height,
-                        suffixText: "cm",
-                        textInputType: TextInputType.number,
-                      ),
-                    ),
-                    Container(
-                      width: R.appRatio.appWidth181,
-                      child: InputField(
-                        controller: _weightController,
-                        enableFullWidth: false,
-                        labelTitle: R.strings.weight,
-                        hintText: R.strings.weight,
-                        suffixText: "kg",
-                        textInputType: TextInputType.number,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: R.appRatio.appSpacing25,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      body: _smallElement,
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _bigElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }

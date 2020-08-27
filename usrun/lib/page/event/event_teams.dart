@@ -52,7 +52,6 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
     _isLoading = false;
     _originalList = List();
     _listenTextChanged();
-    _delayRequestFocus();
     _searchFunction("");
   }
 
@@ -61,12 +60,6 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
     _searchStream?.close();
     _timerService?.stop();
     super.dispose();
-  }
-
-  void _delayRequestFocus() {
-    Future.delayed(Duration(milliseconds: 400), () {
-      _searchFocusNode.requestFocus();
-    });
   }
 
   void _listenTextChanged() async {
@@ -247,6 +240,7 @@ class _EventTeamSearchPageState extends State<EventTeamSearchPage> {
       appBar: CustomGradientAppBar(
         leadingFunction: _delayPop,
         titleWidget: InputField(
+          autoFocus: true,
           controller: _textSearchController,
           focusNode: _searchFocusNode,
           cursorColor: Colors.white,

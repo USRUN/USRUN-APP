@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/util/common_utils.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -16,17 +17,22 @@ class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _retypePWController = TextEditingController();
 
-  void changePassword(BuildContext context) async {
+  final FocusNode _currentPWNode = FocusNode();
+  final FocusNode _newPWNode = FocusNode();
+  final FocusNode _retypePWNode = FocusNode();
+
+  void _changePassword(BuildContext context) async {
     String newPassword = _newPWController.text.trim();
     String oldPassword = _currentPWController.text.trim();
     String retypeNewPassword = _retypePWController.text.trim();
     String alertMsg;
 
-    if (alertMsg == null &&
-        (newPassword.isEmpty ||
-            oldPassword.isEmpty ||
-            retypeNewPassword.isEmpty)) {
-      alertMsg = R.strings.settingsCPEmptyField;
+    if (alertMsg == null) {
+      if (newPassword.isEmpty ||
+          oldPassword.isEmpty ||
+          retypeNewPassword.isEmpty) {
+        alertMsg = R.strings.settingsCPEmptyField;
+      }
     }
 
     if (alertMsg == null &&
@@ -89,8 +95,7 @@ class ChangePasswordPage extends StatelessWidget {
             width: R.appRatio.appWidth60,
             child: FlatButton(
               onPressed: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
-                changePassword(context);
+                _changePassword(context);
               },
               padding: EdgeInsets.all(0.0),
               splashColor: R.colors.lightBlurMajorOrange,
@@ -119,6 +124,7 @@ class ChangePasswordPage extends StatelessWidget {
                   height: R.appRatio.appSpacing20,
                 ),
                 InputField(
+                  focusNode: _currentPWNode,
                   controller: _currentPWController,
                   enableFullWidth: true,
                   obscureText: true,
@@ -130,6 +136,7 @@ class ChangePasswordPage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 InputField(
+                  focusNode: _newPWNode,
                   controller: _newPWController,
                   enableFullWidth: true,
                   obscureText: true,
@@ -140,6 +147,7 @@ class ChangePasswordPage extends StatelessWidget {
                   height: R.appRatio.appSpacing25,
                 ),
                 InputField(
+                  focusNode: _retypePWNode,
                   controller: _retypePWController,
                   enableFullWidth: true,
                   obscureText: true,

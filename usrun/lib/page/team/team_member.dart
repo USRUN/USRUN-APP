@@ -103,8 +103,6 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   List<Widget> tabBarViewItems;
   bool renderAsMember;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -265,7 +263,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
 
 //  final FocusNode _inviteNode = FocusNode();
 
-  static Future<void> _showCustomDialog(BuildContext context, int teamId) async {
+  static Future<void> _showCustomDialog(
+      BuildContext context, int teamId) async {
     TextEditingController _nameController = TextEditingController();
 
     bool result = await showCustomComplexDialog<bool>(
@@ -283,8 +282,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
       ],
       firstButtonText: R.strings.invite.toUpperCase(),
       firstButtonFunction: () async {
-        Response<dynamic> res =
-            await TeamManager.inviteNewMember(teamId, _nameController.text.trim());
+        Response<dynamic> res = await TeamManager.inviteNewMember(
+            teamId, _nameController.text.trim());
 
         if (res.success) {
           pop(context);

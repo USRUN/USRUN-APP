@@ -78,7 +78,7 @@ class AllMemberPage extends StatefulWidget {
 }
 
 class _AllMemberPageState extends State<AllMemberPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   bool _isLoading;
   int _curPage;
@@ -278,6 +278,8 @@ class _AllMemberPageState extends State<AllMemberPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
     }
@@ -325,7 +327,6 @@ class _AllMemberPageState extends State<AllMemberPage>
                         verticalOffset: 100.0,
                         child: FadeInAnimation(
                           child: Container(
-
                             child: widget.renderAsMember
                                 ? _renderMemberCustomCell(index)
                                 : _renderCustomCell(index),
@@ -451,4 +452,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
