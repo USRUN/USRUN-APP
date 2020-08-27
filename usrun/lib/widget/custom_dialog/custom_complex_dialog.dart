@@ -169,7 +169,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
             itemBuilder: (BuildContext context, int index) {
               double pad = 0;
               if (index != this.boxList.length - 1) {
-                pad = R.appRatio.appSpacing10;
+                pad = R.appRatio.appSpacing15;
               }
 
               return Container(
@@ -227,7 +227,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: R.colors.contentText,
-              fontSize: R.appRatio.appFontSize16,
+              fontSize: R.appRatio.appFontSize18,
             ),
           ),
         ),

@@ -40,7 +40,7 @@ class _CustomLoadingDialog extends StatelessWidget {
             textScaleFactor: 1.0,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: R.appRatio.appFontSize18,
               fontWeight: FontWeight.normal,
               color: R.colors.contentText,
             ),

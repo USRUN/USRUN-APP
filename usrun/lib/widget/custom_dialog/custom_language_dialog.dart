@@ -67,7 +67,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
           overflow: TextOverflow.ellipsis,
           textScaleFactor: 1.0,
           style: TextStyle(
-            fontSize: 15,
+            fontSize: R.appRatio.appFontSize18,
             fontWeight: FontWeight.normal,
             color: R.colors.contentText,
           ),
@@ -153,7 +153,7 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
         maxLines: 2,
         style: TextStyle(
           fontWeight: FontWeight.normal,
-          fontSize: 15,
+          fontSize: R.appRatio.appFontSize18,
           color: R.colors.contentText,
         ),
       ),

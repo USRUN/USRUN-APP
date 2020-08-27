@@ -43,12 +43,13 @@ class ComplexInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
     return GestureDetector(
-      onTap: () {
-        if (this.pressBox != null) {
-          this.pressBox(this.id);
-        }
-      },
+      onTap: callbackFunc,
       child: Center(
         child: Container(
           width: R.appRatio.appWidth120,

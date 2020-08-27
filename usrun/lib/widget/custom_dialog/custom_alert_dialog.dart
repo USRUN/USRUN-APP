@@ -73,7 +73,7 @@ class _CustomAlertDialog extends StatelessWidget {
         maxLines: 100,
         style: TextStyle(
           fontWeight: FontWeight.normal,
-          fontSize: R.appRatio.appFontSize16,
+          fontSize: R.appRatio.appFontSize18,
           color: R.colors.contentText,
         ),
       ),

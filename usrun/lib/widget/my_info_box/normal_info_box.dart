@@ -32,6 +32,11 @@ class NormalInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
@@ -41,7 +46,7 @@ class NormalInfoBox extends StatelessWidget {
           disableBoxShadow
               ? BoxShadow(blurRadius: 0, color: Colors.transparent)
               : BoxShadow(
-                  blurRadius: 5.0,
+                  blurRadius: 4.0,
                   offset: Offset(0.0, 0.0),
                   color: (this.beAlwaysBlackShadow
                       ? Color.fromRGBO(0, 0, 0, 0.25)
@@ -50,11 +55,7 @@ class NormalInfoBox extends StatelessWidget {
         ],
       ),
       child: FlatButton(
-        onPressed: () {
-          if (this.pressBox != null) {
-            this.pressBox(this.id);
-          }
-        },
+        onPressed: callbackFunc,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(this.boxRadius),

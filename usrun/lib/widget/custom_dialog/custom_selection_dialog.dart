@@ -93,7 +93,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
                       textScaleFactor: 1.0,
                       maxLines: 1,
                       style: TextStyle(
-                        fontSize: R.appRatio.appFontSize16,
+                        fontSize: R.appRatio.appFontSize18,
                         fontWeight: FontWeight.normal,
                         color: R.colors.contentText,
                       ),
@@ -176,7 +176,7 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
         textAlign: TextAlign.justify,
         style: TextStyle(
           fontWeight: FontWeight.normal,
-          fontSize: R.appRatio.appFontSize16,
+          fontSize: R.appRatio.appFontSize18,
           color: R.colors.contentText,
         ),
       ),

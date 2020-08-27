@@ -719,7 +719,7 @@ class _Colors {
   Color boxBackground = Color(0xFFFFFFFF);
   Color grayButtonColor = Color(0xFF515151);
   Color sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-  Color btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
+  Color btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
   Color textShadow = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
@@ -740,7 +740,7 @@ class _Colors {
       boxBackground = Color(0xFFFFFFFF);
       grayButtonColor = Color(0xFF515151);
       sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-      btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
+      btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
       textShadow = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
@@ -761,7 +761,7 @@ class _Colors {
       boxBackground = Color(0xFF212121);
       grayButtonColor = Color(0xFFABABAB);
       sectionBackgroundLayer = Color.fromRGBO(33, 33, 33, 0.5);
-      btnShadow = Color.fromRGBO(255, 255, 255, 0.5);
+      btnShadow = Color.fromRGBO(255, 255, 255, 0.4);
       textShadow = Color.fromRGBO(255, 255, 255, 0.25);
       tabLayer = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
@@ -1167,7 +1167,9 @@ class Strings {
   String totalStepsUnit;
   String stats;
   String title;
+  String titleHint;
   String yourDescription;
+  String yourDescriptionHint;
   String description;
   String elevGain;
   String maxElev;
