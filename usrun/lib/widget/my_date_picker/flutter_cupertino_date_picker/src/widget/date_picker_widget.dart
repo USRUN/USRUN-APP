@@ -236,7 +236,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       );
     } else {
       _myTextStyle = TextStyle(
-        color: Colors.black,
+        color: R.colors.contentText,
         fontSize: R.appRatio.appFontSize18,
       );
     }

@@ -281,7 +281,10 @@ class _CustomSelectionDialogState extends State<_CustomSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     Widget _buildElement = Container(
-      constraints: BoxConstraints(maxWidth: R.appRatio.appWidth360, maxHeight: 600),
+      constraints: BoxConstraints(
+        maxWidth: R.appRatio.appWidth360,
+        maxHeight: 600,
+      ),
       margin: EdgeInsets.only(
         left: _spacing,
         right: _spacing,

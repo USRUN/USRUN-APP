@@ -268,7 +268,9 @@ class _CustomLanguageDialogState extends State<_CustomLanguageDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: 320),
+      constraints: BoxConstraints(
+        maxWidth: R.appRatio.appWidth350,
+      ),
       margin: EdgeInsets.only(
         left: _spacing,
         right: _spacing,

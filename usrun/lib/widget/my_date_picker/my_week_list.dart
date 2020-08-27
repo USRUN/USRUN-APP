@@ -34,7 +34,8 @@ class _MyWeekListState extends State<MyWeekList> {
 
   @override
   void initState() {
-    _posWeekInList = WeekDateTime.getWeekOrder(widget.selectedWeek.getFromDateValue());
+    _posWeekInList =
+        WeekDateTime.getWeekOrder(widget.selectedWeek.getFromDateValue());
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _scrollToActiveItemInList());
@@ -68,7 +69,7 @@ class _MyWeekListState extends State<MyWeekList> {
     return ScrollablePositionedList.builder(
       itemCount: widget.weekList.length,
       itemScrollController: _weekScrollController,
-      itemBuilder: (BuildContext ctxt, int index) {
+      itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
             if (!_isSuitableWeekRange(widget.weekList[index])) return;
@@ -92,8 +93,8 @@ class _MyWeekListState extends State<MyWeekList> {
                 color: (_isSuitableWeekRange(widget.weekList[index])
                     ? (_posWeekInList == index
                         ? R.colors.majorOrange
-                        : Colors.black)
-                    : R.colors.grayABABAB),
+                        : R.colors.contentText)
+                    : R.colors.gray808080),
               ),
             ),
           ),
