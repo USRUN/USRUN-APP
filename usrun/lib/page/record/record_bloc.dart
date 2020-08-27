@@ -311,6 +311,7 @@ class RecordBloc extends BlocBase {
       return false;
     }
     this.beginPoint = await this.getCurrentLocation();
+    print(beginPoint.toString());
     if (beginPoint != null) {
       this._streamLocationController.add(beginPoint);
       this._updatePositionCamera(
@@ -346,8 +347,7 @@ class RecordBloc extends BlocBase {
   }
 
   Future<bool> hasApprovedGPSPermission() async {
-    return await this._locationListener.hasPermission() ==
-        PermissionStatus.granted;
+    return await ph.Permission.locationAlways.request().isGranted;
   }
 
   Future<bool> hasServiceEnabled() async {
