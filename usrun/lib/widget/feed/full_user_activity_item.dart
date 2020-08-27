@@ -11,6 +11,7 @@ import 'package:usrun/page/feed/edit_activity_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/charts/splits_chart.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -563,9 +564,9 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           _renderPhotos(),
           _renderStatisticBox(),
           _renderDetailVisualization(),
-          //_renderEventInfoBox(),
+          if (_userActivity.eventId != -1) _renderEventInfoBox(),
           _renderInteractionBox(),
-          _renderSplits()
+          if(!checkListIsNullOrEmpty(_userActivity.splitModelArray)) _renderSplits()
         ],
       ),
     );
