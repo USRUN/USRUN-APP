@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
@@ -20,6 +21,8 @@ import 'package:location/location.dart';
 import 'package:location/location_background.dart';
 
 import 'dart:ui' as ui;
+
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
 class RecordBloc extends BlocBase {
   RecordData recordData;
@@ -53,9 +56,11 @@ class RecordBloc extends BlocBase {
   List<Polyline> lData = List<Polyline>();
   List<Marker> mData = List<Marker>();
   Uint8List markerIcon;
+  BuildContext context;
   //end test
 
-  RecordBloc() {
+  RecordBloc(BuildContext c) {
+    context = c;
     setCustomMapPin();
 
     this.recordData = RecordData();
@@ -292,7 +297,18 @@ class RecordBloc extends BlocBase {
     }
   }
 
+  void showNoticeLocationPermission(){
+    showCustomAlertDialog(
+      context,
+      title: R.strings.notice,
+      content: "Please choose always allow permission",
+      firstButtonText: R.strings.ok.toUpperCase(),
+      firstButtonFunction: () => pop(context),
+    );
+  }
+
   Future<bool> onGpsStatusChecking() async {
+
     this._streamGPSSignal.add(GPSSignalStatus.CHECKING);
 //    bool isServiceAvailable = await this.hasServiceEnabled();
 //    if (!isServiceAvailable) {
@@ -303,10 +319,12 @@ class RecordBloc extends BlocBase {
     print("test"+hasPermission.toString());
     if (!hasPermission) {
       hasPermission = await this.requestGPSPermission();
+      showNoticeLocationPermission();
     }
     if (!hasPermission) {
       this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
 
+      showNoticeLocationPermission();
       print("status"+hasPermission.toString());
       return false;
     }

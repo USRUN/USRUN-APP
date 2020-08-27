@@ -20,10 +20,11 @@ class RecordPage extends StatefulWidget {
 }
 
 class _RecordPageState extends State<RecordPage> {
-  final recordBloc = RecordBloc();
+  RecordBloc recordBloc;
 
   @override
   Widget build(BuildContext context) {
+    recordBloc = RecordBloc(context);
     return BlocProvider(child: _RecordWidget(), bloc: recordBloc);
   }
 
