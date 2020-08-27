@@ -13,7 +13,7 @@ class FormatProfileStats {
 
     result.add({
       "id": "0",
-      "title": R.strings.activity,
+      "title": R.strings.activityTitle,
       "data": userActivity["numberActivity"].toString(),
       "unit": "",
       "iconURL": R.myIcons.activitiesStatsIcon,
@@ -112,7 +112,7 @@ class FormatProfileStats {
 
     result.add({
       "id": "0",
-      "subTitle": R.strings.activity,
+      "subTitle": R.strings.activityTitle,
       "dataTitle": userActivity["numberActivity"].toString(),
       "unitTitle": "",
     });
@@ -191,7 +191,7 @@ class FormatProfileStats {
     List<dynamic> result = List();
 
     result.add({
-      "title": R.strings.activity,
+      "title": R.strings.activityTitle,
       "data": userActivity["numberActivity"].toString(),
       "unit": "",
       "iconURL": R.myIcons.activitiesStatsIconByTheme,
