@@ -348,6 +348,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     String name = items[index].name;
     String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
     bool enablePopUpMenu = false;
+    Color textColor = items[index].userId == UserManager.currentUser.userId? R.colors.majorOrange: R.colors.contentText;
 
     return CustomCell(
       padding: EdgeInsets.only(
@@ -371,7 +372,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       title: name,
       titleStyle: TextStyle(
         fontSize: R.appRatio.appFontSize16,
-        color: R.colors.contentText,
+        color: textColor,
         fontWeight: FontWeight.w500,
       ),
       enableSplashColor: false,
@@ -379,7 +380,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       subTitle: listTeamMemberType,
       subTitleStyle: TextStyle(
         fontSize: R.appRatio.appFontSize14,
-        color: R.colors.contentText,
+        color: textColor,
       ),
       pressInfo: () {
         _pressUserInfo(index);
@@ -399,6 +400,8 @@ class _AllMemberPageState extends State<AllMemberPage>
     bool enablePopUpMenu =
         !checkListIsNullOrEmpty(options[listMemberTypeIndex]);
     List<PopupItem> popUpItems = options[listMemberTypeIndex];
+    Color textColor = items[index].userId == UserManager.currentUser.userId? R.colors.majorOrange: R.colors.contentText;
+
 
     return CustomCell(
       padding: EdgeInsets.only(
@@ -422,7 +425,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       title: name,
       titleStyle: TextStyle(
         fontSize: R.appRatio.appFontSize16,
-        color: R.colors.contentText,
+        color: textColor,
         fontWeight: FontWeight.w500,
       ),
       enableSplashColor: false,
@@ -430,7 +433,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       subTitle: listTeamMemberType,
       subTitleStyle: TextStyle(
         fontSize: R.appRatio.appFontSize14,
-        color: R.colors.contentText,
+        color: textColor,
       ),
       pressInfo: () {
         _pressUserInfo(index);
