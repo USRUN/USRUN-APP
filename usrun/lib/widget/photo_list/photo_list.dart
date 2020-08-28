@@ -262,13 +262,7 @@ class _GalleryPhotoViewWrapperState extends State<_GalleryPhotoViewWrapper> {
                   borderRadius: BorderRadius.all(
                     Radius.circular(30),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 2.0,
-                      offset: Offset(0.0, 1.0),
-                      color: R.colors.btnShadow,
-                    ),
-                  ],
+                  boxShadow: [R.styles.boxShadowB],
                 ),
                 margin: EdgeInsets.only(
                   left: 15,

@@ -103,7 +103,7 @@ class _WelcomePageState extends State<WelcomePage>
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: R.colors.majorOrange,
-                            width: 2,
+                            width: 1.5,
                           ),
                         ),
                         child: UIImageButton(
@@ -132,8 +132,10 @@ class _WelcomePageState extends State<WelcomePage>
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(color: R.colors.majorOrange, width: 2),
+                          border: Border.all(
+                            color: R.colors.majorOrange,
+                            width: 1.5,
+                          ),
                         ),
                         child: UIImageButton(
                           width: R.appRatio.appWidth381,

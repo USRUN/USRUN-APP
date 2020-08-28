@@ -1,4 +1,4 @@
-package com.example.usrun
+package vn.hcmus.usrun
 
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager

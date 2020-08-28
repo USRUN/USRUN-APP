@@ -145,6 +145,7 @@ class SignUpPage extends StatelessWidget {
                 gradient: R.colors.uiGradient,
                 text: R.strings.signUp,
                 textSize: R.appRatio.appFontSize18,
+                boxShadow: R.styles.boxShadowB,
                 onTap: () => _validateSignUpInfo(context),
               ),
             ),

@@ -10,7 +10,7 @@
     "newPassword": "New Password",
     "retypePassword": "Re-type Password",
     "retypePasswordHint": "Type your password again",
-    "forgotPassword": "Forgot Password",
+    "forgotPassword": "Forgot Password?",
     "passwordNotice": "Password must contain at least 8 characters with one number and one uppercase letter",
     "reset": "Reset",
     "resetPasswordNotice": "Enter your email address which was used for registering account, and we will send you a reset password to this email.",

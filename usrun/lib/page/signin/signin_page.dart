@@ -45,50 +45,51 @@ class SignInPage extends StatelessWidget {
               ),
               child: Container(
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      SizedBox(
-                        height: R.appRatio.appSpacing20,
-                      ),
-                      InputField(
-                        focusNode: _emailNode,
-                        controller: _emailController,
-                        enableFullWidth: true,
-                        labelTitle: R.strings.email,
-                        hintText: R.strings.emailHint,
-                        textInputType: TextInputType.emailAddress,
-                        autoFocus: true,
-                      ),
-                      SizedBox(
-                        height: R.appRatio.appSpacing25,
-                      ),
-                      InputField(
-                        focusNode: _passwordNode,
-                        controller: _passwordController,
-                        enableFullWidth: true,
-                        labelTitle: R.strings.password,
-                        hintText: R.strings.passwordHint,
-                        obscureText: true,
-                      ),
-                      SizedBox(
-                        height: R.appRatio.appSpacing40,
-                      ),
-                      Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            _unFocusAllFields();
-                            pushPage(
-                              context,
-                              ResetPasswordPage(),
-                            );
-                          },
-                          child: Text(
-                            R.strings.forgotPassword,
-                            style: R.styles.shadowLabelStyle,
-                          ),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: R.appRatio.appSpacing20,
+                    ),
+                    InputField(
+                      focusNode: _emailNode,
+                      controller: _emailController,
+                      enableFullWidth: true,
+                      labelTitle: R.strings.email,
+                      hintText: R.strings.emailHint,
+                      textInputType: TextInputType.emailAddress,
+                      autoFocus: true,
+                    ),
+                    SizedBox(
+                      height: R.appRatio.appSpacing25,
+                    ),
+                    InputField(
+                      focusNode: _passwordNode,
+                      controller: _passwordController,
+                      enableFullWidth: true,
+                      labelTitle: R.strings.password,
+                      hintText: R.strings.passwordHint,
+                      obscureText: true,
+                    ),
+                    SizedBox(
+                      height: R.appRatio.appSpacing40,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          _unFocusAllFields();
+                          pushPage(
+                            context,
+                            ResetPasswordPage(),
+                          );
+                        },
+                        child: Text(
+                          R.strings.forgotPassword,
+                          style: R.styles.shadowLabelStyle,
                         ),
-                      )
-                    ]),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -108,6 +109,7 @@ class SignInPage extends StatelessWidget {
                   gradient: R.colors.uiGradient,
                   text: R.strings.signIn,
                   textSize: R.appRatio.appFontSize18,
+                  boxShadow: R.styles.boxShadowB,
                   onTap: () {
                     _unFocusAllFields();
                     _getSignInInfo(context);

@@ -17,7 +17,7 @@ class ComplexInfoBox extends StatelessWidget {
   final bool enableImageStyle;
   final String imageURL;
 
-  final Color _boxBackgroundColor = Color(0xFFFFECDA);
+  final Color _boxBackgroundColor = Color(0xFFFFE2C7);
 
   /*
     + This widget has some displayed styles with the priority as below:
@@ -50,155 +50,157 @@ class ComplexInfoBox extends StatelessWidget {
 
     return GestureDetector(
       onTap: callbackFunc,
-      child: Center(
-        child: Container(
-          width: R.appRatio.appWidth120,
-          decoration: BoxDecoration(
-            color: this._boxBackgroundColor,
-            borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2.0,
-                offset: Offset(1.0, 1.0),
-                color: R.colors.btnShadow,
-              ),
-            ],
+      child: Container(
+        width: R.appRatio.appWidth140,
+        decoration: BoxDecoration(
+          color: this._boxBackgroundColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(this.boxRadius),
           ),
-          padding: EdgeInsets.all(R.appRatio.appSpacing15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      width: R.appRatio.appWidth60,
-                      child: Text(
-                        boxTitle,
-                        maxLines: 2,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: R.appRatio.appFontSize14,
-                          color: Colors.black,
-                        ),
-                      ),
+          boxShadow: [R.styles.boxShadowRB],
+        ),
+        padding: EdgeInsets.all(
+          R.appRatio.appSpacing15,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    boxTitle,
+                    maxLines: 2,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: R.appRatio.appFontSize14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
                   ),
-                  SizedBox(width: 3,),
-                  ImageCacheManager.getImage(
-                    url: this.boxIconURL,
-                    width: this.boxIconSize,
-                    height: this.boxIconSize,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: (this.enableCircleStyle
-                    ? Container(
-                        width: this.circleSize,
-                        height: this.circleSize,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: R.colors.majorOrange,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(this.circleSize / 2)),
-                          color: Colors.transparent,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              this.dataTitle,
-                              style: TextStyle(
-                                color: R.colors.majorOrange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: R.appRatio.appFontSize18,
-                                shadows: [
-                                  BoxShadow(
-                                    blurRadius: 2.0,
-                                    offset: Offset(1.0, 1.0),
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            (this.unitTitle.length != 0
-                                ? Text(
-                                    this.unitTitle,
-                                    style: TextStyle(
-                                      color: R.colors.grayABABAB,
-                                      fontSize: R.appRatio.appFontSize12,
-                                    ),
-                                  )
-                                : Container()),
-                          ],
-                        ),
-                      )
-                    : (this.enableImageStyle
-                        ? ImageCacheManager.getImage(
-                            url: this.imageURL,
-                            fit: BoxFit.cover,
-                            width: R.appRatio.appWidth120,
-                            height: R.appRatio.appHeight50,
-                          )
-                        : Container())),
-              ),
-              (this.enableCircleStyle == false
+                ),
+                SizedBox(width: 4),
+                ImageCacheManager.getImage(
+                  url: this.boxIconURL,
+                  width: this.boxIconSize,
+                  height: this.boxIconSize,
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing15,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: (this.enableCircleStyle
                   ? Container(
-                      width: R.appRatio.appWidth120,
+                      width: this.circleSize,
+                      height: this.circleSize,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: R.colors.majorOrange,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(this.circleSize / 2)),
+                        color: Colors.transparent,
+                      ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          (this.enableImageStyle
-                              ? SizedBox(
-                                  height: R.appRatio.appSpacing15,
-                                )
-                              : Container()),
-                          FittedBox(
-                            child: Text(
-                              this.dataTitle,
-                              style: TextStyle(
-                                color: R.colors.majorOrange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: R.appRatio.appFontSize18,
-                                shadows: [
-                                  BoxShadow(
-                                    blurRadius: 2.0,
-                                    offset: Offset(1.0, 1.0),
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                  ),
-                                ],
-                              ),
+                          Text(
+                            this.dataTitle,
+                            style: TextStyle(
+                              color: R.colors.majorOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: R.appRatio.appFontSize18,
+                              shadows: [
+                                BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(1.0, 1.0),
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                ),
+                              ],
                             ),
                           ),
                           (this.unitTitle.length != 0
-                              ? Text(
-                                  this.unitTitle,
-                                  style: TextStyle(
-                                    color: R.colors.grayABABAB,
-                                    fontSize: R.appRatio.appFontSize12,
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    this.unitTitle,
+                                    style: TextStyle(
+                                      color: R.colors.gray808080,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: R.appRatio.appFontSize12,
+                                    ),
                                   ),
                                 )
                               : Container()),
                         ],
                       ),
                     )
-                  : Container()),
-            ],
-          ),
+                  : (this.enableImageStyle
+                      ? ImageCacheManager.getImage(
+                          url: this.imageURL,
+                          fit: BoxFit.cover,
+                          width: R.appRatio.appWidth120,
+                          height: R.appRatio.appHeight50,
+                        )
+                      : Container())),
+            ),
+            (this.enableCircleStyle == false
+                ? Container(
+                    width: R.appRatio.appWidth120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        (this.enableImageStyle
+                            ? SizedBox(
+                                height: R.appRatio.appSpacing15,
+                              )
+                            : Container()),
+                        FittedBox(
+                          child: Text(
+                            this.dataTitle,
+                            style: TextStyle(
+                              color: R.colors.majorOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: R.appRatio.appFontSize18,
+                              shadows: [
+                                BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(1.0, 1.0),
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        (this.unitTitle.length != 0
+                            ? Padding(
+                                padding: EdgeInsets.only(top: 4),
+                                child: Text(
+                                  this.unitTitle,
+                                  style: TextStyle(
+                                    color: R.colors.gray808080,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: R.appRatio.appFontSize12,
+                                  ),
+                                ),
+                              )
+                            : Container()),
+                      ],
+                    ),
+                  )
+                : Container()),
+          ],
         ),
       ),
     );
