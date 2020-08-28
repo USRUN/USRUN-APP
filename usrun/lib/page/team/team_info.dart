@@ -355,7 +355,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               url: _teamBanner,
                               width: R.appRatio.deviceWidth,
                               height: R.appRatio.appHeight250,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                           ),
                           (TeamMemberUtil.authorizeLowerLevel(

@@ -77,9 +77,9 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     if (checkListIsNullOrEmpty(_teamSuggestionList)) {
       List<dynamic> bannerList = [
-        ImageCacheManager.getImage(
-          url: R.images.defaultBackground,
-        ),
+          ImageCacheManager.getImage(
+            url: R.images.defaultBackground,
+          ),
       ];
       return bannerList;
     }
@@ -89,6 +89,7 @@ class _TeamPageState extends State<TeamPage> {
       bannerList.add(
         ImageCacheManager.getImage(
           url: _teamSuggestionList[i].bannerImageURL,
+          fit: BoxFit.fill,
         ),
       );
     }
@@ -177,20 +178,20 @@ class _TeamPageState extends State<TeamPage> {
                         height: R.appRatio.appHeight250,
                         width: R.appRatio.deviceWidth,
                         child: Carousel(
-                          images: _getBannerList(),
-                          defaultImage: R.images.smallDefaultImage,
-                          dotSize: R.appRatio.appIconSize5,
-                          dotSpacing: R.appRatio.appSpacing20,
-                          dotColor: Colors.white,
-                          dotIncreasedColor: R.colors.majorOrange,
-                          dotBgColor: Colors.black.withOpacity(0.25),
-                          boxFit: BoxFit.cover,
-                          indicatorBgPadding: 5.0,
-                          animationDuration: Duration(milliseconds: 500),
-                          autoplayDuration: Duration(seconds: 8),
-                          borderRadius: true,
+                            images: _getBannerList(),
+                            defaultImage: R.images.smallDefaultImage,
+                            dotSize: R.appRatio.appIconSize5,
+                            dotSpacing: R.appRatio.appSpacing20,
+                            dotColor: Colors.white,
+                            dotIncreasedColor: R.colors.majorOrange,
+                            dotBgColor: Colors.black.withOpacity(0.25),
+                            boxFit: BoxFit.fill,
+                            indicatorBgPadding: 5.0,
+                            animationDuration: Duration(milliseconds: 500),
+                            autoplayDuration: Duration(seconds: 8),
+                            borderRadius: true,
+                          ),
                         ),
-                      ),
                       SizedBox(
                         height: R.appRatio.appSpacing20,
                       ),

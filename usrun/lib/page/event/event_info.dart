@@ -57,9 +57,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
     // TODO: Call API here, based on "widget.eventId"
     EventInfo result;
 
-    Response<dynamic> response = await EventManager.getEventInfo(widget.eventId, UserManager.currentUser.userId);
+    Response<dynamic> response = await EventManager.getEventInfo(
+        widget.eventId, UserManager.currentUser.userId);
 
-    if(response.success && response.errorCode == -1){
+    if (response.success && response.errorCode == -1) {
       result = response.object;
     }
 
@@ -249,11 +250,11 @@ class _EventInfoPageState extends State<EventInfoPage> {
       );
 
       if (result != null && result) {
-       text = R.strings.leave;
+        text = R.strings.leave;
       }
     };
 
-    if(widget.joined) {
+    if (widget.joined) {
       text = R.strings.leave;
       enableGradient = false;
       callback = () async {
@@ -339,7 +340,11 @@ class _EventInfoPageState extends State<EventInfoPage> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: orgList.length,
         itemBuilder: (context, index) {
-          EventOrganization org = orgList[index];
+          EventOrganization org = new EventOrganization(
+            avatar: orgList[index]['avatar'],
+            name: orgList[index]['name'],
+            organizationId: orgList[index]['organizationId'],
+          );
           return _renderOrgInfo(org, title, titleColor);
         },
       );
@@ -429,7 +434,12 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Leaderboard button
           GestureDetector(
             onTap: () {
-              pushPage(context, EventLeaderboardPage(eventId: widget.eventId, teamId: _eventInfo.teamId,));
+              pushPage(
+                  context,
+                  EventLeaderboardPage(
+                    eventId: widget.eventId,
+                    teamId: _eventInfo.teamId,
+                  ));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -470,7 +480,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalParticipants,
                 secondTitleLine: R.strings.runners.toUpperCase(),
                 pressBox: (id) {
-                  pushPage(context, EventAthleteSearchPage(eventId: widget.eventId));
+                  pushPage(
+                      context, EventAthleteSearchPage(eventId: widget.eventId));
                 },
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -480,8 +491,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 boxSize: R.appRatio.appWidth100,
                 dataLine: distance,
                 secondTitleLine: "KM",
-                pressBox: (id) {
-                },
+                pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),
               // Total teams
@@ -491,7 +501,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalTeams,
                 secondTitleLine: R.strings.teams.toUpperCase(),
                 pressBox: (id) {
-                  pushPage(context, EventTeamSearchPage(eventId: widget.eventId));
+                  pushPage(
+                      context, EventTeamSearchPage(eventId: widget.eventId));
                 },
               ),
             ],

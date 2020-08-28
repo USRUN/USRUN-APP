@@ -9,6 +9,7 @@ import 'package:usrun/model/event_team.dart';
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
+import 'package:usrun/util/validator.dart';
 
 class EventManager {
   static List<Event> userEvents = [];
@@ -112,7 +113,8 @@ class EventManager {
       'count': count,
     };
 
-    Response<dynamic> res = await Client.post('/event/getEventAthletes', params);
+    Response<dynamic> res =
+        await Client.post('/event/getEventAthletes', params);
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -138,7 +140,8 @@ class EventManager {
       'limit': count,
     };
 
-    Response<dynamic> res = await Client.post('/team/searchTeamByEvent', params);
+    Response<dynamic> res =
+        await Client.post('/team/searchTeamByEvent', params);
 
     if (!res.success) return res;
 
