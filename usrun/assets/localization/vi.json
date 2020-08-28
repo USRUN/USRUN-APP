@@ -10,7 +10,7 @@
     "newPassword": "Mật khẩu mới",
     "retypePassword": "Nhập lại mật khẩu mới",
     "retypePasswordHint": "Nhập lại mật khẩu của bạn tại đây",
-    "forgotPassword": "Quên mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
     "passwordNotice": "Mật khẩu phải chứa ít nhất 8 ký tự bao gồm ký tự số và ký tự hoa",
     "reset": "Đặt lại",
     "resetPasswordNotice": "Nhập địa chỉ email mà bạn đã sử dụng để đăng ký tài khoản. Chúng tôi sẽ gửi mật khẩu mới đến địa chỉ email này.",

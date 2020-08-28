@@ -107,10 +107,16 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
     // Compute some data
     int _seperatedPoint = (widget.items.length / 2).round();
     List<Widget> _firstColumn = _renderAllItem(0, _seperatedPoint);
-    List<Widget> _secondColumn = _renderAllItem(_seperatedPoint, widget.items.length);
+    List<Widget> _secondColumn =
+        _renderAllItem(_seperatedPoint, widget.items.length);
 
     // Render result
-    return Center(
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+        top: R.appRatio.appSpacing5,
+        bottom: R.appRatio.appSpacing15,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,

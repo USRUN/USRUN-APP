@@ -59,6 +59,7 @@ class ResetPasswordPage extends StatelessWidget {
                 gradient: R.colors.uiGradient,
                 text: R.strings.reset,
                 textSize: R.appRatio.appFontSize18,
+                boxShadow: R.styles.boxShadowB,
                 onTap: () async {
                   Response<dynamic> response = await UserManager.resetPassword(
                       _emailController.text.trim());

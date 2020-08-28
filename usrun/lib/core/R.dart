@@ -31,7 +31,8 @@ class R {
   static String androidAppId = "vn.hcmus.usrun";
   static String iOSAppId = "vn.hcmus.usrun";
   static final String policyURL = "http://128.199.168.137:2309/policy";
-  static final String termAndConditionURL = "http://128.199.168.137:2309/termAndCondition";
+  static final String termAndConditionURL =
+      "http://128.199.168.137:2309/termAndCondition";
   static final Map<String, String> _modelAppleMapper = {
     "i386": "32-bit Simulator",
     "x86_64": "64-bit Simulator",
@@ -285,6 +286,7 @@ class _AppRatio {
   final double _figmaHeight20 = 20;
   final double _figmaHeight25 = 25;
   final double _figmaHeight30 = 30;
+  final double _figmaHeight35 = 35;
   final double _figmaHeight40 = 40;
   final double _figmaHeight45 = 45;
   final double _figmaHeight50 = 50;
@@ -422,6 +424,7 @@ class _AppRatio {
   double appHeight20;
   double appHeight25;
   double appHeight30;
+  double appHeight35;
   double appHeight40;
   double appHeight45;
   double appHeight50;
@@ -595,6 +598,7 @@ class _AppRatio {
     appHeight20 = _computeHeight(this._figmaHeight20);
     appHeight25 = _computeHeight(this._figmaHeight25);
     appHeight30 = _computeHeight(this._figmaHeight30);
+    appHeight35 = _computeHeight(this._figmaHeight35);
     appHeight40 = _computeHeight(this._figmaHeight40);
     appHeight45 = _computeHeight(this._figmaHeight45);
     appHeight50 = _computeHeight(this._figmaHeight50);
@@ -719,8 +723,8 @@ class _Colors {
   Color boxBackground = Color(0xFFFFFFFF);
   Color grayButtonColor = Color(0xFF515151);
   Color sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-  Color btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
-  Color textShadow = Color.fromRGBO(0, 0, 0, 0.25);
+  Color boxShadow = Color.fromRGBO(0, 0, 0, 0.15);
+  Color textShadow = Color.fromRGBO(0, 0, 0, 0.15);
   Color tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
@@ -740,8 +744,8 @@ class _Colors {
       boxBackground = Color(0xFFFFFFFF);
       grayButtonColor = Color(0xFF515151);
       sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-      btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
-      textShadow = Color.fromRGBO(0, 0, 0, 0.25);
+      boxShadow = Color.fromRGBO(0, 0, 0, 0.15);
+      textShadow = Color.fromRGBO(0, 0, 0, 0.15);
       tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
       notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
@@ -761,8 +765,8 @@ class _Colors {
       boxBackground = Color(0xFF212121);
       grayButtonColor = Color(0xFFABABAB);
       sectionBackgroundLayer = Color.fromRGBO(33, 33, 33, 0.5);
-      btnShadow = Color.fromRGBO(255, 255, 255, 0.4);
-      textShadow = Color.fromRGBO(255, 255, 255, 0.25);
+      boxShadow = Color.fromRGBO(255, 255, 255, 0.15);
+      textShadow = Color.fromRGBO(255, 255, 255, 0.15);
       tabLayer = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
@@ -785,21 +789,20 @@ class _MyIcons {
   final String appBarFunnelBtn = 'assets/myicons/icon-white-funnel.png';
   final String tabBarSearchBtn = 'assets/myicons/icon-orange-search.png';
   final String tabBarCloseBtn = 'assets/myicons/icon-orange-close.png';
-  final String drawerRecord = 'assets/myicons/icon-white-light-record.png';
-  final String drawerEvents = 'assets/myicons/icon-white-events-02.png';
-  final String drawerUfeed = 'assets/myicons/icon-white-news-feed-02.png';
-  final String drawerProfile = 'assets/myicons/icon-white-profile-02.png';
-  final String drawerTeams = 'assets/myicons/icon-white-teams.png';
-  final String drawerSettings = 'assets/myicons/icon-white-settings.png';
-  final String drawerActiveRecord =
-      'assets/myicons/icon-yellow-light-record.png';
-  final String drawerActiveEvents = 'assets/myicons/icon-yellow-events-02.png';
-  final String drawerActiveUfeed =
+  final String drawerRecordWhite = 'assets/myicons/icon-white-record.png';
+  final String drawerRecordYellow = 'assets/myicons/icon-yellow-record.png';
+  final String drawerEventsWhite = 'assets/myicons/icon-white-events-02.png';
+  final String drawerEventsYellow = 'assets/myicons/icon-yellow-events-02.png';
+  final String drawerUfeedWhite = 'assets/myicons/icon-white-news-feed-02.png';
+  final String drawerUfeedYellow =
       'assets/myicons/icon-yellow-news-feed-02.png';
-  final String drawerActiveProfile =
+  final String drawerProfileWhite = 'assets/myicons/icon-white-profile-02.png';
+  final String drawerProfileYellow =
       'assets/myicons/icon-yellow-profile-02.png';
-  final String drawerActiveTeams = 'assets/myicons/icon-yellow-teams.png';
-  final String drawerActiveSettings = 'assets/myicons/icon-yellow-settings.png';
+  final String drawerTeamsWhite = 'assets/myicons/icon-white-teams.png';
+  final String drawerTeamsYellow = 'assets/myicons/icon-yellow-teams.png';
+  final String drawerSettingsWhite = 'assets/myicons/icon-white-settings.png';
+  final String drawerSettingsYellow = 'assets/myicons/icon-yellow-settings.png';
   final String aboutUsUSRUN = 'assets/myicons/icon-color-letter.png';
   final String aboutUsDevelopers = 'assets/myicons/icon-color-developers.png';
   final String aboutUsVersion = 'assets/myicons/icon-color-update-version.png';
@@ -820,6 +823,7 @@ class _MyIcons {
   final String englishColor = 'assets/myicons/icon-color-en.png';
   final String vietnameseColor = 'assets/myicons/icon-color-vi.png';
   final String greenCheck = 'assets/myicons/icon-green-check.png';
+
   // ---
   final String defaultIcon = 'assets/myicons/icon-black-image-default.png';
   final String menuIcon = 'assets/myicons/icon-white-hamburger-menu.png';
@@ -1519,6 +1523,10 @@ class Strings {
 }
 
 class _Styles {
+  // -----------------------------------
+  // LABEL STYLE
+  // -----------------------------------
+
   final TextStyle labelStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: R.appRatio.appFontSize18,
@@ -1531,8 +1539,8 @@ class _Styles {
     color: R.colors.labelText,
     shadows: <Shadow>[
       Shadow(
-        offset: Offset(2.0, 2.0),
-        blurRadius: 4.0,
+        offset: Offset(1.25, 1.25),
+        blurRadius: 2.0,
         color: R.colors.textShadow,
       ),
     ],
@@ -1556,6 +1564,28 @@ class _Styles {
       ),
     ],
   );
+
+  // -----------------------------------
+  // BOX SHADOW
+  // -----------------------------------
+
+  final BoxShadow boxShadowB = BoxShadow(
+    blurRadius: 2.0,
+    offset: Offset(0.0, 1.25),
+    color: R.colors.boxShadow,
+  );
+
+  final BoxShadow boxShadowRB = BoxShadow(
+    blurRadius: 2.0,
+    offset: Offset(1.0, 1.0),
+    color: R.colors.boxShadow,
+  );
+
+  final BoxShadow boxShadowAll = BoxShadow(
+    blurRadius: 4.0,
+    offset: Offset(0.0, 0.0),
+    color: R.colors.boxShadow,
+  );
 }
 
 class _ImagePickerDefaults {
@@ -1569,11 +1599,11 @@ class _ImagePickerDefaults {
   final int refSize = 4000;
 
   AndroidUiSettings defaultAndroidSettings = new AndroidUiSettings(
-      toolbarColor: R.colors.majorOrange,
-      showCropGrid: false,
-      cropFrameStrokeWidth: 0,
-      toolbarWidgetColor: Colors.white,
-      cropFrameColor: R.colors.majorOrange,
+    toolbarColor: R.colors.majorOrange,
+    showCropGrid: false,
+    cropFrameStrokeWidth: 0,
+    toolbarWidgetColor: Colors.white,
+    cropFrameColor: R.colors.majorOrange,
   );
 
   IOSUiSettings defaultIOSSettings;
