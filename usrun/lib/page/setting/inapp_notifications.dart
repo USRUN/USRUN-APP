@@ -11,8 +11,6 @@ import 'package:usrun/util/image_cache_manager.dart';
 class InAppNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
-
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,

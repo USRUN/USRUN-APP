@@ -24,6 +24,11 @@ class SimpleInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
@@ -39,11 +44,7 @@ class SimpleInfoBox extends StatelessWidget {
       width: this.boxWidth,
       height: this.boxHeight,
       child: FlatButton(
-        onPressed: () {
-          if (this.pressBox != null) {
-            this.pressBox(this.id);
-          }
-        },
+        onPressed: callbackFunc,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(this.boxRadius),

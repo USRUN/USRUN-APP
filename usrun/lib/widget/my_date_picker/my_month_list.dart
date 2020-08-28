@@ -99,14 +99,14 @@ class _MyMonthListState extends State<MyMonthList> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: (widget.selectedDate.month == _monthList[index]
-                    ? R.appRatio.appFontSize26
+                    ? R.appRatio.appFontSize24
                     : R.appRatio.appFontSize16),
                 color: (_checkDateTimeBound(DateTime(widget.selectedDate.year,
                         _monthList[index], widget.selectedDate.day))
                     ? (widget.selectedDate.month == _monthList[index]
                         ? R.colors.majorOrange
-                        : Colors.black)
-                    : R.colors.grayABABAB),
+                        : R.colors.contentText)
+                    : R.colors.gray808080),
               ),
             ),
           ),

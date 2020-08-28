@@ -13,8 +13,6 @@ import 'package:usrun/model/user.dart';
 import 'package:usrun/page/setting/app_info.dart';
 import 'package:usrun/page/setting/change_password.dart';
 import 'package:usrun/page/setting/hcmus_email_verification.dart';
-import 'package:usrun/page/setting/inapp_notifications.dart';
-import 'package:usrun/page/setting/privacy_profile.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/util/toast_utils.dart';
 import 'package:usrun/util/validator.dart';

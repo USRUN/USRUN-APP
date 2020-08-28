@@ -69,6 +69,9 @@ class UIButton extends StatelessWidget {
         onPressed: (this.enable && this.onTap != null) ? this.onTap : () {},
         splashColor: Color.fromRGBO(0, 0, 0, 0.1),
         padding: EdgeInsets.all(0.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(this.radius),
+        ),
         textColor: Colors.white,
         color: Colors.transparent,
         child: Center(

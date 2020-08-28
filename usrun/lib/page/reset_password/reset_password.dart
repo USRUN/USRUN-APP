@@ -13,10 +13,10 @@ import 'package:usrun/util/validator.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _emailNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
@@ -45,6 +45,7 @@ class ResetPasswordPage extends StatelessWidget {
               height: R.appRatio.appSpacing30,
             ),
             InputField(
+              focusNode: _emailNode,
               controller: _emailController,
               enableFullWidth: true,
               hintText: R.strings.email,

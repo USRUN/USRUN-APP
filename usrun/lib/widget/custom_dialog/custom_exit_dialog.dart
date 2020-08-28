@@ -18,7 +18,7 @@ class _CustomExitDialog extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -30,8 +30,8 @@ class _CustomExitDialog extends StatelessWidget {
             textAlign: TextAlign.center,
             textScaleFactor: 1.0,
             style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
+              color: R.colors.contentText,
+              fontSize: R.appRatio.appFontSize18,
             ),
           ),
           SizedBox(
@@ -39,8 +39,8 @@ class _CustomExitDialog extends StatelessWidget {
           ),
           UIButton(
             gradient: R.colors.uiGradient,
-            text: R.strings.yes,
-            textSize: 15,
+            text: R.strings.yes.toUpperCase(),
+            textSize: R.appRatio.appFontSize16,
             textColor: Colors.white,
             fontWeight: FontWeight.bold,
             enableShadow: false,
@@ -53,15 +53,12 @@ class _CustomExitDialog extends StatelessWidget {
             height: 10,
           ),
           UIButton(
-            color: Colors.white,
-            text: R.strings.no,
-            textSize: 15,
+            color: R.colors.grayF2F2F2,
+            text: R.strings.no.toUpperCase(),
+            textSize: R.appRatio.appFontSize16,
             textColor: Colors.black,
             fontWeight: FontWeight.bold,
             enableShadow: false,
-            border: Border.all(
-              color: R.colors.grayABABAB,
-            ),
             height: 40,
             onTap: () {
               pop(context, object: false);

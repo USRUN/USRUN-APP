@@ -93,7 +93,6 @@ class _TeamPageState extends State<TeamPage> {
         ),
       );
     }
-
     return bannerList;
   }
 
@@ -190,6 +189,7 @@ class _TeamPageState extends State<TeamPage> {
                             animationDuration: Duration(milliseconds: 500),
                             autoplayDuration: Duration(seconds: 8),
                             borderRadius: true,
+                            radius: Radius.circular(0),
                           ),
                         ),
                       SizedBox(

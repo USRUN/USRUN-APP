@@ -719,12 +719,15 @@ class _Colors {
   Color boxBackground = Color(0xFFFFFFFF);
   Color grayButtonColor = Color(0xFF515151);
   Color sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-  Color btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
+  Color btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
   Color textShadow = Color.fromRGBO(0, 0, 0, 0.25);
   Color tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
   Color discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
   Color supportAvatarBorder = Color(0xFF01458E);
+  Color dialogBackground = Color(0xFFFFFFFF);
+  Color firstButtonDialogColor = Color(0xFFFD632C);
+  Color secondButtonDialogColor = Color(0xFF515151);
 
   // User need to change theme
   void changeTheme(AppTheme theme) {
@@ -737,12 +740,15 @@ class _Colors {
       boxBackground = Color(0xFFFFFFFF);
       grayButtonColor = Color(0xFF515151);
       sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-      btnShadow = Color.fromRGBO(0, 0, 0, 0.5);
+      btnShadow = Color.fromRGBO(0, 0, 0, 0.4);
       textShadow = Color.fromRGBO(0, 0, 0, 0.25);
       tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
       notificationLayer = Color.fromRGBO(253, 99, 44, 0.2);
       supportAvatarBorder = Color(0xFF01458E);
+      dialogBackground = Color(0xFFFFFFFF);
+      firstButtonDialogColor = Color(0xFFFD632C);
+      secondButtonDialogColor = Color(0xFF515151);
     } else {
       // #212121 = RGB(33, 33, 33)
       // #FFFFFF = RGB(255, 255, 255)
@@ -755,12 +761,15 @@ class _Colors {
       boxBackground = Color(0xFF212121);
       grayButtonColor = Color(0xFFABABAB);
       sectionBackgroundLayer = Color.fromRGBO(33, 33, 33, 0.5);
-      btnShadow = Color.fromRGBO(255, 255, 255, 0.5);
+      btnShadow = Color.fromRGBO(255, 255, 255, 0.4);
       textShadow = Color.fromRGBO(255, 255, 255, 0.25);
       tabLayer = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
       supportAvatarBorder = Colors.transparent;
+      dialogBackground = Color(0xFF505050);
+      firstButtonDialogColor = Color(0xFFFD632C);
+      secondButtonDialogColor = Color(0xFFF2F2F2);
     }
   }
 }
@@ -1159,7 +1168,9 @@ class Strings {
   String totalStepsUnit;
   String stats;
   String title;
+  String titleHint;
   String yourDescription;
+  String yourDescriptionHint;
   String description;
   String elevGain;
   String maxElev;
@@ -1243,6 +1254,7 @@ class Strings {
   String rank;
   String activities;
   String activity;
+  String activityTitle;
   String splits;
   String members;
   String leadingTime;
@@ -1300,6 +1312,7 @@ class Strings {
   String updating;
   String loading;
   String loadingTeamInfo;
+  String developingFeature;
 
   String settings;
   String changePassword;

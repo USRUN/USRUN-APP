@@ -18,6 +18,7 @@ class ComplexInfoBox extends StatelessWidget {
   final String imageURL;
 
   final Color _boxBackgroundColor = Color(0xFFFFECDA);
+
   /*
     + This widget has some displayed styles with the priority as below:
       1. circleStyle
@@ -42,12 +43,13 @@ class ComplexInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
     return GestureDetector(
-      onTap: () {
-        if (this.pressBox != null) {
-          this.pressBox(this.id);
-        }
-      },
+      onTap: callbackFunc,
       child: Center(
         child: Container(
           width: R.appRatio.appWidth120,
@@ -72,18 +74,21 @@ class ComplexInfoBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: R.appRatio.appWidth60,
-                    child: Text(
-                      boxTitle,
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: R.appRatio.appFontSize14,
-                        color: Colors.black,
+                  Expanded(
+                    child: Container(
+                      width: R.appRatio.appWidth60,
+                      child: Text(
+                        boxTitle,
+                        maxLines: 2,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: R.appRatio.appFontSize14,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
+                  SizedBox(width: 3,),
                   ImageCacheManager.getImage(
                     url: this.boxIconURL,
                     width: this.boxIconSize,

@@ -16,7 +16,6 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
-import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
@@ -25,13 +24,12 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 import 'bloc_provider.dart';
 
+// ignore: must_be_immutable
 class RecordUploadPage extends StatefulWidget {
   RecordBloc bloc;
   ActivityData activity;
-
   MyStreamController<File> streamFile;
 
   RecordUploadPage(RecordBloc recordBloc) {
@@ -46,6 +44,20 @@ class RecordUploadPage extends StatefulWidget {
 }
 
 class _RecordUploadPage extends State<RecordUploadPage> {
+  final double _buttonHeight = R.appRatio.appHeight60;
+
+  final TextEditingController _titleController = new TextEditingController();
+  final TextEditingController _descriptionController =
+      new TextEditingController();
+
+  final FocusNode _titleNode = FocusNode();
+  final FocusNode _descriptionNode = FocusNode();
+
+  void _unFocusAllFields() {
+    _titleNode.unfocus();
+    _descriptionNode.unfocus();
+  }
+
   _buildStatsBox(String title, String value, String unit) {
     return NormalInfoBox(
       boxSize: MediaQuery.of(context).size.width * 0.3,
@@ -56,28 +68,23 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       disableGradientLine: true,
       boxRadius: 0,
       disableBoxShadow: true,
+      pressBox: null,
     );
   }
 
   _buildStats() {
     RecordData data = widget.bloc.recordData;
     double deviceWidth = MediaQuery.of(context).size.width;
-    return (Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-            top: R.appRatio.appWidth1 * 25,
-            left: R.appRatio.appSpacing25,
-          ),
-          child: Text(
-            R.strings.stats,
-            style: R.styles.labelStyle,
-          ),
+        Text(
+          R.strings.stats,
+          style: R.styles.labelStyle,
         ),
         SizedBox(
-          height: R.appRatio.appWidth1 * 15,
+          height: R.appRatio.appSpacing15,
         ),
         Center(
           child: Container(
@@ -100,8 +107,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          switchBetweenMeterAndKm(data.totalDistance).toString(),
-                          R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
+                          switchBetweenMeterAndKm(data.totalDistance)
+                              .toString(),
+                          R.strings.distanceUnit[
+                              DataManager.getUserRunningUnit().index],
                         ),
                         _buildStatsBox(
                             R.strings.time,
@@ -146,36 +155,31 @@ class _RecordUploadPage extends State<RecordUploadPage> {
               ],
             ),
           ),
-        )
+        ),
       ],
-    ));
+    );
   }
-
-  TextEditingController _titleController = new TextEditingController();
-  TextEditingController _descriptionController = new TextEditingController();
 
   _buildRunTitle() {
     if (_titleController.text.isEmpty) {
       _titleController.text = widget.activity.title;
     }
-    return (Padding(
-      padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
-      child: InputField(
-        controller: _titleController,
-        labelTitle: R.strings.title,
-      ),
-    ));
+    return InputField(
+      controller: _titleController,
+      focusNode: _titleNode,
+      labelTitle: R.strings.title,
+      hintText: R.strings.titleHint,
+    );
   }
 
   _buildDescription() {
-    return (Padding(
-      padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
-      child: InputField(
-        controller: _descriptionController,
-        labelTitle: R.strings.yourDescription,
-        enableMaxLines: true,
-      ),
-    ));
+    return InputField(
+      controller: _descriptionController,
+      focusNode: _descriptionNode,
+      labelTitle: R.strings.yourDescription,
+      enableMaxLines: true,
+      hintText: R.strings.yourDescriptionHint,
+    );
   }
 
   Widget buildPhotoPreview(context, index) {
@@ -183,13 +187,15 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     File file = this.widget.activity.photos.length >= index + 1
         ? this.widget.activity.photos[index]
         : null;
+
     return GestureDetector(
       onTap: () {
+        _unFocusAllFields();
         this.openSelectPhoto(context, index);
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: R.colors.appBackground,
           border: Border.all(color: R.colors.blurMajorOrange),
           borderRadius: BorderRadius.circular(5),
         ),
@@ -226,112 +232,136 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   void _getSelectedDropDownMenuItem<T>(T value) {
-    print("Select event with id: $value");
     widget.activity.recordData.eventId = value as int;
   }
 
   _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
-    dropDowMenuList.add(
-        DropDownObject<int>(value: -1, text: R.strings.no));
+    dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
     EventManager.userEvents.forEach((event) {
       dropDowMenuList.add(
           DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
-    return Padding(
-        padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
-        child: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-        child: DropDownMenu(
-          errorEmptyData: R.strings.nothingToShow,
-          enableFullWidth: true,
-          labelTitle: R.strings.events,
-          hintText: R.strings.events,
-          enableHorizontalLabelTitle: false,
-          onChanged: this._getSelectedDropDownMenuItem,
-          items: dropDowMenuList,
-          initialValue: dropDowMenuList[0].value,
-        ),),);
+    return DropDownMenu(
+      errorEmptyData: R.strings.nothingToShow,
+      enableFullWidth: true,
+      labelTitle: R.strings.events,
+      hintText: R.strings.events,
+      enableHorizontalLabelTitle: false,
+      onChanged: this._getSelectedDropDownMenuItem,
+      items: dropDowMenuList,
+      initialValue: dropDowMenuList[0].value,
+    );
   }
 
   _buildPhotoPicker() {
-    return Padding(
-        padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
-        child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(R.strings.yourPhotos, style: R.styles.labelStyle),
-              SizedBox(
-                height: R.appRatio.appWidth1 * 15,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(R.strings.yourPhotos, style: R.styles.labelStyle),
+        SizedBox(
+          height: R.appRatio.appSpacing15,
+        ),
+        StreamBuilder(
+          stream: this.widget.streamFile.stream,
+          builder: (context, snapshot) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  buildPhotoPreview(context, 0),
+                  SizedBox(width: R.appRatio.appSpacing15),
+                  buildPhotoPreview(context, 1),
+                  SizedBox(width: R.appRatio.appSpacing15),
+                  buildPhotoPreview(context, 2),
+                  SizedBox(width: R.appRatio.appSpacing15),
+                  buildPhotoPreview(context, 3),
+                ],
               ),
-              StreamBuilder(
-                  stream: this.widget.streamFile.stream,
-                  builder: (context, snapshot) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        buildPhotoPreview(context, 0),
-                        buildPhotoPreview(context, 1),
-                        buildPhotoPreview(context, 2),
-                        buildPhotoPreview(context, 3)
-                      ],
-                    );
-                  })
-            ],
-          ),
-        ));
+            );
+          },
+        ),
+      ],
+    );
   }
 
   _buildMapOptions() {
-    return Padding(
-      padding: EdgeInsets.only(left: R.appRatio.appSpacing15),
-      child: LineButton(
-        mainText: R.strings.yourMaps,
-        mainTextFontSize: R.appRatio.appFontSize18,
-        mainTextStyle: R.styles.labelStyle,
-        subText: R.strings.viewMapDescription,
-        subTextFontSize: R.appRatio.appFontSize16,
-        enableSplashColor: false,
-        textPadding: EdgeInsets.all(15),
-        enableSwitchButton: true,
-        switchButtonOnTitle: "On",
-        switchButtonOffTitle: "Off",
-        initSwitchStatus: true,
-        switchFunction: (state) {
-          this.widget.activity.showMap = state;
-        },
-      ),
+    return LineButton(
+      mainText: R.strings.yourMaps,
+      mainTextFontSize: R.appRatio.appFontSize18,
+      mainTextStyle: R.styles.labelStyle,
+      subText: R.strings.viewMapDescription,
+      subTextFontSize: R.appRatio.appFontSize16,
+      enableSplashColor: false,
+      textPadding: EdgeInsets.all(0),
+      enableSwitchButton: true,
+      switchButtonOnTitle: "On",
+      switchButtonOffTitle: "Off",
+      initSwitchStatus: true,
+      switchFunction: (state) {
+        this.widget.activity.showMap = state;
+      },
     );
   }
 
   _buildButtons() {
+    Color backgroundColor = R.colors.boxBackground;
+
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 4.0,
+            offset: Offset(0.0, 0.0),
+            color: R.colors.btnShadow,
+          ),
+        ],
+      ),
       width: R.appRatio.deviceWidth,
-      height: R.appRatio.deviceHeight * 0.1,
+      height: _buttonHeight,
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          UIButton(
-            color: R.colors.grayABABAB,
-            text: R.strings.discard,
-            width: R.appRatio.deviceWidth * 0.45,
-            height: R.appRatio.appWidth1 * 50,
-            onTap: () {
-              _clearRecordData();
-            },
+          Expanded(
+            child: UIButton(
+              color: R.colors.gray515151,
+              fontWeight: FontWeight.bold,
+              textColor: Colors.white,
+              text: R.strings.discard.toUpperCase(),
+              enableShadow: false,
+              radius: 0,
+              onTap: () {
+                _unFocusAllFields();
+                _clearRecordData();
+              },
+            ),
           ),
-          UIButton(
-            gradient: R.colors.uiGradient,
-            text: R.strings.upload,
-            width: R.appRatio.deviceWidth * 0.45,
-            height: R.appRatio.appWidth1 * 50,
-            onTap: () {
-              _uploadActivity();
-            },
+          Container(
+            width: 1,
+            height: _buttonHeight,
+            child: VerticalDivider(
+              color: R.colors.majorOrange,
+              thickness: 1.0,
+              width: 1,
+            ),
+          ),
+          Expanded(
+            child: UIButton(
+              gradient: R.colors.uiGradient,
+              fontWeight: FontWeight.bold,
+              textColor: Colors.white,
+              text: R.strings.upload.toUpperCase(),
+              enableShadow: false,
+              radius: 0,
+              onTap: () {
+                _unFocusAllFields();
+                _uploadActivity();
+              },
+            ),
           ),
         ],
       ),
@@ -358,14 +388,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   bool isUploading = false;
+
   _uploadActivity() async {
-    if (isUploading == true)
-      return;
+    if (isUploading == true) return;
     isUploading = true;
     //this.widget.activity.recordData = await RecordHelper.loadFromFile();
     Response<ActivityData> response = await upload();
     if (response.success) {
-      print("Uploaded");
       await RecordHelper.removeFile();
       this.widget.bloc.resetAll();
       showCustomAlertDialog(
@@ -382,7 +411,6 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         },
       );
     } else {
-      print("Uploaded error");
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
@@ -391,15 +419,14 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         firstButtonFunction: () {
           isUploading = false;
           pop(this.context);
-          },
+        },
       );
     }
   }
 
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
-    String requestTime =
-        DateTime.now().millisecondsSinceEpoch.toString();
+    String requestTime = DateTime.now().millisecondsSinceEpoch.toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
@@ -427,69 +454,84 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   @override
   Widget build(BuildContext context) {
     getEventOfUser();
+
     var appBar = CustomGradientAppBar(
-      titleWidget: Container(
-        margin: EdgeInsets.only(right: R.appRatio.appAppBarIconSize),
-        child: Center(
-          child: Text(R.strings.uploadActivity),
-        ),
-      ),
+      title: R.strings.uploadActivity,
       leadingFunction: () {
         this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
         pop(context);
       },
     );
 
-    return WillPopScope(
-        onWillPop: () async {
-          this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
-          return true;
-        },
-        child: Scaffold(
-            resizeToAvoidBottomPadding: true,
-            resizeToAvoidBottomInset: true,
-            backgroundColor: R.colors.appBackground,
-            appBar: appBar,
-            body: SingleChildScrollView(
-                child: Column(
-              children: <Widget>[
-                Container(
-                  height: R.appRatio.deviceHeight * 0.9 -
-                      appBar.preferredSize.height -
-                      25,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        _buildStats(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                        _buildRunTitle(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                        _buildDescription(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                        _buildEventDropDown(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                        _buildPhotoPicker(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                        _buildMapOptions(),
-                        SizedBox(
-                          height: R.appRatio.appSpacing25,
-                        ),
-                      ],
-                    ),
+    Widget _smallElement = Scaffold(
+      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: R.colors.appBackground,
+      appBar: appBar,
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              left: R.appRatio.appSpacing15,
+              right: R.appRatio.appSpacing15,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
                   ),
-                ),
-                _buildButtons()
-              ],
-            ))));
+                  _buildStats(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  _buildRunTitle(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  _buildDescription(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  _buildEventDropDown(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  _buildPhotoPicker(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  _buildMapOptions(),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20 + _buttonHeight,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          _buildButtons(),
+        ],
+      ),
+    );
+
+    Widget _bigElement = WillPopScope(
+      onWillPop: () async {
+        this.widget.bloc.updateRecordStatus(RecordState.StatusStop);
+        return true;
+      },
+      child: GestureDetector(
+        onTap: _unFocusAllFields,
+        child: _smallElement,
+      ),
+    );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+      child: _bigElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }

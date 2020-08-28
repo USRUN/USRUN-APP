@@ -51,7 +51,7 @@ class _MyYearListState extends State<MyYearList> {
     return ScrollablePositionedList.builder(
       itemCount: _yearList.length,
       itemScrollController: _scrollController,
-      itemBuilder: (BuildContext ctxt, int index) {
+      itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
             if (widget.onChanged != null) {
@@ -67,11 +67,11 @@ class _MyYearListState extends State<MyYearList> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: (widget.selectedDate.year == _yearList[index]
-                    ? R.appRatio.appFontSize26
+                    ? R.appRatio.appFontSize24
                     : R.appRatio.appFontSize16),
                 color: (widget.selectedDate.year == _yearList[index]
                     ? R.colors.majorOrange
-                    : Colors.black),
+                    : R.colors.contentText),
               ),
             ),
           ),

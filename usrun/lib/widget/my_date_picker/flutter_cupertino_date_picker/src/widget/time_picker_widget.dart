@@ -273,7 +273,7 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
       );
     } else {
       _myTextStyle = TextStyle(
-        color: Colors.black,
+        color: R.colors.contentText,
         fontSize: R.appRatio.appFontSize18,
       );
     }

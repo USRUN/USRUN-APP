@@ -30,7 +30,7 @@ class BlockedMemberPage extends StatefulWidget {
 }
 
 class _BlockedMemberPageState extends State<BlockedMemberPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   bool _isLoading;
   int _curPage;
@@ -212,6 +212,8 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
     }
@@ -316,4 +318,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

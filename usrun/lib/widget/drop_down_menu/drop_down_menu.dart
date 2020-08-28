@@ -201,6 +201,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
                 )),
         ),
         DropdownButton<T>(
+          dropdownColor: R.colors.dialogBackground,
           icon: Icon(Icons.arrow_drop_down),
           iconEnabledColor: R.colors.majorOrange,
           iconSize: R.appRatio.appDropDownArrowIconSize,
@@ -263,6 +264,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
             ),
             Expanded(
               child: DropdownButton<T>(
+                dropdownColor: R.colors.dialogBackground,
                 items: this._createMenuItemList(),
                 onChanged: (newValue) {
                   if (widget.onChanged != null) {

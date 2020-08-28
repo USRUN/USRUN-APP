@@ -30,7 +30,7 @@ class PendingMemberPage extends StatefulWidget {
 }
 
 class _PendingMemberPageState extends State<PendingMemberPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   int _curPage;
   bool _remainingResults;
@@ -216,6 +216,8 @@ class _PendingMemberPageState extends State<PendingMemberPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
     }
@@ -323,4 +325,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
