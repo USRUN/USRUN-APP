@@ -103,7 +103,7 @@ class EventList extends StatelessWidget {
         String athleteQuantity = NumberFormat("#,##0", "en_US")
                 .format(this.items[index].totalParticipant) +
             " athletes";
-        bool isFinished = this.items[index].status==EventStatus.Ended;
+        bool isFinished = this.items[index].status == EventStatus.Ended;
         String bannerImageURL = this.items[index].banner;
 
         return Container(
@@ -134,13 +134,7 @@ class EventList extends StatelessWidget {
                           height: R.appRatio.appHeight120,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 2.0,
-                                offset: Offset(1.0, 1.0),
-                                color: R.colors.btnShadow,
-                              ),
-                            ],
+                            boxShadow: [R.styles.boxShadowB],
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(5)),

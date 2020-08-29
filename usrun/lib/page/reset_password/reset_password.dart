@@ -60,6 +60,7 @@ class ResetPasswordPage extends StatelessWidget {
                 gradient: R.colors.uiGradient,
                 text: R.strings.reset,
                 textSize: R.appRatio.appFontSize18,
+                boxShadow: R.styles.boxShadowB,
                 onTap: () async {
                   String email = _emailController.text.trim();
                   if(checkStringNullOrEmpty(email) || !validateEmail(email)){

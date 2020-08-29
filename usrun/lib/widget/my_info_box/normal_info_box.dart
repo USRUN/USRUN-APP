@@ -83,65 +83,61 @@ class NormalInfoBox extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                Padding(
+                Container(
+                  height: this.boxSize,
                   padding: EdgeInsets.only(
                     bottom: (!disableGradientLine ? _gradientLineHeight : 0),
                   ),
-                  child: Container(
-                    height: this.boxSize,
-                    padding: EdgeInsets.only(
-                      left: R.appRatio.appSpacing5,
-                      right: R.appRatio.appSpacing5,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        (firstTitleLine.length != 0
-                            ? Text(
-                                firstTitleLine.toUpperCase(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      (firstTitleLine.length != 0
+                          ? Text(
+                              firstTitleLine.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize14,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText,
+                              ),
+                            )
+                          : Container()),
+                      SizedBox(
+                        height: R.appRatio.appSpacing10,
+                      ),
+                      (dataLine.length != 0
+                          ? FittedBox(
+                              child: Text(
+                                dataLine.toUpperCase(),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize12,
+                                  fontSize: R.appRatio.appFontSize22,
+                                  fontWeight: FontWeight.bold,
                                   color: R.colors.contentText,
                                 ),
-                              )
-                            : Container()),
-                        SizedBox(
-                          height: R.appRatio.appSpacing5,
-                        ),
-                        (dataLine.length != 0
-                            ? FittedBox(
-                                child: Text(
-                                  dataLine.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: R.appRatio.appFontSize22,
-                                    color: R.colors.contentText,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : Container()),
-                        SizedBox(
-                          height: R.appRatio.appSpacing5,
-                        ),
-                        (secondTitleLine.length != 0
-                            ? Text(
-                                secondTitleLine.toUpperCase(),
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize12,
-                                  color: R.colors.contentText,
-                                ),
-                              )
-                            : Container()),
-                      ],
-                    ),
+                              ),
+                            )
+                          : Container()),
+                      SizedBox(
+                        height: R.appRatio.appSpacing10,
+                      ),
+                      (secondTitleLine.length != 0
+                          ? Text(
+                              secondTitleLine.toUpperCase(),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize14,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText,
+                              ),
+                            )
+                          : Container()),
+                    ],
                   ),
                 ),
               ],

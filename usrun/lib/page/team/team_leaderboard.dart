@@ -83,13 +83,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
           Container(
             decoration: BoxDecoration(
               color: R.colors.boxBackground,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 2.0,
-                  offset: Offset(0.0, 1.0),
-                  color: R.colors.btnShadow,
-                ),
-              ],
+              boxShadow: [R.styles.boxShadowB],
             ),
             child: HeaderRankLead(),
           ),

@@ -196,7 +196,9 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       child: Container(
         decoration: BoxDecoration(
           color: R.colors.appBackground,
-          border: Border.all(color: R.colors.blurMajorOrange),
+          border: Border.all(
+            color: R.colors.majorOrange,
+          ),
           borderRadius: BorderRadius.circular(5),
         ),
         height: deviceWidth * 0.2,
@@ -312,13 +314,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4.0,
-            offset: Offset(0.0, 0.0),
-            color: R.colors.btnShadow,
-          ),
-        ],
+        boxShadow: [R.styles.boxShadowAll],
       ),
       width: R.appRatio.deviceWidth,
       height: _buttonHeight,
