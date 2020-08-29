@@ -297,14 +297,16 @@ class RecordBloc extends BlocBase {
     }
   }
 
-  void showNoticeLocationPermission(){
-    showCustomAlertDialog(
-      context,
-      title: R.strings.notice,
-      content: "Please choose always allow permission",
-      firstButtonText: R.strings.ok.toUpperCase(),
-      firstButtonFunction: () => pop(context),
-    );
+  Future<String> getNoticeContent() async {
+
+    int androidVer = await getAndroidVersion();
+    String notice = R.strings.androidPermissionNotice;
+    if (androidVer>29)
+      notice = R.strings.android11PermissionNotice;
+    if (androidVer == 29)
+      notice = R.strings.android10PermissionNotice;
+
+    return notice;
   }
 
   Future<bool> onGpsStatusChecking() async {
@@ -318,28 +320,52 @@ class RecordBloc extends BlocBase {
     bool hasPermission = await ph.Permission.locationAlways.isGranted;
     print("test"+hasPermission.toString());
     if (!hasPermission) {
-      hasPermission = await this.requestGPSPermission();
-      showNoticeLocationPermission();
-    }
-    if (!hasPermission) {
-      this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
 
-      showNoticeLocationPermission();
-      print("status"+hasPermission.toString());
-      return false;
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: await getNoticeContent(),
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () async {
+          pop(context);
+          hasPermission = await this.requestGPSPermission();
+          if (!hasPermission) {
+            this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
+            print("status"+hasPermission.toString());
+            return false;
+          }
+          this.beginPoint = await this.getCurrentLocation();
+          if (beginPoint != null) {
+            this._streamLocationController.add(beginPoint);
+            this._updatePositionCamera(
+                LatLng(beginPoint.latitude, beginPoint.longitude));
+            this._streamGPSSignal.add(GPSSignalStatus.READY);
+            drawMaker(LatLng(beginPoint.latitude, beginPoint.longitude));
+            return true;
+          } else {
+            this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
+            return false;
+          }
+          } ,
+      );
     }
-    this.beginPoint = await this.getCurrentLocation();
-    if (beginPoint != null) {
-      this._streamLocationController.add(beginPoint);
-      this._updatePositionCamera(
-          LatLng(beginPoint.latitude, beginPoint.longitude));
-      this._streamGPSSignal.add(GPSSignalStatus.READY);
-      drawMaker(LatLng(beginPoint.latitude, beginPoint.longitude));
-      return true;
-    } else {
-      this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
-      return false;
-    }
+    else
+      {
+        this.beginPoint = await this.getCurrentLocation();
+        if (beginPoint != null) {
+          this._streamLocationController.add(beginPoint);
+          this._updatePositionCamera(
+              LatLng(beginPoint.latitude, beginPoint.longitude));
+          this._streamGPSSignal.add(GPSSignalStatus.READY);
+          drawMaker(LatLng(beginPoint.latitude, beginPoint.longitude));
+          return true;
+        } else {
+          this._streamGPSSignal.add(GPSSignalStatus.NOT_AVAILABLE);
+          return false;
+        }
+      }
+
+
   }
 
   onMapCreated(GoogleMapController controller) {

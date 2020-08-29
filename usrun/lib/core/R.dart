@@ -1133,6 +1133,9 @@ class Strings {
   String gpsReady;
   String gpsNotFound;
   String gpsServiceUnavailable;
+  String android11PermissionNotice;
+  String android10PermissionNotice;
+  String androidPermissionNotice;
   String enableGPS;
   String time;
   String distance;
