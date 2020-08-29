@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:image/image.dart' as img;
 import 'package:location/location.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/page/record/activity_data.dart';
@@ -85,9 +86,10 @@ class RecordHelper{
     });
 
     List<String> photos = [];
-    activityData.photos.forEach((p) {
-      String imageB64 = base64Encode(p.readAsBytesSync());
-      photos.add("data:image/png;base64,${imageB64}");
+    activityData.photos.forEach((p){
+      img.Image data = img.decodeImage(p.readAsBytesSync());
+      data = img.bakeOrientation(data);
+      photos.add("data:image/jpg;base64,${base64Encode(img.encodeJpg(data))}");
     });
 
 

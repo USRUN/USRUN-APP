@@ -43,7 +43,7 @@ class ProfileInfoState extends State<ProfileInfo> {
   }
 
   void loadUserTeams() async {
-    Response<dynamic> response = await TeamManager.getTeamByUser(widget.userId);
+    Response<dynamic> response = await TeamManager.getJoinedTeamByUser(widget.userId);
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<TeamItem> toAdd = List();

@@ -17,10 +17,37 @@ class RegisterLeaveEventUtil {
   static Future<Team> _chooseATeam(BuildContext context) async {
     List<Team> teamListOfUser = List();
 
-    Response response = await TeamManager.getTeamByUser(UserManager.currentUser.userId);
+    Response response =
+        await TeamManager.getJoinedTeamByUser(UserManager.currentUser.userId);
 
-    if(response.success && (response.object as List).isNotEmpty){
+    if (response.success &&
+        response.errorCode == -1 &&
+        (response.object as List).isEmpty) {
+      await showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: R.strings.mustJoinATeam,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          pop(context);
+        },
+      );
+      return null;
+    }
+
+    if (response.success && (response.object as List).isNotEmpty) {
       teamListOfUser = response.object;
+    } else {
+      await showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          pop(context);
+        },
+      );
+      return null;
     }
 
     List<ObjectFilter> objFilterList = List();
@@ -68,9 +95,10 @@ class RegisterLeaveEventUtil {
 
     bool result = false;
 
-    Response<dynamic> response = await EventManager.joinEvent(eventId,userTeam.id);
+    Response<dynamic> response =
+        await EventManager.joinEvent(eventId, userTeam.id);
 
-    if(response.success && response.errorCode == -1){
+    if (response.success && response.errorCode == -1) {
       result = true;
     }
 
@@ -161,7 +189,7 @@ class RegisterLeaveEventUtil {
 
     Response response = await EventManager.leaveEvent(eventId);
 
-    if(response.success && response.errorCode == -1){
+    if (response.success && response.errorCode == -1) {
       result = true;
     }
 

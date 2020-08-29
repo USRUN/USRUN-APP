@@ -56,15 +56,17 @@ class _EventDescriptionState extends State<EventDescriptionPage> {
   }
 
   _loadEvent() async {
-    Response<dynamic> response = await EventManager.getEventInfo(eventId,UserManager.currentUser.userId);
+    Response<dynamic> response = await EventManager.getEventInfo(
+        eventId, UserManager.currentUser.userId);
     if (response.success && response.object != null) {
       event = response.object;
     } else {
-      showCustomAlertDialog(context,
-          title: R.strings.error,
-          content: response.errorMessage,
-          firstButtonText: R.strings.ok.toUpperCase(),
-          firstButtonFunction: () => pop(context),
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
       );
     }
   }

@@ -77,7 +77,7 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     if (checkListIsNullOrEmpty(_teamSuggestionList)) {
       List<dynamic> bannerList = [
-        ImageCacheManager.getImageData(
+        ImageCacheManager.getImage(
           url: R.images.defaultBackground,
         ),
       ];
@@ -89,6 +89,7 @@ class _TeamPageState extends State<TeamPage> {
       bannerList.add(
         ImageCacheManager.getImage(
           url: _teamSuggestionList[i].bannerImageURL,
+          fit: BoxFit.fill,
         ),
       );
     }
@@ -183,10 +184,12 @@ class _TeamPageState extends State<TeamPage> {
                           dotColor: Colors.white,
                           dotIncreasedColor: R.colors.majorOrange,
                           dotBgColor: Colors.black.withOpacity(0.25),
-                          boxFit: BoxFit.cover,
+                          boxFit: BoxFit.fill,
                           indicatorBgPadding: 5.0,
                           animationDuration: Duration(milliseconds: 500),
                           autoplayDuration: Duration(seconds: 8),
+                          borderRadius: true,
+                          radius: Radius.circular(0),
                         ),
                       ),
                       SizedBox(
@@ -275,10 +278,7 @@ class _TeamPageState extends State<TeamPage> {
                         lineFunction: () {
                           pushPage(
                             context,
-                            TeamSearchPage(
-                              autoFocusInput: false,
-                              defaultList: _teamSuggestionList,
-                            ),
+                            TeamSearchPage(),
                           );
                         },
                       ),

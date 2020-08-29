@@ -42,7 +42,7 @@ class HeaderRankLead extends StatelessWidget {
             ),
           ),
           Container(
-            width: R.appRatio.appWidth80,
+            width: R.appRatio.appWidth90,
             child: Text(
               thirdTitle,
               maxLines: 2,

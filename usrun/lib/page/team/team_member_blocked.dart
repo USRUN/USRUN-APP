@@ -23,18 +23,23 @@ class BlockedMemberPage extends StatefulWidget {
   final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
 
-  BlockedMemberPage({@required this.teamId, @required this.teamMemberType});
+  BlockedMemberPage({
+    @required this.teamId,
+    @required this.teamMemberType,
+    Key key,
+  }) : super(key: key);
 
   @override
-  _BlockedMemberPageState createState() => _BlockedMemberPageState();
+  BlockedMemberPageState createState() => BlockedMemberPageState();
 }
 
-class _BlockedMemberPageState extends State<BlockedMemberPage>
-    with SingleTickerProviderStateMixin {
+class BlockedMemberPageState extends State<BlockedMemberPage>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   bool _isLoading;
   int _curPage;
   bool _remainingResults;
+  int callReload;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -44,9 +49,9 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
     _isLoading = false;
     _curPage = 1;
+    callReload = -1;
     _remainingResults = true;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => _reloadItems());
+    reloadItems();
   }
 
   @override
@@ -87,7 +92,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
     _refreshController.loadNoData();
   }
 
-  _reloadItems() {
+  reloadItems() {
     items = List();
     _curPage = 1;
     _remainingResults = true;
@@ -96,24 +101,26 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
   }
 
   _pressAvatar(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   _pressUserInfo(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   _releaseFromBlock(index) {
-    changeMemberRole(index, TeamMemberType.Pending.index);
+    changeMemberRole(index, TeamMemberType.Pending.index, 1);
   }
 
-  void changeMemberRole(int index, int newMemberType) async {
+  void changeMemberRole(int index, int newMemberType, int callReloadOn) async {
     if (!mounted || items[index] == null) return;
 
     setState(
@@ -125,11 +132,8 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success && response.errorCode == -1) {
-      setState(
-        () {
-          _reloadItems();
-        },
-      );
+      reloadItems();
+      callReload = callReloadOn;
     } else {
       showCustomAlertDialog(
         context,
@@ -176,7 +180,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
       child: SmartRefresher(
         enablePullDown: true,
         controller: _refreshController,
-        onRefresh: _reloadItems,
+        onRefresh: reloadItems,
         child: Container(
           padding: EdgeInsets.only(
             left: R.appRatio.appSpacing25,
@@ -212,6 +216,8 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     if (checkListIsNullOrEmpty(items)) {
       return _buildEmptyList();
     }
@@ -227,28 +233,28 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
         child: SmartRefresher(
           enablePullDown: true,
           controller: _refreshController,
-          onRefresh: _reloadItems,
+          onRefresh: reloadItems,
           enablePullUp: true,
           onLoading: loadMoreData,
-          footer: CustomFooter(
-              builder: (BuildContext context, LoadStatus mode) {
-                Widget body;
-                if (mode == LoadStatus.idle) {
-                  body = Text(R.strings.teamFooterIdle);
-                } else if (mode == LoadStatus.loading) {
-                  body = LoadingIndicator();
-                } else if (mode == LoadStatus.failed) {
-                  body = Text(R.strings.teamFooterFailed);
-                } else if (mode == LoadStatus.canLoading) {
-                  body = Text(R.strings.teamFooterCanLoading);
-                } else {
-                  body = Text(R.strings.teamFooterNoMoreData);
-                }
-                return Container(
-                  height: 55.0,
-                  child: Center(child: body),
-                );
-              }),
+          footer:
+              CustomFooter(builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text(R.strings.teamFooterIdle);
+            } else if (mode == LoadStatus.loading) {
+              body = LoadingIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text(R.strings.teamFooterFailed);
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text(R.strings.teamFooterCanLoading);
+            } else {
+              body = Text(R.strings.teamFooterNoMoreData);
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          }),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -261,7 +267,6 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
                   verticalOffset: 100.0,
                   child: FadeInAnimation(
                     child: Container(
-
                       child: _renderCustomCell(index),
                     ),
                   ),
@@ -316,4 +321,7 @@ class _BlockedMemberPageState extends State<BlockedMemberPage>
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

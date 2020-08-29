@@ -156,10 +156,7 @@ class _AppPageState extends State<AppPage> {
             () {
               pushPage(
                 context,
-                TeamSearchPage(
-                  autoFocusInput: true,
-                  defaultList: null,
-                ),
+                TeamSearchPage(),
               );
             },
           ),

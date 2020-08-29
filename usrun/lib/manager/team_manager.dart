@@ -5,6 +5,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/team_leaderboard.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/team/team_activity_item.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/page/team/teamstat_rank_item.dart';
@@ -235,6 +236,27 @@ class TeamManager {
     return response;
   }
 
+  static Future<Response> getJoinedTeamByUser(int userId) async {
+    Map<String,dynamic> params = {
+      'userId': userId,
+    };
+
+    Response<dynamic> res = await Client.post('/team/getJoinedTeamByUser', params);
+
+    if(!res.success || (res.object as List).length == 0) return res;
+
+    List<Team> teams = (res.object as List)
+        .map((item)=> MapperObject.create<Team>(item)).toList();
+
+    Response<List<Team>> response = new Response(
+        errorCode: res.errorCode,
+        success: res.success,
+        object: teams
+    );
+
+    return response;
+  }
+
   static Future<Response> getTeamLeaderBoard(int teamId) async {
     Map<String, dynamic> params = {
       'teamId': teamId,
@@ -414,4 +436,27 @@ class TeamManager {
 
     return res;
   }
+
+  static Future<dynamic> getTeamActivity(int userID,
+      {int limit = 10, int offset = 0}) async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['teamId'] = userID;
+    params['offset'] = offset;
+    params['count'] = limit;
+
+    Response<dynamic> response =
+    await Client.post('/activity/getTeamFeed', params);
+
+    if (response.object == null || !response.success) {
+      return null;
+    }
+
+    List<UserActivity> obj = [];
+    if (response.object != null)
+      obj = (response.object as List)
+          .map((item)=> MapperObject.create<UserActivity>(item)).toList();
+
+    return obj;
+  }
+
 }

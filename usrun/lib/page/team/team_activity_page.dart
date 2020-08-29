@@ -1,216 +1,130 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/widgets.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/team_manager.dart';
-import 'package:usrun/model/response.dart';
-import 'package:usrun/page/team/team_activity_item.dart';
-import 'package:usrun/widget/activity_timeline.dart';
+import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
-import 'package:usrun/widget/loading_dot.dart';
+import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
 class TeamActivityPage extends StatefulWidget {
-  final int perPage = 10;
   final int teamId;
-  final int totalActivity;
 
-  TeamActivityPage({@required this.teamId, @required this.totalActivity});
+  TeamActivityPage({@required this.teamId});
 
   @override
   _TeamActivityPageState createState() => _TeamActivityPageState();
 }
 
 class _TeamActivityPageState extends State<TeamActivityPage> {
-  bool _isLoading;
-  bool _isKM;
-  List _activityTimelineList;
-  List _photos;
-  bool _remainingResults;
-  int _curPage;
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  List<UserActivity> _userActivityList;
+  int _page;
+  bool _allowLoadMore;
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true;
-    _isKM = true;
-    _curPage = 0;
-    _remainingResults = true;
-
-    _activityTimelineList = List();
-    _photos = List();
-
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => getProfileActivityData());
+    _getNecessaryData();
   }
 
-  getProfileActivityData() async {
-    if (!_isLoading) {
-      setState(
-        () {
-          _isLoading = true;
-        },
-      );
-    }
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
 
-    if (!_remainingResults) return;
-    _remainingResults = false;
+  Future<void> _loadData() async {
+    if (!_allowLoadMore) return;
 
-    Response<dynamic> response = await TeamManager.getTeamActivityByTeamId(
-        widget.teamId, _curPage, widget.perPage);
+    List<UserActivity> result =
+        await TeamManager.getTeamActivity(widget.teamId, offset: _page);
 
-    if (response.success && (response.object as List).isNotEmpty) {
-      List<TeamActivityItem> toAdd = response.object;
-      List newPhotos = toAdd.map((e) => e.photos).toList();
+    if (result != null && result.length != 0) {
       setState(() {
-        _photos.addAll(newPhotos);
-        _activityTimelineList.addAll(toAdd);
-        _curPage += 1;
-        _remainingResults = true;
+        _userActivityList.insertAll(_userActivityList.length, result);
+        _page += 1;
+      });
+    } else {
+      setState(() {
+        _allowLoadMore = false;
       });
     }
+  }
 
-    setState(
-      () {
-        _isLoading = !_isLoading;
+  Future<void> _getNecessaryData() async {
+    setState(() {
+      _userActivityList = List();
+      _page = 0;
+      _allowLoadMore = true;
+    });
+    await _loadData();
+    _refreshController.refreshCompleted();
+  }
+
+  Widget _renderBodyContent() {
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: EdgeInsets.all(0.0),
+      itemCount: _userActivityList.length,
+      itemBuilder: (context, index) {
+        if (index == _userActivityList.length - 1) {
+          _loadData();
+        }
+
+        return Container(
+          margin: EdgeInsets.only(
+              bottom: (index != _userActivityList.length - 1 ? 12.0 : 0)),
+          child: CompactUserActivityItem(
+            userActivity: _userActivityList[index],
+          ),
+        );
       },
     );
   }
 
-  void _pressEventBadge(data) {
-    // TODO: Implement function here
-    print("[EventBadgesWidget] This is pressed with data $data");
-  }
-
-  void _pressActivityFunction(actID) {
-    // TODO: Implement function here
-    print(
-        "[ActivityTimelineWidget] 'Activity' icon of activity id '$actID' is pressed");
-  }
-
-  void _pressLoveFunction(actID) {
-    // TODO: Implement function here
-    print(
-        "[ActivityTimelineWidget] 'Love' icon of activity id '$actID' is pressed");
-  }
-
-  void _pressCommentFunction(actID) {
-    // TODO: Implement function here
-    print(
-        "[ActivityTimelineWidget] 'Comment' icon of activity id '$actID' is pressed");
-  }
-
-  void _pressShareFunction(actID) {
-    // TODO: Implement function here
-    print(
-        "[ActivityTimelineWidget] 'Share' icon of activity id '$actID' is pressed");
-  }
-
-  void _pressInteractionFunction(actID) {
-    // TODO: Implement function here
-    print(
-        "[ActivityTimelineWidget] 'Interaction' icon of activity id '$actID' is pressed");
-  }
-
   @override
   Widget build(BuildContext context) {
+    Widget smartRefresher = SmartRefresher(
+      enablePullUp: false,
+      controller: _refreshController,
+      child: _renderBodyContent(),
+      physics: BouncingScrollPhysics(),
+      footer: null,
+      onRefresh: () => _getNecessaryData(),
+      onLoading: () async {
+        await Future.delayed(Duration(milliseconds: 200));
+      },
+    );
+
+    Widget refreshConfigs = RefreshConfiguration(
+      child: smartRefresher,
+      headerBuilder: () => WaterDropMaterialHeader(
+        backgroundColor: R.colors.majorOrange,
+      ),
+      footerBuilder: null,
+      shouldFooterFollowWhenNotFull: (state) {
+        return false;
+      },
+      hideFooterWhenNotFull: true,
+    );
+
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: R.colors.appBackground,
-        appBar: CustomGradientAppBar(title: R.strings.activities),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(
-              height: R.appRatio.appSpacing20,
-            ),
-            // Activity Timeline
-            Container(
-              padding: EdgeInsets.only(
-                left: R.appRatio.appSpacing15,
-                bottom: R.appRatio.appSpacing15,
-              ),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                R.strings.personalActivities + ": ${widget.totalActivity}",
-                style: R.styles.shadowLabelStyle,
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: (_isLoading
-                    ? Container(
-                        padding: EdgeInsets.only(
-                          top: R.appRatio.appSpacing15,
-                        ),
-                        child: LoadingIndicator(),
-                      )
-                    : _renderList()),
-              ),
-            ),
-          ],
-        ));
-  }
-
-  Widget _renderList() {
-    return Container(
-      padding: EdgeInsets.only(
-        left: R.appRatio.appSpacing10,
-        right: R.appRatio.appSpacing10,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: R.colors.appBackground,
+      appBar: CustomGradientAppBar(
+        title: R.strings.activities,
       ),
-      child: AnimationLimiter(
-        child: ListView.builder(
-          padding: EdgeInsets.all(0),
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: _activityTimelineList.length,
-          itemBuilder: (BuildContext ctxt, int index) {
-            dynamic item = _activityTimelineList[index];
-
-            if (index == _activityTimelineList.length - 1) {
-              return GestureDetector(
-                onVerticalDragUpdate: (details) {
-                  if (details.delta.dy >= -10.0) return;
-                  getProfileActivityData();
-                },
-                child: _renderActivityTimeline(item),
-              );
-            }
-            return _renderActivityTimeline(item);
-          },
-        ),
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        child: refreshConfigs,
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        },
       ),
     );
-  }
-
-  Widget _renderActivityTimeline(TeamActivityItem item) {
-    return ActivityTimeline(
-      activityID: customToString(item.userActivityId),
-      dateTime: DateFormat("dd/mm/yyyy hh:mm:ss").format(item.createTime),
-      title: item.title,
-      calories: customToString(item.calories),
-      distance:
-          (_isKM ? item.totalDistance.toDouble() : (item.totalDistance * 1000)),
-      isKM: _isKM,
-      elevation: customToString(item.elevGain),
-      pace: customToString(item.avgPace),
-      time: item.totalTime.toString(),
-      isLoved: false,
-      loveNumber: item.totalLove,
-      enableScrollBackgroundColor: true,
-      pressActivityFunction: this._pressActivityFunction,
-      pressLoveFunction: this._pressLoveFunction,
-      pressCommentFunction: this._pressCommentFunction,
-      pressShareFunction: this._pressShareFunction,
-      pressInteractionFunction: this._pressInteractionFunction,
-    );
-  }
-
-  String customToString(dynamic input) {
-    if (input == -1 || input == "") {
-      return "N/A";
-    }
-    return input.toString();
   }
 }

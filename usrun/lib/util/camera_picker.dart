@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:image/image.dart' as img;
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,8 +81,9 @@ class CameraPicker {
 
   Future<String> toBase64() async {
     if (_file == null) return Future.value("");
-    Uint8List data = await _file.readAsBytes();
-    return base64Encode(data);
+    img.Image data = img.decodeImage(await _file.readAsBytes());
+    data = img.bakeOrientation(data);
+    return base64Encode(img.encodeJpg(data));
   }
 
   Future<PickedFile> showImagePicker({
@@ -268,7 +270,7 @@ class CameraPicker {
               SizedBox(height: _spacing),
               _renderButton(
                 text: R.strings.close,
-                func: () => pop(context, object: null),
+                func: () => pop(context, object: false),
               ),
             ],
           ),

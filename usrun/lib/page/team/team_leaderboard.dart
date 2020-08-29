@@ -9,6 +9,8 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -37,6 +39,14 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
     _getLeaderBoard();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+  }
+
+  void loadTeamMemberProfile(int index) async {
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   void _getLeaderBoard() async {
@@ -118,7 +128,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
             itemBuilder: (BuildContext ctxt, int index) {
               String avatarImageURL = items[index].avatarImageURL;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US").format(
+              String distance = NumberFormat.compact().format(
                 switchBetweenMeterAndKm(
                   items[index].distance,
                   formatType: RunningUnit.KILOMETER,
@@ -171,9 +181,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                                   color: R.colors.majorOrange,
                                 ),
                                 pressAvatarImage: () {
-                                  // TODO: Implement here
-                                  print(
-                                      "Pressing avatar image with index $index, no. ${index + 1}, userId: ${items[index].userId}");
+                                  loadTeamMemberProfile(index);
                                 },
                               ),
                               // Content
@@ -184,9 +192,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
-                                // TODO: Implement here
-                                print(
-                                    "Pressing info with index $index, no. ${index + 1}");
+                                loadTeamMemberProfile(index);
                               },
                             ),
                           ),
