@@ -72,7 +72,7 @@ class AllMemberPage extends StatefulWidget {
     @required this.options,
     @required this.renderAsMember,
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   AllMemberPageState createState() => AllMemberPageState();
@@ -155,16 +155,16 @@ class AllMemberPageState extends State<AllMemberPage>
       case "Follow":
         break;
       case "Block":
-        changeMemberRole(index, TeamMemberType.Blocked.index,2);
+        changeMemberRole(index, TeamMemberType.Blocked.index, 2);
         break;
       case "Kick":
-        changeMemberRole(index, TeamMemberType.Pending.index,1);
+        changeMemberRole(index, TeamMemberType.Pending.index, 1);
         break;
       case "Promote":
-        changeMemberRole(index, TeamMemberType.Admin.index,-1);
+        changeMemberRole(index, TeamMemberType.Admin.index, -1);
         break;
       case "Demote":
-        changeMemberRole(index, TeamMemberType.Member.index,-1);
+        changeMemberRole(index, TeamMemberType.Member.index, -1);
         break;
     }
   }
@@ -196,8 +196,8 @@ class AllMemberPageState extends State<AllMemberPage>
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success && response.errorCode == -1) {
-        reloadItems();
-        callReload = callReloadOn;
+      reloadItems();
+      callReload = callReloadOn;
     } else {
       showCustomAlertDialog(
         context,
@@ -352,7 +352,9 @@ class AllMemberPageState extends State<AllMemberPage>
     String name = items[index].name;
     String listTeamMemberType = widget.memberTypes[listMemberTypeIndex];
     bool enablePopUpMenu = false;
-    Color textColor = items[index].userId == UserManager.currentUser.userId? R.colors.majorOrange: R.colors.contentText;
+    Color textColor = items[index].userId == UserManager.currentUser.userId
+        ? R.colors.majorOrange
+        : R.colors.contentText;
 
     return CustomCell(
       padding: EdgeInsets.only(
@@ -404,8 +406,9 @@ class AllMemberPageState extends State<AllMemberPage>
     bool enablePopUpMenu =
         !checkListIsNullOrEmpty(options[listMemberTypeIndex]);
     List<PopupItem> popUpItems = options[listMemberTypeIndex];
-    Color textColor = items[index].userId == UserManager.currentUser.userId? R.colors.majorOrange: R.colors.contentText;
-
+    Color textColor = items[index].userId == UserManager.currentUser.userId
+        ? R.colors.majorOrange
+        : R.colors.contentText;
 
     return CustomCell(
       padding: EdgeInsets.only(

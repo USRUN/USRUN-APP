@@ -39,8 +39,9 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
 
     List<Event> result = List();
 
-    Response<dynamic> response = await EventManager.getUserEventsPaged(UserManager.currentUser.userId, _page, 5);
-    if(response.success && (response.object as List).isNotEmpty) {
+    Response<dynamic> response = await EventManager.getUserEventsPaged(
+        UserManager.currentUser.userId, _page, 5);
+    if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
     }
 

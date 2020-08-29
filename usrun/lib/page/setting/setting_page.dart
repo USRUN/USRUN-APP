@@ -111,7 +111,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void handleChangeRunningUnit(index) async {
     RunningUnit newRunningUnit = RunningUnit.values[index];
-    if(newRunningUnit != DataManager.getUserRunningUnit()) {
+    if (newRunningUnit != DataManager.getUserRunningUnit()) {
       DataManager.setUserRunningUnit(newRunningUnit);
     }
 
@@ -132,7 +132,7 @@ class _SettingPageState extends State<SettingPage> {
 
   List<ObjectFilter> loadRunningUnit() {
     List<ObjectFilter> runningUnits = List();
-    for(int i = 0; i < R.strings.distanceUnit.length; i++){
+    for (int i = 0; i < R.strings.distanceUnit.length; i++) {
       runningUnits.add(
         ObjectFilter(
           name: R.strings.distanceUnit[i],
