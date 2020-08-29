@@ -267,7 +267,7 @@ class _TeamPageState extends State<TeamPage> {
                         height: R.appRatio.appSpacing20,
                       ),
                       LineButton(
-                        mainText: R.strings.viewAllTeams,
+                        mainText: R.strings.viewAllTeams.toUpperCase(),
                         mainTextFontSize: R.appRatio.appFontSize16,
                         enableSuffixIcon: true,
                         suffixIconSize: R.appRatio.appIconSize15,
