@@ -19,7 +19,8 @@
         android:name="vn.hcmus.usrun.MainApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="USRUN"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
         <!--        <meta-data-->
         <!--            android:name="flutterEmbedding"-->
         <!--            android:value="2" />-->
