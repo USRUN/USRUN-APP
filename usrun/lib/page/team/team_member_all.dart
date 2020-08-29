@@ -71,29 +71,33 @@ class AllMemberPage extends StatefulWidget {
     @required this.teamMemberType,
     @required this.options,
     @required this.renderAsMember,
-  });
+    Key key,
+  }): super(key: key);
 
   @override
-  _AllMemberPageState createState() => _AllMemberPageState();
+  AllMemberPageState createState() => AllMemberPageState();
 }
 
-class _AllMemberPageState extends State<AllMemberPage>
+class AllMemberPageState extends State<AllMemberPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   bool _isLoading;
   int _curPage;
   bool _remainingResults;
   List options = List();
+  int callReload;
   RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
 
     _curPage = 1;
+    callReload = -1;
     _remainingResults = true;
     _isLoading = false;
+    reloadItems();
 
     options = checkListIsNullOrEmpty(widget.options) ? List() : widget.options;
   }
@@ -138,7 +142,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     _refreshController.loadNoData();
   }
 
-  _reloadItems() {
+  reloadItems() {
     items = List();
     _curPage = 1;
     _remainingResults = true;
@@ -151,16 +155,16 @@ class _AllMemberPageState extends State<AllMemberPage>
       case "Follow":
         break;
       case "Block":
-        changeMemberRole(index, TeamMemberType.Blocked.index);
+        changeMemberRole(index, TeamMemberType.Blocked.index,2);
         break;
       case "Kick":
-        changeMemberRole(index, TeamMemberType.Pending.index);
+        changeMemberRole(index, TeamMemberType.Pending.index,1);
         break;
       case "Promote":
-        changeMemberRole(index, TeamMemberType.Admin.index);
+        changeMemberRole(index, TeamMemberType.Admin.index,-1);
         break;
       case "Demote":
-        changeMemberRole(index, TeamMemberType.Member.index);
+        changeMemberRole(index, TeamMemberType.Member.index,-1);
         break;
     }
   }
@@ -181,7 +185,7 @@ class _AllMemberPageState extends State<AllMemberPage>
     pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
-  void changeMemberRole(int index, int newMemberType) async {
+  void changeMemberRole(int index, int newMemberType, int callReloadOn) async {
     if (!mounted || items[index] == null) return;
     setState(
       () {
@@ -192,9 +196,8 @@ class _AllMemberPageState extends State<AllMemberPage>
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success && response.errorCode == -1) {
-      setState(() {
-        _reloadItems();
-      });
+        reloadItems();
+        callReload = callReloadOn;
     } else {
       showCustomAlertDialog(
         context,
@@ -241,7 +244,7 @@ class _AllMemberPageState extends State<AllMemberPage>
       child: SmartRefresher(
         enablePullDown: true,
         controller: _refreshController,
-        onRefresh: _reloadItems,
+        onRefresh: reloadItems,
         footer: null,
         child: Container(
           padding: EdgeInsets.only(
@@ -293,7 +296,7 @@ class _AllMemberPageState extends State<AllMemberPage>
               child: SmartRefresher(
                 enablePullDown: true,
                 controller: _refreshController,
-                onRefresh: _reloadItems,
+                onRefresh: reloadItems,
                 enablePullUp: true,
                 onLoading: loadMoreData,
                 footer: CustomFooter(

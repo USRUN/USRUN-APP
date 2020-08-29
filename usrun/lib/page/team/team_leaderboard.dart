@@ -128,7 +128,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
             itemBuilder: (BuildContext ctxt, int index) {
               String avatarImageURL = items[index].avatarImageURL;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US").format(
+              String distance = NumberFormat.compact().format(
                 switchBetweenMeterAndKm(
                   items[index].distance,
                   formatType: RunningUnit.KILOMETER,

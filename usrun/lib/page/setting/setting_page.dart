@@ -111,8 +111,9 @@ class _SettingPageState extends State<SettingPage> {
 
   void handleChangeRunningUnit(index) async {
     RunningUnit newRunningUnit = RunningUnit.values[index];
-    if(newRunningUnit == DataManager.getUserRunningUnit())
-    DataManager.setUserRunningUnit(newRunningUnit);
+    if(newRunningUnit != DataManager.getUserRunningUnit()) {
+      DataManager.setUserRunningUnit(newRunningUnit);
+    }
 
     await showCustomAlertDialog(
       context,

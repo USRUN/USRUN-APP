@@ -173,12 +173,12 @@ class _TeamRankState extends State<TeamRank> {
               String rank = items[index].rank.toString();
               String avatarImageURL = items[index].avatar;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US").format(
+              String distance = NumberFormat.compact().format(
                 switchBetweenMeterAndKm(
                   items[index].distance,
                   formatType: RunningUnit.KILOMETER,
                 ),
-              );
+              ).toUpperCase();
 
               return AnimationConfiguration.staggeredList(
                 position: index,

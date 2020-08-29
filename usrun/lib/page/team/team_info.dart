@@ -312,8 +312,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   String numberDisplayAdapter(dynamic toDisplay) {
     if (toDisplay == -1) {
       return R.strings.na;
-    } else
-      return toDisplay.toString();
+    }
+      return NumberFormat.compact().format((toDisplay));
   }
 
 //  _transferOwnership() {

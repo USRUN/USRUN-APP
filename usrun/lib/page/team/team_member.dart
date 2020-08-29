@@ -101,6 +101,9 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   List options = List();
   TabController _tabController;
   List<Widget> tabBarViewItems;
+  GlobalKey<AllMemberPageState> allMemberPage = GlobalKey();
+  GlobalKey<PendingMemberPageState> pendingMemberPage = GlobalKey();
+  GlobalKey<BlockedMemberPageState> blockedMemberPage = GlobalKey();
   bool renderAsMember;
 
   @override
@@ -121,68 +124,90 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     }
 
     if (TeamMemberUtil.authorizeHigherLevel(
-        TeamMemberType.Admin, widget.teamMemberType)) {
-      tabItems = widget.adminTabBarItems;
-      renderAsMember = false;
-      tabBarViewItems = [
-        AllMemberPage(
-          teamId: widget.teamId,
-          teamMemberType: widget.teamMemberType,
-          options: options,
-          renderAsMember: renderAsMember,
-        ),
-        PendingMemberPage(
-            teamId: widget.teamId, teamMemberType: widget.teamMemberType),
-        BlockedMemberPage(
-            teamId: widget.teamId, teamMemberType: widget.teamMemberType),
-      ];
+      TeamMemberType.Admin,
+      widget.teamMemberType,
+    )) {
+      initAsAdmin();
     } else {
-      renderAsMember = true;
-      tabBarViewItems = [
-        AllMemberPage(
-          teamId: widget.teamId,
-          teamMemberType: widget.teamMemberType,
-          options: options,
-          renderAsMember: renderAsMember,
-        )
-      ];
-      tabItems = widget.tabBarItems;
-
-//      _tabController.addListener(() {
-//        _selectedTabIndex = _tabController.index;
-//      });
+      initAsMember();
     }
-
-    _tabController = TabController(length: tabItems.length, vsync: this);
   }
 
-  void _inviteMember(dynamic data) async {
-    Response<dynamic> res =
-        await TeamManager.inviteNewMember(widget.teamId, data);
+  void initAsAdmin() {
+    tabItems = widget.adminTabBarItems;
+    renderAsMember = false;
+    tabBarViewItems = [
+      AllMemberPage(
+        teamId: widget.teamId,
+        teamMemberType: widget.teamMemberType,
+        options: options,
+        renderAsMember: renderAsMember,
+        key: allMemberPage,
+      ),
+      PendingMemberPage(
+        teamId: widget.teamId,
+        teamMemberType: widget.teamMemberType,
+        key: pendingMemberPage,
+      ),
+      BlockedMemberPage(
+        teamId: widget.teamId,
+        teamMemberType: widget.teamMemberType,
+        key: blockedMemberPage,
+      ),
+    ];
 
-    if (res.success) {
-      pop(this.context);
-      showCustomAlertDialog(
-        context,
-        title: R.strings.notice,
-        content: R.strings.invitationSent,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () {
-          pop(this.context);
-        },
-      );
-    } else {
-      pop(this.context);
-      showCustomAlertDialog(
-        context,
-        title: R.strings.error,
-        content: res.errorMessage,
-        firstButtonText: R.strings.ok.toUpperCase(),
-        firstButtonFunction: () {
-          pop(this.context);
-        },
-      );
+    _tabController = TabController(length: tabItems.length, vsync: this);
+
+    _tabController.addListener(() {
+      int prevIndex = _tabController.previousIndex;
+      switch (prevIndex) {
+        case 0:
+          handleCallReload(allMemberPage.currentState.callReload);
+          allMemberPage.currentState.callReload = -1;
+          break;
+        case 1:
+          handleCallReload(pendingMemberPage.currentState.callReload);
+          pendingMemberPage.currentState.callReload = -1;
+          break;
+        case 2:
+          handleCallReload(blockedMemberPage.currentState.callReload);
+          blockedMemberPage.currentState.callReload = -1;
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  void handleCallReload(int callReload) {
+    switch (callReload) {
+      case 0:
+        allMemberPage.currentState.reloadItems();
+        break;
+      case 1:
+        pendingMemberPage.currentState.reloadItems();
+        break;
+      case 2:
+        blockedMemberPage.currentState.reloadItems();
+        break;
+      default:
+        break;
     }
+  }
+
+  void initAsMember() {
+    renderAsMember = true;
+    tabBarViewItems = [
+      AllMemberPage(
+        teamId: widget.teamId,
+        teamMemberType: widget.teamMemberType,
+        options: options,
+        renderAsMember: renderAsMember,
+      )
+    ];
+    tabItems = widget.tabBarItems;
+
+    _tabController = TabController(length: tabItems.length, vsync: this);
   }
 
   @override
