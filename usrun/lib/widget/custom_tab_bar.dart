@@ -11,14 +11,11 @@ import 'package:usrun/util/image_cache_manager.dart';
   -> ----------------------------
 */
 class CustomTabBarStyle01 extends StatelessWidget {
+  final double _tabIconSize = R.appRatio.appIconSize30;
+
   final int selectedTabIndex;
   final List<String> items;
   final Function pressTab;
-
-  static double _tabIconSize = R.appRatio.appIconSize30;
-  static double _tabBarWidth = R.appRatio.deviceWidth;
-  static double _tabWidth = 0;
-  static double _lastTabWidth = 0;
 
   CustomTabBarStyle01({
     @required this.selectedTabIndex,
@@ -29,60 +26,61 @@ class CustomTabBarStyle01 extends StatelessWidget {
             items.length <= R.constants.maxProfileTabBarNumber),
         assert(selectedTabIndex != null);
 
-  void _computeTabBarWidth() {
-    int _itemsSize = this.items.length;
-    _tabWidth = (_tabBarWidth / _itemsSize).roundToDouble();
-    _lastTabWidth = _tabBarWidth - (_tabWidth * (_itemsSize - 1));
+  Widget _renderButton(String iconURL, int index) {
+    Color overlayColor = Colors.transparent;
+    if (this.selectedTabIndex == index) {
+      overlayColor = Color.fromRGBO(255, 255, 255, 0.2);
+    }
+
+    return FlatButton(
+      textColor: Colors.white,
+      padding: EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(0),
+        ),
+      ),
+      onPressed: () {
+        if (this.pressTab != null) {
+          this.pressTab(index);
+        }
+      },
+      child: Container(
+        color: overlayColor,
+        alignment: Alignment.center,
+        child: ImageCacheManager.getImage(
+          url: iconURL,
+          width: _tabIconSize,
+          height: _tabIconSize,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _renderTabBar() {
+    List<Widget> tabBar = List();
+
+    for (int i = 0; i < this.items.length; ++i) {
+      tabBar.add(
+        Expanded(
+          child: _renderButton(this.items[i], i),
+        ),
+      );
+    }
+
+    return tabBar;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Compute tab bar width
-    _computeTabBarWidth();
-
-    // Render tab bar
     return Container(
       color: R.colors.redPink,
       height: R.appRatio.appHeight50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          for (var i = 0; i < this.items.length; ++i)
-            GestureDetector(
-              onTap: () {
-                if (this.pressTab != null) {
-                  this.pressTab(i);
-                }
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Container(
-                    width: (i == this.items.length - 1
-                        ? _lastTabWidth
-                        : _tabWidth),
-                    child: ImageCacheManager.getImage(
-                      url: (this.items[i] != null && this.items[i].length != 0
-                          ? this.items[i]
-                          : null),
-                      width: _tabIconSize,
-                      height: _tabIconSize,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  (this.selectedTabIndex == i
-                      ? Container(
-                          width: (i == this.items.length - 1
-                              ? _lastTabWidth
-                              : _tabWidth),
-                          color: Color.fromRGBO(255, 255, 255, 0.2),
-                        )
-                      : Container()),
-                ],
-              ),
-            ),
-        ],
+        children: _renderTabBar(),
       ),
     );
   }
@@ -94,14 +92,11 @@ class CustomTabBarStyle01 extends StatelessWidget {
   -> ----------------------------
 */
 class CustomTabBarStyle02 extends StatelessWidget {
+  final double _tabFontSize = R.appRatio.appFontSize16;
+
   final int selectedTabIndex;
   final List<String> items;
   final Function pressTab;
-
-  static double _tabFontSize = R.appRatio.appFontSize16;
-  static double _tabBarWidth = R.appRatio.deviceWidth;
-  static double _tabWidth = 0;
-  static double _lastTabWidth = 0;
 
   CustomTabBarStyle02({
     @required this.selectedTabIndex,
@@ -112,62 +107,76 @@ class CustomTabBarStyle02 extends StatelessWidget {
             items.length <= R.constants.maxProfileTabBarNumber),
         assert(selectedTabIndex != null);
 
-  void _computeTabBarWidth() {
-    int _itemsSize = this.items.length;
-    _tabWidth = (_tabBarWidth / _itemsSize).roundToDouble();
-    _lastTabWidth = _tabBarWidth - (_tabWidth * (_itemsSize - 1));
+  Widget _renderButton(String data, int index) {
+    double borderWidth = 1;
+    Color btnColor = R.colors.grayABABAB;
+    if (this.selectedTabIndex == index) {
+      borderWidth = 2;
+      btnColor = R.colors.majorOrange;
+    }
+
+    if (data == null) data = "";
+    data = data.toUpperCase();
+
+    return FlatButton(
+      textColor: Colors.white,
+      splashColor: R.colors.lightBlurMajorOrange,
+      padding: EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(0),
+        ),
+      ),
+      onPressed: () {
+        if (this.pressTab != null) {
+          this.pressTab(index);
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: borderWidth,
+              color: btnColor,
+            ),
+          ),
+        ),
+        child: Text(
+          data,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: _tabFontSize,
+            color: btnColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _renderTabBar() {
+    List<Widget> tabBar = List();
+
+    for (int i = 0; i < this.items.length; ++i) {
+      tabBar.add(
+        Expanded(
+          child: _renderButton(this.items[i], i),
+        ),
+      );
+    }
+
+    return tabBar;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Compute tab bar width
-    _computeTabBarWidth();
-
-    // Render tab bar
     return Container(
-      height: R.appRatio.appHeight40,
+      height: R.appRatio.appHeight50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          for (var i = 0; i < this.items.length; ++i)
-            GestureDetector(
-              onTap: () {
-                if (this.pressTab != null) {
-                  this.pressTab(i);
-                }
-              },
-              child: Container(
-                width: (i == this.items.length - 1 ? _lastTabWidth : _tabWidth),
-                padding: EdgeInsets.only(
-                  bottom: R.appRatio.appSpacing10,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: (this.selectedTabIndex == i ? 2 : 1),
-                      color: (this.selectedTabIndex == i
-                          ? R.colors.majorOrange
-                          : R.colors.grayABABAB),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  (this.items[i] != null && this.items[i].length != 0
-                      ? this.items[i].toUpperCase()
-                      : ""),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: _tabFontSize,
-                    color: (this.selectedTabIndex == i
-                        ? R.colors.majorOrange
-                        : R.colors.grayABABAB),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-        ],
+        children: _renderTabBar(),
       ),
     );
   }

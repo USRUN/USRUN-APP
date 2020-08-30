@@ -242,7 +242,7 @@ class SignInPage extends StatelessWidget {
     Map<String, String> params = {
       'type': LoginChannel.UsRun.index.toString(),
       'email': email,
-      'password': password
+      'password': password,
     };
 
     _adapterSignIn(LoginChannel.UsRun, params, context);

@@ -136,7 +136,7 @@ class StatsSection extends StatelessWidget {
 
   /*
     + When rendering, the items in this list will be divided into 2 parts (2 columns).
-    + Structure of the "items" variable: 
+    + Structure of the "items" variable:
     [
       {
         "title": "Average Pace",
@@ -176,7 +176,7 @@ class StatsSection extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         (this.labelTitle.length == 0
@@ -192,11 +192,13 @@ class StatsSection extends StatelessWidget {
                       : R.styles.labelStyle),
                 ),
               )),
-        Text(
-          systemNoti,
-          style: TextStyle(
-            fontSize: R.appRatio.appFontSize16,
-            color: R.colors.normalNoteText,
+        Center(
+          child: Text(
+            systemNoti,
+            style: TextStyle(
+              fontSize: R.appRatio.appFontSize18,
+              color: R.colors.normalNoteText,
+            ),
           ),
         ),
       ],
@@ -225,7 +227,12 @@ class StatsSection extends StatelessWidget {
   List<Widget> _renderAllItem(int start, int end) {
     List<Widget> element = [];
     for (int i = start; i < end; ++i) {
-      element.add(_renderStatsSectionBox(this.items[i], i == (end - 1)));
+      element.add(
+        _renderStatsSectionBox(
+          this.items[i],
+          i == (end - 1),
+        ),
+      );
     }
     return element;
   }
