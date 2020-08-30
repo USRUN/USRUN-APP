@@ -3,7 +3,7 @@
     "hcmus": "HCMUS",
 
     "firstName": "Tên",
-    "lastName": "Họ",
+    "lastName": "Họ & Tên đệm",
     "password": "Mật khẩu",
     "passwordHint": "Nhập mật khẩu của bạn tại đây",
     "currentPassword": "Mật khẩu hiện tại",
