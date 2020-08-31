@@ -10,6 +10,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
 import 'package:usrun/page/record/record_bloc.dart';
@@ -240,7 +241,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
     dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
-    EventManager.userEvents.forEach((event) {
+    EventManager.userOpeningEvents.forEach((event) {
       dropDowMenuList.add(
           DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
@@ -444,7 +445,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   void getEventOfUser() async {
-    await EventManager.getUserEvents();
+    await EventManager.getUserEvents(UserManager.currentUser.userId);
   }
 
   @override

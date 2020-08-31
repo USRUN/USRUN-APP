@@ -27,7 +27,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
 
   final StreamController _searchStream = StreamController<String>();
   final int _pageSize = 15;
-  int _currentPage = 1;
+  int _currentPage = 0;
   String _currentSearchKey = "";
   bool _allowLoadMore = true;
 
