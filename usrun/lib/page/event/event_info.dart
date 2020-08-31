@@ -177,9 +177,21 @@ class _EventInfoPageState extends State<EventInfoPage> {
     String eventStartEndDate = "$startDate - $endDate";
     String eventStatus =
         "${R.strings.eventStatusTitle}: ${R.strings.eventStatus[_eventInfo.status]}";
-    String description = "${R.strings.description}:\n${_eventInfo.description}";
     String posterURL = _eventInfo.poster;
-    String rewards = "${R.strings.rewards}:\n${_eventInfo.reward}";
+
+    String description = "${R.strings.description}:";
+    if (checkStringNullOrEmpty(_eventInfo.description)) {
+      description += " N/A";
+    } else {
+      description += "\n${_eventInfo.description}";
+    }
+
+    String rewards = "${R.strings.rewards}:";
+    if (checkStringNullOrEmpty(_eventInfo.reward)) {
+      rewards += " N/A";
+    } else {
+      rewards += "\n${_eventInfo.reward}";
+    }
 
     return Padding(
       padding: EdgeInsets.only(
@@ -213,6 +225,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
             content: R.strings.eventPoster,
             boldContent: true,
             func: () {
+              if (checkStringNullOrEmpty(posterURL)) {
+                return;
+              }
+
               pushPage(
                 context,
                 EventPosterPage(
