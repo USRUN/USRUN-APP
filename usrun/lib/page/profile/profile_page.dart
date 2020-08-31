@@ -129,10 +129,16 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO: Pass the value of "_userInfo" as a param of these widget page
     switch (tabIndex) {
       case 0:
-        widget = ProfileStats(userId: _userInfo.userId ,key: _statKey,);
+        widget = ProfileStats(
+          userId: _userInfo.userId,
+          key: _statKey,
+        );
         break;
       case 1:
-        widget = ProfileActivity(userId: _userInfo.userId, key: _actKey,);
+        widget = ProfileActivity(
+          userId: _userInfo.userId,
+          key: _actKey,
+        );
         break;
       case 2:
         widget = ProfileInfo(
@@ -141,7 +147,10 @@ class _ProfilePageState extends State<ProfilePage> {
         );
         break;
       default:
-        widget = ProfileStats(userId: _userInfo.userId, key: _statKey,);
+        widget = ProfileStats(
+          userId: _userInfo.userId,
+          key: _statKey,
+        );
         break;
     }
 
@@ -210,7 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
             pressTab: _onSelectItem,
           ),
           SizedBox(
-            height: R.appRatio.appSpacing20,
+            height: R.appRatio.appSpacing10,
           ),
           _getContentItemWidget(_selectedTabIndex),
         ],
@@ -218,13 +227,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
   Future<void> _reloadData() async {
     setState(() {
-      try{
+      try {
         _statKey.currentState.getProfileStatsData();
         _actKey.currentState.getProfileActivityData();
-      }catch(e){
+      } catch (e) {
         _refreshController.refreshCompleted();
       }
     });
@@ -233,11 +241,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget smartRefresher = SmartRefresher(
       enablePullUp: false,
       controller: _refreshController,
-      child:  _renderBodyContent(),
+      child: _renderBodyContent(),
       physics: BouncingScrollPhysics(),
       footer: null,
       onRefresh: () => _reloadData(),
@@ -245,7 +252,6 @@ class _ProfilePageState extends State<ProfilePage> {
         await Future.delayed(Duration(milliseconds: 200));
       },
     );
-
 
     Widget refreshConfigs = RefreshConfiguration(
       child: smartRefresher,

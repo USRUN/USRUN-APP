@@ -184,12 +184,9 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   }
 
   Widget _renderEmptyList() {
-    String systemNoti = "Nothing to show";
+    String systemNoti = R.strings.nothingToShow;
 
-    return Padding(
-      padding: EdgeInsets.only(
-        left: R.appRatio.appSpacing15,
-      ),
+    return Center(
       child: Text(
         systemNoti,
         style: TextStyle(
@@ -335,15 +332,10 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
 //          height: R.appRatio.appSpacing25,
 //        ),
         // [StatsSection] Draw stats section
-        Container(
-          padding: EdgeInsets.only(
-            left: R.appRatio.appSpacing15,
-          ),
-          child: StatsSection(
-            items: widget.statsSectionItems,
-            labelTitle: _statsSectionLabelTitle,
-            enableLabelShadow: true,
-          ),
+        StatsSection(
+          items: widget.statsSectionItems,
+          labelTitle: _statsSectionLabelTitle,
+          enableLabelShadow: true,
         ),
         SizedBox(
           height: R.appRatio.appSpacing25,
