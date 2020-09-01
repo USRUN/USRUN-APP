@@ -173,9 +173,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(context,
         maxWidth: 800, maxHeight: 600, imageQuality: 80);
-    if (!result) return "";
+    if(result == null || result == false) return "";
 
     result = await _selectedCameraFile.cropImage(
       cropStyle: cropStyle,

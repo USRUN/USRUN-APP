@@ -10,6 +10,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
 import 'package:usrun/page/record/record_bloc.dart';
@@ -52,6 +53,19 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   final FocusNode _titleNode = FocusNode();
   final FocusNode _descriptionNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    updateUserEvent();
+  }
+
+  void updateUserEvent() async {
+    await EventManager.getUserEvents(UserManager.currentUser.userId);
+
+    setState(() {});
+  }
 
   void _unFocusAllFields() {
     _titleNode.unfocus();
@@ -237,10 +251,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown() {
+  _buildEventDropDown(){
     List<DropDownObject<int>> dropDowMenuList = [];
     dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
-    EventManager.userEvents.forEach((event) {
+    EventManager.userOpeningEvents.forEach((event) {
       dropDowMenuList.add(
           DropDownObject<int>(value: event.eventId, text: event.eventName));
     });
@@ -444,7 +458,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   void getEventOfUser() async {
-    await EventManager.getUserEvents();
+    await EventManager.getUserEvents(UserManager.currentUser.userId);
   }
 
   @override

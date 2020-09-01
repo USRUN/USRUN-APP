@@ -222,7 +222,7 @@
     "noMemberInList": "This list is empty",
     "noMemberInListSubtitle": "There is no member in this list",
     "memberOnly": "Only Members Can See This List",
-    "memberOnlySubtitle": "Try sending a join request!",
+    "memberOnlySubtitle": "Try sending a join request and wait for the team's approval!",
     "startSearch": "Start searching",
     "startSearchSubtitle": "Try enter any name into the field above",
     "notAuthorizedTeamChange": "You are not authorized to change this information",
@@ -462,6 +462,8 @@
     "discardActivity": "Discard this activity?",
 
     "search": "Search",
+
+    "changeUnitDescription": "The application will be restarted after changing the running unit",
 
     "chooseLanguageTitle": "Choose display language",
     "chooseLanguageDescription": "Choose the application language you want to see",

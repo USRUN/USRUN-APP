@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -424,10 +425,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
     );
 
     String totalParticipants = _eventInfo.totalParticipant.toString();
-    String distance = switchBetweenMeterAndKm(
+    String distance = NumberFormat.compact().format(switchBetweenMeterAndKm(
       _eventInfo.totalDistance,
       formatType: RunningUnit.KILOMETER,
-    ).toString();
+    ));
     String totalTeams = _eventInfo.totalTeamParticipant.toString();
 
     return Padding(

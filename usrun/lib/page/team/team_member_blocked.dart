@@ -192,7 +192,7 @@ class BlockedMemberPageState extends State<BlockedMemberPage>
             children: <Widget>[
               Text(
                 emptyList,
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: R.colors.contentText,
                   fontSize: R.appRatio.appFontSize18,
