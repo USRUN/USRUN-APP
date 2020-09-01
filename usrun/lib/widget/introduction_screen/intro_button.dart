@@ -5,14 +5,20 @@ class IntroBoxStyle {
   double height;
   BoxDecoration boxDecoration;
   EdgeInsets margin;
+  EdgeInsets padding;
   Alignment alignment;
+  bool enableSplashColor;
+  ShapeBorder shapeBorder;
 
   IntroBoxStyle({
     this.width = 110,
     this.height = 40,
     this.boxDecoration,
     this.alignment = Alignment.center,
+    this.padding = const EdgeInsets.all(0.0),
     this.margin = const EdgeInsets.all(0.0),
+    this.enableSplashColor = true,
+    this.shapeBorder,
   });
 }
 
@@ -38,20 +44,31 @@ class IntroButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _currentDecoration = _getDecoration();
+    final currentDecoration = _getDecoration();
+    final enableSplashColor = currentDecoration.enableSplashColor;
 
     return Container(
-      width: _currentDecoration.width,
-      height: _currentDecoration.height,
-      decoration: _currentDecoration.boxDecoration,
-      margin: _currentDecoration.margin,
-      alignment: _currentDecoration.alignment,
+      decoration: currentDecoration.boxDecoration,
+      margin: currentDecoration.margin,
+      padding: currentDecoration.padding,
       child: FlatButton(
         onPressed: onPressed,
         padding: EdgeInsets.all(0.0),
-        textColor: Colors.white,
-        splashColor: Color.fromRGBO(0, 0, 0, 0.1),
-        child: child,
+        textColor: (enableSplashColor ? Colors.white : Colors.transparent),
+        splashColor: (enableSplashColor
+            ? Color.fromRGBO(0, 0, 0, 0.1)
+            : Colors.transparent),
+        highlightColor: (enableSplashColor ? null : Colors.transparent),
+        shape: currentDecoration.shapeBorder ??
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+        child: Container(
+          alignment: currentDecoration.alignment,
+          width: currentDecoration.width,
+          height: currentDecoration.height,
+          child: child,
+        ),
       ),
     );
   }
