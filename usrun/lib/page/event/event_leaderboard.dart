@@ -208,7 +208,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         String avatar = data.avatar;
         String name = data.name;
         int rank = data.rank;
-        String formattedDistance = NumberFormat("#,##0.##", "en_US").format(
+        String formattedDistance = NumberFormat.compact().format(
           switchBetweenMeterAndKm(
             data.distance,
             formatType: RunningUnit.KILOMETER,

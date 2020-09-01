@@ -115,19 +115,7 @@ class _SettingPageState extends State<SettingPage> {
       DataManager.setUserRunningUnit(newRunningUnit);
     }
 
-    await showCustomAlertDialog(
-      context,
-      title: R.strings.notice,
-      content: R.strings.settingsAskForRestart,
-      firstButtonText: R.strings.ok.toUpperCase(),
-      firstButtonFunction: () {
-        restartApp(0);
-      },
-      secondButtonText: R.strings.cancel,
-      secondButtonFunction: () {
-        pop(context);
-      },
-    );
+    restartApp(0);
   }
 
   List<ObjectFilter> loadRunningUnit() {
@@ -176,6 +164,7 @@ class _SettingPageState extends State<SettingPage> {
                 resultTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
+                enableSplashColor: false,
                 lineFunction: () {},
               ),
               // No password to be changed if user signed up using social networks
@@ -286,6 +275,8 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayMeasureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
+                subText: R.strings.appThemeDescription,
+                subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
                 lineFunction: () async {
@@ -338,7 +329,7 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayLanguageTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                subText: R.strings.languageDescription,
+                subText: R.strings.changeUnitDescription,
                 subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -105,6 +106,8 @@ class _TeamMemberPageState extends State<TeamMemberPage>
   GlobalKey<PendingMemberPageState> pendingMemberPage = GlobalKey();
   GlobalKey<BlockedMemberPageState> blockedMemberPage = GlobalKey();
   bool renderAsMember;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -131,6 +134,52 @@ class _TeamMemberPageState extends State<TeamMemberPage>
     } else {
       initAsMember();
     }
+  }
+
+  Widget renderAsUnauthorized() {
+    return Center(
+        child: RefreshConfiguration(
+      maxOverScrollExtent: 50,
+      headerTriggerDistance: 50,
+      child: SmartRefresher(
+        enablePullDown: true,
+        controller: _refreshController,
+        onRefresh: () {
+          setState(() {});
+          _refreshController.refreshCompleted();
+        },
+        footer: null,
+        child: Container(
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                R.strings.memberOnly,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: R.colors.contentText,
+                  fontSize: R.appRatio.appFontSize18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                R.strings.memberOnlySubtitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: R.colors.contentText,
+                  fontSize: R.appRatio.appFontSize14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
   }
 
   void initAsAdmin() {
@@ -270,11 +319,14 @@ class _TeamMemberPageState extends State<TeamMemberPage>
           ),
         ],
       ),
-      body: CustomTabBarStyle03(
-        tabBarTitleList: tabItems,
-        tabController: _tabController,
-        tabBarViewList: tabBarViewItems,
-      ),
+      body: (TeamMemberUtil.authorizeHigherLevel(
+              TeamMemberType.Member, widget.teamMemberType))
+          ? CustomTabBarStyle03(
+              tabBarTitleList: tabItems,
+              tabController: _tabController,
+              tabBarViewList: tabBarViewItems,
+            )
+          : renderAsUnauthorized(),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(

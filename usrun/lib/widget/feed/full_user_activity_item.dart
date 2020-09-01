@@ -464,7 +464,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
         children: <Widget>[
           ImageCacheManager.getImage(
             url: _userActivity.eventThumbnail,
-            width: _imgWidth,
+            width: _boxHeight,
             height: _boxHeight,
             fit: BoxFit.fill,
           ),

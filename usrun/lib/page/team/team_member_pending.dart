@@ -196,7 +196,7 @@ class PendingMemberPageState extends State<PendingMemberPage>
             children: <Widget>[
               Text(
                 emptyList,
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: R.colors.contentText,
                   fontSize: R.appRatio.appFontSize18,
