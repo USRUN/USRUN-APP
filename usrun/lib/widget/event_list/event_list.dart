@@ -79,7 +79,7 @@ class EventList extends StatelessWidget {
         ),
         child: Text(
           systemNoti,
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.left,
           style: TextStyle(
             color: R.colors.contentText,
             fontSize: R.appRatio.appFontSize16,

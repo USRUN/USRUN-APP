@@ -9,6 +9,8 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
+import 'package:usrun/model/user.dart';
+import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -39,6 +41,14 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
+  void loadTeamMemberProfile(int index) async {
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
+    User user = response.object;
+
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
+  }
+
   void _getLeaderBoard() async {
     Response<dynamic> teamLeaderboard =
         await TeamManager.getTeamLeaderBoard(widget.teamId);
@@ -62,23 +72,19 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
 
   @override
   Widget build(BuildContext context) {
+    double headerRankLeadHeight = R.appRatio.appHeight50;
+
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(title: R.strings.teamLeaderboard),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(
         children: <Widget>[
-          // HeaderRankLead
-          Container(
-            decoration: BoxDecoration(
-              color: R.colors.boxBackground,
-              boxShadow: [R.styles.boxShadowB],
-            ),
-            child: HeaderRankLead(),
-          ),
           // All contents
-          Expanded(
+          Container(
+            margin: EdgeInsets.only(
+              top: headerRankLeadHeight,
+            ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: (_isLoading
@@ -91,16 +97,22 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                   : _renderList()),
             ),
           ),
+          // HeaderRankLead
+          HeaderRankLead(
+            enableShadow: true,
+            height: headerRankLeadHeight,
+          ),
         ],
       ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 
   Widget _renderList() {
@@ -118,7 +130,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
             itemBuilder: (BuildContext ctxt, int index) {
               String avatarImageURL = items[index].avatarImageURL;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US").format(
+              String distance = NumberFormat.compact().format(
                 switchBetweenMeterAndKm(
                   items[index].distance,
                   formatType: RunningUnit.KILOMETER,
@@ -171,9 +183,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                                   color: R.colors.majorOrange,
                                 ),
                                 pressAvatarImage: () {
-                                  // TODO: Implement here
-                                  print(
-                                      "Pressing avatar image with index $index, no. ${index + 1}, userId: ${items[index].userId}");
+                                  loadTeamMemberProfile(index);
                                 },
                               ),
                               // Content
@@ -184,9 +194,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
-                                // TODO: Implement here
-                                print(
-                                    "Pressing info with index $index, no. ${index + 1}");
+                                loadTeamMemberProfile(index);
                               },
                             ),
                           ),

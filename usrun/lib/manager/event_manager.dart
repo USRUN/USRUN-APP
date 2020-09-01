@@ -1,35 +1,44 @@
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/event_athlete.dart';
 import 'package:usrun/model/event_info.dart';
 import 'package:usrun/model/event_leaderboard.dart';
-import 'package:usrun/model/event_organization.dart';
-import 'package:usrun/model/event_team.dart';
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 
 class EventManager {
   static List<Event> userEvents = [];
+  static List<Event> userOpeningEvents = [];
 
-  static Future<Response> getUserEvents() async {
-    Map<String, dynamic> params = {};
+  static Future<Response> getUserEvents(int userId) async {
+    Map<String, dynamic> params = {
+      'userId': userId,
+    };
     Response<dynamic> response =
-        await Client.post('/event/getEventOfUser', params);
+        await Client.post('/event/getUserEventWithCheckJoin', params);
     List<Event> events = [];
     if (response.object != null)
       events = (response.object as List)
           .map((item) => MapperObject.create<Event>(item))
           .toList();
 
-    userEvents = events;
-
     Response<List<Event>> result = new Response();
 
-    if (response.success) {
+    if (response.success && response.errorCode == -1) {
       result.success = true;
       result.object = events;
+      if (userId == UserManager.currentUser.userId) {
+        userOpeningEvents = List();
+        userEvents = events;
+        (events).forEach((element) {
+          if (element.status == EventStatus.OnGoing) {
+            userOpeningEvents.add(element);
+          }
+        });
+      }
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
@@ -60,13 +69,8 @@ class EventManager {
     return response;
   }
 
-  static Future<Response> getUserEventsPaged(
-      int userId, int pageNum, int perPage) async {
-    Map<String, dynamic> params = {
-      'userId': userId,
-      'offset': pageNum,
-      'limit': perPage
-    };
+  static Future<Response> getUserEventsPaged(int pageNum, int perPage) async {
+    Map<String, dynamic> params = {'offset': pageNum, 'limit': perPage};
 
     Response<dynamic> res = await Client.post('/event/getMyEvent', params);
 
@@ -112,7 +116,8 @@ class EventManager {
       'count': count,
     };
 
-    Response<dynamic> res = await Client.post('/event/getEventAthletes', params);
+    Response<dynamic> res =
+        await Client.post('/event/getEventAthletes', params);
 
     if (!res.success || (res.object as List).isEmpty) return res;
 
@@ -138,7 +143,8 @@ class EventManager {
       'limit': count,
     };
 
-    Response<dynamic> res = await Client.post('/team/searchTeamByEvent', params);
+    Response<dynamic> res =
+        await Client.post('/team/searchTeamByEvent', params);
 
     if (!res.success) return res;
 
@@ -207,7 +213,7 @@ class EventManager {
       String searchString, int offset, int count) async {
     Map<String, dynamic> params = {
       'name': searchString,
-      'offset': offset,
+      'offset': offset - 1,
       'limit': count,
     };
     Response<dynamic> res = await Client.post('/event/searchEvent', params);

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -57,9 +58,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
     // TODO: Call API here, based on "widget.eventId"
     EventInfo result;
 
-    Response<dynamic> response = await EventManager.getEventInfo(widget.eventId, UserManager.currentUser.userId);
+    Response<dynamic> response = await EventManager.getEventInfo(
+        widget.eventId, UserManager.currentUser.userId);
 
-    if(response.success && response.errorCode == -1){
+    if (response.success && response.errorCode == -1) {
       result = response.object;
     }
 
@@ -176,9 +178,21 @@ class _EventInfoPageState extends State<EventInfoPage> {
     String eventStartEndDate = "$startDate - $endDate";
     String eventStatus =
         "${R.strings.eventStatusTitle}: ${R.strings.eventStatus[_eventInfo.status]}";
-    String description = "${R.strings.description}:\n${_eventInfo.description}";
     String posterURL = _eventInfo.poster;
-    String rewards = "${R.strings.rewards}:\n${_eventInfo.reward}";
+
+    String description = "${R.strings.description}:";
+    if (checkStringNullOrEmpty(_eventInfo.description)) {
+      description += " N/A";
+    } else {
+      description += "\n${_eventInfo.description}";
+    }
+
+    String rewards = "${R.strings.rewards}:";
+    if (checkStringNullOrEmpty(_eventInfo.reward)) {
+      rewards += " N/A";
+    } else {
+      rewards += "\n${_eventInfo.reward}";
+    }
 
     return Padding(
       padding: EdgeInsets.only(
@@ -212,6 +226,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
             content: R.strings.eventPoster,
             boldContent: true,
             func: () {
+              if (checkStringNullOrEmpty(posterURL)) {
+                return;
+              }
+
               pushPage(
                 context,
                 EventPosterPage(
@@ -249,11 +267,11 @@ class _EventInfoPageState extends State<EventInfoPage> {
       );
 
       if (result != null && result) {
-       text = R.strings.leave;
+        text = R.strings.leave;
       }
     };
 
-    if(widget.joined) {
+    if (widget.joined) {
       text = R.strings.leave;
       enableGradient = false;
       callback = () async {
@@ -339,7 +357,11 @@ class _EventInfoPageState extends State<EventInfoPage> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: orgList.length,
         itemBuilder: (context, index) {
-          EventOrganization org = orgList[index];
+          EventOrganization org = new EventOrganization(
+            avatar: orgList[index]['avatar'],
+            name: orgList[index]['name'],
+            organizationId: orgList[index]['organizationId'],
+          );
           return _renderOrgInfo(org, title, titleColor);
         },
       );
@@ -403,10 +425,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
     );
 
     String totalParticipants = _eventInfo.totalParticipant.toString();
-    String distance = switchBetweenMeterAndKm(
+    String distance = NumberFormat.compact().format(switchBetweenMeterAndKm(
       _eventInfo.totalDistance,
       formatType: RunningUnit.KILOMETER,
-    ).toString();
+    ));
     String totalTeams = _eventInfo.totalTeamParticipant.toString();
 
     return Padding(
@@ -429,7 +451,12 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Leaderboard button
           GestureDetector(
             onTap: () {
-              pushPage(context, EventLeaderboardPage(eventId: widget.eventId, teamId: _eventInfo.teamId,));
+              pushPage(
+                  context,
+                  EventLeaderboardPage(
+                    eventId: widget.eventId,
+                    teamId: _eventInfo.teamId,
+                  ));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -470,7 +497,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalParticipants,
                 secondTitleLine: R.strings.runners.toUpperCase(),
                 pressBox: (id) {
-                  pushPage(context, EventAthleteSearchPage(eventId: widget.eventId));
+                  pushPage(
+                      context, EventAthleteSearchPage(eventId: widget.eventId));
                 },
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -480,8 +508,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 boxSize: R.appRatio.appWidth100,
                 dataLine: distance,
                 secondTitleLine: "KM",
-                pressBox: (id) {
-                },
+                pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),
               // Total teams
@@ -491,7 +518,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalTeams,
                 secondTitleLine: R.strings.teams.toUpperCase(),
                 pressBox: (id) {
-                  pushPage(context, EventTeamSearchPage(eventId: widget.eventId));
+                  pushPage(
+                      context, EventTeamSearchPage(eventId: widget.eventId));
                 },
               ),
             ],

@@ -1,11 +1,15 @@
 import 'dart:math';
 
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
+import 'dots_decorator.dart';
+import 'dots_indicator.dart';
 import 'intro_button.dart';
 
 class IntroductionScreen extends StatefulWidget {
+  // Screen decoration of introduction screen
+  final BoxDecoration screenDecoration;
+
   // All pages of the onboarding
   final List<Widget> pages;
 
@@ -110,6 +114,7 @@ class IntroductionScreen extends StatefulWidget {
 
   const IntroductionScreen({
     Key key,
+    this.screenDecoration,
     @required this.pages,
     @required this.onDone,
     @required this.done,
@@ -138,8 +143,8 @@ class IntroductionScreen extends StatefulWidget {
     this.curve = Curves.easeIn,
   })  : assert(pages != null),
         assert(
-        pages.length > 0,
-        "You provide at least one page on introduction screen !",
+          pages.length > 0,
+          "You provide at least one page on introduction screen !",
         ),
         assert(onDone != null),
         assert(done != null),
@@ -267,11 +272,15 @@ class IntroductionScreenState extends State<IntroductionScreen> {
     } else {
       skipOrBackWidget = Expanded(
         flex: widget.skipFlex,
-        child: Opacity(opacity: 0, child: skipBtn,),
+        child: Opacity(
+          opacity: 0,
+          child: skipBtn,
+        ),
       );
     }
 
-    return Scaffold(
+    Widget _buildElement = Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
         height: appHeight,
         child: Column(
@@ -303,10 +312,10 @@ class IntroductionScreenState extends State<IntroductionScreen> {
                     child: Center(
                       child: widget.isProgress
                           ? DotsIndicator(
-                        dotsCount: widget.pages.length,
-                        position: _currentPage,
-                        decorator: widget.dotsDecorator,
-                      )
+                              dotsCount: widget.pages.length,
+                              position: _currentPage,
+                              decorator: widget.dotsDecorator,
+                            )
                           : const SizedBox(),
                     ),
                   ),
@@ -315,8 +324,8 @@ class IntroductionScreenState extends State<IntroductionScreen> {
                     child: isLastPage
                         ? doneBtn
                         : widget.showNextButton
-                        ? nextBtn
-                        : Opacity(opacity: 0.0, child: nextBtn),
+                            ? nextBtn
+                            : Opacity(opacity: 0.0, child: nextBtn),
                   ),
                 ],
               ),
@@ -324,6 +333,14 @@ class IntroductionScreenState extends State<IntroductionScreen> {
           ],
         ),
       ),
+    );
+
+    return Container(
+      decoration: widget.screenDecoration ??
+          BoxDecoration(
+            color: Colors.transparent,
+          ),
+      child: _buildElement,
     );
   }
 }

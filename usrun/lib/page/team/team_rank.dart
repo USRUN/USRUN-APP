@@ -54,6 +54,14 @@ class _TeamRankState extends State<TeamRank> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
+  void loadTeamInfo(int index) {
+    pushPage(
+        context,
+        TeamInfoPage(
+          teamId: items[index].teamId,
+        ));
+  }
+
   void getTeamRank() async {
     Response<dynamic> teamRank =
         await TeamManager.getTeamStatRank(widget.teamId);
@@ -84,23 +92,19 @@ class _TeamRankState extends State<TeamRank> {
 
   @override
   Widget build(BuildContext context) {
+    double headerRankLeadHeight = R.appRatio.appHeight50;
+
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(title: R.strings.teamRank),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(
         children: <Widget>[
-          // HeaderRankLead
-          Container(
-            decoration: BoxDecoration(
-              color: R.colors.boxBackground,
-              boxShadow: [R.styles.boxShadowB],
-            ),
-            child: HeaderRankLead(),
-          ),
           // All contents
-          Expanded(
+          Container(
+            margin: EdgeInsets.only(
+              top: headerRankLeadHeight,
+            ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: (_isLoading
@@ -115,16 +119,22 @@ class _TeamRankState extends State<TeamRank> {
                       : _renderList()),
             ),
           ),
+          // HeaderRankLead
+          HeaderRankLead(
+            enableShadow: true,
+            height: headerRankLeadHeight,
+          ),
         ],
       ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 
   Widget _buildEmptyList() {
@@ -165,12 +175,14 @@ class _TeamRankState extends State<TeamRank> {
               String rank = items[index].rank.toString();
               String avatarImageURL = items[index].avatar;
               String name = items[index].name;
-              String distance = NumberFormat("#,##0.##", "en_US").format(
-                switchBetweenMeterAndKm(
-                  items[index].distance,
-                  formatType: RunningUnit.KILOMETER,
-                ),
-              );
+              String distance = NumberFormat.compact()
+                  .format(
+                    switchBetweenMeterAndKm(
+                      items[index].distance,
+                      formatType: RunningUnit.KILOMETER,
+                    ),
+                  )
+                  .toUpperCase();
 
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -216,9 +228,7 @@ class _TeamRankState extends State<TeamRank> {
                                   color: R.colors.majorOrange,
                                 ),
                                 pressAvatarImage: () {
-                                  // TODO: Implement here
-                                  print(
-                                      "Pressing avatar image with index $index, no. ${index + 1}");
+                                  loadTeamInfo(index);
                                 },
                               ),
                               // Content
@@ -231,10 +241,7 @@ class _TeamRankState extends State<TeamRank> {
                               ),
                               enableAddedContent: false,
                               pressInfo: () {
-                                // TODO: Implement here
-                                print(
-                                    "Pressing info with index $index, no. ${index + 1}");
-                                pushPage(context, TeamInfoPage(teamId: teamId));
+                                loadTeamInfo(index);
                               },
                             ),
                           ),

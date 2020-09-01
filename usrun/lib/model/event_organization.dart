@@ -4,10 +4,12 @@ import 'package:usrun/util/reflector.dart';
 
 @reflector
 class EventOrganization with MapperObject {
+  int organizationId;
   String name;
   String avatar;
 
   EventOrganization({
+    this.organizationId,
     this.name,
     this.avatar,
   });

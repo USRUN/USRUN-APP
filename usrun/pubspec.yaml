@@ -52,11 +52,11 @@ dependencies:
   webview_flutter: 0.3.21
   path_provider: ^1.2.0
   pull_to_refresh: ^1.6.0
-  dots_indicator: ^1.2.0
   device_info: ^0.4.2+6
   package_info: ^0.4.1
   store_redirect: ^1.0.2
   fluttertoast: ^7.0.2
+  image: ^2.1.14
 
   flutter_localizations:
     sdk: flutter

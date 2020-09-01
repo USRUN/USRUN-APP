@@ -3,8 +3,11 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/manager/team_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/event.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
+import 'package:usrun/page/event/event_info.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_list.dart';
@@ -30,20 +33,35 @@ class ProfileInfoState extends State<ProfileInfo> {
   int _followingNumber;
   int _followerNumber;
   List<TeamItem> _teamList;
+  List<Event> _events;
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
     _teamList = List();
+    _events = List();
     _followingNumber = DemoData().ffItemList.length;
     _followerNumber = DemoData().ffItemList.length;
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
     WidgetsBinding.instance.addPostFrameCallback((_) => loadUserTeams());
+    WidgetsBinding.instance.addPostFrameCallback((_) => loadUserEvents());
+  }
+
+  void loadUserEvents() async {
+    if(widget.userId == UserManager.currentUser.userId && !checkListIsNullOrEmpty(EventManager.userEvents)){
+      _events = EventManager.userEvents;
+      return;
+    }
+
+    Response<dynamic> events = await EventManager.getUserEvents(widget.userId);
+    if(events.success && events.errorCode == -1){
+      _events = events.object;
+    }
   }
 
   void loadUserTeams() async {
-    Response<dynamic> response = await TeamManager.getTeamByUser(widget.userId);
+    Response<dynamic> response = await TeamManager.getJoinedTeamByUser(widget.userId);
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<TeamItem> toAdd = List();
@@ -89,8 +107,7 @@ class ProfileInfoState extends State<ProfileInfo> {
   }
 
   void _pressEventItemFunction(data) {
-    // TODO: Implement function here
-    print("[EventWidget] Press event with data $data");
+      pushPage(context, EventInfoPage(eventId: data.eventId, joined: data.joined ?? false));
   }
 
   void _pressTeamItemFunction(data) {
@@ -149,7 +166,7 @@ class ProfileInfoState extends State<ProfileInfo> {
 //              ),
               // Events
               EventList(
-                items: EventManager.userEvents,
+                items: _events,
                 labelTitle: R.strings.personalEvents,
                 enableLabelShadow: true,
                 enableScrollBackgroundColor: true,

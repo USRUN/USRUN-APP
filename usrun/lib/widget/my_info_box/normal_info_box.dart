@@ -86,6 +86,8 @@ class NormalInfoBox extends StatelessWidget {
                 Container(
                   height: this.boxSize,
                   padding: EdgeInsets.only(
+                    left: 2,
+                    right: 2,
                     bottom: (!disableGradientLine ? _gradientLineHeight : 0),
                   ),
                   child: Column(
@@ -98,14 +100,14 @@ class NormalInfoBox extends StatelessWidget {
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: R.appRatio.appFontSize14,
+                                fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
                                 color: R.colors.contentText,
                               ),
                             )
                           : Container()),
                       SizedBox(
-                        height: R.appRatio.appSpacing10,
+                        height: R.appRatio.appSpacing5 + 1,
                       ),
                       (dataLine.length != 0
                           ? FittedBox(
@@ -114,7 +116,7 @@ class NormalInfoBox extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize22,
+                                  fontSize: R.appRatio.appFontSize20,
                                   fontWeight: FontWeight.bold,
                                   color: R.colors.contentText,
                                 ),
@@ -122,7 +124,7 @@ class NormalInfoBox extends StatelessWidget {
                             )
                           : Container()),
                       SizedBox(
-                        height: R.appRatio.appSpacing10,
+                        height: R.appRatio.appSpacing5 + 3,
                       ),
                       (secondTitleLine.length != 0
                           ? Text(
@@ -131,7 +133,7 @@ class NormalInfoBox extends StatelessWidget {
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: R.appRatio.appFontSize14,
+                                fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
                                 color: R.colors.contentText,
                               ),

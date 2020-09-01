@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
@@ -55,6 +56,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
   bool _verificationStatus = false;
+  String currentRunningUnit =
+      R.strings.distanceUnit[DataManager.getUserRunningUnit().index];
   TeamMemberType _teamMemberType = TeamMemberType.Guest;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -93,16 +96,19 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   }
 
   void mapTeamStat(TeamStatItem toMap) {
-    _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance,
-            formatType: RunningUnit.KILOMETER)
-        .toInt();
-    _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance,
-            formatType: RunningUnit.KILOMETER)
-        .toInt();
-    _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
-    _teamActivities = toMap.totalActivity;
-    _teamRank = toMap.rank;
-    _teamNewMemThisWeek = toMap.memInWeek;
+    if (!mounted) return;
+    setState(
+      () {
+        _teamTotalDistance =
+            switchBetweenMeterAndKm(toMap.totalDistance).toInt();
+        _teamLeadingDistance =
+            switchBetweenMeterAndKm(toMap.maxDistance).toInt();
+        _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
+        _teamActivities = toMap.totalActivity;
+        _teamRank = toMap.rank;
+        _teamNewMemThisWeek = toMap.memInWeek;
+      },
+    );
   }
 
   void mapTeamInfo(Team toMap) {
@@ -167,9 +173,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(context,
         maxWidth: 800, maxHeight: 600, imageQuality: 80);
-    if (!result) return "";
+    if(result == null || result == false) return "";
 
     result = await _selectedCameraFile.cropImage(
       cropStyle: cropStyle,
@@ -185,7 +191,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     Map<String, dynamic> reqParam = Map();
 
     if (!TeamMemberUtil.authorizeHigherLevel(
-        TeamMemberType.Admin, _teamMemberType)) {
+        TeamMemberType.Owner, _teamMemberType)) {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
@@ -251,7 +257,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (TeamMemberUtil.authorizeEqualLevel(
         TeamMemberType.Invited, _teamMemberType)) {
       response = await TeamManager.acceptInvitation(widget.teamId);
-      result = TeamMemberType.Pending;
+      result = TeamMemberType.Member;
     }
 
     if (TeamMemberUtil.authorizeEqualLevel(
@@ -309,19 +315,17 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   String numberDisplayAdapter(dynamic toDisplay) {
     if (toDisplay == -1) {
       return R.strings.na;
-    } else
-      return toDisplay.toString();
+    }
+    return NumberFormat.compact().format((toDisplay));
   }
 
-  _transferOwnership() {
-    // TODO: Code here
-    print("Transferring ownership");
-  }
-
-  _deleteTeam() {
-    // TODO: Code here
-    print("Deleting team");
-  }
+//  _transferOwnership() {
+//    print("Transferring ownership");
+//  }
+//
+//  _deleteTeam() {
+//    print("Deleting team");
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -354,11 +358,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               url: _teamBanner,
                               width: R.appRatio.deviceWidth,
                               height: R.appRatio.appHeight250,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                           ),
                           (TeamMemberUtil.authorizeLowerLevel(
-                                  TeamMemberType.Member, _teamMemberType)
+                                  TeamMemberType.Admin, _teamMemberType)
                               ? Container()
                               : Padding(
                                   padding: EdgeInsets.only(
@@ -413,7 +417,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                             ),
                             supportImageURL:
                                 (TeamMemberUtil.authorizeLowerLevel(
-                                        TeamMemberType.Member, _teamMemberType)
+                                        TeamMemberType.Admin, _teamMemberType)
                                     ? null
                                     : R.myIcons.colorEditIconOrangeBg),
                             pressAvatarImage: () {
@@ -601,8 +605,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                     pushPage(
                                       context,
                                       TeamActivityPage(
-                                          teamId: widget.teamId,
-                                          totalActivity: _teamActivities),
+                                        teamId: widget.teamId,
+                                      ),
                                     );
                                   },
                                 ),
@@ -620,7 +624,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine:
                                       numberDisplayAdapter(_teamTotalDistance),
-                                  secondTitleLine: "KM",
+                                  secondTitleLine: currentRunningUnit,
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -640,8 +644,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine: numberDisplayAdapter(
                                       _teamLeadingDistance),
-                                  secondTitleLine:
-                                      "KM\n" + R.strings.leadingDist,
+                                  secondTitleLine: currentRunningUnit +
+                                      "\n" +
+                                      R.strings.leadingDist,
                                 ),
                               ],
                             ),

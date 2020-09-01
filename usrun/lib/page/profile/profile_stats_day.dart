@@ -59,7 +59,7 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
       child: Text(
         systemNoti,
         style: TextStyle(
-          fontSize: R.appRatio.appFontSize16,
+          fontSize: R.appRatio.appFontSize18,
           color: R.colors.normalNoteText,
         ),
       ),

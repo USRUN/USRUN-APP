@@ -88,7 +88,8 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "resetPassword": "Reset Password",
-    "resetPasswordSuccessful": "Your password has been reset.",
+    "resetPasswordSuccessful": "Your password has been reset. An email with a temporary password has been sent to your inbox.",
+    "invalidEmail": "Please input a valid email",
     "warning": "Warning",
     "caution": "Caution",
     "exitApp": "Do you want to exit USRUN app?",
@@ -135,6 +136,7 @@
 
     "events": "Events",
     "event": "Event",
+    "mustJoinATeam": "You must be in at least 1 team before you can participate in an event",
     "newEvents": "New events",
     "yourHistory": "Your history",
     "eventStatus": [
@@ -220,7 +222,7 @@
     "noMemberInList": "This list is empty",
     "noMemberInListSubtitle": "There is no member in this list",
     "memberOnly": "Only Members Can See This List",
-    "memberOnlySubtitle": "Try sending a join request!",
+    "memberOnlySubtitle": "Try sending a join request and wait for the team's approval!",
     "startSearch": "Start searching",
     "startSearchSubtitle": "Try enter any name into the field above",
     "notAuthorizedTeamChange": "You are not authorized to change this information",
@@ -464,6 +466,8 @@
 
     "search": "Search",
 
+    "changeUnitDescription": "The application will be restarted after changing the running unit",
+
     "chooseLanguageTitle": "Choose display language",
     "chooseLanguageDescription": "Choose the application language you want to see",
     "english": "English",
@@ -543,7 +547,7 @@
         "2017": "Login failed",
         "2018": "User is in event",
         "2022": "Reset password failed. Please try again!",
-        "2023": "This email has not been used. Do you want to create an account with this email?",
+        "2023": "We could not find any account that is linked to this email.",
         "2024": "The account related to this email does not have password to reset because it is logged in using Facebook/Google",
         "2025": "The account is already verified.",
         "2026": "This email address is not an education email",

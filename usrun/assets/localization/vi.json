@@ -3,7 +3,7 @@
     "hcmus": "HCMUS",
 
     "firstName": "Tên",
-    "lastName": "Họ",
+    "lastName": "Họ & Tên đệm",
     "password": "Mật khẩu",
     "passwordHint": "Nhập mật khẩu của bạn tại đây",
     "currentPassword": "Mật khẩu hiện tại",
@@ -88,7 +88,8 @@
     "signIn": "Đăng nhập",
     "signUp": "Đăng ký",
     "resetPassword": "Đặt lại mật khẩu",
-
+    "resetPasswordSuccessful": "Đặt lại thành công. Một email chứa mật khẩu tạm thời đã được gửi đến hộp thư của bạn.",
+    "invalidEmail": "Vui lòng nhập đúng địa chỉ email.",
     "warning": "Cảnh báo",
     "caution": "Thận trọng",
     "exitApp": "Bạn có muốn thoát ứng dụng USRUN?",
@@ -135,6 +136,7 @@
 
     "events": "Sự kiện",
     "event": "Sự kiện",
+    "mustJoinATeam": "Bạn phải tham gia ít nhất 1 đội để có thể tham gia vào các sự kiện.",
     "newEvents": "Các sự kiện mới",
     "yourHistory": "Lịch sử của bạn",
     "eventStatus": [
@@ -195,9 +197,9 @@
     "activityTitle": "HOẠT ĐỘNG",
     "splits": "Splits",
     "members": "Thành viên",
-    "leadingTime": "Thời gian dẫn đầu",
-    "leadingDist": "Quãng đường dẫn đầu",
-    "newMemThisWeek": "Thành viên mới trong tuần",
+    "leadingTime": "TOP T.gian",
+    "leadingDist": "TOP Q.đường",
+    "newMemThisWeek": "Thành viên mới",
     "toolZone": "Công cụ",
     "makeTeamPublicTitle": "Cho phép công khai đội",
     "makeTeamPublicSubtitle": "Cho phép mọi người nhìn thấy đội",
@@ -220,7 +222,7 @@
     "noMemberInList": "Danh sách trống",
     "noMemberInListSubtitle": "Không có thành viên nào trong danh sách này",
     "memberOnly": "Chỉ có thành viên mới có thể xem danh sách này",
-    "memberOnlySubtitle": "Thử gửi yêu cầu tham gia!",
+    "memberOnlySubtitle": "Hãy thử gửi yêu cầu tham gia nhóm và chờ sự xét duyệt của quản trị viên!",
     "startSearch": "Bắt đầu tìm kiếm",
     "startSearchSubtitle": "Hãy thử nhập bất kỳ tên nào vào trường trên",
     "notAuthorizedTeamChange": "Bạn không được phép thay đổi thông tin này",
@@ -464,6 +466,8 @@
 
     "search": "Tìm kiếm",
 
+    "changeUnitDescription": "Ứng dụng sẽ được khởi động lại sau khi thay đổi đơn vị đo",
+
     "chooseLanguageTitle": "Chọn ngôn ngữ hiển thị",
     "chooseLanguageDescription": "Chọn ngôn ngữ ứng dụng bạn muốn xem",
     "english": "Tiếng Anh",
@@ -543,7 +547,7 @@
         "2017": "Đăng nhập thất bại",
         "2018": "Người dùng đang tham gia sự kiện",
         "2022": "Đặt lại mật khẩu thất bại. Vui lòng thử lại!",
-        "2023": "Email này chưa được sử dụng. Bạn có muốn tạo tài khoản bằng email này không?",
+        "2023": "Địa chỉ email này chưa được liên kết với bất kỳ tài khoản nào của hệ thống.",
         "2024": "Tài khoản liên quan đến email này không có mật khẩu để đặt lại vì nó được đăng nhập bằng Facebook/Google",
         "2025": "Tài khoản đã được xác thực rồi.",
         "2026": "Địa chỉ email này không phải là một email giáo dục",

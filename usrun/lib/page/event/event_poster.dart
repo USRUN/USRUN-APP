@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class EventPosterPage extends StatelessWidget {
