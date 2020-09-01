@@ -219,13 +219,7 @@ class CustomTabBarStyle03 extends StatelessWidget {
       height: _tabHeight,
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2.0,
-            offset: Offset(0.0, 1.0),
-            color: R.colors.btnShadow,
-          ),
-        ],
+        boxShadow: [R.styles.boxShadowB],
       ),
       child: TabBar(
         controller: tabController,

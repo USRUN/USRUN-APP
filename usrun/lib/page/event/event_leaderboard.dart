@@ -11,7 +11,6 @@ import 'package:usrun/model/object_filter.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
@@ -308,13 +307,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         Container(
           decoration: BoxDecoration(
             color: R.colors.boxBackground,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2.0,
-                offset: Offset(0.0, 1.0),
-                color: R.colors.btnShadow,
-              ),
-            ],
+            boxShadow: [R.styles.boxShadowB],
           ),
           child: HeaderRankLead(),
         ),

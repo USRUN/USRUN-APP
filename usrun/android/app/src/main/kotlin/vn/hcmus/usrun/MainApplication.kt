@@ -1,4 +1,4 @@
-package com.example.usrun
+package vn.hcmus.usrun
 
 import android.content.Context;
 import android.content.Intent;

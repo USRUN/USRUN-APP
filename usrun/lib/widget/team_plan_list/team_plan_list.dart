@@ -57,13 +57,7 @@ class _TeamPlanItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(this._borderRadius)),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2.0,
-              offset: Offset(1.0, 1.0),
-              color: R.colors.btnShadow,
-            ),
-          ],
+          boxShadow: [R.styles.boxShadowRB],
         ),
         width: this._teamPlanItemWidth,
         child: Column(

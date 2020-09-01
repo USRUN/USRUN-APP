@@ -48,7 +48,6 @@ class _EventSearchPageState extends State<EventSearchPage> {
     _isLoading = false;
     _originalList = List();
     _listenTextChanged();
-    _delayRequestFocus();
     _searchFunction("");
   }
 
@@ -57,12 +56,6 @@ class _EventSearchPageState extends State<EventSearchPage> {
     _searchStream?.close();
     _timerService?.stop();
     super.dispose();
-  }
-
-  void _delayRequestFocus() {
-    Future.delayed(Duration(milliseconds: 400), () {
-      _searchFocusNode.requestFocus();
-    });
   }
 
   void _listenTextChanged() async {
@@ -74,9 +67,10 @@ class _EventSearchPageState extends State<EventSearchPage> {
   Future<List<Event>> _callSearchApi() async {
     List<Event> result = List();
 
-    Response<dynamic> response = await EventManager.findEventByName(_currentSearchKey, _currentPage, _pageSize);
+    Response<dynamic> response = await EventManager.findEventByName(
+        _currentSearchKey, _currentPage, _pageSize);
 
-    if(response.success && (response.object as List).isNotEmpty){
+    if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
     }
 
@@ -253,6 +247,7 @@ class _EventSearchPageState extends State<EventSearchPage> {
       appBar: CustomGradientAppBar(
         leadingFunction: _delayPop,
         titleWidget: InputField(
+          autoFocus: true,
           controller: _textSearchController,
           focusNode: _searchFocusNode,
           cursorColor: Colors.white,

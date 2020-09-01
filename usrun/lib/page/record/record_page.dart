@@ -6,12 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_button.dart';
 import 'package:usrun/page/record/record_const.dart';
-import 'package:usrun/widget/button_circle.dart';
 import 'package:usrun/page/record/record_report.dart';
 
 class RecordPage extends StatefulWidget {

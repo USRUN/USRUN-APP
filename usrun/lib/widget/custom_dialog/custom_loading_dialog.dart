@@ -4,7 +4,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class _CustomLoadingDialog extends StatelessWidget {
-  final double _radius = 7.0;
+  final double _radius = 5.0;
   final double _spacing = 15.0;
   final double _dialogWidth = 160;
   final double _dialogHeight = 120;
@@ -25,7 +25,7 @@ class _CustomLoadingDialog extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -40,9 +40,9 @@ class _CustomLoadingDialog extends StatelessWidget {
             textScaleFactor: 1.0,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: R.appRatio.appFontSize18,
               fontWeight: FontWeight.normal,
-              color: Colors.black,
+              color: R.colors.contentText,
             ),
           ),
         ],

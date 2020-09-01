@@ -320,7 +320,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       );
     } else {
       _myTextStyle = TextStyle(
-        color: Colors.black,
+        color: R.colors.contentText,
         fontSize: R.appRatio.appFontSize18,
       );
     }

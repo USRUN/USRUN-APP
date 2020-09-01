@@ -350,14 +350,10 @@ class ProfileStatsState extends State<ProfileStats> {
           textColor: Colors.white,
           fontWeight: FontWeight.bold,
           enableShadow: true,
-          width: R.appRatio.appWidth200,
-          height: R.appRatio.appHeight30,
-          radius: 0,
-          boxShadow: BoxShadow(
-            blurRadius: 2.0,
-            offset: Offset(1.0, 1.0),
-            color: R.colors.btnShadow,
-          ),
+          width: R.appRatio.appWidth220,
+          height: R.appRatio.appHeight35,
+          radius: 2,
+          boxShadow: R.styles.boxShadowB,
           onTap: _pressDateButton,
         ),
         SizedBox(

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 import 'custom_popup_item.dart';
@@ -45,7 +46,7 @@ class _CustomPopupMenuState<T> extends State<CustomPopupMenu> {
       elevation: widget.elevation,
       shape: widget.shapeBorder,
       enabled: widget.enable,
-      color: widget.popupColor ?? Theme.of(context).cardColor,
+      color: widget.popupColor ?? R.colors.dialogBackground,
       initialValue: widget.initialValue,
       onSelected: widget.onSelected,
       onCanceled: widget.onCancel,
@@ -97,7 +98,7 @@ class _CustomPopupMenuState<T> extends State<CustomPopupMenu> {
                       style: element.titleStyle ??
                           TextStyle(
                             fontSize: 14,
-                            color: Colors.black,
+                            color: R.colors.contentText,
                           ),
                     ),
                   ],

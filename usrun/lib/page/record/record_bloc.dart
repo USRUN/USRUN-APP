@@ -320,7 +320,6 @@ class RecordBloc extends BlocBase {
     bool hasPermission = await ph.Permission.locationAlways.isGranted;
     print("test"+hasPermission.toString());
     if (!hasPermission) {
-
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
@@ -390,8 +389,7 @@ class RecordBloc extends BlocBase {
   }
 
   Future<bool> hasApprovedGPSPermission() async {
-    return await this._locationListener.hasPermission() ==
-        PermissionStatus.granted;
+    return await ph.Permission.locationAlways.request().isGranted;
   }
 
   Future<bool> hasServiceEnabled() async {

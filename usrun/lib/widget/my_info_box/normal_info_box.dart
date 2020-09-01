@@ -32,6 +32,11 @@ class NormalInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
@@ -41,7 +46,7 @@ class NormalInfoBox extends StatelessWidget {
           disableBoxShadow
               ? BoxShadow(blurRadius: 0, color: Colors.transparent)
               : BoxShadow(
-                  blurRadius: 5.0,
+                  blurRadius: 4.0,
                   offset: Offset(0.0, 0.0),
                   color: (this.beAlwaysBlackShadow
                       ? Color.fromRGBO(0, 0, 0, 0.25)
@@ -50,11 +55,7 @@ class NormalInfoBox extends StatelessWidget {
         ],
       ),
       child: FlatButton(
-        onPressed: () {
-          if (this.pressBox != null) {
-            this.pressBox(this.id);
-          }
-        },
+        onPressed: callbackFunc,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(this.boxRadius),
@@ -82,65 +83,61 @@ class NormalInfoBox extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                Padding(
+                Container(
+                  height: this.boxSize,
                   padding: EdgeInsets.only(
                     bottom: (!disableGradientLine ? _gradientLineHeight : 0),
                   ),
-                  child: Container(
-                    height: this.boxSize,
-                    padding: EdgeInsets.only(
-                      left: R.appRatio.appSpacing5,
-                      right: R.appRatio.appSpacing5,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        (firstTitleLine.length != 0
-                            ? Text(
-                                firstTitleLine.toUpperCase(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      (firstTitleLine.length != 0
+                          ? Text(
+                              firstTitleLine.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize14,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText,
+                              ),
+                            )
+                          : Container()),
+                      SizedBox(
+                        height: R.appRatio.appSpacing10,
+                      ),
+                      (dataLine.length != 0
+                          ? FittedBox(
+                              child: Text(
+                                dataLine.toUpperCase(),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize12,
+                                  fontSize: R.appRatio.appFontSize22,
+                                  fontWeight: FontWeight.bold,
                                   color: R.colors.contentText,
                                 ),
-                              )
-                            : Container()),
-                        SizedBox(
-                          height: R.appRatio.appSpacing5,
-                        ),
-                        (dataLine.length != 0
-                            ? FittedBox(
-                                child: Text(
-                                  dataLine.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: R.appRatio.appFontSize22,
-                                    color: R.colors.contentText,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : Container()),
-                        SizedBox(
-                          height: R.appRatio.appSpacing5,
-                        ),
-                        (secondTitleLine.length != 0
-                            ? Text(
-                                secondTitleLine.toUpperCase(),
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize12,
-                                  color: R.colors.contentText,
-                                ),
-                              )
-                            : Container()),
-                      ],
-                    ),
+                              ),
+                            )
+                          : Container()),
+                      SizedBox(
+                        height: R.appRatio.appSpacing10,
+                      ),
+                      (secondTitleLine.length != 0
+                          ? Text(
+                              secondTitleLine.toUpperCase(),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: R.appRatio.appFontSize14,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText,
+                              ),
+                            )
+                          : Container()),
+                    ],
                   ),
                 ),
               ],

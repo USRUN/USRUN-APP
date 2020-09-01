@@ -112,7 +112,6 @@ class _ActivityContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String _formattedDistance =
         NumberFormat("#,##0.00", "en_US").format(this.distance);
     String _formattedLoveNumber = '${this.loveNumber}' + " loves";
@@ -142,13 +141,7 @@ class _ActivityContent extends StatelessWidget {
           decoration: BoxDecoration(
             color: _boxColor,
             borderRadius: BorderRadius.all(Radius.circular(_boxRadius)),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2.0,
-                offset: Offset(1.0, 1.0),
-                color: R.colors.btnShadow,
-              ),
-            ],
+            boxShadow: [R.styles.boxShadowRB],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -623,14 +616,15 @@ class _ActivityTimelineState extends State<ActivityTimeline> {
           ),
           _ActivityContent(
             activityID: widget.activityID,
-            title: widget.title.isEmpty? R.strings.na: widget.title,
+            title: widget.title.isEmpty ? R.strings.na : widget.title,
             dateTime: widget.dateTime,
             distance: widget.distance,
             isKM: widget.isKM,
-            pace: widget.pace == "-1"? R.strings.na: widget.pace,
+            pace: widget.pace == "-1" ? R.strings.na : widget.pace,
             time: widget.time,
-            calories: widget.calories == "-1"? R.strings.na: widget.calories,
-            elevation: widget.elevation == "-1"? R.strings.na: widget.elevation,
+            calories: widget.calories == "-1" ? R.strings.na : widget.calories,
+            elevation:
+                widget.elevation == "-1" ? R.strings.na : widget.elevation,
             isLoved: _isLovedState,
             loveNumber: _loveNumberState,
             pressActivityFunction: widget.pressActivityFunction,

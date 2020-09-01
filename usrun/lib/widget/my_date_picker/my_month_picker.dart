@@ -20,6 +20,9 @@ class _MyMonthPicker extends StatefulWidget {
 }
 
 class _MyMonthPickerState extends State<_MyMonthPicker> {
+  final double _radius = 5.0;
+  final double _spacing = 15.0;
+
   DateTime _selectedDate;
   bool _yearPickerState;
 
@@ -89,10 +92,10 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
           highlightColor: Colors.transparent,
           splashColor: R.colors.lightBlurMajorOrange,
           child: Text(
-            R.strings.cancel,
+            R.strings.cancel.toUpperCase(),
             style: TextStyle(
               color: R.colors.majorOrange,
-              fontSize: R.appRatio.appFontSize18,
+              fontSize: R.appRatio.appFontSize16,
             ),
           ),
           onPressed: _handleCancel,
@@ -101,10 +104,10 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
           highlightColor: Colors.transparent,
           splashColor: R.colors.lightBlurMajorOrange,
           child: Text(
-            R.strings.ok,
+            R.strings.ok.toUpperCase(),
             style: TextStyle(
               color: R.colors.majorOrange,
-              fontSize: R.appRatio.appFontSize18,
+              fontSize: R.appRatio.appFontSize16,
             ),
           ),
           onPressed: _handleOk,
@@ -121,7 +124,13 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            color: R.colors.majorOrange,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(_radius),
+                topRight: Radius.circular(_radius),
+              ),
+              color: R.colors.majorOrange,
+            ),
             height: R.appRatio.appHeight80,
             padding: EdgeInsets.only(
               left: R.appRatio.appSpacing15,
@@ -137,7 +146,7 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
                     style: TextStyle(
                       color: (_yearPickerState
                           ? Colors.white
-                          : Color.fromRGBO(255, 255, 255, 0.8)),
+                          : Color.fromRGBO(255, 255, 255, 0.6)),
                       fontSize: R.appRatio.appFontSize16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -152,7 +161,7 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
                     R.strings.monthPicker,
                     style: TextStyle(
                       color: (_yearPickerState
-                          ? Color.fromRGBO(255, 255, 255, 0.8)
+                          ? Color.fromRGBO(255, 255, 255, 0.6)
                           : Colors.white),
                       fontSize: R.appRatio.appFontSize18,
                       fontWeight: FontWeight.bold,
@@ -169,12 +178,19 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
                     selectedDate: _selectedDate,
                     onChanged: _onChanged,
                     firstDate: widget.firstDate,
-                    lastDate: widget.lastDate)
+                    lastDate: widget.lastDate,
+                  )
                 : MyMonthList(
                     selectedDate: _selectedDate,
                     onChanged: _onChanged,
                     firstDate: widget.firstDate,
-                    lastDate: widget.lastDate)),
+                    lastDate: widget.lastDate,
+                  )),
+          ),
+          Divider(
+            color: R.colors.majorOrange,
+            thickness: 1.0,
+            height: 1,
           ),
           _pickerActions(),
         ],
@@ -184,26 +200,69 @@ class _MyMonthPickerState extends State<_MyMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return _renderMonthPicker();
+    Widget _buildElement = Container(
+      constraints: BoxConstraints(
+        maxWidth: R.appRatio.appWidth320,
+      ),
+      margin: EdgeInsets.only(
+        left: _spacing,
+        right: _spacing,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+        color: R.colors.dialogBackground,
+      ),
+      child: _renderMonthPicker(),
+    );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }
 
 Future<DateTime> showMyMonthPicker({
-  BuildContext context,
-  DateTime initialDate,
-  DateTime firstDate,
-  DateTime lastDate,
+  @required BuildContext context,
+  @required DateTime initialDate,
+  @required DateTime firstDate,
+  @required DateTime lastDate,
 }) async {
-  return await showDialog<DateTime>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
+  return await showGeneralDialog(
+    context: context,
+    barrierLabel: "Label",
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: Duration(milliseconds: 300),
+    transitionBuilder: (context, anim1, anim2, child) {
+      return ScaleTransition(
+        scale: Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: anim1,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        child: child,
+      );
+    },
+    pageBuilder: (context, anim1, anim2) {
+      return Material(
+        type: MaterialType.transparency,
+        child: Align(
+          alignment: Alignment.center,
           child: _MyMonthPicker(
             firstDate: firstDate,
             initialDate: initialDate,
             lastDate: lastDate,
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }

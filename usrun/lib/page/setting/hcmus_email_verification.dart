@@ -11,9 +11,9 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
+import 'package:usrun/util/common_utils.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/toast_utils.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/ui_button.dart';
 
@@ -36,7 +36,9 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
     num1 = num2 = num3 = num4 = num5 = num6 = "";
     _textCodeController = TextEditingController();
     _codeFocusNode = FocusNode();
-    _requireCodeBoxFocus();
+    CommonUtils.delayRequestFocusNode(
+      focusNode: _codeFocusNode,
+    );
     _createOTPCode();
     _startTimer();
   }
@@ -50,7 +52,7 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
   }
 
   Future<void> _createOTPCode() async {
-    Response response = await UserManager.resendOTP();
+    await UserManager.resendOTP();
   }
 
   void _startTimer() {
@@ -83,12 +85,6 @@ class _HcmusEmailVerificationState extends State<HcmusEmailVerification> {
   void _hideLoading() {
     if (!mounted) return;
     pop(context);
-  }
-
-  void _requireCodeBoxFocus() {
-    Future.delayed(Duration(milliseconds: 500), () {
-      _codeFocusNode.requestFocus();
-    });
   }
 
   void _onChangedCodeBoxData(String data) async {

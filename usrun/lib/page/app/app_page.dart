@@ -9,7 +9,6 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
 import 'package:usrun/page/event/event_search_page.dart';
-import 'package:usrun/page/feed/athlete_search_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
 import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
@@ -25,8 +24,9 @@ class DrawerItem {
   String title;
   String icon;
   String activeIcon;
+  double iconSize;
 
-  DrawerItem(this.title, this.icon, this.activeIcon);
+  DrawerItem(this.title, this.icon, this.activeIcon, this.iconSize);
 }
 
 class AppPage extends StatefulWidget {
@@ -41,22 +41,46 @@ class _AppPageState extends State<AppPage> {
     EventPage(),
     TeamPage(),
     ProfilePage(),
-    SettingPage()
+    SettingPage(),
   ];
 
   final drawerItems = [
     DrawerItem(
-        R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
+      R.strings.record,
+      R.myIcons.drawerRecordWhite,
+      R.myIcons.drawerRecordYellow,
+      R.appRatio.appIconSize25,
+    ),
     DrawerItem(
-        R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
+      R.strings.uFeed,
+      R.myIcons.drawerUfeedWhite,
+      R.myIcons.drawerUfeedYellow,
+      R.appRatio.appIconSize18,
+    ),
     DrawerItem(
-        R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
+      R.strings.events,
+      R.myIcons.drawerEventsWhite,
+      R.myIcons.drawerEventsYellow,
+      R.appRatio.appIconSize25,
+    ),
     DrawerItem(
-        R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
-    DrawerItem(R.strings.profile, R.myIcons.drawerProfile,
-        R.myIcons.drawerActiveProfile),
-    DrawerItem(R.strings.settings, R.myIcons.drawerSettings,
-        R.myIcons.drawerActiveSettings),
+      R.strings.teams,
+      R.myIcons.drawerTeamsWhite,
+      R.myIcons.drawerTeamsYellow,
+      R.appRatio.appIconSize20,
+    ),
+    DrawerItem(
+      R.strings.profile,
+      R.myIcons.drawerProfileWhite,
+      R.myIcons.drawerProfileYellow,
+      R.appRatio.appIconSize20,
+    ),
+    DrawerItem(
+      R.strings.settings,
+      R.myIcons.drawerSettingsWhite,
+      R.myIcons.drawerSettingsYellow,
+      R.appRatio.appIconSize20,
+    ),
   ];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -110,18 +134,7 @@ class _AppPageState extends State<AppPage> {
         list.add(Container());
         break;
       case 1: // Feed page
-        list.add(
-          wrapWidget(
-            R.myIcons.appBarSearchBtn,
-            () {
-              pushPage(
-                context,
-                AthleteSearchPage(),
-              );
-            },
-          ),
-        );
-        break;
+        list.add(Container());
         break;
       case 2: // Event page
         list.add(
@@ -171,46 +184,59 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
-    var drawerWidgets = <Widget>[];
+    List<Widget> drawerWidgets = <Widget>[];
     for (var i = 0; i < drawerItems.length; i++) {
       var item = drawerItems[i];
-      drawerWidgets.add(FlatButton(
-        onPressed: () => _onSelectItem(i),
-        padding: EdgeInsets.all(0),
-        textColor: Colors.white,
-        child: Container(
-          height: R.appRatio.appHeight60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(
-                  right: R.appRatio.appSpacing25,
-                ),
-                child: Image.asset(
-                  (i == _selectedDrawerIndex ? item.activeIcon : item.icon),
-                  width: R.appRatio.appIconSize25,
-                  height: R.appRatio.appIconSize25,
-                ),
-              ),
-              Container(
-                width: R.appRatio.appWidth100,
-                child: Text(
-                  item.title.toUpperCase(),
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: R.appRatio.appFontSize18,
-                    color: i == _selectedDrawerIndex
-                        ? R.colors.oldYellow
-                        : Colors.white,
+
+      String iconUrl = item.icon;
+      if (i == _selectedDrawerIndex) {
+        iconUrl = item.activeIcon;
+      }
+
+      drawerWidgets.add(
+        FlatButton(
+          onPressed: () => _onSelectItem(i),
+          padding: EdgeInsets.all(0),
+          textColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+          ),
+          child: Container(
+            height: R.appRatio.appHeight60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: R.appRatio.appIconSize30,
+                  height: R.appRatio.appIconSize30,
+                  alignment: Alignment.center,
+                  child: ImageCacheManager.getImage(
+                    url: iconUrl,
+                    width: item.iconSize,
+                    height: item.iconSize,
+                    fit: BoxFit.contain,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: R.appRatio.appSpacing25),
+                Container(
+                  width: R.appRatio.appWidth100,
+                  child: Text(
+                    item.title.toUpperCase(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: R.appRatio.appFontSize18,
+                      color: i == _selectedDrawerIndex
+                          ? R.colors.oldYellow
+                          : Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ));
+      );
     }
 
     Widget _buildElement = Scaffold(
@@ -254,10 +280,9 @@ class _AppPageState extends State<AppPage> {
                     avatarImageURL: _avatar,
                     avatarImageSize: R.appRatio.appAvatarSize130,
                     supportImageURL: _supportAvatar,
-                    avatarBoxShadow: BoxShadow(
-                      blurRadius: 20.0,
+                    avatarBoxBorder: Border.all(
                       color: R.colors.oldYellow,
-                      offset: Offset(0.0, 0.0),
+                      width: 2,
                     ),
                   ),
                   SizedBox(
@@ -313,14 +338,15 @@ class _AppPageState extends State<AppPage> {
         ),
       ),
       body: NotificationListener<OverscrollIndicatorNotification>(
-          child: IndexedStack(
-            index: _selectedDrawerIndex,
-            children: pages,
-          ),
-          onNotification: (overScroll) {
-            overScroll.disallowGlow();
-            return false;
-          }),
+        child: IndexedStack(
+          index: _selectedDrawerIndex,
+          children: pages,
+        ),
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        },
+      ),
     );
 
     //return _buildElement;ch

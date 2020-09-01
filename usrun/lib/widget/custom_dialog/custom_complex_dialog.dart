@@ -21,7 +21,7 @@ class _ComplexDialog extends StatefulWidget {
 
   _ComplexDialog({
     this.maxWidth = 320,
-    this.maxHeight = 450,
+    this.maxHeight = 500,
     @required this.headerContent,
     this.descriptionContent = "",
     this.inputFieldList,
@@ -44,7 +44,7 @@ class _ComplexDialog extends StatefulWidget {
 
 class _ComplexDialogState extends State<_ComplexDialog> {
   List<CheckBoxItem> boxList = List<CheckBoxItem>();
-  final double radius = 10;
+  final double radius = 5;
   final double _buttonHeight = 50.0;
 
   @override
@@ -166,10 +166,10 @@ class _ComplexDialogState extends State<_ComplexDialog> {
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
             itemCount: this.boxList.length,
-            itemBuilder: (BuildContext ctxt, int index) {
+            itemBuilder: (BuildContext context, int index) {
               double pad = 0;
               if (index != this.boxList.length - 1) {
-                pad = R.appRatio.appSpacing10;
+                pad = R.appRatio.appSpacing15;
               }
 
               return Container(
@@ -195,19 +195,25 @@ class _ComplexDialogState extends State<_ComplexDialog> {
         Container(
           width: R.appRatio.appWidth30,
           height: R.appRatio.appWidth30,
-          child: Checkbox(
-            value: boxItem.isSelected,
-            activeColor: R.colors.majorOrange,
-            onChanged: (bool value) {
-              if (widget.onPressedCheckBox != null) {
-                widget.onPressedCheckBox(index, value);
-              }
+          child: Theme(
+            data: ThemeData(
+              unselectedWidgetColor: R.colors.contentText,
+            ),
+            child: Checkbox(
+              value: boxItem.isSelected,
+              activeColor: R.colors.majorOrange,
+              checkColor: Colors.white,
+              onChanged: (bool value) {
+                if (widget.onPressedCheckBox != null) {
+                  widget.onPressedCheckBox(index, value);
+                }
 
-              if (!mounted) return;
-              setState(() {
-                this.boxList[index].isSelected = value;
-              });
-            },
+                if (!mounted) return;
+                setState(() {
+                  this.boxList[index].isSelected = value;
+                });
+              },
+            ),
           ),
         ),
         SizedBox(
@@ -220,8 +226,8 @@ class _ComplexDialogState extends State<_ComplexDialog> {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Colors.black,
-              fontSize: R.appRatio.appFontSize16,
+              color: R.colors.contentText,
+              fontSize: R.appRatio.appFontSize18,
             ),
           ),
         ),
@@ -254,12 +260,12 @@ class _ComplexDialogState extends State<_ComplexDialog> {
                       ),
                     ),
                     child: Text(
-                      widget.secondButtonText,
+                      widget.secondButtonText.toUpperCase(),
                       textScaleFactor: 1.0,
                       style: TextStyle(
                         fontSize: R.appRatio.appFontSize16,
                         fontWeight: FontWeight.bold,
-                        color: R.colors.gray515151,
+                        color: R.colors.secondButtonDialogColor,
                       ),
                     ),
                   ),
@@ -295,12 +301,12 @@ class _ComplexDialogState extends State<_ComplexDialog> {
                 ),
               ),
               child: Text(
-                widget.firstButtonText,
+                widget.firstButtonText.toUpperCase(),
                 textScaleFactor: 1.0,
                 style: TextStyle(
                   fontSize: R.appRatio.appFontSize16,
                   fontWeight: FontWeight.bold,
-                  color: R.colors.majorOrange,
+                  color: R.colors.firstButtonDialogColor,
                 ),
               ),
             ),
@@ -339,7 +345,7 @@ class _ComplexDialogState extends State<_ComplexDialog> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
-        color: Colors.white,
+        color: R.colors.dialogBackground,
       ),
       child: SingleChildScrollView(
         child: Column(

@@ -19,6 +19,9 @@ class _MyTimePicker extends StatefulWidget {
 }
 
 class _MyTimePickerState extends State<_MyTimePicker> {
+  final double _radius = 5.0;
+  final double _spacing = 15.0;
+
   DateTime _selectedDate;
 
   @override
@@ -86,7 +89,13 @@ class _MyTimePickerState extends State<_MyTimePicker> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            color: R.colors.majorOrange,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(_radius),
+                topRight: Radius.circular(_radius),
+              ),
+              color: R.colors.majorOrange,
+            ),
             height: R.appRatio.appHeight60,
             alignment: Alignment.center,
             child: Text(
@@ -108,6 +117,7 @@ class _MyTimePickerState extends State<_MyTimePicker> {
                 showTitle: false,
                 itemTextStyle: null,
                 pickerHeight: R.appRatio.appHeight250,
+                backgroundColor: R.colors.dialogBackground,
               ),
               onChange: _onChanged,
             ),
@@ -134,7 +144,28 @@ class _MyTimePickerState extends State<_MyTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return _renderTimePicker();
+    Widget _buildElement = Container(
+      constraints: BoxConstraints(
+        maxWidth: R.appRatio.appWidth320,
+      ),
+      margin: EdgeInsets.only(
+        left: _spacing,
+        right: _spacing,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+        color: R.colors.dialogBackground,
+      ),
+      child: _renderTimePicker(),
+    );
+
+    return NotificationListener<OverscrollIndicatorNotification>(
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 }
 
@@ -144,16 +175,38 @@ Future<DateTime> showMyTimePicker({
   @required DateTime firstDate,
   @required DateTime lastDate,
 }) async {
-  return await showDialog<DateTime>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
+  return await showGeneralDialog(
+    context: context,
+    barrierLabel: "Label",
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: Duration(milliseconds: 300),
+    transitionBuilder: (context, anim1, anim2, child) {
+      return ScaleTransition(
+        scale: Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: anim1,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        child: child,
+      );
+    },
+    pageBuilder: (context, anim1, anim2) {
+      return Material(
+        type: MaterialType.transparency,
+        child: Align(
+          alignment: Alignment.center,
           child: _MyTimePicker(
             firstDate: firstDate,
             initialDate: initialDate,
             lastDate: lastDate,
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }
