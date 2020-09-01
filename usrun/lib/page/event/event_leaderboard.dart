@@ -300,20 +300,21 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
   }
 
   Widget _renderBodyContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    double headerRankLeadHeight = R.appRatio.appHeight50;
+
+    return Stack(
       children: <Widget>[
-        // HeaderRankLead
-        Container(
-          decoration: BoxDecoration(
-            color: R.colors.boxBackground,
-            boxShadow: [R.styles.boxShadowB],
-          ),
-          child: HeaderRankLead(),
-        ),
         // All contents
-        Expanded(
+        Container(
+          margin: EdgeInsets.only(
+            top: headerRankLeadHeight,
+          ),
           child: _renderDataList(),
+        ),
+        // HeaderRankLead
+        HeaderRankLead(
+          enableShadow: true,
+          height: headerRankLeadHeight,
         ),
       ],
     );

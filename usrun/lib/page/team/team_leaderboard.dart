@@ -72,23 +72,19 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
 
   @override
   Widget build(BuildContext context) {
+    double headerRankLeadHeight = R.appRatio.appHeight50;
+
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(title: R.strings.teamLeaderboard),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(
         children: <Widget>[
-          // HeaderRankLead
-          Container(
-            decoration: BoxDecoration(
-              color: R.colors.boxBackground,
-              boxShadow: [R.styles.boxShadowB],
-            ),
-            child: HeaderRankLead(),
-          ),
           // All contents
-          Expanded(
+          Container(
+            margin: EdgeInsets.only(
+              top: headerRankLeadHeight,
+            ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: (_isLoading
@@ -101,16 +97,22 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
                   : _renderList()),
             ),
           ),
+          // HeaderRankLead
+          HeaderRankLead(
+            enableShadow: true,
+            height: headerRankLeadHeight,
+          ),
         ],
       ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
-        child: _buildElement,
-        onNotification: (overScroll) {
-          overScroll.disallowGlow();
-          return false;
-        });
+      child: _buildElement,
+      onNotification: (overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+    );
   }
 
   Widget _renderList() {
