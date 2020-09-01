@@ -1472,6 +1472,8 @@ class Strings {
 
   String search;
 
+  String changeUnitDescription;
+
   String chooseLanguageTitle;
   String chooseLanguageDescription;
   String english;

@@ -54,6 +54,19 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   final FocusNode _titleNode = FocusNode();
   final FocusNode _descriptionNode = FocusNode();
 
+  @override
+  void initState() {
+    super.initState();
+
+    updateUserEvent();
+  }
+
+  void updateUserEvent() async {
+    await EventManager.getUserEvents(UserManager.currentUser.userId);
+
+    setState(() {});
+  }
+
   void _unFocusAllFields() {
     _titleNode.unfocus();
     _descriptionNode.unfocus();
@@ -238,7 +251,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown() {
+  _buildEventDropDown(){
     List<DropDownObject<int>> dropDowMenuList = [];
     dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
     EventManager.userOpeningEvents.forEach((event) {
