@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -117,15 +118,7 @@ class CustomCell extends StatelessWidget {
 
   Widget _renderPopupMenuButton() {
     return (enablePopupMenuButton
-        ? (this.customPopupMenu != null
-            ? Padding(
-                padding: EdgeInsets.only(
-                  left: R.appRatio.appSpacing10,
-                  right: R.appRatio.appSpacing5,
-                ),
-                child: this.customPopupMenu,
-              )
-            : Container())
+        ? (this.customPopupMenu != null ? this.customPopupMenu : Container())
         : Container());
   }
 
@@ -302,47 +295,50 @@ class CustomCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      splashColor: (enableSplashColor
-          ? R.colors.lightBlurMajorOrange
-          : Colors.transparent),
-      textColor: (enableSplashColor ? Colors.white : Colors.transparent),
-      highlightColor: (enableSplashColor ? null : Colors.transparent),
+    return Padding(
       padding: this.padding,
-      onPressed: () {
-        if (this.pressInfo != null) {
-          this.pressInfo();
-        }
-      },
-      shape: shape,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            // Avatar view
-            (this.avatarView ?? Container()),
-            SizedBox(
-              width: R.appRatio.appSpacing15,
-            ),
-            // Content
-            Expanded(
-              child: this._renderContent(),
-            ),
-            // Suffix actions
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: (centerVerticalSuffix
-                  ? CrossAxisAlignment.center
-                  : CrossAxisAlignment.start),
-              children: <Widget>[
-                this._renderFFButton(),
-                this._renderPopupMenuButton(),
-                this._renderCloseButton(),
-                this._renderCheckButton(),
-              ],
-            ),
-          ],
+      child: FlatButton(
+        splashColor: (enableSplashColor
+            ? R.colors.lightBlurMajorOrange
+            : Colors.transparent),
+        textColor: (enableSplashColor ? Colors.white : Colors.transparent),
+        highlightColor: (enableSplashColor ? null : Colors.transparent),
+        padding: EdgeInsets.all(0),
+        onPressed: () {
+          if (this.pressInfo != null) {
+            this.pressInfo();
+          }
+        },
+        shape: shape,
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              // Avatar view
+              (this.avatarView ?? Container()),
+              SizedBox(
+                width: R.appRatio.appSpacing15,
+              ),
+              // Content
+              Expanded(
+                child: this._renderContent(),
+              ),
+              // Suffix actions
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: (centerVerticalSuffix
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start),
+                children: <Widget>[
+                  this._renderFFButton(),
+                  this._renderPopupMenuButton(),
+                  this._renderCloseButton(),
+                  this._renderCheckButton(),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

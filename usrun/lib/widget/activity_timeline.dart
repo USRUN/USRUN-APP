@@ -410,97 +410,98 @@ class _ActivityContent extends StatelessWidget {
                       color: _pathIconColor,
                     ),
                     // Love - Comment - Share - Love number
-                    Container(
-                      width: _smallRightBoxWidth,
-                      height: _bottomHeightSmallRightBox,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(_boxRadius),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(
-                        left: R.appRatio.appSpacing5,
-                        right: R.appRatio.appSpacing5,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          // Love
-                          GestureDetector(
-                            onTap: () {
-                              if (this.pressLoveFunction != null) {
-                                this.pressLoveFunction(this.activityID);
-                              }
-                            },
-                            child: ImageCacheManager.getImage(
-                              url: (this.isLoved
-                                  ? R.myIcons.blackBoldLoveIcon
-                                  : R.myIcons.blackLoveIcon),
-                              width: R.appRatio.appIconSize20,
-                              height: R.appRatio.appIconSize20,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          SizedBox(
-                            width: R.appRatio.appSpacing20,
-                          ),
-                          // Comment
-                          GestureDetector(
-                            onTap: () {
-                              if (this.pressCommentFunction != null) {
-                                this.pressCommentFunction(this.activityID);
-                              }
-                            },
-                            child: ImageCacheManager.getImage(
-                              url: R.myIcons.blackCommentIcon,
-                              width: R.appRatio.appIconSize20,
-                              height: R.appRatio.appIconSize20,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          SizedBox(
-                            width: R.appRatio.appSpacing20,
-                          ),
-                          // Share
-                          GestureDetector(
-                            onTap: () {
-                              if (this.pressShareFunction != null) {
-                                this.pressShareFunction(this.activityID);
-                              }
-                            },
-                            child: ImageCacheManager.getImage(
-                              url: R.myIcons.blackShareIcon,
-                              width: R.appRatio.appIconSize20,
-                              height: R.appRatio.appIconSize20,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          SizedBox(
-                            width: R.appRatio.appSpacing20,
-                          ),
-                          // Love number
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (this.pressInteractionFunction != null) {
-                                  this.pressInteractionFunction(
-                                      this.activityID);
-                                }
-                              },
-                              child: Text(
-                                _formattedLoveNumber,
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontSize: R.appRatio.appFontSize16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+//                    TODO: Turn off this big feature
+//                    Container(
+//                      width: _smallRightBoxWidth,
+//                      height: _bottomHeightSmallRightBox,
+//                      decoration: BoxDecoration(
+//                        borderRadius: BorderRadius.only(
+//                          bottomRight: Radius.circular(_boxRadius),
+//                        ),
+//                      ),
+//                      padding: EdgeInsets.only(
+//                        left: R.appRatio.appSpacing5,
+//                        right: R.appRatio.appSpacing5,
+//                      ),
+//                      child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.start,
+//                        crossAxisAlignment: CrossAxisAlignment.center,
+//                        children: <Widget>[
+//                          // Love
+//                          GestureDetector(
+//                            onTap: () {
+//                              if (this.pressLoveFunction != null) {
+//                                this.pressLoveFunction(this.activityID);
+//                              }
+//                            },
+//                            child: ImageCacheManager.getImage(
+//                              url: (this.isLoved
+//                                  ? R.myIcons.blackBoldLoveIcon
+//                                  : R.myIcons.blackLoveIcon),
+//                              width: R.appRatio.appIconSize20,
+//                              height: R.appRatio.appIconSize20,
+//                              fit: BoxFit.contain,
+//                            ),
+//                          ),
+//                          SizedBox(
+//                            width: R.appRatio.appSpacing20,
+//                          ),
+//                          // Comment
+//                          GestureDetector(
+//                            onTap: () {
+//                              if (this.pressCommentFunction != null) {
+//                                this.pressCommentFunction(this.activityID);
+//                              }
+//                            },
+//                            child: ImageCacheManager.getImage(
+//                              url: R.myIcons.blackCommentIcon,
+//                              width: R.appRatio.appIconSize20,
+//                              height: R.appRatio.appIconSize20,
+//                              fit: BoxFit.contain,
+//                            ),
+//                          ),
+//                          SizedBox(
+//                            width: R.appRatio.appSpacing20,
+//                          ),
+//                          // Share
+//                          GestureDetector(
+//                            onTap: () {
+//                              if (this.pressShareFunction != null) {
+//                                this.pressShareFunction(this.activityID);
+//                              }
+//                            },
+//                            child: ImageCacheManager.getImage(
+//                              url: R.myIcons.blackShareIcon,
+//                              width: R.appRatio.appIconSize20,
+//                              height: R.appRatio.appIconSize20,
+//                              fit: BoxFit.contain,
+//                            ),
+//                          ),
+//                          SizedBox(
+//                            width: R.appRatio.appSpacing20,
+//                          ),
+//                          // Love number
+//                          Expanded(
+//                            child: GestureDetector(
+//                              onTap: () {
+//                                if (this.pressInteractionFunction != null) {
+//                                  this.pressInteractionFunction(
+//                                      this.activityID);
+//                                }
+//                              },
+//                              child: Text(
+//                                _formattedLoveNumber,
+//                                textAlign: TextAlign.right,
+//                                style: TextStyle(
+//                                  fontSize: R.appRatio.appFontSize16,
+//                                  color: Colors.black,
+//                                ),
+//                              ),
+//                            ),
+//                          ),
+//                        ],
+//                      ),
+//                    ),
                   ],
                 ),
               )

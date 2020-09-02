@@ -242,7 +242,6 @@ class _EditActivityPageState extends State<EditActivityPage> {
         labelTitle: R.strings.yourDescription,
         enableLabelShadow: true,
         enableFullWidth: true,
-        enableMaxLines: true,
         textInputType: TextInputType.multiline,
         textInputAction: TextInputAction.newline,
       ),
