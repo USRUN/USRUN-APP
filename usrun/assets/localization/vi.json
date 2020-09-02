@@ -471,6 +471,9 @@
     "vietnamese": "Tiếng Việt",
     "languageDescription": "Ứng dụng sẽ được khởi động lại sau khi thay đổi ngôn ngữ",
 
+    "measureUnitTitle": "Chọn đơn vị đo",
+    "measureUnitDescription": "Chọn đơn vị đo mà bạn muốn ứng dụng sử dụng",
+
     "chooseAppThemeTitle": "Chọn chủ đề ứng dụng",
     "chooseAppThemeDescription": "Chọn chủ đề ứng dụng bạn muốn hiển thị",
     "lightTheme": "Chủ đề sáng",

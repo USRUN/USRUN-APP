@@ -471,6 +471,9 @@
     "vietnamese": "Vietnamese",
     "languageDescription": "The application will be restarted after changing the language",
 
+    "measureUnitTitle": "Choose measure unit",
+    "measureUnitDescription": "Choose the measure unit you want the application to use",
+
     "chooseAppThemeTitle": "Choose app theme",
     "chooseAppThemeDescription": "Choose the application theme you want to display",
     "lightTheme": "Light theme",

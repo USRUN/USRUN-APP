@@ -1480,6 +1480,9 @@ class Strings {
   String vietnamese;
   String languageDescription;
 
+  String measureUnitTitle;
+  String measureUnitDescription;
+
   String chooseAppThemeTitle;
   String chooseAppThemeDescription;
   String lightTheme;
