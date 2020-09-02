@@ -56,7 +56,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   int _teamNewMemThisWeek = -1;
   int _teamMembers = -1;
   bool _verificationStatus = false;
-  String currentRunningUnit = R.strings.distanceUnit[DataManager.getUserRunningUnit().index];
+  String currentRunningUnit =
+      R.strings.distanceUnit[DataManager.getUserRunningUnit().index];
   TeamMemberType _teamMemberType = TeamMemberType.Guest;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -98,8 +99,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (!mounted) return;
     setState(
       () {
-        _teamTotalDistance = switchBetweenMeterAndKm(toMap.totalDistance).toInt();
-        _teamLeadingDistance = switchBetweenMeterAndKm(toMap.maxDistance).toInt();
+        _teamTotalDistance =
+            switchBetweenMeterAndKm(toMap.totalDistance).toInt();
+        _teamLeadingDistance =
+            switchBetweenMeterAndKm(toMap.maxDistance).toInt();
         _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
         _teamActivities = toMap.totalActivity;
         _teamRank = toMap.rank;
@@ -170,9 +173,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(context,
         maxWidth: 800, maxHeight: 600, imageQuality: 80);
-    if (!result) return "";
+    if(result == null || result == false) return "";
 
     result = await _selectedCameraFile.cropImage(
       cropStyle: cropStyle,
@@ -312,8 +315,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   String numberDisplayAdapter(dynamic toDisplay) {
     if (toDisplay == -1) {
       return R.strings.na;
-    } else
-      return toDisplay.toString();
+    }
+    return NumberFormat.compact().format((toDisplay));
   }
 
 //  _transferOwnership() {
@@ -641,8 +644,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine: numberDisplayAdapter(
                                       _teamLeadingDistance),
-                                  secondTitleLine:
-                                      currentRunningUnit + "\n" + R.strings.leadingDist,
+                                  secondTitleLine: currentRunningUnit +
+                                      "\n" +
+                                      R.strings.leadingDist,
                                 ),
                               ],
                             ),

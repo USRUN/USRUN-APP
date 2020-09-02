@@ -3,7 +3,7 @@
     "hcmus": "HCMUS",
 
     "firstName": "Tên",
-    "lastName": "Họ",
+    "lastName": "Họ & Tên đệm",
     "password": "Mật khẩu",
     "passwordHint": "Nhập mật khẩu của bạn tại đây",
     "currentPassword": "Mật khẩu hiện tại",
@@ -222,7 +222,7 @@
     "noMemberInList": "Danh sách trống",
     "noMemberInListSubtitle": "Không có thành viên nào trong danh sách này",
     "memberOnly": "Chỉ có thành viên mới có thể xem danh sách này",
-    "memberOnlySubtitle": "Thử gửi yêu cầu tham gia!",
+    "memberOnlySubtitle": "Hãy thử gửi yêu cầu tham gia nhóm và chờ sự xét duyệt của quản trị viên!",
     "startSearch": "Bắt đầu tìm kiếm",
     "startSearchSubtitle": "Hãy thử nhập bất kỳ tên nào vào trường trên",
     "notAuthorizedTeamChange": "Bạn không được phép thay đổi thông tin này",
@@ -462,6 +462,8 @@
     "discardActivity": "Xóa hoạt động này?",
 
     "search": "Tìm kiếm",
+
+    "changeUnitDescription": "Ứng dụng sẽ được khởi động lại sau khi thay đổi đơn vị đo",
 
     "chooseLanguageTitle": "Chọn ngôn ngữ hiển thị",
     "chooseLanguageDescription": "Chọn ngôn ngữ ứng dụng bạn muốn xem",

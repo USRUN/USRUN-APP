@@ -77,9 +77,9 @@ class _TeamPageState extends State<TeamPage> {
   List<dynamic> _getBannerList() {
     if (checkListIsNullOrEmpty(_teamSuggestionList)) {
       List<dynamic> bannerList = [
-          ImageCacheManager.getImage(
-            url: R.images.defaultBackground,
-          ),
+        ImageCacheManager.getImage(
+          url: R.images.defaultBackground,
+        ),
       ];
       return bannerList;
     }
@@ -177,21 +177,21 @@ class _TeamPageState extends State<TeamPage> {
                         height: R.appRatio.appHeight250,
                         width: R.appRatio.deviceWidth,
                         child: Carousel(
-                            images: _getBannerList(),
-                            defaultImage: R.images.smallDefaultImage,
-                            dotSize: R.appRatio.appIconSize5,
-                            dotSpacing: R.appRatio.appSpacing20,
-                            dotColor: Colors.white,
-                            dotIncreasedColor: R.colors.majorOrange,
-                            dotBgColor: Colors.black.withOpacity(0.25),
-                            boxFit: BoxFit.fill,
-                            indicatorBgPadding: 5.0,
-                            animationDuration: Duration(milliseconds: 500),
-                            autoplayDuration: Duration(seconds: 8),
-                            borderRadius: true,
-                            radius: Radius.circular(0),
-                          ),
+                          images: _getBannerList(),
+                          defaultImage: R.images.smallDefaultImage,
+                          dotSize: R.appRatio.appIconSize5,
+                          dotSpacing: R.appRatio.appSpacing20,
+                          dotColor: Colors.white,
+                          dotIncreasedColor: R.colors.majorOrange,
+                          dotBgColor: Colors.black.withOpacity(0.25),
+                          boxFit: BoxFit.fill,
+                          indicatorBgPadding: 5.0,
+                          animationDuration: Duration(milliseconds: 500),
+                          autoplayDuration: Duration(seconds: 8),
+                          borderRadius: true,
+                          radius: Radius.circular(0),
                         ),
+                      ),
                       SizedBox(
                         height: R.appRatio.appSpacing20,
                       ),
@@ -267,7 +267,7 @@ class _TeamPageState extends State<TeamPage> {
                         height: R.appRatio.appSpacing20,
                       ),
                       LineButton(
-                        mainText: R.strings.viewAllTeams,
+                        mainText: R.strings.viewAllTeams.toUpperCase(),
                         mainTextFontSize: R.appRatio.appFontSize16,
                         enableSuffixIcon: true,
                         suffixIconSize: R.appRatio.appIconSize15,

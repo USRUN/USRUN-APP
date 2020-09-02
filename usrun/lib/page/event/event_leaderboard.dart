@@ -208,7 +208,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         String avatar = data.avatar;
         String name = data.name;
         int rank = data.rank;
-        String formattedDistance = NumberFormat("#,##0.##", "en_US").format(
+        String formattedDistance = NumberFormat.compact().format(
           switchBetweenMeterAndKm(
             data.distance,
             formatType: RunningUnit.KILOMETER,
@@ -300,20 +300,21 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
   }
 
   Widget _renderBodyContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    double headerRankLeadHeight = R.appRatio.appHeight50;
+
+    return Stack(
       children: <Widget>[
-        // HeaderRankLead
-        Container(
-          decoration: BoxDecoration(
-            color: R.colors.boxBackground,
-            boxShadow: [R.styles.boxShadowB],
-          ),
-          child: HeaderRankLead(),
-        ),
         // All contents
-        Expanded(
+        Container(
+          margin: EdgeInsets.only(
+            top: headerRankLeadHeight,
+          ),
           child: _renderDataList(),
+        ),
+        // HeaderRankLead
+        HeaderRankLead(
+          enableShadow: true,
+          height: headerRankLeadHeight,
         ),
       ],
     );

@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
-import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -40,7 +38,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     List<Event> result = List();
 
     Response<dynamic> response = await EventManager.getNewEventsPaged(_page, 5);
-    if(response.success && (response.object as List).isNotEmpty) {
+    if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
     }
 

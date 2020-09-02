@@ -23,18 +23,23 @@ class PendingMemberPage extends StatefulWidget {
   final TeamMemberType teamMemberType;
   final int resultPerPage = 10;
 
-  PendingMemberPage({@required this.teamId, @required this.teamMemberType});
+  PendingMemberPage({
+    @required this.teamId,
+    @required this.teamMemberType,
+    Key key,
+  }) : super(key: key);
 
   @override
-  _PendingMemberPageState createState() => _PendingMemberPageState();
+  PendingMemberPageState createState() => PendingMemberPageState();
 }
 
-class _PendingMemberPageState extends State<PendingMemberPage>
+class PendingMemberPageState extends State<PendingMemberPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<User> items = List();
   int _curPage;
   bool _remainingResults;
   bool _isLoading;
+  int callReload;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -43,10 +48,10 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     super.initState();
 
     _curPage = 1;
+    callReload = -1;
     _remainingResults = true;
     _isLoading = false;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => _reloadItems());
+    reloadItems();
   }
 
   @override
@@ -87,7 +92,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     _refreshController.loadNoData();
   }
 
-  _reloadItems() {
+  reloadItems() {
     items = List();
     _curPage = 1;
     _remainingResults = true;
@@ -96,28 +101,30 @@ class _PendingMemberPageState extends State<PendingMemberPage>
   }
 
   _pressAvatar(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   _pressUserInfo(index) async {
-    Response<dynamic> response = await UserManager.getUserInfo(items[index].userId);
+    Response<dynamic> response =
+        await UserManager.getUserInfo(items[index].userId);
     User user = response.object;
 
-    pushPage(context, ProfilePage(userInfo: user,enableAppBar: true));
+    pushPage(context, ProfilePage(userInfo: user, enableAppBar: true));
   }
 
   _pressCloseBtn(index) {
-    changeMemberRole(index, TeamMemberType.Blocked.index);
+    changeMemberRole(index, TeamMemberType.Blocked.index, 2);
   }
 
   _pressCheckBtn(index) {
-    changeMemberRole(index, TeamMemberType.Member.index);
+    changeMemberRole(index, TeamMemberType.Member.index, 0);
   }
 
-  void changeMemberRole(int index, int newMemberType) async {
+  void changeMemberRole(int index, int newMemberType, int callReloadOn) async {
     if (!mounted || items[index] == null) return;
 
     setState(
@@ -129,11 +136,8 @@ class _PendingMemberPageState extends State<PendingMemberPage>
     Response<dynamic> response = await TeamManager.updateTeamMemberRole(
         widget.teamId, items[index].userId, newMemberType);
     if (response.success && mounted) {
-      setState(
-        () {
-          _reloadItems();
-        },
-      );
+      callReload = callReloadOn;
+      reloadItems();
     } else {
       showCustomAlertDialog(
         context,
@@ -180,7 +184,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
       child: SmartRefresher(
         enablePullDown: true,
         controller: _refreshController,
-        onRefresh: _reloadItems,
+        onRefresh: reloadItems,
         child: Container(
           padding: EdgeInsets.only(
             left: R.appRatio.appSpacing25,
@@ -192,7 +196,7 @@ class _PendingMemberPageState extends State<PendingMemberPage>
             children: <Widget>[
               Text(
                 emptyList,
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: R.colors.contentText,
                   fontSize: R.appRatio.appFontSize18,
@@ -233,28 +237,28 @@ class _PendingMemberPageState extends State<PendingMemberPage>
         child: SmartRefresher(
           enablePullDown: true,
           controller: _refreshController,
-          onRefresh: _reloadItems,
+          onRefresh: reloadItems,
           enablePullUp: true,
           onLoading: loadMoreData,
-          footer: CustomFooter(
-              builder: (BuildContext context, LoadStatus mode) {
-                Widget body;
-                if (mode == LoadStatus.idle) {
-                  body = Text(R.strings.teamFooterIdle);
-                } else if (mode == LoadStatus.loading) {
-                  body = LoadingIndicator();
-                } else if (mode == LoadStatus.failed) {
-                  body = Text(R.strings.teamFooterFailed);
-                } else if (mode == LoadStatus.canLoading) {
-                  body = Text(R.strings.teamFooterCanLoading);
-                } else {
-                  body = Text(R.strings.teamFooterNoMoreData);
-                }
-                return Container(
-                  height: 55.0,
-                  child: Center(child: body),
-                );
-              }),
+          footer:
+              CustomFooter(builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text(R.strings.teamFooterIdle);
+            } else if (mode == LoadStatus.loading) {
+              body = LoadingIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text(R.strings.teamFooterFailed);
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text(R.strings.teamFooterCanLoading);
+            } else {
+              body = Text(R.strings.teamFooterNoMoreData);
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          }),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

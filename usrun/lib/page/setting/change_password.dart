@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
-import 'package:usrun/util/common_utils.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
-import 'package:usrun/core/helper.dart';
-import 'package:usrun/util/image_cache_manager.dart';
 
 class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _currentPWController = TextEditingController();

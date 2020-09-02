@@ -17,7 +17,6 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamSearchPage extends StatefulWidget {
-
   @override
   _TeamSearchPageState createState() => _TeamSearchPageState();
 }
@@ -76,7 +75,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     List<Team> result = List();
 
     Response<dynamic> response = await TeamManager.findTeamRequest(
-       _currentSearchKey, _currentPage, _pageSize);
+        _currentSearchKey, _currentPage, _pageSize);
 
     if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
