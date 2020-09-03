@@ -507,7 +507,7 @@
     "errorUserNotFound": "Không tìm thấy người dùng",
     "errorEmailPassword": "Email và mật khẩu sai",
     "errorOccurred": "Đã xảy ra lỗi, vui lòng thử lại sau!",
-    "requestTimeOut": "Hết thời gian yêu cầu",
+    "requestTimeOut": "Không nhận được phản hồi từ máy chủ, bạn vui lòng thử lại sau.",
 
     "errorMessages": {
         "-100": "Không có kết nối mạng. Xin vui lòng kiểm tra kết nối Internet của bạn",

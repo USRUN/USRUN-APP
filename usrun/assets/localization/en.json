@@ -507,7 +507,7 @@
     "errorUserNotFound": "User not found",
     "errorEmailPassword": "Email and password incorrect",
     "errorOccurred": "Error occurred, please try again later!",
-    "requestTimeOut": "Request time out",
+    "requestTimeOut": "Request timed out, please try again later!",
 
     "errorMessages": {
         "-100": "No Internet Access. Please check your internet connection",

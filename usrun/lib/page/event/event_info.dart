@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event_info.dart';
@@ -427,7 +428,6 @@ class _EventInfoPageState extends State<EventInfoPage> {
     String totalParticipants = _eventInfo.totalParticipant.toString();
     String distance = NumberFormat.compact().format(switchBetweenMeterAndKm(
       _eventInfo.totalDistance,
-      formatType: RunningUnit.KILOMETER,
     ));
     String totalTeams = _eventInfo.totalTeamParticipant.toString();
 
@@ -507,7 +507,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 id: "1",
                 boxSize: R.appRatio.appWidth100,
                 dataLine: distance,
-                secondTitleLine: "KM",
+                secondTitleLine: R.strings.distanceUnit[
+                DataManager.getUserRunningUnit().index],
                 pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),

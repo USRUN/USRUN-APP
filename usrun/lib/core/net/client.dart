@@ -70,6 +70,14 @@ class Client {
         );
       }
 
+      if (e.osError.errorCode == 110) {
+        return Response<T>(
+          success: false,
+          errorMessage: R.strings.requestTimeOut,
+          object: null,
+        );
+      }
+
       return Response<T>(
         success: false,
         errorMessage: R.strings.errorMessages["$NO_INTERNET_ACCESS"],

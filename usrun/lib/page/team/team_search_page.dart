@@ -12,6 +12,7 @@ import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -79,6 +80,16 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
     if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          pop(context);
+        },
+      );
     }
 
     return result;
