@@ -5,6 +5,7 @@ import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
@@ -65,7 +66,32 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.noResult;
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize16,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderBodyContent() {
+    if (checkListIsNullOrEmpty(_currentEventList)) {
+      return _buildEmptyList();
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.all(0.0),
