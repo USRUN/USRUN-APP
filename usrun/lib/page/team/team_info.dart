@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -177,7 +178,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         context,
         maxWidth: 800,
         maxHeight: 600,
-        imageQuality: 80);
+        imageQuality: 95);
     if (result == null || result == false) return "";
 
     result = await _selectedCameraFile.cropImage(
@@ -219,8 +220,20 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         return;
       }
 
-      image = "data:image/jpg;base64," + image;
-      reqParam[fieldToChange] = image;
+      Response<dynamic> linkResponse = await ImageClient.uploadImage(image);
+      if (!linkResponse.success) {
+        await showCustomAlertDialog(
+          context,
+          title: R.strings.notice,
+          content: linkResponse.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          },
+        );
+        return;
+      }
+      reqParam[fieldToChange] = linkResponse.object;
       reqParam['teamId'] = widget.teamId;
       Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
 

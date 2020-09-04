@@ -507,12 +507,14 @@
     "errorUserNotFound": "User not found",
     "errorEmailPassword": "Email and password incorrect",
     "errorOccurred": "Error occurred, please try again later!",
+    "errorImgur": "Error occurred while uploading image(s), please try again later!",
     "requestTimeOut": "Request timed out, please try again later!",
 
     "errorMessages": {
         "-100": "No Internet Access. Please check your internet connection",
 
         "-1": "UNKNOWN",
+        "-2": "Imgur Error",
 
         "101": "System under maintenance. Please try again later!",
         "102": "New version available. Please update app to continue!",

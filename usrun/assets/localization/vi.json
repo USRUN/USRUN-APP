@@ -507,12 +507,14 @@
     "errorUserNotFound": "Không tìm thấy người dùng",
     "errorEmailPassword": "Email và mật khẩu sai",
     "errorOccurred": "Đã xảy ra lỗi, vui lòng thử lại sau!",
+    "errorImgur": "Đã xảy ra lỗi khi đăng tải ảnh, vui lòng thử lại sau!",
     "requestTimeOut": "Không nhận được phản hồi từ máy chủ, bạn vui lòng thử lại sau.",
 
     "errorMessages": {
         "-100": "Không có kết nối mạng. Xin vui lòng kiểm tra kết nối Internet của bạn",
 
         "-1": "Không xác định",
+        "-2": "Lỗi hệ thống Imgur",
 
         "101": "Hệ thống đang được bảo trì. Vui lòng thử lại sau!",
         "102": "Có phiên bản mới. Vui lòng cập nhật ứng dụng để tiếp tục!",

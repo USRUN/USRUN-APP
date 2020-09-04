@@ -1518,6 +1518,7 @@ class Strings {
   String errorUserNotFound;
   String errorEmailPassword;
   String errorOccurred;
+  String errorImgur;
   String requestTimeOut;
 
   String usrunPhotoListMessage;
