@@ -1281,6 +1281,7 @@ class Strings {
   String delete;
   String deleteTeamTitle;
   String deleteTeamSubtitle;
+  String listCouldNotBeLoad;
   String noResult;
   String noResultSubtitle;
   String noMemberInList;

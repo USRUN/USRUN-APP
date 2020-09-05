@@ -12,6 +12,7 @@ import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/profile/profile_page.dart';
 import 'package:usrun/page/team/team_rank_item.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -78,32 +79,34 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
       appBar: CustomGradientAppBar(title: R.strings.teamLeaderboard),
-      body: Stack(
-        children: <Widget>[
-          // All contents
-          Container(
-            margin: EdgeInsets.only(
-              top: headerRankLeadHeight,
+      body: (!_isLoading && checkListIsNullOrEmpty(items))
+          ? _buildEmptyList()
+          : Stack(
+              children: <Widget>[
+                // All contents
+                Container(
+                  margin: EdgeInsets.only(
+                    top: headerRankLeadHeight,
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: (_isLoading
+                        ? Container(
+                            padding: EdgeInsets.only(
+                              top: R.appRatio.appSpacing15,
+                            ),
+                            child: LoadingIndicator(),
+                          )
+                        : _renderList()),
+                  ),
+                ),
+                // HeaderRankLead
+                HeaderRankLead(
+                  enableShadow: true,
+                  height: headerRankLeadHeight,
+                ),
+              ],
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: (_isLoading
-                  ? Container(
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing15,
-                      ),
-                      child: LoadingIndicator(),
-                    )
-                  : _renderList()),
-            ),
-          ),
-          // HeaderRankLead
-          HeaderRankLead(
-            enableShadow: true,
-            height: headerRankLeadHeight,
-          ),
-        ],
-      ),
     );
 
     return NotificationListener<OverscrollIndicatorNotification>(
@@ -112,6 +115,32 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
         overScroll.disallowGlow();
         return false;
       },
+    );
+  }
+
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.listCouldNotBeLoad;
+
+    return Center(
+      child: Container(
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
+          ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  systemNoti,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ])),
     );
   }
 

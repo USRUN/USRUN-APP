@@ -105,7 +105,9 @@ class _TeamRankState extends State<TeamRank> {
             margin: EdgeInsets.only(
               top: headerRankLeadHeight,
             ),
-            child: SingleChildScrollView(
+            child: (!_isLoading && checkListIsNullOrEmpty(items))
+                ? _buildEmptyList()
+                : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: (_isLoading
                   ? Container(
@@ -114,9 +116,7 @@ class _TeamRankState extends State<TeamRank> {
                       ),
                       child: LoadingIndicator(),
                     )
-                  : (checkListIsNullOrEmpty(items))
-                      ? _buildEmptyList()
-                      : _renderList()),
+                  : _renderList()),
             ),
           ),
           // HeaderRankLead
@@ -138,23 +138,28 @@ class _TeamRankState extends State<TeamRank> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.noResult;
+    String systemNoti = R.strings.listCouldNotBeLoad;
 
     return Center(
       child: Container(
-        padding: EdgeInsets.only(
-          left: R.appRatio.appSpacing25,
-          right: R.appRatio.appSpacing25,
-        ),
-        child: Text(
-          systemNoti,
-          textAlign: TextAlign.justify,
-          style: TextStyle(
-            color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize16,
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
           ),
-        ),
-      ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  systemNoti,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ])),
     );
   }
 
