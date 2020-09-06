@@ -84,6 +84,10 @@ class ProfileInfoState extends State<ProfileInfo> {
     }
   }
 
+  void setLoading(){
+    _isLoading = true;
+  }
+
   void updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
       if (!mounted) return;

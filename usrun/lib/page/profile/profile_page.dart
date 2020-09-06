@@ -235,6 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (_statKey.currentState!=null)
           _statKey.currentState.getProfileStatsData();
         if (_profileKey.currentState!=null)
+          _profileKey.currentState.setLoading();
           _profileKey.currentState.updateLoading();
           _profileKey.currentState.loadUserEvents();
           _profileKey.currentState.loadUserTeams();
