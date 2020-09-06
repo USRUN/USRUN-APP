@@ -22,7 +22,7 @@ import 'package:usrun/widget/team_list/team_list.dart';
 class ProfileInfo extends StatefulWidget {
   final int userId;
 
-  ProfileInfo({@required this.userId, Key key}): super(key: key);
+  ProfileInfo({@required this.userId, Key key}) : super(key: key);
 
   @override
   ProfileInfoState createState() => ProfileInfoState();
@@ -49,19 +49,21 @@ class ProfileInfoState extends State<ProfileInfo> {
   }
 
   void loadUserEvents() async {
-    if(widget.userId == UserManager.currentUser.userId && !checkListIsNullOrEmpty(EventManager.userEvents)){
+    if (widget.userId == UserManager.currentUser.userId &&
+        !checkListIsNullOrEmpty(EventManager.userEvents)) {
       _events = EventManager.userEvents;
       return;
     }
 
     Response<dynamic> events = await EventManager.getUserEvents(widget.userId);
-    if(events.success && events.errorCode == -1){
+    if (events.success && events.errorCode == -1) {
       _events = events.object;
     }
   }
 
   void loadUserTeams() async {
-    Response<dynamic> response = await TeamManager.getJoinedTeamByUser(widget.userId);
+    Response<dynamic> response =
+        await TeamManager.getJoinedTeamByUser(widget.userId);
 
     if (response.success && (response.object as List).isNotEmpty) {
       List<TeamItem> toAdd = List();
@@ -107,7 +109,13 @@ class ProfileInfoState extends State<ProfileInfo> {
   }
 
   void _pressEventItemFunction(data) {
-      pushPage(context, EventInfoPage(eventId: data.eventId, joined: data.joined ?? false));
+    pushPage(
+      context,
+      EventInfoPage(
+        eventId: data.eventId,
+        joined: data.joined ?? false,
+      ),
+    );
   }
 
   void _pressTeamItemFunction(data) {

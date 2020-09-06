@@ -3,10 +3,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/manager/event_manager.dart';
-import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/event/register_leave_event_util.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class HistoryEventTabBar extends StatefulWidget {
@@ -39,7 +39,8 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
 
     List<Event> result = List();
 
-    Response<dynamic> response = await EventManager.getUserEventsPaged(_page, 5);
+    Response<dynamic> response =
+        await EventManager.getUserEventsPaged(_page, 5);
     if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
     }
@@ -67,7 +68,32 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
     _refreshController.refreshCompleted();
   }
 
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.noResult;
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          systemNoti,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize16,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderBodyContent() {
+    if (checkListIsNullOrEmpty(_currentEventList)) {
+      return _buildEmptyList();
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.all(0.0),

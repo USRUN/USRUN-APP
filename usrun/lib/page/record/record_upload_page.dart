@@ -191,8 +191,9 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       controller: _descriptionController,
       focusNode: _descriptionNode,
       labelTitle: R.strings.yourDescription,
-      enableMaxLines: true,
       hintText: R.strings.yourDescriptionHint,
+      textInputType: TextInputType.multiline,
+      textInputAction: TextInputAction.newline,
     );
   }
 

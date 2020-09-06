@@ -206,7 +206,9 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       customPopupMenu: CustomPopupMenu<int>(
         onSelected: _onSelectedPopup,
         items: _popupItemList,
-        popupIcon: Container(
+        enableChild: true,
+        popupChild: Container(
+          width: R.appRatio.appWidth50,
           padding: EdgeInsets.only(top: 8),
           alignment: Alignment.topRight,
           child: ImageCacheManager.getImage(

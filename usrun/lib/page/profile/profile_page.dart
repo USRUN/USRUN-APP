@@ -219,7 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
             pressTab: _onSelectItem,
           ),
           SizedBox(
-            height: R.appRatio.appSpacing10,
+            height: R.appRatio.appSpacing20,
           ),
           _getContentItemWidget(_selectedTabIndex),
         ],

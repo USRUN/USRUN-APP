@@ -5,8 +5,6 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/model/event.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
-import 'event_item.dart';
-
 class EventList extends StatelessWidget {
   final String labelTitle;
   final bool enableLabelShadow;

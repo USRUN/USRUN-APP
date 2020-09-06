@@ -173,9 +173,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(context,
-        maxWidth: 800, maxHeight: 600, imageQuality: 80);
-    if(result == null || result == false) return "";
+    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(
+        context,
+        maxWidth: 800,
+        maxHeight: 600,
+        imageQuality: 80);
+    if (result == null || result == false) return "";
 
     result = await _selectedCameraFile.cropImage(
       cropStyle: cropStyle,
@@ -304,12 +307,14 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     }
 
     return UIButton(
-        width: R.appRatio.appWidth381,
-        height: R.appRatio.appHeight50,
-        gradient: R.colors.uiGradient,
-        text: toDisplay,
-        textSize: R.appRatio.appFontSize20,
-        onTap: _joinTeamFunction);
+      width: double.infinity,
+      height: R.appRatio.appHeight45,
+      gradient: R.colors.uiGradient,
+      text: toDisplay,
+      textSize: R.appRatio.appFontSize18,
+      fontWeight: FontWeight.bold,
+      onTap: _joinTeamFunction,
+    );
   }
 
   String numberDisplayAdapter(dynamic toDisplay) {

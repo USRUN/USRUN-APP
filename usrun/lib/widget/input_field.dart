@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:usrun/core/R.dart';
 
 class InputField extends StatefulWidget {
   final String labelTitle;
   final bool enableLabelShadow;
   final bool enableFullWidth;
-  final bool enableMaxLines;
+  final int maxLines;
   final bool enableBottomUnderline;
   final Color bottomUnderlineColor;
+  final TextInputFormatter formatter;
   final TextEditingController controller;
   final TextStyle contentStyle;
   final bool isDense;
@@ -31,8 +33,9 @@ class InputField extends StatefulWidget {
     this.labelTitle = "",
     this.enableLabelShadow = false,
     this.enableFullWidth = true,
-    this.enableMaxLines = false,
+    this.maxLines,
     this.enableBottomUnderline = true,
+    this.formatter,
     this.bottomUnderlineColor,
     @required this.controller,
     this.contentStyle,
@@ -108,9 +111,11 @@ class _InputFieldState extends State<InputField> {
             focusNode: _focusNode,
             controller: widget.controller,
             obscureText: widget.obscureText,
-            keyboardType: widget.textInputType,
+            keyboardType: widget.textInputType ?? TextInputType.text,
             autofocus: false,
             cursorColor: widget.cursorColor ?? R.colors.majorOrange,
+            inputFormatters:
+                (widget.formatter == null ? [] : [widget.formatter]),
             onSubmitted: (data) {
               if (widget.onSubmittedFunction != null) {
                 widget.onSubmittedFunction(data);
@@ -121,9 +126,8 @@ class _InputFieldState extends State<InputField> {
                 widget.onChangedFunction(data);
               }
             },
-            textInputAction: widget.textInputAction ??
-                (widget.enableMaxLines ? TextInputAction.none : null),
-            maxLines: (widget.enableMaxLines ? null : 1),
+            textInputAction: widget.textInputAction,
+            maxLines: widget.maxLines,
             style: widget.contentStyle ??
                 TextStyle(
                     color: R.colors.contentText,
