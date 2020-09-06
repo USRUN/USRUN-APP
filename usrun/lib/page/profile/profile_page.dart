@@ -230,8 +230,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _reloadData() async {
     setState(() {
       try {
-        _statKey.currentState.getProfileStatsData();
-        _actKey.currentState.getProfileActivityData();
+        if (_actKey.currentState!=null)
+          _actKey.currentState.getProfileActivityData();
+        if (_statKey.currentState!=null)
+          _statKey.currentState.getProfileStatsData();
+        if (_profileKey.currentState!=null)
+          _profileKey.currentState.updateLoading();
+          _profileKey.currentState.loadUserEvents();
+          _profileKey.currentState.loadUserTeams();
       } catch (e) {
         _refreshController.refreshCompleted();
       }

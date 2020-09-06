@@ -43,7 +43,7 @@ class ProfileInfoState extends State<ProfileInfo> {
     _events = List();
     _followingNumber = DemoData().ffItemList.length;
     _followerNumber = DemoData().ffItemList.length;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+    WidgetsBinding.instance.addPostFrameCallback((_) => updateLoading());
     WidgetsBinding.instance.addPostFrameCallback((_) => loadUserTeams());
     WidgetsBinding.instance.addPostFrameCallback((_) => loadUserEvents());
   }
@@ -84,7 +84,7 @@ class ProfileInfoState extends State<ProfileInfo> {
     }
   }
 
-  void _updateLoading() {
+  void updateLoading() {
     Future.delayed(Duration(milliseconds: 1000), () {
       if (!mounted) return;
       setState(() {
