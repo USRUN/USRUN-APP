@@ -8,16 +8,18 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
-import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
@@ -25,6 +27,7 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
+
 import 'bloc_provider.dart';
 
 // ignore: must_be_immutable
@@ -252,7 +255,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown(){
+  _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
     dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
     EventManager.userOpeningEvents.forEach((event) {
@@ -441,8 +444,32 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
-    var params =
-        RecordHelper.generateParamsForRequest(widget.activity, requestTime);
+    Map<String, dynamic> params = await RecordHelper.generateParamsForRequest(
+        widget.activity, requestTime);
+
+    showCustomLoadingDialog(context, text: R.strings.uploading);
+
+    for (int i = 0; i < (params['photosBase64'] as List).length; i++) {
+      String base64Img = params['photosBase64'][i];
+      Response<dynamic> response = await ImageClient.uploadImage(base64Img);
+      if (response.success) {
+        params['photosBase64'][i] = response.object;
+      } else {
+        pop(context);
+        showCustomAlertDialog(
+          context,
+          title: R.strings.error,
+          content: response.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () {
+            pop(context);
+          },
+          secondButtonText: "",
+        );
+        return response;
+      }
+    }
+
     Response<Map<String, dynamic>> response =
         await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
             '/activity/createUserActivity', params);
@@ -455,6 +482,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       result.success = false;
       result.errorCode = response.errorCode;
     }
+    pop(context);
+
     return result;
   }
 

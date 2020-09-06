@@ -250,6 +250,7 @@
     "blocking": "Blocking",
     "reporting": "Reporting",
     "processing": "Processing...",
+    "uploading": "Uploading...",
     "updating": "Updating...",
     "loading": "Loading...",
     "loadingTeamInfo": "Loading team info...",

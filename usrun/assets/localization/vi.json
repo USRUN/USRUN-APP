@@ -166,6 +166,7 @@
     "yourStatus": "Trạng thái của bạn",
     "organizations": "Tổ chức",
     "runners": "Người chạy",
+    "emptyEventList": "Không có sự kiện nào trong danh sách này",
 
     "poweredBy": "Được tổ chức bởi",
     "goldSponsor": "Nhà tài trợ vàng",
@@ -250,6 +251,7 @@
     "blocking": "Đang chặn",
     "reporting": "Đang báo cáo",
     "processing": "Đang xử lý...",
+    "uploading": "Đang đăng tải...",
     "updating": "Đang cập nhật...",
     "loading": "Đang tải...",
     "loadingTeamInfo": "Đang tải thông tin đội...",

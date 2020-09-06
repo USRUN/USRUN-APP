@@ -81,6 +81,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
           systemNoti,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: R.colors.contentText,
             fontSize: R.appRatio.appFontSize16,
           ),

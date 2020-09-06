@@ -19,11 +19,13 @@ import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/expandable_text.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -176,16 +178,28 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
     dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(
         context,
-        maxWidth: 800,
-        maxHeight: 600,
         imageQuality: 95);
     if (result == null || result == false) return "";
 
-    result = await _selectedCameraFile.cropImage(
-      cropStyle: cropStyle,
-      compressFormat: ImageCompressFormat.jpg,
-      androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-    );
+    if(cropStyle == CropStyle.circle) {
+      result = await _selectedCameraFile.cropImage(
+        maxWidth: 800,
+        maxHeight: 600,
+        cropStyle: cropStyle,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: CropAspectRatio(ratioX: 1,ratioY: 1),
+        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+      );
+    } else {
+      result = await _selectedCameraFile.cropImage(
+        cropStyle: cropStyle,
+        maxWidth: 800,
+        maxHeight: 600,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: CropAspectRatio(ratioX: 4,ratioY: 3),
+        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+      );
+    }
     if (!result) return "";
 
     return _selectedCameraFile.toBase64();
@@ -208,6 +222,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       return;
     }
 
+    if(await NetworkDetector.checkNetworkAndAlert(context) == false){
+      return;
+    }
+
     try {
       String image;
 
@@ -220,8 +238,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         return;
       }
 
+      showCustomLoadingDialog(context, text: R.strings.uploading);
+
       Response<dynamic> linkResponse = await ImageClient.uploadImage(image);
       if (!linkResponse.success) {
+        pop(context);
         await showCustomAlertDialog(
           context,
           title: R.strings.notice,
@@ -240,6 +261,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       if (updatedTeam.success && updatedTeam.object != null) {
         mapTeamInfo(updatedTeam.object);
       } else {
+        pop(context);
         showCustomAlertDialog(
           context,
           title: R.strings.notice,
@@ -258,6 +280,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         pop(this.context);
       }, secondButtonText: "");
     }
+
+    pop(context);
   }
 
   _joinTeamFunction() async {

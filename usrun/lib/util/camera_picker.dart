@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:image/image.dart' as img;
-import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:usrun/core/R.dart';
+import 'package:usrun/core/helper.dart';
+import 'package:usrun/util/network_detector.dart';
 
 /*
   ======================================
@@ -83,7 +83,7 @@ class CameraPicker {
     if (_file == null) return Future.value("");
     img.Image data = img.decodeImage(await _file.readAsBytes());
     data = img.bakeOrientation(data);
-    return base64Encode(img.encodePng(data,level: 3));
+    return base64Encode(img.encodePng(data, level: 3));
   }
 
   Future<PickedFile> showImagePicker({
@@ -194,6 +194,10 @@ class CameraPicker {
                           _cameraFileState = CameraFileState.PICKED;
                         }
 
+                        if(await NetworkDetector.isNetworkConnected() == false){
+                          pop(context, object: false);
+                        }
+
                         pop(context, object: true);
                       },
                       shapeBorder: RoundedRectangleBorder(
@@ -228,6 +232,10 @@ class CameraPicker {
                           _cameraFileState = CameraFileState.PICKED;
                         }
 
+                        if(await NetworkDetector.isNetworkConnected() == false){
+                          pop(context, object: false);
+                        }
+
                         pop(context, object: true);
                       },
                       shapeBorder: RoundedRectangleBorder(
@@ -251,9 +259,10 @@ class CameraPicker {
                     (enableClearSelectedFile
                         ? _renderButton(
                             text: R.strings.clearSelectedFile,
-                            func: () {
+                            func: () async {
                               _cameraFileState = CameraFileState.FREE;
                               _file = null;
+
                               pop(context, object: false);
                             },
                             shapeBorder: RoundedRectangleBorder(
@@ -288,7 +297,7 @@ class CameraPicker {
     CropAspectRatio aspectRatio,
     CropStyle cropStyle = CropStyle.rectangle,
     ImageCompressFormat compressFormat = ImageCompressFormat.jpg,
-    int compressQuality = 90,
+    int compressQuality = 100,
   }) async {
     assert(maxWidth == null || maxWidth > 0);
     assert(maxHeight == null || maxHeight > 0);

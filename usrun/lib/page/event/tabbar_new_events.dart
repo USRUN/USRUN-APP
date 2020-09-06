@@ -67,7 +67,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.noResult;
+    String systemNoti = R.strings.emptyMemberList;
 
     return Center(
       child: Container(
@@ -79,6 +79,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
           systemNoti,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: R.colors.contentText,
             fontSize: R.appRatio.appFontSize16,
           ),

@@ -1230,6 +1230,8 @@ class Strings {
   String yourStatus;
   String organizations;
   String runners;
+  String emptyEventList;
+  String emptyEventListSubtitle;
 
   String poweredBy;
   String goldSponsor;
@@ -1314,6 +1316,7 @@ class Strings {
   String blocking;
   String reporting;
   String processing;
+  String uploading;
   String updating;
   String loading;
   String loadingTeamInfo;
@@ -1601,7 +1604,7 @@ class _ImagePickerDefaults {
   // Sizes are in kilobytes
   final double maxWidth = 800;
   final double maxHeight = 600;
-  final int imageQuality = 80;
+  final int imageQuality = 95;
   final int maxOutputSize = 75;
   final int minInputSize = 500;
   final int maxInputSize = 6000;
