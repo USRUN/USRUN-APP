@@ -23,6 +23,8 @@
     "whatYourJobHint": "Your Job",
     "birthday": "Birthday",
     "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
     "height": "Height",
     "weight": "Weight",
     "biography": "Biography",

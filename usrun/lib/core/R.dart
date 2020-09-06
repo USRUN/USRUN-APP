@@ -1041,6 +1041,9 @@ class Strings {
   String follow;
   String unFollow;
 
+  String male;
+  String female;
+
   List<String> provinces;
   List<String> distanceUnit;
   List<String> teamMemberTypes;
