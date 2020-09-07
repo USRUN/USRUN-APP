@@ -14,7 +14,7 @@ class HistoryEventTabBar extends StatefulWidget {
   _HistoryEventTabBarState createState() => _HistoryEventTabBarState();
 }
 
-class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
+class _HistoryEventTabBarState extends State<HistoryEventTabBar> with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -69,7 +69,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.noResult;
+    String systemNoti = R.strings.emptyEventList;
 
     return Center(
       child: Container(
@@ -144,6 +144,8 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return SmartRefresher(
       enablePullUp: false,
       controller: _refreshController,
@@ -156,4 +158,7 @@ class _HistoryEventTabBarState extends State<HistoryEventTabBar> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

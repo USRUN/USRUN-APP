@@ -17,8 +17,13 @@ class RegisterLeaveEventUtil {
   static Future<Team> _chooseATeam(BuildContext context) async {
     List<Team> teamListOfUser = List();
 
+    showCustomLoadingDialog(context,text: R.strings.loading);
+
     Response response =
         await TeamManager.getJoinedTeamByUser(UserManager.currentUser.userId);
+
+
+    pop(context);
 
     if (response.success &&
         response.errorCode == -1 &&

@@ -13,7 +13,7 @@ class NewEventTabBar extends StatefulWidget {
   _NewEventTabBarState createState() => _NewEventTabBarState();
 }
 
-class _NewEventTabBarState extends State<NewEventTabBar> {
+class _NewEventTabBarState extends State<NewEventTabBar> with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -67,7 +67,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.emptyMemberList;
+    String systemNoti = R.strings.emptyEventList;
 
     return Center(
       child: Container(
@@ -137,6 +137,8 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return SmartRefresher(
       enablePullUp: false,
       controller: _refreshController,
@@ -149,4 +151,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
