@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -163,6 +164,16 @@ bool checkSystemStatus() {
   );
 
   return false;
+}
+
+Future<int> getAndroidVersion() async{
+  int version = 0;
+  if (Platform.isAndroid)
+    {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      version =  androidInfo.version.sdkInt;
+    }
+  return version;
 }
 
 // ================ NAVIGATOR ================

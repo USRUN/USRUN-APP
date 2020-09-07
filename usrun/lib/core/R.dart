@@ -1041,6 +1041,9 @@ class Strings {
   String follow;
   String unFollow;
 
+  String male;
+  String female;
+
   List<String> provinces;
   List<String> distanceUnit;
   List<String> teamMemberTypes;
@@ -1147,6 +1150,9 @@ class Strings {
   String gpsReady;
   String gpsNotFound;
   String gpsServiceUnavailable;
+  String android11PermissionNotice;
+  String android10PermissionNotice;
+  String androidPermissionNotice;
   String enableGPS;
   String time;
   String distance;

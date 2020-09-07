@@ -38,8 +38,8 @@ class _EditProfilePage extends State<EditProfilePage> {
   User editUser = new User();
 
   final _dropdownGender = [
-    DropDownObject<Gender>(value: Gender.Male, text: 'Male'),
-    DropDownObject<Gender>(value: Gender.Female, text: 'Female')
+    DropDownObject<Gender>(value: Gender.Male, text: R.strings.male),
+    DropDownObject<Gender>(value: Gender.Female, text: R.strings.female)
   ];
 
   List<DropDownObject<int>> _setUpValue() {
@@ -58,7 +58,9 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   void _getDOBFunction(DateTime picker) {
-    editUser.birthday = picker;
+    setState(() {
+      editUser.birthday = picker;
+    });
   }
 
   void _getSelectedDropDownGender<T>(T value) {
@@ -254,9 +256,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                     width: R.appRatio.appWidth181,
                     child: InputCalendar(
                       labelTitle: R.strings.birthday,
-                      defaultDay: editUser.birthday != null
-                          ? formatDateTime(editUser.birthday)
-                          : formatDateConst,
+                      defaultDay: formatDateConst,
+                      initalDate: editUser.birthday!=null?editUser.birthday : UserManager.currentUser.birthday,
                       enableFullWidth: false,
                       getDOBFunc: this._getDOBFunction,
                     ),

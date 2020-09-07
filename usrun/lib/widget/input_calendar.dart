@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:date_format/date_format.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 
 class InputCalendar extends StatefulWidget {
@@ -9,11 +10,13 @@ class InputCalendar extends StatefulWidget {
   final bool enableFullWidth;
   final Function getDOBFunc;
   final String defaultDay;
+  final DateTime initalDate;
 
   InputCalendar({
     Key key,
     this.labelTitle = "",
     this.defaultDay = 'dd/MM/yyyy',
+    this.initalDate,
     this.enableLabelShadow = false,
     this.enableFullWidth = true,
     this.getDOBFunc,
@@ -29,7 +32,7 @@ class _InputCalendarState extends State<InputCalendar> {
 
   @override
   void initState() {
-    _birthday = widget.defaultDay;
+    _birthday = widget.initalDate!=null?formatDateTime(widget.initalDate):widget.defaultDay;
     _dateTime = null;
     super.initState();
   }
@@ -78,7 +81,7 @@ class _InputCalendarState extends State<InputCalendar> {
                   final DateTime today = new DateTime.now();
                   final datePick = await showMyDatePicker(
                       context: context,
-                      initialDate: today,
+                      initialDate: widget.initalDate==null? today : widget.initalDate,
                       firstDate: new DateTime(1900),
                       lastDate: today);
 

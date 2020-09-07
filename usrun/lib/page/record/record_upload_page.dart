@@ -439,7 +439,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
-        content: R.strings.failToUpload,
+        content: response.errorMessage!=null?response.errorMessage:R.strings.failToUpload,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () {
           isUploading = false;
@@ -486,6 +486,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     if (response.success) {
       result.success = true;
     } else {
+      result.errorMessage = response.errorMessage;
       result.success = false;
       result.errorCode = response.errorCode;
     }

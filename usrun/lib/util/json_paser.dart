@@ -260,11 +260,7 @@ bool _castToBool(dynamic val) {
 
 DateTime _castToDateTime(dynamic val) {
   if (val is int) {
-    if (val > 1000000000000) {
-      val = val ~/ 1000;
-    }
-    return DateTime.fromMillisecondsSinceEpoch(val * 1000);
-    // server return second, but fromMillisecondsSinceEpoch used millisecond => multiple 1000
+    return DateTime.fromMillisecondsSinceEpoch(val);
   }
 
   if (val is DateTime) {
