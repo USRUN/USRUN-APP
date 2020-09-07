@@ -34,8 +34,9 @@ import 'package:usrun/widget/ui_button.dart';
 
 class TeamInfoPage extends StatefulWidget {
   final int teamId;
+  final Function reloadTeamPage;
 
-  TeamInfoPage({@required this.teamId});
+  TeamInfoPage({@required this.teamId, @required this.reloadTeamPage});
 
   @override
   _TeamInfoPageState createState() => _TeamInfoPageState();
@@ -176,18 +177,17 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(
-        context,
-        imageQuality: 95);
+    dynamic result = await _selectedCameraFile
+        .showCameraPickerActionSheet(context, imageQuality: 95);
     if (result == null || result == false) return "";
 
-    if(cropStyle == CropStyle.circle) {
+    if (cropStyle == CropStyle.circle) {
       result = await _selectedCameraFile.cropImage(
         maxWidth: 800,
         maxHeight: 600,
         cropStyle: cropStyle,
         compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 1,ratioY: 1),
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
         androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
       );
     } else {
@@ -196,7 +196,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         maxWidth: 800,
         maxHeight: 600,
         compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 4,ratioY: 3),
+        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
         androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
       );
     }
@@ -222,7 +222,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       return;
     }
 
-    if(await NetworkDetector.checkNetworkAndAlert(context) == false){
+    if (await NetworkDetector.checkNetworkAndAlert(context) == false) {
       return;
     }
 
@@ -260,6 +260,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
 
       if (updatedTeam.success && updatedTeam.object != null) {
         mapTeamInfo(updatedTeam.object);
+        widget.reloadTeamPage();
       } else {
         pop(context);
         showCustomAlertDialog(
@@ -268,17 +269,22 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
           content: updatedTeam.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () {
-            pop(this.context);
+            pop(context);
           },
+          secondButtonText: "",
         );
       }
     } catch (error) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: error.toString(),
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      }, secondButtonText: "");
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: error.toString(),
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+        },
+        secondButtonText: "",
+      );
     }
 
     pop(context);
@@ -311,6 +317,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       setState(() {
         _teamMemberType = result;
       });
+
+      if (widget.reloadTeamPage != null) {
+        widget.reloadTeamPage();
+      }
     } else {
       showCustomAlertDialog(
         context,
@@ -342,6 +352,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (toDisplay == null) {
       toDisplay = R.strings.join;
     }
+
+    if (_teamName == R.strings.loading) {
+      return Container();
+    }
+    ;
 
     return UIButton(
       width: double.infinity,

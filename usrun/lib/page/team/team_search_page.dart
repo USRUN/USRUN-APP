@@ -18,6 +18,10 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamSearchPage extends StatefulWidget {
+  final Function reloadTeamPage;
+
+  TeamSearchPage({@required this.reloadTeamPage});
+
   @override
   _TeamSearchPageState createState() => _TeamSearchPageState();
 }
@@ -89,6 +93,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         firstButtonFunction: () {
           pop(context);
         },
+        secondButtonText: "",
       );
     }
 
@@ -184,9 +189,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         if (index == _originalList.length - 1) {
           _loadMoreData();
         }
-
         Team team = _originalList[index];
-        bool isLastElement = index == _originalList.length - 1;
 
         return Column(
           key: Key(team.id.toString()),
@@ -214,6 +217,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                     context,
                     TeamInfoPage(
                       teamId: team.id,
+                      reloadTeamPage: widget.reloadTeamPage,
                     ),
                   );
                 },
@@ -236,6 +240,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                   context,
                   TeamInfoPage(
                     teamId: team.id,
+                    reloadTeamPage: widget.reloadTeamPage,
                   ),
                 );
               },

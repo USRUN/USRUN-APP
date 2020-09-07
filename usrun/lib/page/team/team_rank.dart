@@ -108,16 +108,16 @@ class _TeamRankState extends State<TeamRank> {
             child: (!_isLoading && checkListIsNullOrEmpty(items))
                 ? _buildEmptyList()
                 : SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: (_isLoading
-                  ? Container(
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing15,
-                      ),
-                      child: LoadingIndicator(),
-                    )
-                  : _renderList()),
-            ),
+                    scrollDirection: Axis.vertical,
+                    child: (_isLoading
+                        ? Container(
+                            padding: EdgeInsets.only(
+                              top: R.appRatio.appSpacing15,
+                            ),
+                            child: LoadingIndicator(),
+                          )
+                        : _renderList()),
+                  ),
           ),
           // HeaderRankLead
           HeaderRankLead(

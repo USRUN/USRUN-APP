@@ -8,7 +8,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/util/network_detector.dart';
 
 /*
   ======================================
@@ -194,10 +193,6 @@ class CameraPicker {
                           _cameraFileState = CameraFileState.PICKED;
                         }
 
-                        if(await NetworkDetector.isNetworkConnected() == false){
-                          pop(context, object: false);
-                        }
-
                         pop(context, object: true);
                       },
                       shapeBorder: RoundedRectangleBorder(
@@ -230,10 +225,6 @@ class CameraPicker {
                           _cameraFileState = CameraFileState.FREE;
                         } else {
                           _cameraFileState = CameraFileState.PICKED;
-                        }
-
-                        if(await NetworkDetector.isNetworkConnected() == false){
-                          pop(context, object: false);
                         }
 
                         pop(context, object: true);

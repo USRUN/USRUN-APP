@@ -203,7 +203,10 @@ class _TeamPageState extends State<TeamPage> {
                         pressItemFunction: (teamItem) {
                           pushPage(
                             context,
-                            TeamInfoPage(teamId: teamItem.teamId),
+                            TeamInfoPage(
+                              teamId: teamItem.teamId,
+                              reloadTeamPage: reloadTeamList,
+                            ),
                           );
                         },
                       ),
@@ -225,6 +228,7 @@ class _TeamPageState extends State<TeamPage> {
                                   context,
                                   TeamInfoPage(
                                     teamId: teamItem.teamId,
+                                    reloadTeamPage: reloadTeamList,
                                   ),
                                 );
                               },
@@ -243,8 +247,12 @@ class _TeamPageState extends State<TeamPage> {
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,
                               pressItemFunction: (teamItem) {
-                                pushPage(context,
-                                    TeamInfoPage(teamId: teamItem.teamId));
+                                pushPage(
+                                    context,
+                                    TeamInfoPage(
+                                      teamId: teamItem.teamId,
+                                      reloadTeamPage: reloadTeamList,
+                                    ));
                               },
                             )),
                       SizedBox(
@@ -259,7 +267,10 @@ class _TeamPageState extends State<TeamPage> {
                         pressItemFunction: (teamItem) {
                           pushPage(
                             context,
-                            TeamInfoPage(teamId: teamItem.teamId),
+                            TeamInfoPage(
+                              teamId: teamItem.teamId,
+                              reloadTeamPage: reloadTeamList,
+                            ),
                           );
                         },
                       ),
@@ -278,7 +289,9 @@ class _TeamPageState extends State<TeamPage> {
                         lineFunction: () {
                           pushPage(
                             context,
-                            TeamSearchPage(),
+                            TeamSearchPage(
+                              reloadTeamPage: reloadTeamList,
+                            ),
                           );
                         },
                       ),
