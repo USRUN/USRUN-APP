@@ -20,8 +20,9 @@ import 'package:usrun/widget/loading_dot.dart';
 
 class TeamRank extends StatefulWidget {
   final int teamId;
+  final Function reloadTeamPage;
 
-  TeamRank({@required this.teamId});
+  TeamRank({@required this.teamId, this.reloadTeamPage});
 
   @override
   _TeamRankState createState() => _TeamRankState();
@@ -59,6 +60,7 @@ class _TeamRankState extends State<TeamRank> {
         context,
         TeamInfoPage(
           teamId: items[index].teamId,
+          reloadTeamPage: widget.reloadTeamPage,
         ));
   }
 

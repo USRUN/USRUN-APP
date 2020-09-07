@@ -36,7 +36,7 @@ class TeamInfoPage extends StatefulWidget {
   final int teamId;
   final Function reloadTeamPage;
 
-  TeamInfoPage({@required this.teamId, @required this.reloadTeamPage});
+  TeamInfoPage({@required this.teamId, this.reloadTeamPage});
 
   @override
   _TeamInfoPageState createState() => _TeamInfoPageState();
@@ -646,6 +646,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                         context,
                                         TeamRank(
                                           teamId: widget.teamId,
+                                          reloadTeamPage: widget.reloadTeamPage,
                                         ));
                                   },
                                 ),
