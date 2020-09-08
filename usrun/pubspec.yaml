@@ -85,3 +85,4 @@ flutter:
     - assets/images/
     - assets/myicons/
     - assets/usrunlogo/
+    - assets/map_style.txt

@@ -17,6 +17,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
@@ -128,16 +129,13 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                         ),
                         _buildStatsBox(
                             R.strings.time,
-                            (Duration(seconds: data.totalTime).toString())
-                                .substring(0, 7),
-                            R.strings.timeUnit),
+                            secondToMinFormat(data.totalTime),
+                            R.strings.minutes),
                         _buildStatsBox(
                             R.strings.avgPace,
                             data.avgPace == -1
                                 ? R.strings.na
-                                : (Duration(seconds: data.avgPace.toInt())
-                                        .toString())
-                                    .substring(0, 7),
+                                : secondToMinFormat(data.avgPace.toInt()),
                             R.strings.avgPaceUnit)
                       ],
                     ),
