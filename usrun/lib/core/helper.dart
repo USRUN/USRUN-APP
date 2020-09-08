@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong/latlong.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
@@ -14,6 +15,7 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+
 import 'R.dart';
 
 // ================ PRIVATE VARIABLES ================
@@ -166,13 +168,12 @@ bool checkSystemStatus() {
   return false;
 }
 
-Future<int> getAndroidVersion() async{
+Future<int> getAndroidVersion() async {
   int version = 0;
-  if (Platform.isAndroid)
-    {
-      var androidInfo = await DeviceInfoPlugin().androidInfo;
-      version =  androidInfo.version.sdkInt;
-    }
+  if (Platform.isAndroid) {
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    version = androidInfo.version.sdkInt;
+  }
   return version;
 }
 
@@ -226,7 +227,7 @@ Future<String> getUserImageAsBase64(
     CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
   bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
-  if (result == null || !result ) return "";
+  if (result == null || !result) return "";
   result = await _selectedCameraFile.cropImage(
     cropStyle: cropStyle,
     maxHeight: R.imagePickerDefaults.maxHeight.toInt(),
@@ -244,11 +245,11 @@ Future<Map<String, dynamic>> getUserImageFile(
   bool enableClearSelectedFile: false,
 }) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
-  bool result = await _selectedCameraFile.showCameraPickerActionSheet(
-    context,
-    enableClearSelectedFile: enableClearSelectedFile,
-     maxWidth: R.imagePickerDefaults.maxWidth, maxHeight: R.imagePickerDefaults.maxHeight, imageQuality: R.imagePickerDefaults.imageQuality
-  );
+  bool result = await _selectedCameraFile.showCameraPickerActionSheet(context,
+      enableClearSelectedFile: enableClearSelectedFile,
+      maxWidth: R.imagePickerDefaults.maxWidth,
+      maxHeight: R.imagePickerDefaults.maxHeight,
+      imageQuality: R.imagePickerDefaults.imageQuality);
 
   if (result == null || !result) {
     return {
@@ -282,17 +283,19 @@ int getPlatform() {
 }
 
 double switchBetweenMeterAndKm(int meters, {RunningUnit formatType}) {
-
   double _computeValue(RunningUnit data) {
     if (data == RunningUnit.METER) {
       return meters * 1.0;
     } else if (data == RunningUnit.KILOMETER) {
       return meters / 1000;
+    } else if (data == RunningUnit.MILES) {
+      return round((meters / 1609), decimals: 2);
     } else {
       return 0;
     }
   }
-  formatType =  DataManager.getUserRunningUnit();
+
+  formatType = DataManager.getUserRunningUnit();
   if (formatType != null) {
     return _computeValue(formatType);
   } else {

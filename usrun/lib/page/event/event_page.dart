@@ -16,6 +16,8 @@ class _EventPageState extends State<EventPage>
   TabController _tabController;
   List<String> _tabItems;
   List<Widget> _tabBarViewItems;
+  GlobalKey<NewEventTabBarState> newEventTabBarPage = GlobalKey();
+  GlobalKey<HistoryEventTabBarState> historyEventTabBarPage = GlobalKey();
 
   @override
   void initState() {
@@ -35,9 +37,36 @@ class _EventPageState extends State<EventPage>
     );
 
     _tabBarViewItems = [
-      NewEventTabBar(),
-      HistoryEventTabBar(),
+      NewEventTabBar(key: newEventTabBarPage),
+      HistoryEventTabBar(key: historyEventTabBarPage),
     ];
+
+    _tabController.addListener(() {
+      switch (_tabController.previousIndex) {
+        case 0:
+          if (newEventTabBarPage.currentState.reloadOtherPage) {
+            handleCallReload(1);
+          }
+          break;
+        case 1:
+          if (historyEventTabBarPage.currentState.reloadOtherPage) {
+            handleCallReload(0);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  handleCallReload(int indexToReload) {
+    if (indexToReload == 0) {
+      newEventTabBarPage.currentState.getNecessaryData();
+      historyEventTabBarPage.currentState.reloadOtherPage = false;
+    } else {
+      historyEventTabBarPage.currentState.getNecessaryData();
+      newEventTabBarPage.currentState.reloadOtherPage = false;
+    }
   }
 
   @override

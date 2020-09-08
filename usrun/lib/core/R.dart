@@ -1169,8 +1169,10 @@ class Strings {
   String totalStep;
   String timeUnit;
   String meters;
+  String miles;
   String km;
   String m;
+  String mi;
   String avgPaceUnit;
   String avgHeartUnit;
   String movingTimeUnit;
@@ -1315,6 +1317,7 @@ class Strings {
   String name;
   String distanceKm;
   String distanceM;
+  String distanceMiles;
   String teamMember;
   String all;
   String hiding;

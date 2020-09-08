@@ -68,6 +68,7 @@ enum AppTheme {
 enum RunningUnit {
   METER,
   KILOMETER,
+  MILES,
 }
 
 @reflector

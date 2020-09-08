@@ -246,6 +246,7 @@
     "name": "Tên",
     "distanceKm": "Quãng đường (KM)",
     "distanceM": "Quãng đường (M)",
+    "distanceMiles": "Quãng đường (Mi)",
     "teamMember": "Thành viên đội",
     "all": "Tất cả",
     "hiding": "Đang ẩn",
@@ -433,8 +434,10 @@
     "totalStep": "TỔNG SỐ BƯỚC",
     "timeUnit":"HH:MM:SS",
     "meters":"MÉT",
+    "miles": "DẶM",
     "km": "km",
     "m": "m",
+    "mi": "mi",
     "minutes": "PHÚT",
     "avgPaceUnit":"MỖI KM",
     "avgHeartUnit":"BMP",
@@ -601,7 +604,8 @@
 
     "distanceUnit": [
         "MÉT",
-        "KI-LÔ-MÉT"
+        "KI-LÔ-MÉT",
+        "DẶM"
     ],
 
     "teamMemberTypes": [
