@@ -275,7 +275,7 @@ class _SettingPageState extends State<SettingPage> {
               LineButton(
                 mainText: R.strings.settingsDisplayMeasureTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
-                subText: R.strings.appThemeDescription,
+                subText: R.strings.changeUnitDescription,
                 subTextFontSize: R.appRatio.appFontSize16,
                 enableBottomUnderline: true,
                 textPadding: EdgeInsets.all(15),
@@ -284,8 +284,8 @@ class _SettingPageState extends State<SettingPage> {
                     context,
                     loadRunningUnit(),
                     DataManager.getUserRunningUnit().index,
-                    title: R.strings.chooseAppThemeTitle,
-                    description: R.strings.chooseAppThemeDescription,
+                    title: R.strings.measureUnitTitle,
+                    description: R.strings.measureUnitDescription,
                   );
 
                   if (index != null) {

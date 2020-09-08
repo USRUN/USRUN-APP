@@ -12,11 +12,16 @@ import 'package:usrun/page/team/team_info.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/loading_dot.dart';
 
 class TeamSearchPage extends StatefulWidget {
+  final Function reloadTeamPage;
+
+  TeamSearchPage({@required this.reloadTeamPage});
+
   @override
   _TeamSearchPageState createState() => _TeamSearchPageState();
 }
@@ -79,6 +84,17 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
 
     if (response.success && (response.object as List).isNotEmpty) {
       result = response.object;
+    } else {
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: response.errorMessage,
+        firstButtonText: R.strings.ok,
+        firstButtonFunction: () {
+          pop(context);
+        },
+        secondButtonText: "",
+      );
     }
 
     return result;
@@ -173,9 +189,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
         if (index == _originalList.length - 1) {
           _loadMoreData();
         }
-
         Team team = _originalList[index];
-        bool isLastElement = index == _originalList.length - 1;
 
         return Column(
           key: Key(team.id.toString()),
@@ -203,6 +217,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                     context,
                     TeamInfoPage(
                       teamId: team.id,
+                      reloadTeamPage: widget.reloadTeamPage,
                     ),
                   );
                 },
@@ -225,6 +240,7 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
                   context,
                   TeamInfoPage(
                     teamId: team.id,
+                    reloadTeamPage: widget.reloadTeamPage,
                   ),
                 );
               },

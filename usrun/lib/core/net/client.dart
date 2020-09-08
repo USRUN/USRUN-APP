@@ -9,6 +9,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/util/json_paser.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/util/validator.dart';
 
 class Client {
@@ -66,6 +67,22 @@ class Client {
         return Response<T>(
           success: false,
           errorMessage: R.strings.requestTimeOut,
+          object: null,
+        );
+      }
+
+      if (e.osError.errorCode == 110) {
+        return Response<T>(
+          success: false,
+          errorMessage: R.strings.requestTimeOut,
+          object: null,
+        );
+      }
+
+      if(await NetworkDetector.isNetworkConnected()){
+        return Response<T>(
+          success: false,
+          errorMessage: R.strings.errorOccurred,
           object: null,
         );
       }

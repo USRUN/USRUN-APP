@@ -168,6 +168,7 @@
     "yourStatus": "Your status",
     "organizations": "Organizations",
     "runners": "Runners",
+    "emptyEventList": "There's no event in this list",
 
     "poweredBy": "Powered by",
     "goldSponsor": "Gold sponsor",
@@ -219,6 +220,7 @@
     "delete": "Delete",
     "deleteTeamTitle": "Delete this team",
     "deleteTeamSubtitle": "Your team’ll be deleted after your deletion is confirmed and you receive the acceptance from the UA. There is no going back, please be certain",
+    "listCouldNotBeLoad": "This list can not be loaded, please try again later!",
     "noResult": "We couldn't find any result",
     "noResultSubtitle": "Please make sure that you typed the name correctly and try again",
     "noMemberInList": "This list is empty",
@@ -244,6 +246,7 @@
     "name": "Name",
     "distanceKm": "Distance (KM)",
     "distanceM": "Distance (M)",
+    "distanceMiles": "Distance (MI)",
     "teamMember": "Team Member",
     "all": "All",
     "hiding": "Hiding",
@@ -251,6 +254,7 @@
     "blocking": "Blocking",
     "reporting": "Reporting",
     "processing": "Processing...",
+    "uploading": "Uploading...",
     "updating": "Updating...",
     "loading": "Loading...",
     "loadingTeamInfo": "Loading team info...",
@@ -431,8 +435,10 @@
     "totalStep": "TOTAL STEPS",
     "timeUnit":"HH:MM:SS",
     "meters":"METERS",
+    "miles": "MILES",
     "km": "km",
     "m": "m",
+    "mi": "mi",
     "minutes": "MINUTES",
     "avgPaceUnit":"PER KM",
     "avgHeartUnit":"BMP",
@@ -476,6 +482,9 @@
     "vietnamese": "Vietnamese",
     "languageDescription": "The application will be restarted after changing the language",
 
+    "measureUnitTitle": "Choose measure unit",
+    "measureUnitDescription": "Choose the measure unit you want the application to use",
+
     "chooseAppThemeTitle": "Choose app theme",
     "chooseAppThemeDescription": "Choose the application theme you want to display",
     "lightTheme": "Light theme",
@@ -509,12 +518,14 @@
     "errorUserNotFound": "User not found",
     "errorEmailPassword": "Email and password incorrect",
     "errorOccurred": "Error occurred, please try again later!",
-    "requestTimeOut": "Request time out",
+    "errorImgur": "Error occurred while uploading image(s), please try again later!",
+    "requestTimeOut": "Request timed out, please try again later!",
 
     "errorMessages": {
         "-100": "No Internet Access. Please check your internet connection",
 
         "-1": "UNKNOWN",
+        "-2": "Imgur Error",
 
         "101": "System under maintenance. Please try again later!",
         "102": "New version available. Please update app to continue!",
@@ -593,7 +604,8 @@
 
     "distanceUnit": [
         "METERS",
-        "KILOMETERS"
+        "KILOMETERS",
+        "MILES"
     ],
 
     "teamMemberTypes": [

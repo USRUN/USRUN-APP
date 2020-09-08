@@ -168,6 +168,7 @@
     "yourStatus": "Trạng thái của bạn",
     "organizations": "Tổ chức",
     "runners": "Người chạy",
+    "emptyEventList": "Không có sự kiện nào trong danh sách này",
 
     "poweredBy": "Được tổ chức bởi",
     "goldSponsor": "Nhà tài trợ vàng",
@@ -219,6 +220,7 @@
     "delete": "Xóa",
     "deleteTeamTitle": "Xóa đội này",
     "deleteTeamSubtitle": "Đội của bạn sẽ bị xóa sau khi việc xóa của bạn được xác nhận và bạn nhận được sự chấp nhận từ UA. Vui lòng chắn chắn vì việc làm này sẽ không được khôi phục",
+    "listCouldNotBeLoad": "Không thể tải danh sách. Vui lòng thử lại sau!",
     "noResult": "Chúng tôi không tìm thấy kết quả nào",
     "noResultSubtitle": "Hãy đảm bảo rằng bạn đã nhập đúng tên và vui lòng thử lại",
     "noMemberInList": "Danh sách trống",
@@ -244,6 +246,7 @@
     "name": "Tên",
     "distanceKm": "Quãng đường (KM)",
     "distanceM": "Quãng đường (M)",
+    "distanceMiles": "Quãng đường (Mi)",
     "teamMember": "Thành viên đội",
     "all": "Tất cả",
     "hiding": "Đang ẩn",
@@ -251,6 +254,7 @@
     "blocking": "Đang chặn",
     "reporting": "Đang báo cáo",
     "processing": "Đang xử lý...",
+    "uploading": "Đang đăng tải...",
     "updating": "Đang cập nhật...",
     "loading": "Đang tải...",
     "loadingTeamInfo": "Đang tải thông tin đội...",
@@ -430,8 +434,10 @@
     "totalStep": "TỔNG SỐ BƯỚC",
     "timeUnit":"HH:MM:SS",
     "meters":"MÉT",
+    "miles": "DẶM",
     "km": "km",
     "m": "m",
+    "mi": "mi",
     "minutes": "PHÚT",
     "avgPaceUnit":"MỖI KM",
     "avgHeartUnit":"BMP",
@@ -476,6 +482,9 @@
     "vietnamese": "Tiếng Việt",
     "languageDescription": "Ứng dụng sẽ được khởi động lại sau khi thay đổi ngôn ngữ",
 
+    "measureUnitTitle": "Chọn đơn vị đo",
+    "measureUnitDescription": "Chọn đơn vị đo mà bạn muốn ứng dụng sử dụng",
+
     "chooseAppThemeTitle": "Chọn chủ đề ứng dụng",
     "chooseAppThemeDescription": "Chọn chủ đề ứng dụng bạn muốn hiển thị",
     "lightTheme": "Chủ đề sáng",
@@ -509,12 +518,14 @@
     "errorUserNotFound": "Không tìm thấy người dùng",
     "errorEmailPassword": "Email và mật khẩu sai",
     "errorOccurred": "Đã xảy ra lỗi, vui lòng thử lại sau!",
-    "requestTimeOut": "Hết thời gian yêu cầu",
+    "errorImgur": "Đã xảy ra lỗi khi đăng tải ảnh, vui lòng thử lại sau!",
+    "requestTimeOut": "Không nhận được phản hồi từ máy chủ, bạn vui lòng thử lại sau.",
 
     "errorMessages": {
         "-100": "Không có kết nối mạng. Xin vui lòng kiểm tra kết nối Internet của bạn",
 
         "-1": "Không xác định",
+        "-2": "Lỗi hệ thống Imgur",
 
         "101": "Hệ thống đang được bảo trì. Vui lòng thử lại sau!",
         "102": "Có phiên bản mới. Vui lòng cập nhật ứng dụng để tiếp tục!",
@@ -593,7 +604,8 @@
 
     "distanceUnit": [
         "MÉT",
-        "KI-LÔ-MÉT"
+        "KI-LÔ-MÉT",
+        "DẶM"
     ],
 
     "teamMemberTypes": [

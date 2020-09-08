@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/user_activity.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
@@ -86,12 +87,40 @@ class _TeamActivityPageState extends State<TeamActivityPage> {
     );
   }
 
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.listCouldNotBeLoad;
+
+    return Center(
+      child: Container(
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
+          ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  systemNoti,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ])),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget smartRefresher = SmartRefresher(
       enablePullUp: false,
       controller: _refreshController,
-      child: _renderBodyContent(),
+      child: (checkListIsNullOrEmpty(_userActivityList))
+          ? _buildEmptyList()
+          : _renderBodyContent(),
       physics: BouncingScrollPhysics(),
       footer: null,
       onRefresh: () => _getNecessaryData(),

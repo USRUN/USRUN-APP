@@ -1169,8 +1169,10 @@ class Strings {
   String totalStep;
   String timeUnit;
   String meters;
+  String miles;
   String km;
   String m;
+  String mi;
   String avgPaceUnit;
   String avgHeartUnit;
   String movingTimeUnit;
@@ -1236,6 +1238,8 @@ class Strings {
   String yourStatus;
   String organizations;
   String runners;
+  String emptyEventList;
+  String emptyEventListSubtitle;
 
   String poweredBy;
   String goldSponsor;
@@ -1287,6 +1291,7 @@ class Strings {
   String delete;
   String deleteTeamTitle;
   String deleteTeamSubtitle;
+  String listCouldNotBeLoad;
   String noResult;
   String noResultSubtitle;
   String noMemberInList;
@@ -1312,6 +1317,7 @@ class Strings {
   String name;
   String distanceKm;
   String distanceM;
+  String distanceMiles;
   String teamMember;
   String all;
   String hiding;
@@ -1319,6 +1325,7 @@ class Strings {
   String blocking;
   String reporting;
   String processing;
+  String uploading;
   String updating;
   String loading;
   String loadingTeamInfo;
@@ -1486,6 +1493,9 @@ class Strings {
   String vietnamese;
   String languageDescription;
 
+  String measureUnitTitle;
+  String measureUnitDescription;
+
   String chooseAppThemeTitle;
   String chooseAppThemeDescription;
   String lightTheme;
@@ -1521,6 +1531,7 @@ class Strings {
   String errorUserNotFound;
   String errorEmailPassword;
   String errorOccurred;
+  String errorImgur;
   String requestTimeOut;
 
   String usrunPhotoListMessage;
@@ -1602,7 +1613,7 @@ class _ImagePickerDefaults {
   // Sizes are in kilobytes
   final double maxWidth = 800;
   final double maxHeight = 600;
-  final int imageQuality = 80;
+  final int imageQuality = 95;
   final int maxOutputSize = 75;
   final int minInputSize = 500;
   final int maxInputSize = 6000;

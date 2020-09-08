@@ -344,7 +344,7 @@ class _TeamMemberPageState extends State<TeamMemberPage>
       BuildContext context, int teamId) async {
     TextEditingController _nameController = TextEditingController();
 
-    bool result = await showCustomComplexDialog<bool>(
+    await showCustomComplexDialog<bool>(
       context,
       headerContent: R.strings.inviteNewMember,
       descriptionContent: R.strings.inviteNewMemberContent,

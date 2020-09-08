@@ -5,16 +5,19 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/util/date_time_utils.dart';
+import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/network_detector.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
-import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/input_calendar.dart';
 import 'package:usrun/widget/input_field.dart';
 
@@ -102,7 +105,7 @@ class _EditProfilePage extends State<EditProfilePage> {
     Map<String, dynamic> params = new Map<String, dynamic>();
     params = editUser.toMap();
     if (editUser.avatar != UserManager.currentUser.avatar)
-      params['avatar'] = "data:image/png;base64,${editUser.avatar}";
+      params['avatar'] = "${editUser.avatar}";
     else
       params.remove('avatar');
 
@@ -128,11 +131,20 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   Future<void> openSelectPhoto(BuildContext context) async {
     try {
-      var image = await getUserImageAsBase64(CropStyle.rectangle, context);
-      if (image.isNotEmpty) {
-        print(image.isNotEmpty);
+      if(await NetworkDetector.checkNetworkAndAlert(context) == false){
+        return;
+      }
+
+      var image = await getUserImageAsBase64(CropStyle.circle, context);
+      if (checkStringNullOrEmpty(image)) {
+        return;
+      }
+
+      Response<dynamic> response = await ImageClient.uploadImage(image);
+
+      if (response.success) {
         setState(() {
-          editUser.avatar = image;
+          editUser.avatar = response.object;
         });
       }
     } catch (error) {
