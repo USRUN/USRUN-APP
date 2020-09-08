@@ -10,7 +10,6 @@ import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class HistoryEventTabBar extends StatefulWidget {
-
   HistoryEventTabBar({
     Key key,
   }) : super(key: key);
@@ -19,7 +18,8 @@ class HistoryEventTabBar extends StatefulWidget {
   HistoryEventTabBarState createState() => HistoryEventTabBarState();
 }
 
-class HistoryEventTabBarState extends State<HistoryEventTabBar> with AutomaticKeepAliveClientMixin {
+class HistoryEventTabBarState extends State<HistoryEventTabBar>
+    with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 

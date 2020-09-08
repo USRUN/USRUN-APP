@@ -9,7 +9,6 @@ import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
-
   NewEventTabBar({
     Key key,
   }) : super(key: key);
@@ -18,7 +17,8 @@ class NewEventTabBar extends StatefulWidget {
   NewEventTabBarState createState() => NewEventTabBarState();
 }
 
-class NewEventTabBarState extends State<NewEventTabBar> with AutomaticKeepAliveClientMixin {
+class NewEventTabBarState extends State<NewEventTabBar>
+    with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 

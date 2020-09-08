@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
@@ -507,8 +506,8 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 id: "1",
                 boxSize: R.appRatio.appWidth100,
                 dataLine: distance,
-                secondTitleLine: R.strings.distanceUnit[
-                DataManager.getUserRunningUnit().index],
+                secondTitleLine: R.strings
+                    .distanceUnit[DataManager.getUserRunningUnit().index],
                 pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),
