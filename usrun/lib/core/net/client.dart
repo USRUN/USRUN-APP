@@ -89,7 +89,7 @@ class Client {
 
       return Response<T>(
         success: false,
-        errorMessage: R.strings.errorMessages[NO_INTERNET_ACCESS],
+        errorMessage: R.strings.errorMessages["$NO_INTERNET_ACCESS"],
         object: null,
       );
     }
