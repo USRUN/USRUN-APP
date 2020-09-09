@@ -6,6 +6,7 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_data.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 
 // ignore: must_be_immutable
@@ -47,14 +48,13 @@ class RecordReport extends StatelessWidget {
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.time,
-                (Duration(seconds: snapshot.data.totalTime).toString())
-                    .substring(0, 7),
+                secondToTimeFormat(snapshot.data.totalTime),
                 unit: R.strings.timeUnit,
               ),
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.distance,
-                switchBetweenMeterAndKm(snapshot.data.totalDistance),
+                switchDistanceUnit(snapshot.data.totalDistance),
                 unit: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
               ),
               SizedBox(width: 10),
@@ -62,9 +62,7 @@ class RecordReport extends StatelessWidget {
                 R.strings.avgPace,
                 snapshot.data.avgPace == -1
                     ? R.strings.na
-                    : (Duration(seconds: snapshot.data.avgPace.toInt())
-                            .toString())
-                        .substring(0, 7),
+                    : secondToMinFormat(snapshot.data.avgPace.toInt()),
                 unit: R.strings.avgPaceUnit,
               ),
               SizedBox(width: 10),

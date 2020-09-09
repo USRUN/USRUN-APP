@@ -282,7 +282,7 @@ int getPlatform() {
   return Platform.isIOS ? PlatformType.iOS.index : PlatformType.Android.index;
 }
 
-double switchBetweenMeterAndKm(int meters, {RunningUnit formatType}) {
+double switchDistanceUnit(int meters, {RunningUnit formatType}) {
   double _computeValue(RunningUnit data) {
     if (data == RunningUnit.METER) {
       return meters * 1.0;

@@ -60,7 +60,7 @@ class FormatProfileStats {
       "id": "5",
       "title": R.strings.distance,
       "data": DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
+          .format(switchDistanceUnit(userActivity['totalDistance'])) : switchDistanceUnit(userActivity['totalDistance']),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIcon,
     });
@@ -87,7 +87,7 @@ class FormatProfileStats {
     result.add({
       "id": "8",
       "title": R.strings.avgElev,
-      "data": switchBetweenMeterAndKm(userActivity['avgElev'] ~/1),
+      "data": switchDistanceUnit(userActivity['avgElev'] ~/1),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIcon,
       "enableImageStyle": true,
@@ -97,7 +97,7 @@ class FormatProfileStats {
     result.add({
       "id": "9",
       "title": R.strings.maxElev,
-      "data": switchBetweenMeterAndKm(userActivity['maxElev'] ~/1),
+      "data": switchDistanceUnit(userActivity['maxElev'] ~/1),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIcon,
     });
@@ -121,7 +121,7 @@ class FormatProfileStats {
       "id": "1",
       "subTitle": R.strings.distance,
       "dataTitle":  DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
+          .format(switchDistanceUnit(userActivity['totalDistance'])) : switchDistanceUnit(userActivity['totalDistance']),
       "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
@@ -171,14 +171,14 @@ class FormatProfileStats {
     result.add({
       "id": "8",
       "subTitle": R.strings.avgElev,
-      "dataTitle":  switchBetweenMeterAndKm(userActivity['avgElev']~/1),
+      "dataTitle":  switchDistanceUnit(userActivity['avgElev']~/1),
       "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
     result.add({
       "id": "9",
       "subTitle": R.strings.maxElev,
-      "dataTitle":  switchBetweenMeterAndKm(userActivity['maxElev']~/1),
+      "dataTitle":  switchDistanceUnit(userActivity['maxElev']~/1),
       "unitTitle": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     });
 
@@ -203,7 +203,7 @@ class FormatProfileStats {
     result.add({
       "title": R.strings.distance,
       "data": DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? NumberFormat("#,##0.00", "en_US")
-          .format(switchBetweenMeterAndKm(userActivity['totalDistance'])) : switchBetweenMeterAndKm(userActivity['totalDistance']),
+          .format(switchDistanceUnit(userActivity['totalDistance'])) : switchDistanceUnit(userActivity['totalDistance']),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.roadStatsIconByTheme,
       "enableBottomBorder": true,
@@ -274,7 +274,7 @@ class FormatProfileStats {
 
     result.add({
       "title": R.strings.avgElev,
-      "data": switchBetweenMeterAndKm(userActivity['avgElev'] ~/1),
+      "data": switchDistanceUnit(userActivity['avgElev'] ~/1),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIconByTheme,
       "enableBottomBorder": true,
@@ -284,7 +284,7 @@ class FormatProfileStats {
 
     result.add({
       "title": R.strings.maxElev,
-      "data": switchBetweenMeterAndKm(userActivity['maxElev'] ~/1),
+      "data": switchDistanceUnit(userActivity['maxElev'] ~/1),
       "unit": R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
       "iconURL": R.myIcons.elevationStatsIconByTheme,
       "enableBottomBorder": false,

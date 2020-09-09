@@ -1201,6 +1201,8 @@ class Strings {
   String successfullyUploaded;
   String failToUpload;
   String discardActivity;
+  String successfullyDeleted;
+  String successfullyEdited;
 
   String uFeed;
   String readMore;

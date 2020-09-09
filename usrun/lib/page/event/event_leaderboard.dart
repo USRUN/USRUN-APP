@@ -209,7 +209,7 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         String name = data.name;
         int rank = data.rank;
         String formattedDistance = NumberFormat.compact().format(
-          switchBetweenMeterAndKm(
+          switchDistanceUnit(
             data.distance,
             formatType: RunningUnit.KILOMETER,
           ),

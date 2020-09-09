@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -36,7 +38,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   bool _enableProfileDescription;
   bool _enableFFButton;
   bool _isFollowingButton;
-  bool _isKM;
+  RunningUnit _runningUnit;
   int _activityNumber;
   List _activityTimelineList;
   int _followingNumber;
@@ -49,7 +51,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     _enableProfileDescription = true;
     _enableFFButton = true;
     _isFollowingButton = false;
-    _isKM = true;
+    _runningUnit = DataManager.getUserRunningUnit();
     _activityNumber = DemoData().activityTimelineList.length;
     _activityTimelineList = DemoData().activityTimelineList;
     _followingNumber = DemoData().ffItemList.length;
@@ -152,12 +154,12 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     });
   }
 
-  _changeKM() {
-    // TODO: Implement function here
-    setState(() {
-      _isKM = !_isKM;
-    });
-  }
+//  _changeKM() {
+//    // TODO: Implement function here
+//    setState(() {
+//      _isKM = !_isKM;
+//    });
+//  }
 
   void _pressEventBadge(data) {
     // TODO: Implement function here
@@ -447,10 +449,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                           dateTime: item['dateTime'],
                           title: item['title'],
                           calories: item['calories'],
-                          distance: (_isKM
-                              ? item['distance']
-                              : item['distance'] * 1000),
-                          isKM: _isKM,
+                          distance: switchDistanceUnit(item['distance']),
+                          runningUnit: _runningUnit,
                           elevation: item['elevation'],
                           pace: item['pace'],
                           time: item['time'],

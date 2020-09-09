@@ -74,6 +74,15 @@ class _FeedPageState extends State<FeedPage> {
               bottom: (index != _userActivityList.length - 1 ? 12.0 : 0)),
           child: CompactUserActivityItem(
             userActivity: _userActivityList[index],
+            callbackFunc: () async{
+              setState(() {
+                _userActivityList = List();
+                _page = 0;
+                _allowLoadMore = true;
+              });
+              await _loadData();
+              _refreshController.refreshCompleted();
+            },
           ),
         );
       },

@@ -426,7 +426,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
     );
 
     String totalParticipants = _eventInfo.totalParticipant.toString();
-    String distance = NumberFormat.compact().format(switchBetweenMeterAndKm(
+    String distance = NumberFormat.compact().format(switchDistanceUnit(
       _eventInfo.totalDistance,
     ));
     String totalTeams = _eventInfo.totalTeamParticipant.toString();
