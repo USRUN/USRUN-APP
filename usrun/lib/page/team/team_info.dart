@@ -598,7 +598,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               ),
                               child: Text(
                                 R.strings.teamStats,
-                                style: R.styles.shadowLabelStyle,
+                                style: R.styles.labelStyle,
                               ),
                             ),
                             GestureDetector(

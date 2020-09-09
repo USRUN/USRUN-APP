@@ -84,7 +84,7 @@ class ProfileInfoState extends State<ProfileInfo> {
     }
   }
 
-  void setLoading(){
+  void setLoading() {
     _isLoading = true;
   }
 
@@ -147,7 +147,6 @@ class ProfileInfoState extends State<ProfileInfo> {
 //                items: DemoData().ffItemList,
 //                enableFFButton: true,
 //                labelTitle: R.strings.personalFollowing,
-//                enableLabelShadow: true,
 //                subTitle: "$_followingNumber " + R.strings.personalFollowingNotice,
 //                enableSubtitleShadow: true,
 //                enableScrollBackgroundColor: true,
@@ -164,7 +163,6 @@ class ProfileInfoState extends State<ProfileInfo> {
 //                items: DemoData().ffItemList,
 //                enableFFButton: true,
 //                labelTitle: R.strings.personalFollowers,
-//                enableLabelShadow: true,
 //                subTitle: "$_followerNumber " + R.strings.personalFollowersNotice,
 //                enableSubtitleShadow: true,
 //                enableScrollBackgroundColor: true,
@@ -180,7 +178,6 @@ class ProfileInfoState extends State<ProfileInfo> {
               EventList(
                 items: _events,
                 labelTitle: R.strings.personalEvents,
-                enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFunction: _pressEventItemFunction,
               ),
@@ -191,7 +188,6 @@ class ProfileInfoState extends State<ProfileInfo> {
               TeamList(
                 items: _teamList,
                 labelTitle: R.strings.personalTeams,
-                enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFunction: _pressTeamItemFunction,
               ),
@@ -206,7 +202,6 @@ class ProfileInfoState extends State<ProfileInfo> {
               TeamPlanList(
                 items: DemoData().teamPlanList,
                 labelTitle: R.strings.personalTeamPlans,
-                enableLabelShadow: true,
                 enableScrollBackgroundColor: true,
                 pressItemFunction: _pressTeamPlanItemFunction,
               ),

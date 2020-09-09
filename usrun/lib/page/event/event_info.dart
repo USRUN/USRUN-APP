@@ -207,7 +207,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             R.strings.information,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Event status
@@ -381,14 +381,14 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             R.strings.organizations,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Org 0: Powered by
           _renderOrgList(
             _eventInfo.sponsorIds[0],
             R.strings.poweredBy,
-            R.colors.redPink,
+            R.colors.majorOrange,
           ),
           // Org 1: Gold
           _renderOrgList(
@@ -445,7 +445,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             labelTitle,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Leaderboard button

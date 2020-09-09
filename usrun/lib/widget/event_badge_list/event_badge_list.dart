@@ -5,7 +5,7 @@ import 'package:usrun/widget/event_badge_list/event_badge_item.dart';
 
 class EventBadgeList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
+
   final List<EventBadgeItem> items;
   final bool enableScrollBackgroundColor;
   final void Function(EventBadgeItem data) pressItemFunction;
@@ -15,7 +15,6 @@ class EventBadgeList extends StatelessWidget {
 
   EventBadgeList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
     this.pressItemFunction(data),
@@ -37,9 +36,7 @@ class EventBadgeList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),

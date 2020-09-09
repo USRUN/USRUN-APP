@@ -154,7 +154,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Text(
                   R.strings.settingsAccountLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -258,7 +258,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Text(
                   R.strings.settingsDisplayLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -395,7 +395,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Text(
                   R.strings.settingsSOLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
 //              LineButton(

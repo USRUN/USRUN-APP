@@ -85,7 +85,7 @@ class SignInPage extends StatelessWidget {
                         },
                         child: Text(
                           R.strings.forgotPassword,
-                          style: R.styles.shadowLabelStyle,
+                          style: R.styles.labelStyle,
                         ),
                       ),
                     )

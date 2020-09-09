@@ -234,7 +234,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
                   ),
                   child: Text(
                     _chartLabelTitle,
-                    style: R.styles.shadowLabelStyle,
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
@@ -335,7 +335,6 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
         StatsSection(
           items: widget.statsSectionItems,
           labelTitle: _statsSectionLabelTitle,
-          enableLabelShadow: true,
         ),
         SizedBox(
           height: R.appRatio.appSpacing25,

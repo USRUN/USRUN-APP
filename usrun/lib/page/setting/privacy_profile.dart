@@ -33,7 +33,7 @@ class PrivacyProfile extends StatelessWidget {
                 child: Text(
                   R.strings.privacyFindLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -85,7 +85,7 @@ class PrivacyProfile extends StatelessWidget {
                 child: Text(
                   R.strings.privacyFollowLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -117,7 +117,7 @@ class PrivacyProfile extends StatelessWidget {
                 child: Text(
                   R.strings.privacyActLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -145,7 +145,7 @@ class PrivacyProfile extends StatelessWidget {
                 child: Text(
                   R.strings.privacyOPILabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(

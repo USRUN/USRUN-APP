@@ -198,7 +198,6 @@ class _TeamPageState extends State<TeamPage> {
                       TeamList(
                         items: _myTeamList,
                         labelTitle: R.strings.yourTeams,
-                        enableLabelShadow: true,
                         enableScrollBackgroundColor: true,
                         pressItemFunction: (teamItem) {
                           pushPage(
@@ -220,7 +219,6 @@ class _TeamPageState extends State<TeamPage> {
                           : TeamList(
                               items: _myInvitedTeamList,
                               labelTitle: R.strings.inviteTeamListTitle,
-                              enableLabelShadow: true,
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,
                               pressItemFunction: (teamItem) {
@@ -243,7 +241,6 @@ class _TeamPageState extends State<TeamPage> {
                           : TeamList(
                               items: _myRequestingTeamList,
                               labelTitle: R.strings.requestTeamListTitle,
-                              enableLabelShadow: true,
                               enableScrollBackgroundColor: true,
                               enableSplitListToTwo: false,
                               pressItemFunction: (teamItem) {
@@ -261,7 +258,6 @@ class _TeamPageState extends State<TeamPage> {
                       TeamList(
                         items: _teamSuggestionList,
                         labelTitle: R.strings.weSuggestYou,
-                        enableLabelShadow: true,
                         enableScrollBackgroundColor: true,
                         enableSplitListToTwo: false,
                         pressItemFunction: (teamItem) {

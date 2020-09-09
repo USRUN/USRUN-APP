@@ -8,7 +8,6 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/feed/edit_activity_online_photo_dialog.dart';
 import 'package:usrun/util/image_cache_manager.dart';
-import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
@@ -223,7 +222,6 @@ class _EditActivityPageState extends State<EditActivityPage> {
         controller: _titleTextController,
         focusNode: _titleNode,
         labelTitle: R.strings.title,
-        enableLabelShadow: true,
         enableFullWidth: true,
       ),
     );
@@ -240,7 +238,6 @@ class _EditActivityPageState extends State<EditActivityPage> {
         controller: _descriptionTextController,
         focusNode: _descriptionNode,
         labelTitle: R.strings.yourDescription,
-        enableLabelShadow: true,
         enableFullWidth: true,
         textInputType: TextInputType.multiline,
         textInputAction: TextInputAction.newline,
@@ -377,7 +374,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           Text(
             R.strings.yourPhotos,
             textScaleFactor: 1.0,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: _spacing),
           SingleChildScrollView(
@@ -416,7 +413,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
         LineButton(
           mainText: R.strings.yourMaps,
           mainTextFontSize: 16,
-          mainTextStyle: R.styles.shadowLabelStyle,
+          mainTextStyle: R.styles.labelStyle,
           subText: R.strings.viewMapDescription,
           subTextFontSize: 14,
           textPadding: EdgeInsets.all(15),
@@ -424,7 +421,8 @@ class _EditActivityPageState extends State<EditActivityPage> {
           enableSwitchButton: true,
           switchButtonOnTitle: "On",
           switchButtonOffTitle: "Off",
-          initSwitchStatus: _userActivity.showMap!=null?_userActivity.showMap:false,
+          initSwitchStatus:
+              _userActivity.showMap != null ? _userActivity.showMap : false,
           switchFunction: (state) {
             _userActivity.showMap = state;
           },

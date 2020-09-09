@@ -6,7 +6,7 @@ import 'package:usrun/widget/team_list/team_item.dart';
 
 class TeamList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
+
   final List<TeamItem> items;
   final bool enableScrollBackgroundColor;
   final bool enableSplitListToTwo;
@@ -20,7 +20,6 @@ class TeamList extends StatelessWidget {
 
   TeamList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     this.enableSplitListToTwo = false,
     @required this.items,
     this.enableScrollBackgroundColor = true,
@@ -56,9 +55,7 @@ class TeamList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
@@ -171,7 +168,34 @@ class TeamList extends StatelessWidget {
                 },
               ),
               SizedBox(
-                height: R.appRatio.appSpacing5,
+                height: R.appRatio.appSpacing5 * 1.5,
+              ), // Team name
+              GestureDetector(
+                onTap: () {
+                  if (this.pressItemFunction != null) {
+                    this.pressItemFunction(element[index]);
+                  }
+                },
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: R.appRatio.appHeight50,
+                  ),
+                  child: Text(
+                    name,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: R.appRatio.appFontSize12,
+                      fontWeight: FontWeight.w600,
+                      color: R.colors.contentText,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: R.appRatio.appSpacing5 * 1.5,
               ),
               // Athlete quantity
               GestureDetector(
@@ -198,36 +222,11 @@ class TeamList extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: R.appRatio.appFontSize12,
+                        fontWeight: FontWeight.normal,
                         color: R.colors.contentText,
                       ),
                     ),
                   ],
-                ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing5,
-              ),
-              // Team name
-              GestureDetector(
-                onTap: () {
-                  if (this.pressItemFunction != null) {
-                    this.pressItemFunction(element[index]);
-                  }
-                },
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxHeight: R.appRatio.appHeight50,
-                  ),
-                  child: Text(
-                    name,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: R.appRatio.appFontSize12,
-                      color: R.colors.contentText,
-                    ),
-                  ),
                 ),
               ),
             ],

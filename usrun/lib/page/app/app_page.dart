@@ -16,6 +16,7 @@ import 'package:usrun/page/record/record_page.dart';
 import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
+import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -218,11 +219,13 @@ class _AppPageState extends State<AppPage> {
                 Container(
                   width: R.appRatio.appWidth100,
                   child: Text(
-                    item.title.toUpperCase(),
+                    StringUtils.uppercaseOnlyFirstLetterOfFirstWord(
+                      item.title,
+                    ),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: R.appRatio.appFontSize18,
+                      fontSize: R.appRatio.appFontSize20,
                       color: i == _selectedDrawerIndex
                           ? R.colors.oldYellow
                           : Colors.white,

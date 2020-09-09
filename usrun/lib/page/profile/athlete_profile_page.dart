@@ -329,7 +329,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     EventBadgeList(
                       items: DemoData().eventBadgeList,
                       labelTitle: R.strings.athleteBadges,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressEventBadge,
                     ),
@@ -340,7 +339,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     PhotoList(
                       items: DemoData().photoItemList,
                       labelTitle: R.strings.athletePhotos,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                     ),
                     SizedBox(
@@ -351,7 +349,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       items: DemoData().ffItemList,
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowing,
-                      enableLabelShadow: true,
                       subTitle: "$_followingNumber " +
                           R.strings.athleteFollowingNotice,
                       enableSubtitleShadow: true,
@@ -367,7 +364,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       items: DemoData().ffItemList,
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowers,
-                      enableLabelShadow: true,
                       subTitle: "$_followerNumber " +
                           R.strings.athleteFollowersNotice,
                       enableSubtitleShadow: true,
@@ -382,7 +378,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     EventList(
                       items: EventManager.userEvents,
                       labelTitle: R.strings.athleteEvents,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressEventItemFunction,
                     ),
@@ -393,7 +388,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     TeamList(
                       items: DemoData().teamList,
                       labelTitle: R.strings.athleteTeams,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressTeamItemFunction,
                     ),
@@ -408,7 +402,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     TeamPlanList(
                       items: DemoData().teamPlanList,
                       labelTitle: R.strings.athleteTeamPlans,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressTeamPlanItemFunction,
                     ),
@@ -424,7 +417,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       child: StatsSection(
                         items: DemoData().statsListStyle01,
                         labelTitle: R.strings.athleteStatsInCurrentYear,
-                        enableLabelShadow: true,
                       ),
                     ),
                     SizedBox(
@@ -439,7 +431,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         R.strings.athleteActivities + ": $_activityNumber",
-                        style: R.styles.shadowLabelStyle,
+                        style: R.styles.labelStyle,
                       ),
                     ),
                     ListView.builder(

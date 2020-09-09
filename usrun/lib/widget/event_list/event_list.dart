@@ -7,7 +7,7 @@ import 'package:usrun/util/image_cache_manager.dart';
 
 class EventList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
+
   final List<Event> items;
   final bool enableScrollBackgroundColor;
   final void Function(Event data) pressItemFunction;
@@ -17,7 +17,6 @@ class EventList extends StatelessWidget {
 
   EventList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
     this.pressItemFunction(data),
@@ -39,9 +38,7 @@ class EventList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),

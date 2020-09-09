@@ -520,7 +520,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       headingColor: R.colors.contentText,
       textColor: R.colors.contentText,
       dividerColor: R.colors.contentText,
-      paceBoxColor: R.colors.redPink,
+      paceBoxColor: R.colors.majorOrange,
       chartPadding: EdgeInsets.only(
         left: _spacing,
         right: _spacing,

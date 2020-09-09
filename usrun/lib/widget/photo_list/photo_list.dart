@@ -9,7 +9,6 @@ import 'package:usrun/widget/photo_list/photo_item.dart';
 
 class PhotoList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
   final List<PhotoItem> items;
   final bool enableScrollBackgroundColor;
 
@@ -23,7 +22,6 @@ class PhotoList extends StatelessWidget {
 
   PhotoList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
   });
@@ -57,9 +55,7 @@ class PhotoList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
