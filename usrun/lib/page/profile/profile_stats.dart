@@ -1,38 +1,37 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart'; 
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/profile/profile_stats_day.dart';
 import 'package:usrun/page/profile/profile_stats_wmy.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/custom_tab_bar.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_month_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_week_picker.dart';
 import 'package:usrun/widget/my_date_picker/my_year_picker.dart';
+import 'package:usrun/widget/stats_section/format_profile_stats.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 class ProfileStats extends StatefulWidget {
+
+  final int userId;
+
+  ProfileStats({@required this.userId, Key key}) : super(key: key);
+
   final tabBarItems = [
-    {
-      "tabName": "DAY",
-    },
-    {
-      "tabName": "WEEK",
-    },
-    {
-      "tabName": "MONTH",
-    },
-    {
-      "tabName": "YEAR",
-    }
+    R.strings.day,
+    R.strings.week,
+    R.strings.month,
+    R.strings.year,
   ];
 
   @override
-  _ProfileStatsState createState() => _ProfileStatsState();
+  ProfileStatsState createState() => ProfileStatsState();
 }
 
-class _ProfileStatsState extends State<ProfileStats> {
+class ProfileStatsState extends State<ProfileStats> {
   bool _isLoading;
   int _selectedTabIndex;
   DateTime _selectedDay;
@@ -41,8 +40,14 @@ class _ProfileStatsState extends State<ProfileStats> {
   DateTime _selectedYear;
   String _stringSelectedDate;
 
+  List _profileStatsDayList;
+
+  List _statsSectionItems;
+  List _chartItems;
+
   @override
   void initState() {
+    super.initState();
     _isLoading = true;
     _selectedTabIndex = 0;
     _selectedDay = DateTime.now();
@@ -50,30 +55,137 @@ class _ProfileStatsState extends State<ProfileStats> {
     _selectedMonth = _selectedDay;
     _selectedYear = _selectedDay;
     _stringSelectedDate = formatDate(_selectedDay, [dd, '/', mm, '/', yyyy]);
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
+
+    _profileStatsDayList = List();
+
+    _statsSectionItems = List();
+    _chartItems = List();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => getProfileStatsData());
   }
 
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
+  void getProfileStatsData() async {
+    if (!_isLoading) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
+    // Day
+    if (_selectedTabIndex == 0) {
+      DateTime fromTime = DateTime(
+          _selectedDay.year, _selectedDay.month, _selectedDay.day, 0, 0, 0);
+      DateTime toTime = DateTime(
+          _selectedDay.year, _selectedDay.month, _selectedDay.day, 23, 59, 59);
+
+      await UserManager.getUserActivityByTimeWithSum(
+          widget.userId, fromTime, toTime)
+          .then((value) {
+        var newValue = FormatProfileStats.formatDayObject(value);
+        if (!mounted) return;
+        setState(() {
+          _profileStatsDayList = newValue;
+          _isLoading = !_isLoading;
+        });
+      });
+    }
+    // Week - Month - Year
+    else {
+      DateTime chartFromTime,
+          chartToTime,
+          statsSectionFromTime,
+          statsSectionToTime;
+
+      switch (_selectedTabIndex) {
+        case 1: // Week
+          DateTime weekFromDate = _selectedWeek.getFromDateValue();
+          DateTime weekToDate = _selectedWeek.getToDateValue();
+
+          chartFromTime = DateTime(
+              weekFromDate.year, weekFromDate.month, weekFromDate.day, 0, 0, 0);
+          chartToTime = DateTime(weekFromDate.year, weekFromDate.month,
+              weekFromDate.day, 23, 59, 59);
+
+          statsSectionFromTime = DateTime(
+              weekFromDate.year, weekFromDate.month, weekFromDate.day, 0, 0, 0);
+          statsSectionToTime = DateTime(
+              weekToDate.year, weekToDate.month, weekToDate.day, 23, 59, 59);
+          break;
+        case 2: // Month
+          WeekDateTime weekOfMonth =
+          WeekDateTime.getCurrentWeek(_selectedMonth);
+          DateTime weekFromDate = weekOfMonth.getFromDateValue();
+          DateTime weekToDate = weekOfMonth.getToDateValue();
+
+          chartFromTime = DateTime(
+              weekFromDate.year, weekFromDate.month, weekFromDate.day, 0, 0, 0);
+          chartToTime = DateTime(
+              weekToDate.year, weekToDate.month, weekToDate.day, 23, 59, 59);
+
+          DateTime lastDayOfMonth =
+          DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
+          statsSectionFromTime =
+              DateTime(_selectedMonth.year, _selectedMonth.month, 1, 0, 0, 0);
+          statsSectionToTime = DateTime(_selectedMonth.year,
+              _selectedMonth.month, lastDayOfMonth.day, 23, 59, 59);
+          break;
+        case 3: // Year
+          DateTime lastDayOfMonth =
+          DateTime(_selectedYear.year, _selectedYear.month + 1, 0);
+          chartFromTime =
+              DateTime(_selectedYear.year, _selectedYear.month, 1, 0, 0, 0);
+          chartToTime = DateTime(_selectedYear.year, _selectedYear.month,
+              lastDayOfMonth.day, 23, 59, 59);
+
+          statsSectionFromTime = DateTime(_selectedYear.year, 1, 1, 0, 0, 0);
+          statsSectionToTime = DateTime(_selectedYear.year, 12, 31, 23, 59, 59);
+          break;
+        default:
+          return;
+      }
+
+      var futures = List<Future>();
+
+      futures.add(
+          UserManager.getUserActivityByTimeWithSum(
+              widget.userId, chartFromTime, chartToTime));
+      futures.add(UserManager.getUserActivityByTimeWithSum(widget.userId,
+          statsSectionFromTime, statsSectionToTime));
+
+      await Future.wait(futures).then((resultList) {
+        if (!mounted) return;
+
+        dynamic chartListResult = resultList[0];
+        dynamic statsSectionListResult = resultList[1];
+
+        var newChartList =
+        FormatProfileStats.formatChartObject(chartListResult);
+        var newStatsSectionList =
+        FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
+
+        if (!mounted) return;
+        setState(() {
+          _chartItems = newChartList;
+          _statsSectionItems = newStatsSectionList;
+          _isLoading = !_isLoading;
+        });
+      });
+    }
   }
 
   void _initSelectedWeek() {
     DateTime current = DateTime.now();
-
-    List<WeekDateTime> list = WeekDateTime.getWeekListOfMonth(current);
-    int weekOrder = WeekDateTime.getWeekOrder(current);
-    int posWeekInList = weekOrder - 1;
-
-    _selectedWeek = list[posWeekInList];
+    _selectedWeek = WeekDateTime.getCurrentWeek(current);
   }
 
   _onSelectItem(int tabIndex) {
     if (_selectedTabIndex == tabIndex) return;
+    if (!mounted) return;
+
     setState(() {
       _selectedTabIndex = tabIndex;
+      getProfileStatsData();
 
       switch (tabIndex) {
         case 0: // Day
@@ -100,19 +212,37 @@ class _ProfileStatsState extends State<ProfileStats> {
 
     switch (tabIndex) {
       case 0: // Day
-        widget = ProfileStatsDay(day: _selectedDay);
+        widget = ProfileStatsDay(
+          dateTime: _selectedDay,
+          items: _profileStatsDayList,
+        );
         break;
       case 1: // Week
-        widget = ProfileStatsWeek(weekDateTime: _selectedWeek);
+        widget = ProfileStatsWeek(
+          weekDateTime: _selectedWeek,
+          chartItems: _chartItems,
+          statsSectionItems: _statsSectionItems,
+        );
         break;
       case 2: // Month
-        widget = ProfileStatsMonth(dateTime: _selectedMonth);
+        widget = ProfileStatsMonth(
+          dateTime: _selectedMonth,
+          chartItems: _chartItems,
+          statsSectionItems: _statsSectionItems,
+        );
         break;
       case 3: // Year
-        widget = ProfileStatsYear(dateTime: _selectedYear);
+        widget = ProfileStatsYear(
+          dateTime: _selectedYear,
+          chartItems: _chartItems,
+          statsSectionItems: _statsSectionItems,
+        );
         break;
       default:
-        widget = ProfileStatsDay(day: _selectedDay);
+        widget = ProfileStatsDay(
+          dateTime: _selectedDay,
+          items: _profileStatsDayList,
+        );
         break;
     }
 
@@ -131,11 +261,13 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedDay) {
+            if (!mounted) return;
             setState(() {
               _selectedDay = datePick;
               _stringSelectedDate =
                   formatDate(datePick, [dd, '/', mm, '/', yyyy]);
             });
+            getProfileStatsData();
           }
         }
         break;
@@ -149,10 +281,12 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedWeek) {
+            if (!mounted) return;
             setState(() {
-              _selectedWeek = datePick;
+              _selectedWeek = datePick as WeekDateTime;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
+            getProfileStatsData();
           }
         }
         break;
@@ -166,10 +300,12 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedMonth) {
+            if (!mounted) return;
             setState(() {
               _selectedMonth = datePick;
               _stringSelectedDate = formatDate(datePick, [mm, '/', yyyy]);
             });
+            getProfileStatsData();
           }
         }
         break;
@@ -183,10 +319,12 @@ class _ProfileStatsState extends State<ProfileStats> {
           );
 
           if (datePick != null && datePick != _selectedYear) {
+            if (!mounted) return;
             setState(() {
               _selectedYear = datePick;
               _stringSelectedDate = formatDate(datePick, [yyyy]);
             });
+            getProfileStatsData();
           }
         }
         break;
@@ -197,40 +335,36 @@ class _ProfileStatsState extends State<ProfileStats> {
 
   @override
   Widget build(BuildContext context) {
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : Column(
-            children: <Widget>[
-              CustomTabBarStyle02(
-                selectedTabIndex: _selectedTabIndex,
-                items: widget.tabBarItems,
-                pressTab: _onSelectItem,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              UIButton(
-                color: R.colors.redPink,
-                text: _stringSelectedDate,
-                textSize: R.appRatio.appFontSize16,
-                textColor: Colors.white,
-                fontWeight: FontWeight.bold,
-                enableShadow: true,
-                width: R.appRatio.appWidth200,
-                height: R.appRatio.appHeight30,
-                radius: 0,
-                boxShadow: BoxShadow(
-                  blurRadius: 2.0,
-                  offset: Offset(1.0, 1.0),
-                  color: R.colors.btnShadow,
-                ),
-                onTap: _pressDateButton,
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing25,
-              ),
-              _getContentItemWidget(_selectedTabIndex),
-            ],
-          ));
+    return Column(
+      children: <Widget>[
+        CustomTabBarStyle02(
+          selectedTabIndex: _selectedTabIndex,
+          items: widget.tabBarItems,
+          pressTab: _onSelectItem,
+        ),
+        SizedBox(
+          height: R.appRatio.appSpacing25,
+        ),
+        UIButton(
+          color: R.colors.majorOrange,
+          text: _stringSelectedDate,
+          textSize: R.appRatio.appFontSize16,
+          textColor: Colors.white,
+          fontWeight: FontWeight.bold,
+          enableShadow: true,
+          boxShadow: R.styles.boxShadowB,
+          width: R.appRatio.appWidth220,
+          height: R.appRatio.appHeight35,
+          radius: 2,
+          onTap: _pressDateButton,
+        ),
+        SizedBox(
+          height: R.appRatio.appSpacing25,
+        ),
+        (_isLoading
+            ? LoadingIndicator()
+            : _getContentItemWidget(_selectedTabIndex)),
+      ],
+    );
   }
 }

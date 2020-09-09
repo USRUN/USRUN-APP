@@ -1,14 +1,9 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/model/week_date_time.dart';
-import 'package:usrun/widget/my_info_box/complex_info_box.dart';
-import 'package:usrun/widget/loading_dot.dart';
-
-// Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 import 'package:usrun/widget/my_info_box/simple_info_box.dart';
-import 'package:usrun/widget/stats_section.dart';
+import 'package:usrun/widget/stats_section/stats_section.dart';
 
 /*
   ---------
@@ -17,9 +12,13 @@ import 'package:usrun/widget/stats_section.dart';
 */
 class ProfileStatsWeek extends StatefulWidget {
   final WeekDateTime weekDateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsWeek({
     @required this.weekDateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -27,32 +26,15 @@ class ProfileStatsWeek extends StatefulWidget {
 }
 
 class _ProfileStatsWeekState extends State<ProfileStatsWeek> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 0,
-            dateTime: widget.weekDateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 0,
+      dateTime: widget.weekDateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -63,9 +45,13 @@ class _ProfileStatsWeekState extends State<ProfileStatsWeek> {
 */
 class ProfileStatsMonth extends StatefulWidget {
   final DateTime dateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsMonth({
     @required this.dateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -73,32 +59,15 @@ class ProfileStatsMonth extends StatefulWidget {
 }
 
 class _ProfileStatsMonthState extends State<ProfileStatsMonth> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 1,
-            dateTime: widget.dateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 1,
+      dateTime: widget.dateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -109,9 +78,13 @@ class _ProfileStatsMonthState extends State<ProfileStatsMonth> {
 */
 class ProfileStatsYear extends StatefulWidget {
   final DateTime dateTime;
+  final List statsSectionItems;
+  final List chartItems;
 
   ProfileStatsYear({
     @required this.dateTime,
+    @required this.statsSectionItems,
+    @required this.chartItems,
   });
 
   @override
@@ -119,32 +92,15 @@ class ProfileStatsYear extends StatefulWidget {
 }
 
 class _ProfileStatsYearState extends State<ProfileStatsYear> {
-  bool _isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: Code more here
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : _ProfileStatsBody(
-            bodyType: 2,
-            dateTime: widget.dateTime,
-            statsSectionItems: DemoData().statsListStyle01,
-            chartItems: DemoData().statsListStyle03,
-          ));
+    return _ProfileStatsBody(
+      bodyType: 2,
+      dateTime: widget.dateTime,
+      statsSectionItems: widget.statsSectionItems,
+      chartItems: widget.chartItems,
+    );
   }
 }
 
@@ -212,6 +168,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   String _statsSectionLabelTitle = "";
 
   void _updateSubTitle(String content) {
+    if (!mounted) return;
     setState(() {
       _chartSubTitle = content;
     });
@@ -227,7 +184,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   }
 
   Widget _renderEmptyList() {
-    String systemNoti = "Nothing to show";
+    String systemNoti = R.strings.nothingToShow;
 
     return Center(
       child: Text(
@@ -243,22 +200,22 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
   Widget _renderChartLabel() {
     switch (widget.bodyType) {
       case 0: // WEEK
-        _chartLabelTitle = "Selected Day";
+        _chartLabelTitle = R.strings.selectedDay;
         _updateSubTitle(formatDate(
             widget.dateTime.getFromDateValue(), [dd, '/', mm, '/', yyyy]));
-        _statsSectionLabelTitle = "Current Week";
+        _statsSectionLabelTitle = R.strings.currentWeek;
         break;
       case 1: // MONTH
-        _chartLabelTitle = "Selected Week";
+        _chartLabelTitle = R.strings.selectedWeek;
         List<WeekDateTime> list =
             WeekDateTime.getWeekListOfMonth(widget.dateTime);
         _updateSubTitle(list[0].getWeekString());
-        _statsSectionLabelTitle = "Current Month";
+        _statsSectionLabelTitle = R.strings.currentMonth;
         break;
       case 2: // YEAR
-        _chartLabelTitle = "Selected Month";
+        _chartLabelTitle = R.strings.selectedMonth;
         _updateSubTitle(formatDate(widget.dateTime, [mm, '/', yyyy]));
-        _statsSectionLabelTitle = "Current Year";
+        _statsSectionLabelTitle = R.strings.currentYear;
         break;
     }
 
@@ -277,7 +234,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
                   ),
                   child: Text(
                     _chartLabelTitle,
-                    style: R.styles.shadowLabelStyle,
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
@@ -333,7 +290,7 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
               subTitle: subTitle,
               unitTitle: unitTitle,
               boxHeight: R.appRatio.appHeight90,
-              boxWidth: R.appRatio.appHeight140,
+              boxWidth: R.appRatio.appWidth140,
               pressBox: _pressBox,
             ),
           );
@@ -349,41 +306,35 @@ class _ProfileStatsBodyState extends State<_ProfileStatsBody> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        // [Chart] label
-        _renderChartLabel(),
-        // [Chart] Horizontal stats section
-        _renderChartHorizontalStats(),
-        SizedBox(
-          height: R.appRatio.appSpacing25,
-        ),
-        // [Chart] Draw chart
-        // TODO: Please don't forget drawing this chart :D
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            "--->  Here, there is a chart  <---",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              backgroundColor: Colors.amber,
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: R.appRatio.appFontSize18,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: R.appRatio.appSpacing25,
-        ),
+//        // [Chart] label
+//        _renderChartLabel(),
+//        // [Chart] Horizontal stats section
+//        _renderChartHorizontalStats(),
+//        SizedBox(
+//          height: R.appRatio.appSpacing25,
+//        ),
+//        // [Chart] Draw chart
+//        // TODO: Please don't forget drawing this chart :D
+//        Container(
+//          alignment: Alignment.center,
+//          child: Text(
+//            "--->  Here, there is a chart  <---",
+//            textAlign: TextAlign.center,
+//            style: TextStyle(
+//              backgroundColor: Colors.amber,
+//              color: Colors.red,
+//              fontWeight: FontWeight.bold,
+//              fontSize: R.appRatio.appFontSize18,
+//            ),
+//          ),
+//        ),
+//        SizedBox(
+//          height: R.appRatio.appSpacing25,
+//        ),
         // [StatsSection] Draw stats section
-        Container(
-          padding: EdgeInsets.only(
-            left: R.appRatio.appSpacing15,
-          ),
-          child: StatsSection(
-            items: widget.statsSectionItems,
-            labelTitle: _statsSectionLabelTitle,
-            enableLabelShadow: true,
-          ),
+        StatsSection(
+          items: widget.statsSectionItems,
+          labelTitle: _statsSectionLabelTitle,
         ),
         SizedBox(
           height: R.appRatio.appSpacing25,

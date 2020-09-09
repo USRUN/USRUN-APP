@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/util/image_cache_manager.dart';
 
 class AboutUsBox extends StatelessWidget {
+  static final double _spacing = 15.0;
+
   final String iconImageURL;
   final double iconSize;
   final String title;
@@ -18,42 +21,41 @@ class AboutUsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (this.pressBox != null) {
-          this.pressBox();
-        }
-      },
-      child: Container(
-        width: R.appRatio.appWidth300,
-        height: R.appRatio.appHeight80,
-        decoration: BoxDecoration(
-          color: R.colors.boxBackground,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4.0,
-              offset: Offset(4.0, 4.0),
-              color: R.colors.textShadow,
+    return Container(
+      height: 70,
+      decoration: BoxDecoration(
+        color: R.colors.boxBackground,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 4.0,
+            offset: Offset(4.0, 4.0),
+            color: R.colors.textShadow,
+          ),
+        ],
+      ),
+      child: FlatButton(
+        onPressed: this.pressBox,
+        textColor: Colors.white,
+        splashColor: R.colors.lightBlurMajorOrange,
+        padding: EdgeInsets.all(0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: _spacing,
             ),
-          ],
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: R.appRatio.appSpacing20,
-              ),
-              Image.asset(
-                this.iconImageURL,
-                width: this.iconSize,
-                height: this.iconSize,
-              ),
-              SizedBox(
-                width: R.appRatio.appSpacing20,
-              ),
-              Column(
+            ImageCacheManager.getImage(
+              url: this.iconImageURL,
+              width: this.iconSize,
+              height: this.iconSize,
+            ),
+            SizedBox(
+              width: _spacing,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -61,23 +63,29 @@ class AboutUsBox extends StatelessWidget {
                     this.title,
                     style: TextStyle(
                       color: R.colors.contentText,
-                      fontSize: R.appRatio.appFontSize18,
+                      fontSize: 16,
                     ),
                   ),
                   SizedBox(
-                    height: R.appRatio.appSpacing5,
+                    height: 5,
                   ),
                   Text(
                     this.subtitle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                       color: R.colors.orangeNoteText,
-                      fontSize: R.appRatio.appFontSize14,
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
                     ),
-                  )
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: _spacing,
+            ),
+          ],
         ),
       ),
     );

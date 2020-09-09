@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
@@ -11,10 +11,19 @@ import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/team.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/net/client.dart';
+import 'package:usrun/core/net/client.dart';
+import 'package:usrun/model/user_activity.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
+import 'package:usrun/util/date_time_utils.dart';
 
 class UserManager {
-  static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
+  // static User currentUser = User(); // NOTE: doesn't set currentUser = new VALUE, just use currentUser.copy(new user) because user is used in all app
+
+  // test tạm thời
+  static User currentUser = new User();
+
+  // ----------
+
   static ValueNotifier<List<Event>> events = ValueNotifier([]);
   static ValueNotifier<List<Team>> teams = ValueNotifier([]);
 
@@ -25,7 +34,6 @@ class UserManager {
 
   static void saveUser(User info) {
     currentUser.copy(info);
-
     DataManager.saveUser(currentUser);
   }
 
@@ -47,7 +55,9 @@ class UserManager {
     if (deviceToken != null) {
       params['deviceToken'] = deviceToken;
     }
-    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/create', params);
+    Response<Map<String, dynamic>> response =
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/user/signup', params);
 
     Response<User> result = Response();
 
@@ -57,17 +67,8 @@ class UserManager {
 
       saveUser(result.object);
       DataManager.setLoginChannel(int.parse(params["type"]));
-      sendDeviceToken();
+      //sendDeviceToken();
       DataManager.setLastLoginUserId(result.object.userId);
-
-      //appsflyer
-      // Map<String, dynamic> afParams = {
-      //   "type": int.parse(params["type"]) ?? "",
-      //   "userId": result.object.userId ?? "",
-      //   "openId": result.object.openId ?? "",
-      //   "email": result.object.email ?? "",
-      // };
-      // AppsflyerTrack.sendEvent("signUp", afParams);
     } else {
       result.success = false;
       result.errorCode = response.errorCode;
@@ -84,91 +85,127 @@ class UserManager {
     return result;
   }
 
-   static Future<Response<User>> check(Map<String, dynamic> params) async {
-    Response<Map<String, dynamic>> res = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/check', params);
+  static Future<Response<User>> signIn(Map<String, dynamic> params) async {
+    Response<Map<String, dynamic>> response =
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/user/login', params);
 
-    if (res.errorCode == USER_EMAIL_IS_USED) {
-      res.errorMessage = emailIsUserMessage(params['email']);
+    Response<User> result = Response();
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      //sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
+      await logout();
     }
 
-
-    Response<User> response = Response(success: res.success, errorCode: res.errorCode, errorMessage: res.errorMessage);
-    if (res.success) {
-      response.object = MapperObject.create<User>(res.object);
-    }
-
-    return response;
+    return result;
   }
-  
-  static Future<Map<String, dynamic>> adapterLogin(LoginChannel channel, Map<String, dynamic> params) async {
+
+  static Future<Map<String, dynamic>> adapterLogin(
+      LoginChannel channel, Map<String, dynamic> params) async {
     LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
     Map<String, dynamic> res = await adapter.login(params);
     return res;
   }
 
+  static Future<Response<User>> getUser(int userID) async {
+    Map<String, dynamic> params = {};
+    params["userId"] = userID;
+    Response<Map<String, dynamic>> response = await Client.post<Map<String, dynamic>, Map<String, dynamic>>('/user/login', params);
 
-  static Future<Response<User>> updateProfile(Map<String, dynamic> params) async {
+    Response<User> result = Response();
+    if (response.success) {
+      result.success = true;
+      result.object = MapperObject.create<User>(response.object);
+
+      saveUser(result.object);
+      DataManager.setLoginChannel(int.parse(params["type"]));
+      //sendDeviceToken();
+      DataManager.setLastLoginUserId(result.object.userId);
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
+      await logout();
+    }
+
+    return result;
+  }
+
+  static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
 
-    Response<User> response = await Client.nPost<User, User>('/user/update', params);
+    Response<Map<String, dynamic>> response =
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/user/update', params);
+
+    Response<User> result = Response();
+
     if (response.success) {
       // save data
-      UserManager.saveUser(response.object);
+      result.success = true;
+      String accessToken = currentUser.accessToken;
+      result.object = MapperObject.create<User>(response.object);
+      saveUser(result.object);
+      if (accessToken != null) currentUser.accessToken = accessToken;
+    } else {
+      result.success = false;
+      result.errorCode = response.errorCode;
+      result.errorMessage = response.errorMessage;
     }
-    return response;
+    return result;
   }
 
-  static void sendDeviceToken() async {
-    if (currentUser.userId == null) {
-      return;
-    }
-
-    String deviceToken = DataManager.getDeviceToken();
-    int lastUserId = DataManager.getLastLoginUserId();
-
-    if (lastUserId == null || lastUserId != currentUser.userId || deviceToken != currentUser.deviceToken) {
-      Map<String, String> newData = {
-        'os': getPlatform().toString(),
-        'deviceToken': deviceToken ?? "",
-        'language': DataManager.loadLanguage(),
-      };
-
-      Response response = await updateProfile(newData);
-      if (response.success) {
-        saveUser(response.object);
-      }
-    }
-  }
+//  static void sendDeviceToken() async {
+//    if (currentUser.userId == null) {
+//      return;
+//    }
+//
+//    String deviceToken = DataManager.getDeviceToken();
+//    int lastUserId = DataManager.getLastLoginUserId();
+//
+//    if (lastUserId == null ||
+//        lastUserId != currentUser.userId ||
+//        deviceToken != currentUser.deviceToken) {
+//      Map<String, String> newData = {
+//        'os': getPlatform().toString(),
+//        'deviceToken': deviceToken ?? "",
+//        'language': DataManager.loadLanguage(),
+//      };
+//
+//      Response response = await updateProfile(newData);
+//      if (response.success) {
+//        saveUser(response.object);
+//      }
+//    }
+//  }
 
   static Future<void> logout() async {
     DataManager.clearAskEventJoin();
-
-    Response res = Response();
-    //RecordCache.clearCurrentActivity();
-    //RecordCache.deleteAllFiles();
-
-    //appsflyer
-    // Map<String, dynamic> afParams = {
-    //   "type": currentUser.type.toString() ?? "",
-    //   "userId": currentUser.userId ?? "",
-    //   "openId": currentUser.openId ?? "",
-    //   "email": currentUser.email ?? "",
-    // };
-    // AppsflyerTrack.sendEvent("signOut", afParams);
+    await RecordHelper.removeFile();
 
     if (currentUser != null) {
       // User.type will be removed soon
       // Use login channel in SharedPreferences instead
       for (LoginChannel channel in LoginChannel.values) {
-        //LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
+        if (channel == LoginChannel.Strava)
+          continue;
+        LoginAdapter adapter = LoginAdapter.adapterWithChannel(channel);
 
-        //await adapter.logout();
+        await adapter.logout();
       }
 
       clear();
     }
-    res.success = true;
   }
 
   static String emailIsUserMessage(String email) {
@@ -177,5 +214,154 @@ class UserManager {
     return message;
   }
 
-  
+  static Future<List<dynamic>> getActivityTimelineList(int userID,
+      {int limit = 30, int offset = 0}) async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['userId'] = userID;
+    params['limit'] = limit;
+    params['offset'] = offset;
+
+    Response<dynamic> response =
+        await Client.post('/activity/getActivityByUser', params);
+
+    if (response.object == null || !response.success) {
+      return null;
+    }
+
+    List<dynamic> result = List();
+    List<dynamic> obj = response.object;
+
+    for (var i = 0; i < obj.length; ++i) {
+      result.add({
+        "activityID": obj[i]['userActivityId'].toString(),
+        "dateTime": millisecondToDateString(obj[i]['createTime']),
+        "title": obj[i]['title'] ?? "Let's run!",
+        "calories": obj[i]['calories'].toString(),
+        "distance": double.tryParse(obj[i]['totalDistance'].toString()),
+        "elevation": obj[i]['elevGain'].toString() + "m",
+        "pace": secondToMinFormat(obj[i]['avgPace'] ~/ 1) + "/km",
+        "time": secondToTimeFormat(obj[i]['totalTime']),
+        "isLoved": false,
+        "loveNumber": obj[i]['totalLove'],
+      });
+    }
+
+    return result;
+  }
+
+  static Future<dynamic> getUserActivityByTimeWithSum(int userID,
+      DateTime fromTime, DateTime toTime) async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['userId'] = userID;
+    params['fromTime'] = fromTime.millisecondsSinceEpoch;
+    params['toTime'] = toTime.millisecondsSinceEpoch;
+    Response<dynamic> response =
+        await Client.post('/activity/getStatUser', params);
+
+    if (response.object == null || !response.success) {
+      return null;
+    }
+
+    return response.object;
+  }
+
+
+  static Future<dynamic> getUserActivity(int userID,
+      {int limit = 30, int offset = 0}) async {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params['userId'] = userID;
+    params['limit'] = limit;
+    params['offset'] = offset;
+
+    Response<dynamic> response =
+    await Client.post('/activity/getUserFeed', params);
+
+    if (response.object == null || !response.success) {
+      return null;
+    }
+
+    List<UserActivity> obj = [];
+    if (response.object != null)
+      obj = (response.object as List)
+          .map((item)=> MapperObject.create<UserActivity>(item)).toList();
+
+    return obj;
+  }
+
+
+  static Future<dynamic> changePassword(
+      String oldPassword, String newPassword) async {
+    Map<String, dynamic> params = {
+      'oldPassword': oldPassword,
+      'newPassword': newPassword,
+    };
+
+    Response<dynamic> response =
+        await Client.post('/user/changePassword', params);
+    return response;
+  }
+
+  static Future<dynamic> resetPassword(String email) async {
+    Map<String, dynamic> params = {
+      'email': email,
+    };
+
+    Response<dynamic> response =
+        await Client.post('/user/resetPassword', params);
+    return response;
+  }
+
+  static Future<dynamic> verifyAccount(String OTP) async {
+    Map<String, dynamic> params = {
+      'otp': OTP,
+    };
+
+    Response<dynamic> response =
+        await Client.post('/user/verifyStudentHcmus', params);
+    return response;
+  }
+
+  static Future<dynamic> resendOTP() async {
+    Response<dynamic> response = await Client.post('/user/resendOTP', null);
+    return response;
+  }
+
+  static Future<dynamic> getUserInfo(int userId) async {
+    Map<String,dynamic> params = {
+      'userId': userId,
+    };
+
+    Response<dynamic> response = await Client.post('/user/info',params);
+
+    if(!response.success || response.errorCode != -1){
+      return response;
+    }
+
+    User user = MapperObject.create<User>(response.object);
+
+    response.object = user;
+
+    return response;
+  }
+
+  static Future<Response> deleteActivity(int activityId) async {
+    Map<String, dynamic> params = {
+      "activityId": activityId
+    };
+    Response<dynamic> res = await Client.post(
+      '/activity/deleteActivity',
+      params,
+    );
+    return res;
+  }
+
+  static Future<Response> updateActivity(Map<String, dynamic> params) async {
+
+    Response<dynamic> res = await Client.post(
+      '/activity/editActivity',
+      params,
+    );
+    return res;
+  }
+
 }

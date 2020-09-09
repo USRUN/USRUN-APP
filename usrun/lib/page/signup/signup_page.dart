@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
@@ -10,6 +9,11 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
 import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/page/setting/hcmus_email_verification.dart';
+import 'package:usrun/util/validator.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
 
@@ -33,22 +37,7 @@ class SignUpPage extends StatelessWidget {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.signUp,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.signUp),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
@@ -75,8 +64,9 @@ class SignUpPage extends StatelessWidget {
                               child: InputField(
                                 controller: _firstNameController,
                                 enableFullWidth: false,
-                                labelTitle: "First Name",
-                                hintText: "First Name",
+                                labelTitle: R.strings.firstName,
+                                hintText: R.strings.firstName,
+                                autoFocus: true,
                               ),
                             ),
                             Container(
@@ -84,8 +74,8 @@ class SignUpPage extends StatelessWidget {
                               child: InputField(
                                 controller: _lastNameController,
                                 enableFullWidth: false,
-                                labelTitle: "Last Name",
-                                hintText: "Last Name",
+                                labelTitle: R.strings.lastName,
+                                hintText: R.strings.lastName,
                               ),
                             )
                           ],
@@ -96,8 +86,8 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _emailController,
                           enableFullWidth: true,
-                          labelTitle: "Email",
-                          hintText: "Type your email here",
+                          labelTitle: R.strings.email,
+                          hintText: R.strings.email,
                           textInputType: TextInputType.emailAddress,
                         ),
                         SizedBox(
@@ -106,9 +96,10 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _passwordController,
                           enableFullWidth: true,
-                          labelTitle: "Password",
-                          hintText: "Type your password here",
+                          labelTitle: R.strings.password,
+                          hintText: R.strings.passwordHint,
                           obscureText: true,
+                          maxLines: 1,
                         ),
                         SizedBox(
                           height: R.appRatio.appSpacing25,
@@ -116,19 +107,21 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           controller: _retypePasswordController,
                           enableFullWidth: true,
-                          labelTitle: "Re-type Password",
-                          hintText: "Enter your password again",
+                          labelTitle: R.strings.retypePassword,
+                          hintText: R.strings.retypePasswordHint,
                           obscureText: true,
+                          maxLines: 1,
                         ),
                         SizedBox(
                           height: R.appRatio.appSpacing25,
                         ),
                         Text(
-                          "Password must contain at least 8 characters with one number and one uppercase letter",
+                          R.strings.passwordNotice,
                           style: TextStyle(
-                              color: R.colors.orangeNoteText,
-                              fontStyle: FontStyle.italic,
-                              fontSize: R.appRatio.appFontSize14),
+                            color: R.colors.orangeNoteText,
+                            fontStyle: FontStyle.italic,
+                            fontSize: R.appRatio.appFontSize16,
+                          ),
                         )
                       ],
                     ),
@@ -150,10 +143,11 @@ class SignUpPage extends StatelessWidget {
               ),
               child: UIButton(
                 width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
+                height: R.appRatio.appHeight50,
                 gradient: R.colors.uiGradient,
                 text: R.strings.signUp,
-                textSize: R.appRatio.appFontSize22,
+                textSize: R.appRatio.appFontSize18,
+                boxShadow: R.styles.boxShadowB,
                 onTap: () => _validateSignUpInfo(context),
               ),
             ),
@@ -164,16 +158,17 @@ class SignUpPage extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 
   void _signUp(BuildContext context, LoginChannel channel,
       Map<String, String> params) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Response<User> response = await UserManager.create(params);
-    hideLoading(context);
+    pop(context);
 
     if (response.success) {
       // add user Type
@@ -182,12 +177,42 @@ class SignUpPage extends StatelessWidget {
         // userId==null => prepare create user
         //showPage(context, ProfileEditPage(userInfo: response.object, loginChannel: channel, exParams: params, type: ProfileEditType.SignUp)); // pass empty user
       } else {
+        if (channel == LoginChannel.UsRun &&
+            response.object.email.contains("hcmus.edu.vn")) {
+          await showCustomAlertDialog(
+            context,
+            title: R.strings.notice,
+            content: R.strings.verificationNotice,
+            firstButtonText: R.strings.settingsVerifyButton.toUpperCase(),
+            firstButtonFunction: () async {
+              bool result = await pushPage(context, HcmusEmailVerification());
+
+              if (result) {
+                response.object.hcmus = true;
+              }
+
+              pop(context);
+            },
+            secondButtonText: R.strings.cancel,
+            secondButtonFunction: () {
+              pop(context);
+            },
+          );
+        }
+
         // có user và đúng thông tin => save user + goto app page
         UserManager.saveUser(response.object);
         DataManager.setLoginChannel(channel.index);
-        UserManager.sendDeviceToken();
+        //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
-        showPage(context, AppPage());
+
+        Future.delayed(Duration(milliseconds: 250), () {
+          showPage(
+            context,
+            AppPage(),
+            popUntilFirstRoutes: true,
+          );
+        });
       }
     }
     // else {
@@ -221,9 +246,22 @@ class SignUpPage extends StatelessWidget {
 
     // validate email
     String email = _emailController.text.trim();
-    message = validateEmail(email);
+    String displayName = _firstNameController.text.trim() +
+        " " +
+        _lastNameController.text.trim();
+    bool validate = validateEmail(email);
+    if (!validate) {
+      message = R.strings.errorInvalidEmail;
+    }
+
     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
@@ -231,12 +269,19 @@ class SignUpPage extends StatelessWidget {
     String password = _passwordController.text.trim();
     message = validatePassword(password);
     if (message != null) {
-      showAlert(context, R.strings.errorTitle, message, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.error,
+        content: message,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
       return;
     }
 
     Map<String, String> params = {
       'type': LoginChannel.UsRun.index.toString(),
+      'displayName': displayName,
       'email': email,
       'password': password
     };
@@ -246,15 +291,26 @@ class SignUpPage extends StatelessWidget {
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,
       BuildContext context) async {
-    showLoading(context);
+    showCustomLoadingDialog(context, text: R.strings.processing);
     Map loginParams = await UserManager.adapterLogin(channel, params);
-    hideLoading(context);
+    pop(context);
 
     if (loginParams == null) {
-      showAlert(
-          context, R.strings.errorLoginFail, R.strings.errorLoginFail, null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: R.strings.errorLoginFail,
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else if (loginParams['error'] != null) {
-      showAlert(context, R.strings.errorLoginFail, loginParams['error'], null);
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: loginParams['error'],
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () => pop(context),
+      );
     } else {
       _signUp(context, channel, loginParams);
     }

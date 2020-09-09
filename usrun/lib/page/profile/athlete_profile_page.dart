@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
-import 'package:usrun/widget/event_badge_list.dart';
-import 'package:usrun/widget/event_list.dart';
-import 'package:usrun/widget/follower_following_list.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
+import 'package:usrun/widget/event_badge_list/event_badge_list.dart';
+import 'package:usrun/widget/event_list/event_list.dart';
+import 'package:usrun/widget/follower_following_list/follower_following_list.dart';
 import 'package:usrun/widget/loading_dot.dart';
-import 'package:usrun/widget/photo_list.dart';
-import 'package:usrun/widget/stats_section.dart';
-import 'package:usrun/widget/team_list.dart';
-import 'package:usrun/widget/team_plan_list.dart';
+import 'package:usrun/widget/photo_list/photo_list.dart';
+import 'package:usrun/widget/stats_section/stats_section.dart';
+import 'package:usrun/widget/team_list/team_list.dart';
 import 'package:usrun/widget/ui_button.dart';
 
 // Demo data
-import 'package:usrun/page/profile/demo_data.dart';
+import 'package:usrun/demo_data.dart';
 
 class AthleteProfilePage extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   bool _enableProfileDescription;
   bool _enableFFButton;
   bool _isFollowingButton;
-  bool _isKM;
+  RunningUnit _runningUnit;
   int _activityNumber;
   List _activityTimelineList;
   int _followingNumber;
@@ -48,7 +51,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     _enableProfileDescription = true;
     _enableFFButton = true;
     _isFollowingButton = false;
-    _isKM = true;
+    _runningUnit = DataManager.getUserRunningUnit();
     _activityNumber = DemoData().activityTimelineList.length;
     _activityTimelineList = DemoData().activityTimelineList;
     _followingNumber = DemoData().ffItemList.length;
@@ -59,53 +62,60 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   }
 
   void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
+    Future.delayed(Duration(milliseconds: 1000), () {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = !_isLoading;
+      });
     });
   }
 
   void _changeUserCodeState() {
+    if (!mounted) return;
     setState(() {
       _enableUserCode = !_enableUserCode;
     });
   }
 
   void _changeProfileDescriptionState() {
+    if (!mounted) return;
     setState(() {
       _enableProfileDescription = !_enableProfileDescription;
     });
   }
 
   void _changeFFButtonState() {
+    if (!mounted) return;
     setState(() {
       _enableFFButton = !_enableFFButton;
     });
   }
 
   void _changeFFButtonType() {
+    if (!mounted) return;
     setState(() {
       _isFollowingButton = !_isFollowingButton;
     });
   }
 
-  void _pressProfileFunction(userCode) {
+  void _pressProfileFunction(data) {
     // TODO: Implement function here
-    print("[FFWidget] Direct to this athlete profile with user code $userCode");
+    print("[FFWidget] Direct to this athlete profile with data $data");
   }
 
-  void _pressEventItemFunction(eventID) {
+  void _pressEventItemFunction(data) {
     // TODO: Implement function here
-    print("[EventWidget] Press event with id $eventID");
+    print("[EventWidget] Press event with data $data");
   }
 
-  void _pressTeamItemFunction(teamID) {
+  void _pressTeamItemFunction(data) {
     // TODO: Implement function here
-    print("[TeamWidget] Press team with id $teamID");
+    print("[TeamWidget] Press team with data $data");
   }
 
-  void _pressTeamPlanItemFunction(planID) {
+  void _pressTeamPlanItemFunction(data) {
     // TODO: Implement function here
-    print("[TeamPlanWidget] Press team plan with id $planID");
+    print("[TeamPlanWidget] Press team plan with data $data");
   }
 
   void _pressFFButton(String userCode) {
@@ -144,16 +154,16 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     });
   }
 
-  _changeKM() {
-    // TODO: Implement function here
-    setState(() {
-      _isKM = !_isKM;
-    });
-  }
+//  _changeKM() {
+//    // TODO: Implement function here
+//    setState(() {
+//      _isKM = !_isKM;
+//    });
+//  }
 
-  void _pressEventBadge(eventID) {
+  void _pressEventBadge(data) {
     // TODO: Implement function here
-    print("[EventBadgesWidget] This is pressed by event id $eventID");
+    print("[EventBadgesWidget] This is pressed with data $data");
   }
 
   void _pressActivityFunction(actID) {
@@ -191,24 +201,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.athleteProfile,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.athleteProfile),
       body: (_isLoading
-          ? LoadingDotStyle02()
+          ? LoadingIndicator()
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
@@ -304,10 +299,11 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     (_enableFFButton
                         ? Center(
                             child: UIButton(
-                              text:
-                                  (_isFollowingButton ? "Unfollow" : "Follow"),
+                              text: (_isFollowingButton
+                                  ? R.strings.unFollow
+                                  : R.strings.follow),
                               textColor: (_isFollowingButton
-                                  ? R.colors.unfollowButtonColor
+                                  ? R.colors.grayButtonColor
                                   : R.colors.majorOrange),
                               textSize: R.appRatio.appFontSize12,
                               radius: 0,
@@ -317,7 +313,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                               border: Border.all(
                                 width: 1,
                                 color: (_isFollowingButton
-                                    ? R.colors.unfollowButtonColor
+                                    ? R.colors.grayButtonColor
                                     : R.colors.majorOrange),
                               ),
                               onTap: () {
@@ -334,10 +330,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Event Badges
                     EventBadgeList(
                       items: DemoData().eventBadgeList,
-                      labelTitle: "Event Badges",
-                      enableLabelShadow: true,
+                      labelTitle: R.strings.athleteBadges,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressEventBadge,
+                      pressItemFunction: _pressEventBadge,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
@@ -345,8 +340,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Photo
                     PhotoList(
                       items: DemoData().photoItemList,
-                      labelTitle: "Photos",
-                      enableLabelShadow: true,
+                      labelTitle: R.strings.athletePhotos,
                       enableScrollBackgroundColor: true,
                     ),
                     SizedBox(
@@ -356,9 +350,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     FollowerFollowingList(
                       items: DemoData().ffItemList,
                       enableFFButton: false,
-                      labelTitle: "Athlete's Following",
-                      enableLabelShadow: true,
-                      subTitle: "$_followingNumber ATHLETE IS BEING FOLLOWED",
+                      labelTitle: R.strings.athleteFollowing,
+                      subTitle: "$_followingNumber " +
+                          R.strings.athleteFollowingNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: true,
@@ -371,9 +365,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     FollowerFollowingList(
                       items: DemoData().ffItemList,
                       enableFFButton: false,
-                      labelTitle: "Athlete's Followers",
-                      enableLabelShadow: true,
-                      subTitle: "$_followerNumber FOLLOWERS OF THIS ATHLETE",
+                      labelTitle: R.strings.athleteFollowers,
+                      subTitle: "$_followerNumber " +
+                          R.strings.athleteFollowersNotice,
                       enableSubtitleShadow: true,
                       enableScrollBackgroundColor: true,
                       isFollowingList: false,
@@ -384,11 +378,10 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     ),
                     // Events
                     EventList(
-                      items: DemoData().eventList,
-                      labelTitle: "Athlete's Events",
-                      enableLabelShadow: true,
+                      items: EventManager.userEvents,
+                      labelTitle: R.strings.athleteEvents,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressEventItemFunction,
+                      pressItemFunction: _pressEventItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
@@ -396,25 +389,28 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     // Teams
                     TeamList(
                       items: DemoData().teamList,
-                      labelTitle: "Athlete's Teams",
-                      enableLabelShadow: true,
+                      labelTitle: R.strings.athleteTeams,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressTeamItemFunction,
+                      pressItemFunction: _pressTeamItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
                     ),
                     // Team plans
+                    /*
+                    =======
+                    UNUSED
+                    =======
                     TeamPlanList(
                       items: DemoData().teamPlanList,
-                      labelTitle: "Athlete's Team Plans",
-                      enableLabelShadow: true,
+                      labelTitle: R.strings.athleteTeamPlans,
                       enableScrollBackgroundColor: true,
-                      pressItemFuction: _pressTeamPlanItemFunction,
+                      pressItemFunction: _pressTeamPlanItemFunction,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing20,
                     ),
+                    */
                     // Statistics in this year
                     Container(
                       padding: EdgeInsets.only(
@@ -422,8 +418,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       ),
                       child: StatsSection(
                         items: DemoData().statsListStyle01,
-                        labelTitle: "Athlete's Stats In This Year",
-                        enableLabelShadow: true,
+                        labelTitle: R.strings.athleteStatsInCurrentYear,
                       ),
                     ),
                     SizedBox(
@@ -437,8 +432,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       ),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Athlete's Activities: $_activityNumber",
-                        style: R.styles.shadowLabelStyle,
+                        R.strings.athleteActivities + ": $_activityNumber",
+                        style: R.styles.labelStyle,
                       ),
                     ),
                     ListView.builder(
@@ -454,10 +449,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                           dateTime: item['dateTime'],
                           title: item['title'],
                           calories: item['calories'],
-                          distance: (_isKM
-                              ? item['distance']
-                              : item['distance'] * 1000),
-                          isKM: _isKM,
+                          distance: switchDistanceUnit(item['distance']),
+                          runningUnit: _runningUnit,
                           elevation: item['elevation'],
                           pace: item['pace'],
                           time: item['time'],
@@ -481,8 +474,9 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

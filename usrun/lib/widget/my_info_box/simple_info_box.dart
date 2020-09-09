@@ -24,86 +24,96 @@ class SimpleInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (this.pressBox != null) {
-          this.pressBox(this.id);
-        }
-      },
-      child: Center(
-        child: Container(
-          width: this.boxWidth,
-          height: this.boxHeight,
-          decoration: BoxDecoration(
-            color: R.colors.boxBackground,
-            borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 4.0,
-                offset: Offset(2.0, 2.0),
-                color: R.colors.textShadow,
-              ),
-            ],
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: R.colors.boxBackground,
+        borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 4.0,
+            offset: Offset(2.0, 2.0),
+            color: R.colors.textShadow,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    (dataTitle.length != 0
-                        ? Text(
+        ],
+      ),
+      width: this.boxWidth,
+      height: this.boxHeight,
+      child: FlatButton(
+        onPressed: callbackFunc,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(this.boxRadius),
+          ),
+        ),
+        padding: EdgeInsets.all(0),
+        splashColor: R.colors.lightBlurMajorOrange,
+        textColor: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  (dataTitle.length != 0
+                      ? FittedBox(
+                          child: Text(
                             dataTitle.toUpperCase(),
                             textAlign: (unitTitle.length != 0
                                 ? TextAlign.right
                                 : TextAlign.center),
                             style: TextStyle(
-                              fontSize: R.appRatio.appFontSize22,
+                              fontSize: R.appRatio.appFontSize20,
                               color: R.colors.majorOrange,
                               fontWeight: FontWeight.bold,
                             ),
-                          )
-                        : Container()),
-                    (unitTitle.length != 0
-                        ? Padding(
-                            padding: EdgeInsets.only(bottom: 2.5),
-                            child: Text(
-                              unitTitle.toLowerCase(),
-                              textAlign: (dataTitle.length != 0
-                                  ? TextAlign.left
-                                  : TextAlign.center),
-                              style: TextStyle(
-                                fontSize: R.appRatio.appFontSize12,
-                                color: R.colors.majorOrange,
-                              ),
+                          ),
+                        )
+                      : Container()),
+                  (unitTitle.length != 0
+                      ? Padding(
+                          padding: EdgeInsets.only(bottom: 0.5),
+                          child: Text(
+                            unitTitle.toLowerCase(),
+                            textAlign: (dataTitle.length != 0
+                                ? TextAlign.left
+                                : TextAlign.center),
+                            style: TextStyle(
+                              fontSize: R.appRatio.appFontSize12,
+                              color: R.colors.majorOrange,
                             ),
-                          )
-                        : Container())
-                  ],
-                ),
+                          ),
+                        )
+                      : Container())
+                ],
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing5,
-              ),
-              (subTitle.length != 0
-                  ? FittedBox(
-                      child: Text(
-                        subTitle.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: R.appRatio.appFontSize12,
-                          color: R.colors.contentText,
-                          fontWeight: FontWeight.bold,
-                        ),
+            ),
+            SizedBox(
+              height: R.appRatio.appSpacing5,
+            ),
+            (subTitle.length != 0
+                ? FittedBox(
+                    child: Text(
+                      subTitle.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: R.appRatio.appFontSize12,
+                        color: R.colors.contentText,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                  : Container()),
-            ],
-          ),
+                    ),
+                  )
+                : Container()),
+          ],
         ),
       ),
     );

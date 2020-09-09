@@ -9,9 +9,12 @@ class NormalInfoBox extends StatelessWidget {
   final Function pressBox;
   final double boxSize;
   final double boxRadius;
-  final bool beAlwaysBlackShadow;
+  final bool disableGradientLine;
+  final bool disableBoxShadow;
+  final BoxShadow boxShadow;
+  final Border border;
 
-  static double _gradientLineHeight = R.appRatio.appHeight10;
+  final double _gradientLineHeight = R.appRatio.appHeight10;
 
   NormalInfoBox({
     @required this.id,
@@ -21,53 +24,64 @@ class NormalInfoBox extends StatelessWidget {
     this.pressBox(id),
     this.boxSize = 100,
     this.boxRadius = 10,
-    this.beAlwaysBlackShadow = false,
-  });
+    this.disableGradientLine = false,
+    this.disableBoxShadow = true,
+    BoxShadow boxShadow,
+    this.border,
+  }) : boxShadow = boxShadow ?? R.styles.boxShadowAll;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (this.pressBox != null) {
-          this.pressBox(this.id);
-        }
-      },
-      child: Center(
-        child: Container(
-          width: this.boxSize,
-          height: this.boxSize,
-          decoration: BoxDecoration(
-            color: R.colors.boxBackground,
-            borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 5.0,
-                offset: Offset(0.0, 0.0),
-                color: (this.beAlwaysBlackShadow
-                    ? Color.fromRGBO(0, 0, 0, 0.25)
-                    : R.colors.textShadow),
-              ),
-            ],
+    Function callbackFunc;
+    if (this.pressBox != null) {
+      callbackFunc = () => this.pressBox(this.id);
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: R.colors.boxBackground,
+        borderRadius: BorderRadius.all(
+          Radius.circular(this.boxRadius),
+        ),
+        border: this.border,
+        boxShadow: (disableBoxShadow ? null : [boxShadow]),
+      ),
+      child: FlatButton(
+        onPressed: callbackFunc,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(this.boxRadius),
           ),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: <Widget>[
-              Container(
-                height: _gradientLineHeight,
-                decoration: BoxDecoration(
-                  gradient: R.colors.uiGradient,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(this.boxRadius),
-                    bottomRight: Radius.circular(this.boxRadius),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: _gradientLineHeight,
-                ),
-                child: Container(
+        ),
+        padding: EdgeInsets.all(0),
+        splashColor: R.colors.lightBlurMajorOrange,
+        textColor: Colors.white,
+        child: Center(
+          child: Container(
+            width: this.boxSize,
+            height: this.boxSize,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                (!disableGradientLine
+                    ? Container(
+                        height: _gradientLineHeight,
+                        decoration: BoxDecoration(
+                          gradient: R.colors.uiGradient,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(this.boxRadius),
+                            bottomRight: Radius.circular(this.boxRadius),
+                          ),
+                        ),
+                      )
+                    : Container()),
+                Container(
                   height: this.boxSize,
+                  padding: EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                    bottom: (!disableGradientLine ? _gradientLineHeight : 0),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,27 +93,30 @@ class NormalInfoBox extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
-                                color: R.colors.contentText,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText.withOpacity(0.5),
                               ),
                             )
                           : Container()),
                       SizedBox(
-                        height: R.appRatio.appSpacing5,
+                        height: R.appRatio.appSpacing5 + 1,
                       ),
                       (dataLine.length != 0
-                          ? Text(
-                              dataLine.toUpperCase(),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: R.appRatio.appFontSize22,
-                                color: R.colors.contentText,
-                                fontWeight: FontWeight.bold,
+                          ? FittedBox(
+                              child: Text(
+                                dataLine.toUpperCase(),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: R.appRatio.appFontSize20,
+                                  fontWeight: FontWeight.bold,
+                                  color: R.colors.contentText,
+                                ),
                               ),
                             )
                           : Container()),
                       SizedBox(
-                        height: R.appRatio.appSpacing5,
+                        height: R.appRatio.appSpacing5 + 3,
                       ),
                       (secondTitleLine.length != 0
                           ? Text(
@@ -109,15 +126,16 @@ class NormalInfoBox extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
-                                color: R.colors.contentText,
+                                fontWeight: FontWeight.w500,
+                                color: R.colors.contentText.withOpacity(0.5),
                               ),
                             )
                           : Container()),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,37 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/ui_button.dart';
 import 'package:usrun/widget/input_field.dart';
+import 'package:usrun/util/validator.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _emailNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.resetPassword,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.resetPassword),
       body: Container(
         padding: EdgeInsets.only(
           left: R.appRatio.appSpacing15,
@@ -44,7 +33,7 @@ class ResetPasswordPage extends StatelessWidget {
               height: R.appRatio.appSpacing20,
             ),
             Text(
-              'Enter your email address which was used for registering account, and we will send you a reset password to this email.',
+              R.strings.resetPasswordNotice,
               style: TextStyle(
                 color: R.colors.majorOrange,
                 fontSize: R.appRatio.appFontSize18,
@@ -56,23 +45,65 @@ class ResetPasswordPage extends StatelessWidget {
               height: R.appRatio.appSpacing30,
             ),
             InputField(
+              focusNode: _emailNode,
               controller: _emailController,
               enableFullWidth: true,
-              hintText: "Email",
+              hintText: R.strings.email,
+              autoFocus: true,
             ),
             SizedBox(
               height: R.appRatio.appSpacing40,
             ),
             UIButton(
                 width: R.appRatio.appWidth381,
-                height: R.appRatio.appHeight60,
+                height: R.appRatio.appHeight50,
                 gradient: R.colors.uiGradient,
-                text: 'Reset',
-                textSize: R.appRatio.appFontSize22,
-                // TODO: Function for resetting password
-                onTap: () {
+                text: R.strings.reset,
+                textSize: R.appRatio.appFontSize18,
+                boxShadow: R.styles.boxShadowB,
+                onTap: () async {
+                  String email = _emailController.text.trim();
+                  if(checkStringNullOrEmpty(email) || !validateEmail(email)){
+                    await showCustomAlertDialog(
+                      context,
+                      title: R.strings.error,
+                      content: "Please input a valid email.",
+                      firstButtonText: R.strings.ok,
+                      firstButtonFunction: () {
+                        pop(context);
+                      },
+                    );
+
+                    return;
+                  }
+
                   FocusScope.of(context).requestFocus(new FocusNode());
-                  //_yourFunction('yourParameter'),
+
+                  Response<dynamic> response = await UserManager.resetPassword(
+                      _emailController.text.trim());
+                  if (response.success && response.errorCode == -1) {
+                    //success
+                    await showCustomAlertDialog(
+                      context,
+                      title: R.strings.notice,
+                      content: R.strings.resetPasswordSuccessful,
+                      firstButtonText: R.strings.ok,
+                      firstButtonFunction: () {
+                        pop(context);
+                      },
+                    );
+                  } else {
+                    // fail
+                    await showCustomAlertDialog(
+                      context,
+                      title: R.strings.error,
+                      content: response.errorMessage,
+                      firstButtonText: R.strings.ok,
+                      firstButtonFunction: () {
+                        pop(context);
+                      },
+                    );
+                  }
                 }),
           ],
         ),

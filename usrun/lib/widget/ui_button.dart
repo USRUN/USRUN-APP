@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:usrun/core/R.dart';
 
 class UIButton extends StatelessWidget {
   final double width;
   final double height;
   final double radius;
-  final GestureTapCallback onTap;
+  final Function onTap;
   final Gradient gradient;
   final Color color;
   final String text;
@@ -39,44 +38,56 @@ class UIButton extends StatelessWidget {
     Gradient gr;
     Color cl;
     if (this.enable) {
-      gr = this.gradient;
       cl = this.color;
+      gr = this.gradient;
     } else {
       gr = null;
-      cl = Color(0xff515151);
+      cl = Color(0xFFABABAB);
     }
 
-    return GestureDetector(
-      child: Container(
-        width: this.width,
-        height: height,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(this.radius)),
-          border: this.border,
-          gradient: gr,
-          color: cl,
-          boxShadow: (this.enableShadow
-              ? [
-                  (this.boxShadow == null
-                      ? BoxShadow(
-                          blurRadius: 4.0,
-                          offset: Offset(1.0, 1.0),
-                          color: R.colors.btnShadow,
-                        )
-                      : this.boxShadow),
-                ]
-              : null),
+    return Container(
+      width: this.width,
+      height: this.height,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: cl,
+        gradient: gr,
+        borderRadius: BorderRadius.circular(this.radius),
+        border: this.border,
+        boxShadow: (this.enableShadow
+            ? [
+                this.boxShadow ??
+                    BoxShadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 2.0,
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
+                    )
+              ]
+            : null),
+      ),
+      child: FlatButton(
+        onPressed: (this.enable && this.onTap != null) ? this.onTap : () {},
+        splashColor: Color.fromRGBO(0, 0, 0, 0.1),
+        padding: EdgeInsets.all(0.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(this.radius),
         ),
-        child: Text(text,
+        textColor: Colors.white,
+        color: Colors.transparent,
+        child: Center(
+          child: Text(
+            text,
             overflow: TextOverflow.ellipsis,
+            textScaleFactor: 1.0,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: this.textSize,
-                color: this.textColor,
-                fontWeight: this.fontWeight)),
+              fontSize: this.textSize,
+              color: this.textColor,
+              fontWeight: this.fontWeight,
+            ),
+          ),
+        ),
       ),
-      onTap: (this.enable && this.onTap != null) ? this.onTap : null,
     );
   }
 }

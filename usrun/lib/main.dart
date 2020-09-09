@@ -1,60 +1,61 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/page/welcome/select_language.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
+import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
-import 'main.reflectable.dart';
 import 'package:flutter/services.dart';
+import 'package:usrun/util/lifecycle_handler.dart';
+import 'main.reflectable.dart';
+
+GlobalKey<_UsRunAppState> _appGlobalKey = GlobalKey();
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final String _appName = "USRUN";
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   ErrorWidget.builder = (FlutterErrorDetails details) => Container();
   initializeReflectable();
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((res) {
     runApp(UsRunApp());
   });
 }
 
-GlobalKey<_UsRunAppState> _appGlobalkey = GlobalKey();
-bool _needInit = true;
-
 class UsRunApp extends StatefulWidget {
-  final Widget child;
-  UsRunApp({this.child}) : super(key: _appGlobalkey);
+  UsRunApp() : super(key: _appGlobalKey);
 
   static restartApp(int errorCode) async {
-    if (errorCode == 0) {
-      _restart();
-    } else {
-      if (errorCode == ACCESS_DENY) {
-        //await UserManager.logout();
-        //_resetUserConnectCheck();
+    switch (errorCode) {
+      case 0:
         _restart();
         return;
-      }
-
-      //update deviceToken to ""
-      Map<String, String> newData = {
-        'deviceToken': "",
-        'os': getPlatform().toString()
-      };
-      //Response response = await UserManager.updateProfile(newData);
-
-      // if (response.success) {
-      //   await UserManager.logout();
-      //   _resetUserConnectCheck();
-      //   _restart();
-      // } else {
-      //   showAlert(_appGlobalKey.currentState.context, R.strings.errorTitle, R.strings.errorLogoutFail, null);
-      // }
+      case LOGOUT_CODE:
+        await UserManager.logout();
+        _restart();
+        return;
+      case ACCESS_DENY:
+        await UserManager.logout();
+        _restart();
+        return;
+      case MAINTENANCE:
+        _restart();
+        return;
+      case FORCE_UPDATE:
+        await UserManager.logout();
+        _restart();
+        return;
+      default:
+        return;
     }
   }
 
   static _restart() {
-    _needInit = true;
-    _appGlobalkey.currentState.restart();
+    _appGlobalKey.currentState.restart();
   }
 
   @override
@@ -62,19 +63,26 @@ class UsRunApp extends StatefulWidget {
 }
 
 class _UsRunAppState extends State<UsRunApp> {
-  Key key = new UniqueKey();
-
   void restart() {
     setState(() {
-      key = new UniqueKey();
+      navigatorKey = GlobalKey<NavigatorState>();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'USRUN',
-      key: key,
+      navigatorKey: navigatorKey,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'), // English
+        const Locale('vi'), // Vietnamese
+      ],
+      title: _appName,
       theme: ThemeData(
         primaryColor: Color(0xFFFD632C),
       ),
@@ -90,21 +98,47 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<StatefulWidget> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initPage());
+  }
+
+  Future<void> _initPage() async {
+    await initializeConfigs(context);
+
+    if (hasSelectedLanguageFirstTime()) {
+      await loadCurrentLanguage();
+    }
+
+    openStartPage();
+  }
+
+  void openStartPage() async {
+    if (hasSelectedLanguageFirstTime()) {
+//      WidgetsBinding.instance.addObserver(
+//          NetworkObserver(context: navigatorKey.currentState.overlay.context));
+
+      if (UserManager.currentUser.userId == null) {
+        showPage(context, WelcomePage());
+      } else {
+        showPage(context, AppPage());
+      }
+    } else {
+      UserManager.logout();
+      showPage(context, SelectLanguagePage());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _initApp();
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       body: Center(
         child: Image.asset(
           R.images.logoText,
-          width: 200,
+          width: 180,
         ),
       ),
     );
-  }
-
-  Future<void> _initApp() {
-    return Future.delayed(
-            Duration(milliseconds: 2000), () => initialize(context)) // Raw: 2000ms
-        .then((_) => showPage(context, WelcomePage())); // Raw: WelcomePage()
   }
 }

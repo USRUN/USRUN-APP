@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
-import 'package:usrun/model/week_date_time.dart';
+import 'package:usrun/page/profile/week_date_time.dart';
 
 class MyWeekList extends StatefulWidget {
   final WeekDateTime selectedWeek;
@@ -34,7 +34,8 @@ class _MyWeekListState extends State<MyWeekList> {
 
   @override
   void initState() {
-    _posWeekInList = widget.selectedWeek.getCurrentWeekOrder() - 1;
+    _posWeekInList =
+        WeekDateTime.getWeekOrder(widget.selectedWeek.getFromDateValue());
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _scrollToActiveItemInList());
@@ -47,6 +48,7 @@ class _MyWeekListState extends State<MyWeekList> {
   }
 
   void _updatePosWeekInList(index) {
+    if (!mounted) return;
     setState(() {
       _posWeekInList = index;
     });
@@ -67,7 +69,7 @@ class _MyWeekListState extends State<MyWeekList> {
     return ScrollablePositionedList.builder(
       itemCount: widget.weekList.length,
       itemScrollController: _weekScrollController,
-      itemBuilder: (BuildContext ctxt, int index) {
+      itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
             if (!_isSuitableWeekRange(widget.weekList[index])) return;
@@ -91,8 +93,8 @@ class _MyWeekListState extends State<MyWeekList> {
                 color: (_isSuitableWeekRange(widget.weekList[index])
                     ? (_posWeekInList == index
                         ? R.colors.majorOrange
-                        : Colors.black)
-                    : R.colors.grayABABAB),
+                        : R.colors.contentText)
+                    : R.colors.gray808080),
               ),
             ),
           ),

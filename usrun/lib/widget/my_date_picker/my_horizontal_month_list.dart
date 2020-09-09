@@ -73,25 +73,27 @@ class _MyHorizontalMonthListState extends State<MyHorizontalMonthList> {
   Widget _renderHorizontalMonthList() {
     return Container(
       height: R.appRatio.appHeight50,
-      padding: EdgeInsets.only(
-        left: R.appRatio.appSpacing15,
-        right: R.appRatio.appSpacing15,
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // Decrease month
-          GestureDetector(
-            onTap: _decreaseMonth,
-            child: Icon(
-              Icons.chevron_left,
-              color: (widget.selectedDate.month == 1 ||
-                      (widget.selectedDate.month == widget.firstDate.month &&
-                          widget.selectedDate.year == widget.firstDate.year)
-                  ? R.colors.grayABABAB
-                  : Colors.black),
-              size: R.appRatio.appIconSize25,
+          SizedBox(
+            width: R.appRatio.appWidth40,
+            child: FlatButton(
+              textColor: Colors.white,
+              splashColor: R.colors.lightBlurMajorOrange,
+              padding: EdgeInsets.all(0),
+              onPressed: _decreaseMonth,
+              child: Icon(
+                Icons.chevron_left,
+                color: (widget.selectedDate.month == 1 ||
+                        (widget.selectedDate.month == widget.firstDate.month &&
+                            widget.selectedDate.year == widget.firstDate.year)
+                    ? R.colors.gray808080
+                    : R.colors.contentText),
+                size: R.appRatio.appIconSize25,
+              ),
             ),
           ),
           // Month content
@@ -103,16 +105,22 @@ class _MyHorizontalMonthListState extends State<MyHorizontalMonthList> {
             ),
           ),
           // Increase month
-          GestureDetector(
-            onTap: _increaseMonth,
-            child: Icon(
-              Icons.chevron_right,
-              color: (widget.selectedDate.month == 12 ||
-                      (widget.selectedDate.month == widget.lastDate.month &&
-                          widget.selectedDate.year == widget.lastDate.year)
-                  ? R.colors.grayABABAB
-                  : Colors.black),
-              size: R.appRatio.appIconSize25,
+          SizedBox(
+            width: R.appRatio.appWidth40,
+            child: FlatButton(
+              textColor: Colors.white,
+              splashColor: R.colors.lightBlurMajorOrange,
+              padding: EdgeInsets.all(0),
+              onPressed: _increaseMonth,
+              child: Icon(
+                Icons.chevron_right,
+                color: (widget.selectedDate.month == 12 ||
+                        (widget.selectedDate.month == widget.lastDate.month &&
+                            widget.selectedDate.year == widget.lastDate.year)
+                    ? R.colors.gray808080
+                    : R.colors.contentText),
+                size: R.appRatio.appIconSize25,
+              ),
             ),
           ),
         ],

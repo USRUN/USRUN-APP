@@ -1,12 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/ui_button.dart';
-import 'package:usrun/widget/lite_rolling_switch.dart';
+
+import 'lite_rolling_switch/big_lite_rolling_switch.dart';
 
 class LineButton extends StatelessWidget {
   final String mainText;
   final double mainTextFontSize;
   final String subText;
+  final TextStyle mainTextStyle;
   final double subTextFontSize;
   final String resultText;
   final double resultTextFontSize;
@@ -15,20 +18,23 @@ class LineButton extends StatelessWidget {
   final String suffixIconImageURL;
   final double suffixIconSize;
   final Function lineFunction;
+  final EdgeInsets textPadding;
+  final bool enableSplashColor;
 
   final bool enableBottomUnderline;
   final bool enableTopUnderline;
-  final double spacingUnderlineAndMainText;
 
   final bool enableSwitchButton;
   final String switchButtonOnTitle;
   final String switchButtonOffTitle;
-  final bool switchStatus;
+  final bool initSwitchStatus;
   final Function switchFunction;
 
   final bool enableBoxButton;
   final String boxButtonTitle;
-  final Function boxButtonFuction;
+  final Function boxButtonFunction;
+
+  static bool _privateSwitchStatus = false;
 
   /*
     + The priority of enabling suffix things (Highest to Lowest)
@@ -46,6 +52,7 @@ class LineButton extends StatelessWidget {
     @required this.mainText,
     this.mainTextFontSize = 14,
     this.subText = "",
+    this.mainTextStyle,
     this.subTextFontSize = 12,
     this.resultText = "",
     this.resultTextFontSize = 12,
@@ -54,62 +61,59 @@ class LineButton extends StatelessWidget {
     this.suffixIconImageURL = "",
     this.suffixIconSize = 12,
     this.lineFunction,
+    this.textPadding = const EdgeInsets.all(0.0),
+    this.enableSplashColor = true,
     this.enableBottomUnderline = false,
     this.enableTopUnderline = false,
-    this.spacingUnderlineAndMainText = 3,
     this.enableSwitchButton = false,
     this.switchButtonOnTitle = "",
     this.switchButtonOffTitle = "",
-    this.switchStatus = false,
+    this.initSwitchStatus = false,
     this.switchFunction(state),
     this.enableBoxButton = false,
     this.boxButtonTitle = "",
-    this.boxButtonFuction,
+    this.boxButtonFunction,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (this.enableSuffixIcon == true && this.lineFunction != null) {
-          this.lineFunction();
-        } else {
-          if (this.enableSuffixIcon == false &&
-              this.enableSwitchButton == false &&
-              this.enableBoxButton == false &&
-              this.lineFunction != null) {
+    return Container(
+      width: R.appRatio.deviceWidth,
+      color: R.colors.appBackground,
+      child: FlatButton(
+        onPressed: () {
+          if (this.enableSuffixIcon == true && this.lineFunction != null) {
             this.lineFunction();
+          } else {
+            if (this.enableSuffixIcon == false &&
+                this.enableSwitchButton == false &&
+                this.enableBoxButton == false &&
+                this.lineFunction != null) {
+              this.lineFunction();
+            }
           }
-        }
-      },
-      child: Container(
-        width: R.appRatio.deviceWidth,
-        color: R.colors.appBackground,
+        },
+        padding: EdgeInsets.all(0),
+        textColor: (enableSplashColor ? Colors.white : Colors.transparent),
+        splashColor: (enableSplashColor
+            ? R.colors.lightBlurMajorOrange
+            : Colors.transparent),
+        highlightColor: (enableSplashColor ? null : Colors.transparent),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Top underline
             (this.enableTopUnderline
-                ? Container(
+                ? Divider(
                     height: 1,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: R.colors.blurMajorOrange,
-                      ),
-                    ),
+                    color: R.colors.blurMajorOrange,
+                    thickness: 1,
                   )
                 : Container()),
             // Content (Text & Suffix things)
             Container(
-              padding: EdgeInsets.only(
-                left: R.appRatio.appSpacing15,
-                top: (this.enableTopUnderline ? R.appRatio.appSpacing15 : 0),
-                right: R.appRatio.appSpacing15,
-                bottom:
-                    (this.enableBottomUnderline ? R.appRatio.appSpacing15 : 0),
-              ),
+              margin: this.textPadding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,9 +131,13 @@ class LineButton extends StatelessWidget {
                                 ? null
                                 : TextOverflow.ellipsis),
                             maxLines: (this.enableTextMaxLines ? null : 1),
-                            style: TextStyle(
-                                fontSize: this.mainTextFontSize,
-                                color: R.colors.contentText),
+                            style: this.mainTextStyle == null
+                                ? TextStyle(
+                                    fontSize: this.mainTextFontSize,
+                                    fontWeight: FontWeight.normal,
+                                    color: R.colors.contentText,
+                                  )
+                                : this.mainTextStyle,
                           ),
                           (this.subText.length != 0
                               ? Container(
@@ -145,8 +153,10 @@ class LineButton extends StatelessWidget {
                                     maxLines:
                                         (this.enableTextMaxLines ? null : 1),
                                     style: TextStyle(
-                                        fontSize: this.subTextFontSize,
-                                        color: R.colors.normalNoteText),
+                                      fontSize: this.subTextFontSize,
+                                      fontWeight: FontWeight.normal,
+                                      color: R.colors.normalNoteText,
+                                    ),
                                   ),
                                 )
                               : Container()),
@@ -164,8 +174,10 @@ class LineButton extends StatelessWidget {
                                     maxLines:
                                         (this.enableTextMaxLines ? null : 1),
                                     style: TextStyle(
-                                        fontSize: this.resultTextFontSize,
-                                        color: R.colors.orangeNoteText),
+                                      fontSize: this.resultTextFontSize,
+                                      fontWeight: FontWeight.normal,
+                                      color: R.colors.orangeNoteText,
+                                    ),
                                   ),
                                 )
                               : Container()),
@@ -190,8 +202,8 @@ class LineButton extends StatelessWidget {
                               padding: EdgeInsets.only(
                                 left: R.appRatio.appSpacing15,
                               ),
-                              child: LiteRollingSwitch(
-                                value: this.switchStatus,
+                              child: BigLiteRollingSwitch(
+                                value: this.initSwitchStatus,
                                 textOn: this.switchButtonOnTitle,
                                 textOff: this.switchButtonOffTitle,
                                 colorOn: R.colors.majorOrange,
@@ -199,10 +211,13 @@ class LineButton extends StatelessWidget {
                                 iconOn: Icons.check_circle_outline,
                                 iconOff: Icons.remove_circle_outline,
                                 textSize: R.appRatio.appFontSize14,
-                                onChanged: (bool state) {
+                                onTap: () {
                                   if (this.switchFunction != null) {
-                                    this.switchFunction(state);
+                                    this.switchFunction(_privateSwitchStatus);
                                   }
+                                },
+                                onChanged: (bool state) {
+                                  _privateSwitchStatus = state;
                                 },
                               ))
                           : (this.enableBoxButton
@@ -212,8 +227,8 @@ class LineButton extends StatelessWidget {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      if (this.boxButtonFuction != null) {
-                                        this.boxButtonFuction();
+                                      if (this.boxButtonFunction != null) {
+                                        this.boxButtonFunction();
                                       }
                                     },
                                     child: UIButton(
@@ -229,7 +244,7 @@ class LineButton extends StatelessWidget {
                                         width: 1,
                                       ),
                                       text: this.boxButtonTitle,
-                                      onTap: this.boxButtonFuction,
+                                      onTap: this.boxButtonFunction,
                                     ),
                                   ),
                                 )
@@ -239,14 +254,10 @@ class LineButton extends StatelessWidget {
             ),
             // Bottom underline
             (this.enableBottomUnderline
-                ? Container(
+                ? Divider(
                     height: 1,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: R.colors.blurMajorOrange,
-                      ),
-                    ),
+                    color: R.colors.blurMajorOrange,
+                    thickness: 1,
                   )
                 : Container()),
           ],

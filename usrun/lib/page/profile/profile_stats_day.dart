@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/widget/my_info_box/complex_info_box.dart';
-import 'package:usrun/widget/loading_dot.dart';
-
-// Demo data
-import 'package:usrun/page/profile/demo_data.dart';
 
 class ProfileStatsDay extends StatefulWidget {
-  final DateTime day;
+  final DateTime dateTime;
+  final List items;
 
   ProfileStatsDay({
-    @required this.day,
+    @required this.dateTime,
+    @required this.items,
   });
 
   @override
@@ -18,9 +16,6 @@ class ProfileStatsDay extends StatefulWidget {
 }
 
 class _ProfileStatsDayState extends State<ProfileStatsDay> {
-  bool _isLoading;
-  List _items;
-
   /*
     + Structure of the "items" variable: 
     [
@@ -40,20 +35,6 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
     ]
   */
 
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    _items = DemoData().statsListStyle02;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
-  }
-
-  void _updateLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
-
   void _pressBox(boxID) {
     // TODO: Implement function here
     print("[ComplexBoxWidget] This box with id $boxID is pressed");
@@ -61,20 +42,18 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
 
   @override
   Widget build(BuildContext context) {
-    return (_isLoading
-        ? LoadingDotStyle02()
-        : (this._isEmptyList()
+    return (this._isEmptyList()
             ? this._buildEmptyList() // Empty item list
             : this._buildList() // Render item list
-        ));
+        );
   }
 
   bool _isEmptyList() {
-    return ((_items == null || _items.length == 0) ? true : false);
+    return ((widget.items == null || widget.items.length == 0) ? true : false);
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = "Nothing to show";
+    String systemNoti = R.strings.nothingToShow;
 
     return Center(
       child: Text(
@@ -95,7 +74,7 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
       child: ComplexInfoBox(
         id: (item.containsKey('id') ? item['id'] : itemPos.toString()),
         boxTitle: (item.containsKey('title') ? item['title'] : "N/A"),
-        dataTitle: (item.containsKey('data') ? item['data'] : "N/A"),
+        dataTitle: (item.containsKey('data') ? item['data'].toString() : "N/A"),
         unitTitle: (item.containsKey('unit') ? item['unit'] : "N/A"),
         boxIconURL: (item.containsKey('iconURL') ? item['iconURL'] : null),
         boxIconSize: (item.containsKey('iconSize')
@@ -119,19 +98,25 @@ class _ProfileStatsDayState extends State<ProfileStatsDay> {
   List<Widget> _renderAllItem(int start, int end) {
     List<Widget> element = [];
     for (int i = start; i < end; ++i) {
-      element.add(_renderItem(i, _items[i]));
+      element.add(_renderItem(i, widget.items[i]));
     }
     return element;
   }
 
   Widget _buildList() {
     // Compute some data
-    int _seperatedPoint = (_items.length / 2).round();
+    int _seperatedPoint = (widget.items.length / 2).round();
     List<Widget> _firstColumn = _renderAllItem(0, _seperatedPoint);
-    List<Widget> _secondColumn = _renderAllItem(_seperatedPoint, _items.length);
+    List<Widget> _secondColumn =
+        _renderAllItem(_seperatedPoint, widget.items.length);
 
     // Render result
-    return Center(
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+        top: R.appRatio.appSpacing5,
+        bottom: R.appRatio.appSpacing15,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,

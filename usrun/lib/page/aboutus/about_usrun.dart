@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class AboutUSRUN extends StatelessWidget {
   @override
@@ -11,24 +13,7 @@ class AboutUSRUN extends StatelessWidget {
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.usrun,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: R.appRatio.appFontSize22,
-          ),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.usrun),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
@@ -128,8 +113,9 @@ class AboutUSRUN extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

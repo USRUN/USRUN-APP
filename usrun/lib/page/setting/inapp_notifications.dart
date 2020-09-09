@@ -1,34 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/helper.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/line_button.dart';
 
 class InAppNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
     Widget _buildElement = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: R.colors.appBackground,
-      appBar: GradientAppBar(
-        leading: new IconButton(
-          icon: Image.asset(
-            R.myIcons.appBarBackBtn,
-            width: R.appRatio.appAppBarIconSize,
-          ),
-          onPressed: () => pop(context),
-        ),
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          R.strings.inAppNotifications,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-      ),
+      appBar: CustomGradientAppBar(title: R.strings.inAppNotifications),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -47,80 +30,68 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiActLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiActReactionTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiActReactionSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiActDiscussionTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiActDiscussionSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiActShareTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiActShareSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.notiActMentionInDiscussionTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiActMentionInDiscussionSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: false,
+                initSwitchStatus: false,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -129,7 +100,7 @@ class InAppNotifications extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   EVENTS
               */
               Padding(
@@ -139,99 +110,84 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiEvtLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiEvtInfoTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiEvtInfoSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiEvtReminder6HTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiEvtReminder6HSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiEvtReminder24HTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiEvtReminder24HSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiEvtRankChangesTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiEvtRankChangesSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.notiEvtInvitationTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiEvtInvitationSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -240,7 +196,7 @@ class InAppNotifications extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   FOLLOWING & FOLLOWERS
               */
               Padding(
@@ -250,42 +206,36 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiFFLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiFFNewFollowersTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiFFNewFollowersSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.notiFFNewActivitiesTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiFFNewActivitiesSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -294,7 +244,7 @@ class InAppNotifications extends StatelessWidget {
               SizedBox(
                 height: R.appRatio.appSpacing25,
               ),
-              /* 
+              /*
                   TEAMS
               */
               Padding(
@@ -304,61 +254,52 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiTMLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiTMInvitationTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiTMInvitationSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
-              ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
               ),
               LineButton(
                 mainText: R.strings.notiTMPlansTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiTMPlansSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
                 enableBottomUnderline: true,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
                 },
               ),
-              SizedBox(
-                height: R.appRatio.appSpacing15,
-              ),
               LineButton(
                 mainText: R.strings.notiTMPostsTitle,
                 mainTextFontSize: R.appRatio.appFontSize18,
                 subText: R.strings.notiTMPostsSubtitle,
-                subTextFontSize: R.appRatio.appFontSize14,
-                spacingUnderlineAndMainText: R.appRatio.appSpacing15,
-                enableBottomUnderline: true,
+                subTextFontSize: R.appRatio.appFontSize16,
+                textPadding: EdgeInsets.all(15),
+                enableBottomUnderline: false,
                 enableSwitchButton: true,
                 switchButtonOnTitle: "On",
                 switchButtonOffTitle: "Off",
-                switchStatus: true,
+                initSwitchStatus: true,
                 switchFunction: (state) {
                   // TODO: Implementing here
                   print('Current State of SWITCH IS: $state');
@@ -372,8 +313,9 @@ class InAppNotifications extends StatelessWidget {
 
     return NotificationListener<OverscrollIndicatorNotification>(
         child: _buildElement,
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
         });
   }
 }

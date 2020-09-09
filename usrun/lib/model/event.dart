@@ -1,25 +1,34 @@
 import 'package:usrun/core/define.dart';
-
 import 'package:usrun/util/reflector.dart';
-
 import 'package:usrun/model/mapper_object.dart';
 
-
 @reflector
-class Event extends MapperObject {
+class Event with MapperObject {
   int eventId;
-  String name;
-  SportType sportType;
-  String description;
-  DateTime startDate;
-  DateTime endDate;
-  DateTime updateDate;
-  EventType type;
-  String img;
-  String logo;
-  bool isActive;
-  int memberCount;
-  int teamCount;
-  num distance;
-  UserRole userType;
+  EventStatus status;
+  String eventName;
+  String subtitle;
+  String thumbnail;
+  String banner;
+  int totalTeamParticipant;
+  int totalParticipant;
+  DateTime startTime;
+  DateTime endTime;
+  String poweredBy;
+  bool joined;
+
+  Event({
+    this.eventId,
+    this.status,
+    this.eventName,
+    this.subtitle,
+    this.thumbnail,
+    this.banner,
+    this.totalTeamParticipant,
+    this.totalParticipant,
+    this.startTime,
+    this.endTime,
+    this.poweredBy,
+    this.joined,
+  });
 }

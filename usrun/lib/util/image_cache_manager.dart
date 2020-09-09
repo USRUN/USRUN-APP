@@ -14,19 +14,25 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:usrun/net/client.dart';
+// Used for max age, the default is 24 hours
+const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 24;
 
-const int IMAGE_DOWNLOAD_CACHE_MAX_AGE_HOUR = 12;
+// Used for max age, approximately 100 years (Not use the default above)
 const int IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY = 100 * 365;
 
-/// approximately 100 years
+// Used for max entries
 const int IMAGE_CACHE_MAX_NUMBER = 100;
+
+//  ------------------------------------------------------------------------
+//  IMAGE CACHE MANAGER
+//  ------------------------------------------------------------------------
 
 class ImageCacheManager {
   static final DiskCache _customDiskCache = DiskCache();
   static final DiskCache _persistentDiskCache = DiskCache(
-      isPersistent: true,
-      maxAge: Duration(days: IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY));
+    isPersistent: true,
+    maxAge: Duration(days: IMAGE_PERSISTENT_CACHE_MAX_AGE_DAY),
+  );
 
   static Widget getImage({
     @required String url,
@@ -50,6 +56,7 @@ class ImageCacheManager {
     if (url == null) {
       return Image.asset(
         R.images.smallDefaultImage,
+        key: key,
         semanticLabel: semanticLabel,
         excludeFromSemantics: excludeFromSemantics,
         width: width,
@@ -69,6 +76,7 @@ class ImageCacheManager {
     if (isAssetImage(url)) {
       return Image.asset(
         url,
+        key: key,
         semanticLabel: semanticLabel,
         excludeFromSemantics: excludeFromSemantics,
         width: width,
@@ -84,9 +92,29 @@ class ImageCacheManager {
         filterQuality: filterQuality,
       );
     } else {
+      if (isBase64(url)) {
+        return Image.memory(
+          base64Decode(url),
+          key: key,
+          semanticLabel: semanticLabel,
+          excludeFromSemantics: excludeFromSemantics,
+          width: width,
+          height: height,
+          color: color,
+          colorBlendMode: colorBlendMode,
+          fit: fit,
+          alignment: alignment,
+          repeat: repeat,
+          centerSlice: centerSlice,
+          matchTextDirection: matchTextDirection,
+          gaplessPlayback: gaplessPlayback,
+          filterQuality: filterQuality,
+        );
+      }
       if (url.length == 0) {
         return Image.asset(
           R.images.smallDefaultImage,
+          key: key,
           semanticLabel: semanticLabel,
           excludeFromSemantics: excludeFromSemantics,
           width: width,
@@ -103,8 +131,8 @@ class ImageCacheManager {
         );
       }
 
-      url = Client.imageUrl(url); // correct image
       Widget image = FadeInImage.assetNetwork(
+        key: key,
         placeholder: R.images.smallDefaultImage,
         image: url,
         fit: fit,
@@ -123,6 +151,7 @@ class ImageCacheManager {
       if (image == null) {
         return Image.asset(
           R.images.smallDefaultImage,
+          key: key,
           semanticLabel: semanticLabel,
           excludeFromSemantics: excludeFromSemantics,
           width: width,
@@ -141,70 +170,100 @@ class ImageCacheManager {
 
       return image;
     }
-
-//    if (url != null) {
-//      CustomImageProvider image;
-//      if (isAssetImage(url)) {
-//        image = CustomImageProvider(url, scale: scale, cache: _persistentDiskCache);
-//      }
-//      else {
-//        image = CustomImageProvider(url, scale: scale, cache: _customDiskCache);
-//      }
-//
-//      if (image != null) {
-//        return Image(
-//          image: image,
-//          semanticLabel: semanticLabel,
-//          excludeFromSemantics: excludeFromSemantics,
-//          width: width,
-//          height: height,
-//          color: color,
-//          colorBlendMode: colorBlendMode,
-//          fit: fit,
-//          alignment: alignment,
-//          repeat: repeat,
-//          centerSlice: centerSlice,
-//          matchTextDirection: matchTextDirection,
-//          gaplessPlayback: gaplessPlayback,
-//          filterQuality: filterQuality,
-//        );
-//      }
-//    }
-//
-//    CustomImageProvider image = CustomImageProvider(R.images.smallDefaultImage, scale: scale, cache: _persistentDiskCache);
-//
-//    return Image(
-//      image: image,
-//      semanticLabel: semanticLabel,
-//      excludeFromSemantics: excludeFromSemantics,
-//      width: width,
-//      height: height,
-//      color: color,
-//      colorBlendMode: colorBlendMode,
-//      fit: fit,
-//      alignment: alignment,
-//      repeat: repeat,
-//      centerSlice: centerSlice,
-//      matchTextDirection: matchTextDirection,
-//      gaplessPlayback: gaplessPlayback,
-//      filterQuality: filterQuality,
-//    );
   }
 
-  static CustomImageProvider getImageData({@required String url}) {
+  static CustomImageProvider getImageProvider({
+    @required String url,
+    double scale = 1.0,
+  }) {
     if (url == null) {
-      return CustomImageProvider(R.images.smallDefaultImage,
-          cache: _persistentDiskCache);
+      return CustomImageProvider(
+        R.images.smallDefaultImage,
+        scale: scale,
+        cache: _persistentDiskCache,
+      );
     }
 
-    CustomImageProvider data = CustomImageProvider(url,
-        cache: isAssetImage(url) ? _persistentDiskCache : _customDiskCache);
+    CustomImageProvider data = CustomImageProvider(
+      url,
+      scale: scale,
+      cache: isAssetImage(url) ? _persistentDiskCache : _customDiskCache,
+    );
+
     if (data != null) {
       return data;
     }
 
-    return CustomImageProvider(R.images.smallDefaultImage,
-        cache: _persistentDiskCache);
+    return CustomImageProvider(
+      R.images.smallDefaultImage,
+      scale: scale,
+      cache: _persistentDiskCache,
+    );
+  }
+
+  static Widget getCachedImage({@required String url}) {
+    CustomImageProvider imageProvider = getImageProvider(url: url);
+    return ImageProviderWidget(imageProvider: imageProvider);
+  }
+
+  static Widget getCachedImage02({
+    String url,
+    Key key,
+    double scale = 1.0,
+    String semanticLabel,
+    bool excludeFromSemantics = false,
+    double width,
+    double height,
+    Color color,
+    BlendMode colorBlendMode,
+    BoxFit fit = BoxFit.cover,
+    AlignmentGeometry alignment = Alignment.center,
+    ImageRepeat repeat = ImageRepeat.noRepeat,
+    Rect centerSlice,
+    bool matchTextDirection = false,
+    bool gaplessPlayback = false,
+    FilterQuality filterQuality = FilterQuality.low,
+  }) {
+    CustomImageProvider image;
+    if (url == null) {
+      url = R.images.smallDefaultImage;
+    }
+
+    if (isAssetImage(url)) {
+      image = CustomImageProvider(
+        url,
+        scale: scale,
+        cache: _persistentDiskCache,
+      );
+    } else {
+      image = CustomImageProvider(
+        url,
+        scale: scale,
+        cache: _customDiskCache,
+      );
+    }
+
+    if (image != null) {
+      return Container();
+    }
+
+    return Image(
+      key: key,
+      image: image,
+      semanticLabel: semanticLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      width: width,
+      height: height,
+      color: color,
+      colorBlendMode: colorBlendMode,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      centerSlice: centerSlice,
+      matchTextDirection: matchTextDirection,
+      gaplessPlayback: gaplessPlayback,
+      filterQuality: filterQuality,
+    );
   }
 
   static void clear() {
@@ -214,7 +273,15 @@ class ImageCacheManager {
   static bool isAssetImage(String image) {
     return image.startsWith("assets/");
   }
+
+  static bool isBase64(String imgBase) {
+    return imgBase.length > 300;
+  }
 }
+
+//  ------------------------------------------------------------------------
+//  CUSTOM IMAGE PROVIDER
+//  ------------------------------------------------------------------------
 
 class CustomImageProvider extends ImageProvider<CustomImageProvider> {
   CustomImageProvider(
@@ -231,18 +298,6 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
   @override
   Future<CustomImageProvider> obtainKey(ImageConfiguration configuration) {
     return SynchronousFuture<CustomImageProvider>(this);
-  }
-
-  @override
-  ImageStreamCompleter load(CustomImageProvider key, DecoderCallback decode) {
-    return MultiFrameImageStreamCompleter(
-      codec: _loadAsync(key),
-      scale: key.scale,
-//      informationCollector: (StringBuffer information) {
-//        information.writeln('Image provider: $this');
-//        information.write('Image key: $key');
-//      },
-    );
   }
 
   Future<ui.Codec> _loadAsync(CustomImageProvider key) async {
@@ -290,6 +345,14 @@ class CustomImageProvider extends ImageProvider<CustomImageProvider> {
       return _response.bodyBytes;
 
     return null;
+  }
+
+  @override
+  ImageStreamCompleter load(CustomImageProvider key, decode) {
+    return MultiFrameImageStreamCompleter(
+      codec: _loadAsync(key),
+      scale: key.scale,
+    );
   }
 }
 
@@ -397,5 +460,80 @@ class DiskCache {
 
       _metadata = {};
     }
+  }
+}
+
+//  ------------------------------------------------------------------------
+//  LOAD IMAGE FROM IMAGE-PROVIDER
+//  ------------------------------------------------------------------------
+
+class ImageProviderWidget extends StatefulWidget {
+  const ImageProviderWidget({
+    Key key,
+    @required this.imageProvider,
+  })  : assert(imageProvider != null),
+        super(key: key);
+
+  final ImageProvider imageProvider;
+
+  @override
+  _ImageProviderWidgetState createState() => _ImageProviderWidgetState();
+}
+
+class _ImageProviderWidgetState extends State<ImageProviderWidget> {
+  ImageStream _imageStream;
+  ImageInfo _imageInfo;
+
+  @override
+  void dispose() {
+    _imageStream?.removeListener(ImageStreamListener(_updateImage));
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // We call _getImage here because createLocalImageConfiguration() needs to
+    // be called again if the dependencies changed, in case the changes relate
+    // to the DefaultAssetBundle, MediaQuery, etc, which that method uses.
+    _getImage();
+  }
+
+  @override
+  void didUpdateWidget(ImageProviderWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.imageProvider != oldWidget.imageProvider) {
+      _getImage();
+    }
+  }
+
+  void _getImage() {
+    final ImageStream oldImageStream = _imageStream;
+    _imageStream = widget.imageProvider
+        .resolve(createLocalImageConfiguration(this.context));
+    if (_imageStream.key != oldImageStream?.key) {
+      // If the keys are the same, then we got the same image back, and so we don't
+      // need to update the listeners. If the key changed, though, we must make sure
+      // to switch our listeners to the new image stream.
+      final ImageStreamListener listener = ImageStreamListener(_updateImage);
+      oldImageStream?.removeListener(listener);
+      _imageStream.addListener(listener);
+    }
+  }
+
+  void _updateImage(ImageInfo imageInfo, bool synchronousCall) {
+    if (!mounted) return;
+    setState(() {
+      // Trigger a build whenever the image changes.
+      _imageInfo = imageInfo;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RawImage(
+      image: _imageInfo?.image, // this is a dart:ui Image object
+      scale: _imageInfo?.scale ?? 1.0,
+    );
   }
 }

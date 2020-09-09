@@ -1,72 +1,103 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/manager/data_manager.dart';
+import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/event/event_page.dart';
+import 'package:usrun/page/event/event_search_page.dart';
 import 'package:usrun/page/feed/feed_page.dart';
-import 'package:usrun/page/profile/edit_profile.dart';
+import 'package:usrun/page/profile/profile_edit_page.dart';
 import 'package:usrun/page/profile/profile_page.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/page/record/record_page.dart';
+import 'package:usrun/page/team/team_search_page.dart';
 import 'package:usrun/page/setting/setting_page.dart';
 import 'package:usrun/page/team/team_page.dart';
+import 'package:usrun/util/string_utils.dart';
 import 'package:usrun/widget/avatar_view.dart';
+import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/custom_gradient_app_bar.dart';
 
 class DrawerItem {
   String title;
   String icon;
   String activeIcon;
-  DrawerItem(this.title, this.icon, this.activeIcon);
+  double iconSize;
+
+  DrawerItem(this.title, this.icon, this.activeIcon, this.iconSize);
 }
 
 class AppPage extends StatefulWidget {
-  final drawerItems = [
-    DrawerItem(
-        R.strings.record, R.myIcons.drawerRecord, R.myIcons.drawerActiveRecord),
-    DrawerItem(
-        R.strings.uFeed, R.myIcons.drawerUfeed, R.myIcons.drawerActiveUfeed),
-    DrawerItem(
-        R.strings.events, R.myIcons.drawerEvents, R.myIcons.drawerActiveEvents),
-    DrawerItem(
-        R.strings.teams, R.myIcons.drawerTeams, R.myIcons.drawerActiveTeams),
-    DrawerItem(R.strings.profile, R.myIcons.drawerProfile,
-        R.myIcons.drawerActiveProfile),
-    DrawerItem(R.strings.settings, R.myIcons.drawerSettings,
-        R.myIcons.drawerActiveSettings),
-  ];
-
   @override
   _AppPageState createState() => _AppPageState();
 }
 
 class _AppPageState extends State<AppPage> {
-  int _selectedDrawerIndex = 0;
-  String _avatar = R.images.avatarQuocTK;
-  String _supportAvatar = R.images.avatar;
-  String _fullName = "We Are USRUN";
-  String _userCode = "USR9381852";
+  final List<Widget> pages = [
+    RecordPage(),
+    FeedPage(),
+    EventPage(),
+    TeamPage(),
+    ProfilePage(),
+    SettingPage(),
+  ];
 
-  _getDrawerItemWidget(int pos) {
-    switch (pos) {
-      case 0:
-        return new RecordPage();
-      case 1:
-        return new FeedPage();
-      case 2:
-        return new EventPage();
-      case 3:
-        return new TeamPage();
-      case 4:
-        return new ProfilePage();
-      case 5:
-        return new SettingPage();
-      default:
-        return new FeedPage();
-    }
-  }
+  final drawerItems = [
+    DrawerItem(
+      R.strings.record,
+      R.myIcons.drawerRecordWhite,
+      R.myIcons.drawerRecordYellow,
+      R.appRatio.appIconSize25,
+    ),
+    DrawerItem(
+      R.strings.uFeed,
+      R.myIcons.drawerUfeedWhite,
+      R.myIcons.drawerUfeedYellow,
+      R.appRatio.appIconSize18,
+    ),
+    DrawerItem(
+      R.strings.events,
+      R.myIcons.drawerEventsWhite,
+      R.myIcons.drawerEventsYellow,
+      R.appRatio.appIconSize25,
+    ),
+    DrawerItem(
+      R.strings.teams,
+      R.myIcons.drawerTeamsWhite,
+      R.myIcons.drawerTeamsYellow,
+      R.appRatio.appIconSize20,
+    ),
+    DrawerItem(
+      R.strings.profile,
+      R.myIcons.drawerProfileWhite,
+      R.myIcons.drawerProfileYellow,
+      R.appRatio.appIconSize20,
+    ),
+    DrawerItem(
+      R.strings.settings,
+      R.myIcons.drawerSettingsWhite,
+      R.myIcons.drawerSettingsYellow,
+      R.appRatio.appIconSize20,
+    ),
+  ];
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  int _selectedDrawerIndex = DataManager.getUserDefaultTab();
+  String _avatar = UserManager.currentUser.avatar;
+  String _supportAvatar =
+      UserManager.currentUser.hcmus ? R.myIcons.hcmusLogo : null;
+  String _fullName = UserManager.currentUser.name;
+  String _userCode = UserManager.currentUser.code == null
+      ? "USRUN${UserManager.currentUser.userId}"
+      : UserManager.currentUser.code;
 
   _onSelectItem(int index) {
+    if (_selectedDrawerIndex == index) return;
+
     setState(() {
       _selectedDrawerIndex = index;
     });
@@ -75,154 +106,261 @@ class _AppPageState extends State<AppPage> {
     Navigator.of(context).pop();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var drawerWidgets = <Widget>[];
-    for (var i = 0; i < widget.drawerItems.length; i++) {
-      var item = widget.drawerItems[i];
-      drawerWidgets.add(new GestureDetector(
-        onTap: () => _onSelectItem(i),
-        child: new Container(
-          width: R.appRatio.appWidth150,
-          padding: EdgeInsets.only(
-            bottom: R.appRatio.appSpacing30,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(
-                  right: R.appRatio.appSpacing25,
-                ),
-                child: Image.asset(
-                  (i == _selectedDrawerIndex ? item.activeIcon : item.icon),
-                  width: R.appRatio.appIconSize25,
-                  height: R.appRatio.appIconSize25,
-                ),
-              ),
-              Text(
-                item.title.toUpperCase(),
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: R.appRatio.appFontSize18,
-                    color: i == _selectedDrawerIndex
-                        ? R.colors.oldYellow
-                        : Colors.white),
-              ),
-            ],
+  _openDrawer() {
+    _scaffoldKey.currentState.openDrawer();
+  }
+
+  List<Widget> _appBarActionList() {
+    Widget wrapWidget(String iconUrl, Function func) {
+      return Container(
+        width: R.appRatio.appWidth60,
+        child: FlatButton(
+          onPressed: func,
+          padding: EdgeInsets.all(0.0),
+          splashColor: R.colors.lightBlurMajorOrange,
+          textColor: Colors.white,
+          child: ImageCacheManager.getImage(
+            url: iconUrl,
+            width: R.appRatio.appAppBarIconSize,
+            height: R.appRatio.appAppBarIconSize,
+            color: Colors.white,
           ),
         ),
-      ));
+      );
     }
 
-    return Scaffold(
-      appBar: GradientAppBar(
-        gradient: R.colors.uiGradient,
-        centerTitle: true,
-        title: Text(
-          widget.drawerItems[_selectedDrawerIndex].title,
-          style: TextStyle(
-              color: Colors.white, fontSize: R.appRatio.appFontSize22),
-        ),
-        actions: <Widget>[
-          (_selectedDrawerIndex == 4
-              ? IconButton(
-                  icon: Image.asset(
-                    R.myIcons.appBarEditBtn,
-                    width: R.appRatio.appAppBarIconSize,
-                  ),
-                  onPressed: () {
-                    pushPage(context, EditProfilePage());
-                  },
-                )
-              : Container()),
-        ],
-      ),
-      drawer: Container(
-          constraints: new BoxConstraints.expand(
-            width: R.appRatio.appWidth250,
-            height: R.appRatio.deviceHeight,
+    List<Widget> list = List<Widget>();
+    switch (_selectedDrawerIndex) {
+      case 0: // Record page
+        list.add(Container());
+        break;
+      case 1: // Feed page
+        list.add(Container());
+        break;
+      case 2: // Event page
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarSearchBtn,
+            () {
+              pushPage(
+                context,
+                EventSearchPage(),
+              );
+            },
           ),
-          child: Stack(
-            children: <Widget>[
-              Image.asset(
-                R.images.drawerBackground,
-                fit: BoxFit.cover,
-                width: R.appRatio.appWidth250,
-                height: R.appRatio.deviceHeight,
-              ),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: R.appRatio.appSpacing50,
-                    ),
-                    AvatarView(
-                      avatarImageURL: _avatar,
-                      avatarImageSize: R.appRatio.appAvatarSize130,
-                      supportImageURL: _supportAvatar,
-                      avatarBoxShadow: BoxShadow(
-                        blurRadius: 20.0,
-                        color: R.colors.oldYellow,
-                        offset: Offset(0.0, 0.0),
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing20,
-                    ),
-                    Text(
-                      _fullName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: R.appRatio.appFontSize20,
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing5,
-                    ),
-                    Text(
-                      _userCode,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: R.colors.oldYellow,
-                        fontSize: R.appRatio.appFontSize18,
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing25,
-                    ),
-                    Container(
-                      height: 1,
-                      width: R.appRatio.appWidth200,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: R.colors.oldYellow,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: R.appRatio.appSpacing25,
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: drawerWidgets,
-                        ),
-                      ),
-                    ),
-                  ],
+        );
+        break;
+      case 3: // Team page
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarSearchBtn,
+            () {
+              pushPage(
+                context,
+                TeamSearchPage(),
+              );
+            },
+          ),
+        );
+        break;
+      case 4: // Profile page
+        list.add(
+          wrapWidget(
+            R.myIcons.appBarEditBtn,
+            () => pushPage(context, EditProfilePage()),
+          ),
+        );
+        break;
+      case 5: // Setting page
+        list.add(Container());
+        break;
+      default: // None of above
+        list.add(Container());
+    }
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> drawerWidgets = <Widget>[];
+    for (var i = 0; i < drawerItems.length; i++) {
+      var item = drawerItems[i];
+
+      String iconUrl = item.icon;
+      if (i == _selectedDrawerIndex) {
+        iconUrl = item.activeIcon;
+      }
+
+      drawerWidgets.add(
+        FlatButton(
+          onPressed: () => _onSelectItem(i),
+          padding: EdgeInsets.all(0),
+          textColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+          ),
+          child: Container(
+            height: R.appRatio.appHeight60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: R.appRatio.appIconSize30,
+                  height: R.appRatio.appIconSize30,
+                  alignment: Alignment.center,
+                  child: ImageCacheManager.getImage(
+                    url: iconUrl,
+                    width: item.iconSize,
+                    height: item.iconSize,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              )
-            ],
-          )),
+                SizedBox(width: R.appRatio.appSpacing25),
+                Container(
+                  width: R.appRatio.appWidth100,
+                  child: Text(
+                    StringUtils.uppercaseOnlyFirstLetterOfFirstWord(
+                      item.title,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: R.appRatio.appFontSize20,
+                      color: i == _selectedDrawerIndex
+                          ? R.colors.oldYellow
+                          : Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget _buildElement = Scaffold(
+      key: _scaffoldKey,
+      appBar: CustomGradientAppBar(
+        leadingFunction: () => _openDrawer(),
+        leadingIconUrl: R.myIcons.menuIcon,
+        actions: _appBarActionList(),
+        titleWidget: Text(
+          drawerItems[_selectedDrawerIndex].title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      backgroundColor: R.colors.appBackground,
+      drawer: Container(
+        constraints: new BoxConstraints.expand(
+          width: R.appRatio.appWidth250,
+          height: R.appRatio.deviceHeight,
+        ),
+        child: Stack(
+          children: <Widget>[
+            Image.asset(
+              (R.currentAppTheme == AppTheme.DARK
+                  ? R.images.drawerBackgroundDarkTheme
+                  : R.images.drawerBackgroundLightTheme),
+              fit: BoxFit.cover,
+              width: R.appRatio.appWidth250,
+              height: R.appRatio.deviceHeight,
+            ),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: R.appRatio.appSpacing50,
+                  ),
+                  AvatarView(
+                    avatarImageURL: _avatar,
+                    avatarImageSize: R.appRatio.appAvatarSize130,
+                    supportImageURL: _supportAvatar,
+                    avatarBoxBorder: Border.all(
+                      color: R.colors.oldYellow,
+                      width: 2,
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing20,
+                  ),
+                  Text(
+                    _fullName ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: R.appRatio.appFontSize20,
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing5,
+                  ),
+                  Text(
+                    _userCode,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: R.colors.oldYellow,
+                      fontSize: R.appRatio.appFontSize18,
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing25,
+                  ),
+                  Container(
+                    height: 1,
+                    width: R.appRatio.appWidth200,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: R.colors.oldYellow,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: R.appRatio.appSpacing25,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: drawerWidgets,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
       body: NotificationListener<OverscrollIndicatorNotification>(
-          child: _getDrawerItemWidget(_selectedDrawerIndex),
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
-          }),
+        child: IndexedStack(
+          index: _selectedDrawerIndex,
+          children: pages,
+        ),
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        },
+      ),
+    );
+
+    //return _buildElement;ch
+    return WillPopScope(
+      child: _buildElement,
+      onWillPop: () async {
+        if (_scaffoldKey.currentState.isDrawerOpen) {
+          pop(context);
+          return false;
+        } else {
+          await SystemShortcuts.home();
+          return true;
+        }
+      },
     );
   }
 }
