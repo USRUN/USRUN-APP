@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -18,11 +19,13 @@ import 'package:usrun/page/team/team_rank.dart';
 import 'package:usrun/page/team/team_stat_item.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/util/team_member_util.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/expandable_text.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -31,8 +34,9 @@ import 'package:usrun/widget/ui_button.dart';
 
 class TeamInfoPage extends StatefulWidget {
   final int teamId;
+  final Function reloadTeamPage;
 
-  TeamInfoPage({@required this.teamId});
+  TeamInfoPage({@required this.teamId, this.reloadTeamPage});
 
   @override
   _TeamInfoPageState createState() => _TeamInfoPageState();
@@ -173,18 +177,29 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
   Future<String> getUserImageAsBase64(CropStyle cropStyle) async {
     final CameraPicker _selectedCameraFile = CameraPicker();
 
-    dynamic result = await _selectedCameraFile.showCameraPickerActionSheet(
-        context,
-        maxWidth: 800,
-        maxHeight: 600,
-        imageQuality: 80);
+    dynamic result = await _selectedCameraFile
+        .showCameraPickerActionSheet(context, imageQuality: 95);
     if (result == null || result == false) return "";
 
-    result = await _selectedCameraFile.cropImage(
-      cropStyle: cropStyle,
-      compressFormat: ImageCompressFormat.jpg,
-      androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-    );
+    if (cropStyle == CropStyle.circle) {
+      result = await _selectedCameraFile.cropImage(
+        maxWidth: 800,
+        maxHeight: 600,
+        cropStyle: cropStyle,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+      );
+    } else {
+      result = await _selectedCameraFile.cropImage(
+        cropStyle: cropStyle,
+        maxWidth: 800,
+        maxHeight: 600,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+      );
+    }
     if (!result) return "";
 
     return _selectedCameraFile.toBase64();
@@ -207,6 +222,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       return;
     }
 
+    if (await NetworkDetector.checkNetworkAndAlert(context) == false) {
+      return;
+    }
+
     try {
       String image;
 
@@ -219,32 +238,56 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         return;
       }
 
-      image = "data:image/jpg;base64," + image;
-      reqParam[fieldToChange] = image;
+      showCustomLoadingDialog(context, text: R.strings.uploading);
+
+      Response<dynamic> linkResponse = await ImageClient.uploadImage(image);
+      if (!linkResponse.success) {
+        pop(context);
+        await showCustomAlertDialog(
+          context,
+          title: R.strings.notice,
+          content: linkResponse.errorMessage,
+          firstButtonText: R.strings.ok.toUpperCase(),
+          firstButtonFunction: () {
+            pop(this.context);
+          },
+        );
+        return;
+      }
+      reqParam[fieldToChange] = linkResponse.object;
       reqParam['teamId'] = widget.teamId;
       Response<dynamic> updatedTeam = await TeamManager.updateTeam(reqParam);
 
       if (updatedTeam.success && updatedTeam.object != null) {
         mapTeamInfo(updatedTeam.object);
+        widget.reloadTeamPage();
       } else {
+        pop(context);
         showCustomAlertDialog(
           context,
           title: R.strings.notice,
           content: updatedTeam.errorMessage,
           firstButtonText: R.strings.ok.toUpperCase(),
           firstButtonFunction: () {
-            pop(this.context);
+            pop(context);
           },
+          secondButtonText: "",
         );
       }
     } catch (error) {
-      showCustomAlertDialog(context,
-          title: R.strings.notice,
-          content: error.toString(),
-          firstButtonText: R.strings.ok.toUpperCase(), firstButtonFunction: () {
-        pop(this.context);
-      }, secondButtonText: "");
+      showCustomAlertDialog(
+        context,
+        title: R.strings.notice,
+        content: error.toString(),
+        firstButtonText: R.strings.ok.toUpperCase(),
+        firstButtonFunction: () {
+          pop(context);
+        },
+        secondButtonText: "",
+      );
     }
+
+    pop(context);
   }
 
   _joinTeamFunction() async {
@@ -274,6 +317,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
       setState(() {
         _teamMemberType = result;
       });
+
+      if (widget.reloadTeamPage != null) {
+        widget.reloadTeamPage();
+      }
     } else {
       showCustomAlertDialog(
         context,
@@ -305,6 +352,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (toDisplay == null) {
       toDisplay = R.strings.join;
     }
+
+    if (_teamName == R.strings.loading) {
+      return Container();
+    }
+    ;
 
     return UIButton(
       width: double.infinity,
@@ -594,6 +646,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                         context,
                                         TeamRank(
                                           teamId: widget.teamId,
+                                          reloadTeamPage: widget.reloadTeamPage,
                                         ));
                                   },
                                 ),

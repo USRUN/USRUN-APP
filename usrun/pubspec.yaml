@@ -57,6 +57,7 @@ dependencies:
   store_redirect: ^1.0.2
   fluttertoast: ^7.0.2
   image: ^2.1.14
+  http: ^0.12.2
 
   flutter_localizations:
     sdk: flutter

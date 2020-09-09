@@ -69,6 +69,7 @@ class SignInPage extends StatelessWidget {
                       labelTitle: R.strings.password,
                       hintText: R.strings.passwordHint,
                       obscureText: true,
+                      maxLines: 1,
                     ),
                     SizedBox(
                       height: R.appRatio.appSpacing40,

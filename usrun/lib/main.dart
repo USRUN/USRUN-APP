@@ -115,8 +115,8 @@ class _SplashPageState extends State<StatefulWidget> {
 
   void openStartPage() async {
     if (hasSelectedLanguageFirstTime()) {
-      WidgetsBinding.instance.addObserver(
-          NetworkObserver(context: navigatorKey.currentState.overlay.context));
+//      WidgetsBinding.instance.addObserver(
+//          NetworkObserver(context: navigatorKey.currentState.overlay.context));
 
       if (UserManager.currentUser.userId == null) {
         showPage(context, WelcomePage());

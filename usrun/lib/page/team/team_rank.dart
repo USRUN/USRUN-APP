@@ -20,8 +20,9 @@ import 'package:usrun/widget/loading_dot.dart';
 
 class TeamRank extends StatefulWidget {
   final int teamId;
+  final Function reloadTeamPage;
 
-  TeamRank({@required this.teamId});
+  TeamRank({@required this.teamId, this.reloadTeamPage});
 
   @override
   _TeamRankState createState() => _TeamRankState();
@@ -59,6 +60,7 @@ class _TeamRankState extends State<TeamRank> {
         context,
         TeamInfoPage(
           teamId: items[index].teamId,
+          reloadTeamPage: widget.reloadTeamPage,
         ));
   }
 
@@ -105,19 +107,19 @@ class _TeamRankState extends State<TeamRank> {
             margin: EdgeInsets.only(
               top: headerRankLeadHeight,
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: (_isLoading
-                  ? Container(
-                      padding: EdgeInsets.only(
-                        top: R.appRatio.appSpacing15,
-                      ),
-                      child: LoadingIndicator(),
-                    )
-                  : (checkListIsNullOrEmpty(items))
-                      ? _buildEmptyList()
-                      : _renderList()),
-            ),
+            child: (!_isLoading && checkListIsNullOrEmpty(items))
+                ? _buildEmptyList()
+                : SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: (_isLoading
+                        ? Container(
+                            padding: EdgeInsets.only(
+                              top: R.appRatio.appSpacing15,
+                            ),
+                            child: LoadingIndicator(),
+                          )
+                        : _renderList()),
+                  ),
           ),
           // HeaderRankLead
           HeaderRankLead(
@@ -138,23 +140,28 @@ class _TeamRankState extends State<TeamRank> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.noResult;
+    String systemNoti = R.strings.listCouldNotBeLoad;
 
     return Center(
       child: Container(
-        padding: EdgeInsets.only(
-          left: R.appRatio.appSpacing25,
-          right: R.appRatio.appSpacing25,
-        ),
-        child: Text(
-          systemNoti,
-          textAlign: TextAlign.justify,
-          style: TextStyle(
-            color: R.colors.contentText,
-            fontSize: R.appRatio.appFontSize16,
+          padding: EdgeInsets.only(
+            left: R.appRatio.appSpacing25,
+            right: R.appRatio.appSpacing25,
           ),
-        ),
-      ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  systemNoti,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: R.colors.contentText,
+                    fontSize: R.appRatio.appFontSize18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ])),
     );
   }
 

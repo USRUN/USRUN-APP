@@ -8,17 +8,20 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/crypto.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/client.dart';
+import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/event_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/page/record/activity_data.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
+import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_menu.dart';
 import 'package:usrun/widget/drop_down_menu/drop_down_object.dart';
@@ -26,6 +29,7 @@ import 'package:usrun/widget/input_field.dart';
 import 'package:usrun/widget/line_button.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/ui_button.dart';
+
 import 'bloc_provider.dart';
 
 // ignore: must_be_immutable
@@ -50,7 +54,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   final TextEditingController _titleController = new TextEditingController();
   final TextEditingController _descriptionController =
-      new TextEditingController();
+  new TextEditingController();
 
   final FocusNode _titleNode = FocusNode();
   final FocusNode _descriptionNode = FocusNode();
@@ -75,7 +79,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   _buildStatsBox(String title, String value, String unit) {
     return NormalInfoBox(
-      boxSize: MediaQuery.of(context).size.width * 0.3,
+      boxSize: MediaQuery
+          .of(context)
+          .size
+          .width * 0.3,
       id: title,
       firstTitleLine: title,
       secondTitleLine: unit,
@@ -89,7 +96,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   _buildStats() {
     RecordData data = widget.bloc.recordData;
-    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,10 +132,12 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          switchBetweenMeterAndKm(data.totalDistance)
+                          switchDistanceUnit(data.totalDistance)
                               .toString(),
                           R.strings.distanceUnit[
-                              DataManager.getUserRunningUnit().index],
+                          DataManager
+                              .getUserRunningUnit()
+                              .index],
                         ),
                         _buildStatsBox(
                             R.strings.time,
@@ -196,7 +208,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   Widget buildPhotoPreview(context, index) {
-    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     File file = this.widget.activity.photos.length >= index + 1
         ? this.widget.activity.photos[index]
         : null;
@@ -218,15 +233,15 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         width: deviceWidth * 0.2,
         child: file != null
             ? Image.file(file,
-                height: R.appRatio.appWidth1 * 80,
-                width: R.appRatio.appWidth1 * 80,
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.low)
+            height: R.appRatio.appWidth1 * 80,
+            width: R.appRatio.appWidth1 * 80,
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.low)
             : Icon(
-                Icons.add,
-                size: R.appRatio.appWidth1 * 40,
-                color: R.colors.majorOrange,
-              ),
+          Icons.add,
+          size: R.appRatio.appWidth1 * 40,
+          color: R.colors.majorOrange,
+        ),
       ),
     );
   }
@@ -234,7 +249,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
       Map<String, dynamic> imageResult =
-          await getUserImageFile(CropStyle.rectangle, context);
+      await getUserImageFile(CropStyle.rectangle, context);
       bool result = imageResult["result"];
       File file = imageResult["file"];
       if (result != null && result) {
@@ -250,7 +265,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.recordData.eventId = value as int;
   }
 
-  _buildEventDropDown(){
+  _buildEventDropDown() {
     List<DropDownObject<int>> dropDowMenuList = [];
     dropDowMenuList.add(DropDownObject<int>(value: -1, text: R.strings.no));
     EventManager.userOpeningEvents.forEach((event) {
@@ -435,15 +450,35 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
-    String requestTime = DateTime.now().millisecondsSinceEpoch.toString();
+    String requestTime = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
-    var params =
-        RecordHelper.generateParamsForRequest(widget.activity, requestTime);
+    Map<String, dynamic> params = await RecordHelper.generateParamsForRequest(
+        widget.activity, requestTime);
+
+    showCustomLoadingDialog(context, text: R.strings.uploading);
+
+    for (int i = 0; i < (params['photosBase64'] as List).length; i++) {
+      String base64Img = params['photosBase64'][i];
+      Response<dynamic> response = await ImageClient.uploadImage(base64Img);
+      if (response.success) {
+        params['photosBase64'][i] = response.object;
+      } else {
+        pop(context);
+        return Response<ActivityData>(
+          success: false,
+          object: null,
+        );
+      }
+    }
+
     Response<Map<String, dynamic>> response =
-        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
-            '/activity/createUserActivity', params);
+    await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+        '/activity/createUserActivity', params);
 
     Response<ActivityData> result = Response();
 
@@ -454,6 +489,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       result.success = false;
       result.errorCode = response.errorCode;
     }
+    pop(context);
+
     return result;
   }
 

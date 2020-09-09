@@ -9,22 +9,29 @@ import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/event_list/event_info_line.dart';
 
 class NewEventTabBar extends StatefulWidget {
+  NewEventTabBar({
+    Key key,
+  }) : super(key: key);
+
   @override
-  _NewEventTabBarState createState() => _NewEventTabBarState();
+  NewEventTabBarState createState() => NewEventTabBarState();
 }
 
-class _NewEventTabBarState extends State<NewEventTabBar> {
+class NewEventTabBarState extends State<NewEventTabBar>
+    with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   List<Event> _currentEventList;
   int _page;
   bool _allowLoadMore;
+  bool reloadOtherPage;
 
   @override
   void initState() {
     super.initState();
-    _getNecessaryData();
+    getNecessaryData();
+    reloadOtherPage = false;
   }
 
   @override
@@ -56,7 +63,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
     }
   }
 
-  Future<void> _getNecessaryData() async {
+  Future<void> getNecessaryData() async {
     setState(() {
       _currentEventList = List();
       _page = 0;
@@ -67,7 +74,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.noResult;
+    String systemNoti = R.strings.emptyEventList;
 
     return Center(
       child: Container(
@@ -79,6 +86,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
           systemNoti,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: R.colors.contentText,
             fontSize: R.appRatio.appFontSize16,
           ),
@@ -125,6 +133,7 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
               if (result != null && result) {
                 setState(() {
                   _currentEventList.removeAt(index);
+                  reloadOtherPage = true;
                 });
               }
             },
@@ -136,16 +145,21 @@ class _NewEventTabBarState extends State<NewEventTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return SmartRefresher(
       enablePullUp: false,
       controller: _refreshController,
       child: _renderBodyContent(),
       physics: BouncingScrollPhysics(),
       footer: null,
-      onRefresh: () => _getNecessaryData(),
+      onRefresh: () => getNecessaryData(),
       onLoading: () async {
         await Future.delayed(Duration(milliseconds: 200));
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
