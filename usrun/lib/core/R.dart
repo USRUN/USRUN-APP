@@ -771,7 +771,7 @@ class _Colors {
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
       supportAvatarBorder = Colors.transparent;
-      dialogBackground = Color(0xFF656565);
+      dialogBackground = Color(0xFF555555);
       firstButtonDialogColor = Color(0xFFFD632C);
       secondButtonDialogColor = Color(0xFFF2F2F2);
     }

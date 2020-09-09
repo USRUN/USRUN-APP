@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
@@ -9,6 +8,7 @@ import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 
+// ignore: must_be_immutable
 class RecordReport extends StatelessWidget {
   RecordBloc bloc;
 
@@ -18,14 +18,14 @@ class RecordReport extends StatelessWidget {
     return NormalInfoBox(
       boxSize: 100,
       id: title,
-      boxRadius: 5.0,
+      boxRadius: 10.0,
       firstTitleLine: title,
       dataLine: data.toString(),
       secondTitleLine: unit,
       disableBoxShadow: true,
       border: Border.all(
         color: Color(0xFFF0F0F0),
-        width: 1,
+        width: 1.25,
       ),
     );
   }

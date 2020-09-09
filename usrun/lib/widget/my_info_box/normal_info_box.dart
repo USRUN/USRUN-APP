@@ -9,12 +9,12 @@ class NormalInfoBox extends StatelessWidget {
   final Function pressBox;
   final double boxSize;
   final double boxRadius;
-  final bool beAlwaysBlackShadow;
   final bool disableGradientLine;
   final bool disableBoxShadow;
+  final BoxShadow boxShadow;
   final Border border;
 
-  static double _gradientLineHeight = R.appRatio.appHeight10;
+  final double _gradientLineHeight = R.appRatio.appHeight10;
 
   NormalInfoBox({
     @required this.id,
@@ -24,11 +24,11 @@ class NormalInfoBox extends StatelessWidget {
     this.pressBox(id),
     this.boxSize = 100,
     this.boxRadius = 10,
-    this.beAlwaysBlackShadow = false,
     this.disableGradientLine = false,
-    this.disableBoxShadow = false,
+    this.disableBoxShadow = true,
+    BoxShadow boxShadow,
     this.border,
-  });
+  }) : boxShadow = boxShadow ?? R.styles.boxShadowAll;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +40,11 @@ class NormalInfoBox extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: R.colors.boxBackground,
-        borderRadius: BorderRadius.all(Radius.circular(this.boxRadius)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(this.boxRadius),
+        ),
         border: this.border,
-        boxShadow: [
-          disableBoxShadow
-              ? BoxShadow(blurRadius: 0, color: Colors.transparent)
-              : BoxShadow(
-                  blurRadius: 4.0,
-                  offset: Offset(0.0, 0.0),
-                  color: (this.beAlwaysBlackShadow
-                      ? Color.fromRGBO(0, 0, 0, 0.25)
-                      : R.colors.textShadow),
-                ),
-        ],
+        boxShadow: (disableBoxShadow ? null : [boxShadow]),
       ),
       child: FlatButton(
         onPressed: callbackFunc,
@@ -71,7 +63,7 @@ class NormalInfoBox extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: <Widget>[
-                !disableGradientLine
+                (!disableGradientLine
                     ? Container(
                         height: _gradientLineHeight,
                         decoration: BoxDecoration(
@@ -82,7 +74,7 @@ class NormalInfoBox extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Container(),
+                    : Container()),
                 Container(
                   height: this.boxSize,
                   padding: EdgeInsets.only(
@@ -102,7 +94,7 @@ class NormalInfoBox extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
-                                color: R.colors.contentText,
+                                color: R.colors.contentText.withOpacity(0.5),
                               ),
                             )
                           : Container()),
@@ -135,7 +127,7 @@ class NormalInfoBox extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
-                                color: R.colors.contentText,
+                                color: R.colors.contentText.withOpacity(0.5),
                               ),
                             )
                           : Container()),

@@ -18,6 +18,7 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
+import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/photo_list/photo_item.dart';
 import 'package:usrun/widget/photo_list/photo_list.dart';
 
@@ -33,7 +34,7 @@ class FullUserActivityItem extends StatefulWidget {
 }
 
 class _FullUserActivityItemState extends State<FullUserActivityItem> {
-  final double _spacing = 15.0;
+  final double _spacing = R.appRatio.appSpacing20;
   bool isPushing = false;
   final double _textSpacing = 5.0;
   final List<PopupItem<int>> _popupItemList = [
@@ -289,98 +290,74 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     );
   }
 
-  Widget _renderStatisticBox() {
-    Widget _wrapWidgetData({
-      @required String firstTitle,
-      @required String data,
-      @required String unitTitle,
-    }) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: R.colors.majorOrange,
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              firstTitle.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-              ),
-            ),
-            SizedBox(height: 6),
-            Text(
-              data.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            SizedBox(height: 6),
-            Text(
-              unitTitle.toUpperCase(),
-              textScaleFactor: 1.0,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: R.colors.contentText,
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _buildStatsBox({
+    @required String firstTitle,
+    @required String data,
+    @required String unitTitle,
+  }) {
+    return NormalInfoBox(
+      boxSize: R.appRatio.deviceWidth * 0.3,
+      id: firstTitle,
+      firstTitleLine: firstTitle,
+      secondTitleLine: unitTitle,
+      dataLine: data,
+      disableGradientLine: true,
+      boxRadius: 0,
+      disableBoxShadow: true,
+      pressBox: null,
+    );
+  }
 
-    Widget _distanceWidget = _wrapWidgetData(
+  Widget _renderStatisticBox() {
+    // TODO: Can be used in the future
+    //      _avgHeartWidget,
+    //      _maxHeartWidget,
+    //       _elevGainWidget,
+    //       _maxElevWidget,
+    //
+    //    Widget _avgHeartWidget = _buildStatsBox(
+    //      firstTitle: R.strings.avgHeart,
+    //      data: _userActivity.avgHeart.toString(),
+    //      unitTitle: R.strings.avgHeartUnit,
+    //    );
+    //
+    //    Widget _maxHeartWidget = _wrapWidgetData(
+    //      firstTitle: R.strings.maxHeart,
+    //      data: _userActivity.maxHeart.toString(),
+    //      unitTitle: R.strings.avgHeartUnit,
+    //    );
+    //
+    //    Widget _elevGainWidget = _buildStatsBox(
+    //      firstTitle: R.strings.elevGain,
+    //      data: _userActivity.elevGain?.toString() ?? R.strings.na,
+    //      unitTitle: R.strings.m,
+    //    );
+    //
+    //    Widget _maxElevWidget = _buildStatsBox(
+    //      firstTitle: R.strings.maxElev,
+    //      data: _userActivity.elevMax?.toString() ?? R.strings.na,
+    //      unitTitle: R.strings.m,
+    //    );
+
+    Widget _distanceWidget = _buildStatsBox(
       firstTitle: R.strings.distance,
       data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
       unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
-    Widget _timeWidget = _wrapWidgetData(
+    Widget _timeWidget = _buildStatsBox(
       firstTitle: R.strings.time,
       data: secondToTimeFormat(_userActivity.totalTime),
       unitTitle: R.strings.timeUnit,
     );
 
-    Widget _avgPaceWidget = _wrapWidgetData(
+    Widget _avgPaceWidget = _buildStatsBox(
       firstTitle: R.strings.avgPace,
       data: secondToMinFormat(_userActivity.avgPace.toInt()).toString(),
       unitTitle: R.strings.avgPaceUnit,
     );
 
-//    TODO: Can be used in the future
-//    Widget _avgHeartWidget = _wrapWidgetData(
-//      firstTitle: R.strings.avgHeart,
-//      data: _userActivity.avgHeart.toString(),
-//      unitTitle: R.strings.avgHeartUnit,
-//    );
-//
-//    Widget _maxHeartWidget = _wrapWidgetData(
-//      firstTitle: R.strings.maxHeart,
-//      data: _userActivity.maxHeart.toString(),
-//      unitTitle: R.strings.avgHeartUnit,
-//    );
-
-    Widget _avgTotalStepWidget = _wrapWidgetData(
+    Widget _avgTotalStepWidget = _buildStatsBox(
       firstTitle: R.strings.total,
       data: _userActivity.totalStep != -1
           ? _userActivity.totalStep.toString()
@@ -388,20 +365,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       unitTitle: R.strings.totalStepsUnit,
     );
 
-//    TODO: Can be used in the future
-//    Widget _elevGainWidget = _wrapWidgetData(
-//      firstTitle: R.strings.elevGain,
-//      data: _userActivity.elevGain?.toString() ?? R.strings.na,
-//      unitTitle: R.strings.m,
-//    );
-//
-//    Widget _maxElevWidget = _wrapWidgetData(
-//      firstTitle: R.strings.maxElev,
-//      data: _userActivity.elevMax?.toString() ?? R.strings.na,
-//      unitTitle: R.strings.m,
-//    );
-
-    Widget _caloriesWidget = _wrapWidgetData(
+    Widget _caloriesWidget = _buildStatsBox(
       firstTitle: R.strings.calories,
       data: _userActivity.calories != -1
           ? _userActivity.calories.toString()
@@ -409,28 +373,51 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       unitTitle: R.strings.caloriesUnit,
     );
 
-    List<Widget> widgetList = <Widget>[
-      _distanceWidget,
-      _timeWidget,
-      _avgPaceWidget,
-//      _avgHeartWidget,
-//      _maxHeartWidget,
-      _avgTotalStepWidget,
-//       _elevGainWidget,
-//       _maxElevWidget,
-      _caloriesWidget,
-    ];
+    Widget _emptyWidget = _buildStatsBox(
+      firstTitle: "",
+      data: "",
+      unitTitle: "",
+    );
 
-    return Container(
-      margin: EdgeInsets.all(_spacing),
-      child: GridView.count(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(0),
-        crossAxisCount: 3,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        children: widgetList,
+    double deviceWidth = R.appRatio.deviceWidth;
+
+    return Center(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, _spacing, 0, 0),
+        height: deviceWidth * 0.6 + 2,
+        width: deviceWidth * 0.9 + 3,
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: Container(
+                height: deviceWidth * 0.6,
+                width: deviceWidth * 0.9,
+                color: R.colors.majorOrange,
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _distanceWidget,
+                    _timeWidget,
+                    _avgPaceWidget,
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _avgTotalStepWidget,
+                    _caloriesWidget,
+                    _emptyWidget,
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -544,16 +531,20 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
   @override
   Widget build(BuildContext context) {
+    Widget eventInfoBoxWidget = Container();
+    if (_userActivity.eventId != -1) {
+      eventInfoBoxWidget = _renderEventInfoBox();
+    }
+
+    Widget splitsWidget = Container();
+    if (!checkListIsNullOrEmpty(_userActivity.splitModelArray)) {
+      splitsWidget = _renderSplits();
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: R.colors.appBackground,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4.0,
-            offset: Offset(0.0, 0.0),
-            color: R.colors.textShadow,
-          ),
-        ],
+        boxShadow: [R.styles.boxShadowAll],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -565,10 +556,9 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           _renderPhotos(),
           _renderStatisticBox(),
           _renderDetailVisualization(),
-          if (_userActivity.eventId != -1) _renderEventInfoBox(),
+          eventInfoBoxWidget,
           _renderInteractionBox(),
-          if (!checkListIsNullOrEmpty(_userActivity.splitModelArray))
-            _renderSplits()
+          splitsWidget,
         ],
       ),
     );
