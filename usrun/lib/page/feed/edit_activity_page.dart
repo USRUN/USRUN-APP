@@ -1,5 +1,9 @@
 import 'dart:io';
+import 'dart:convert';
 
+import 'package:image/image.dart' as img;
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -36,6 +40,18 @@ class _UserPhotoItem {
   File getPhotoFile() {
     if (photoFile == null) return null;
     return File(photoFile.path);
+  }
+
+  String getPhotoString(){
+    if (onlinePhoto!=null)
+      return onlinePhoto;
+    if (photoFile!=null)
+      {
+        img.Image data = img.decodeImage(photoFile.readAsBytesSync());
+        data = img.bakeOrientation(data);
+        return base64Encode(img.encodePng(data, level: 3));
+      }
+    return null;
   }
 
   bool isDeletedOnlinePhoto() {
@@ -164,32 +180,48 @@ class _EditActivityPageState extends State<EditActivityPage> {
     String title = _titleTextController.text;
     String description = _descriptionTextController.text;
     bool showMap = _userActivity.showMap;
-    // Using _userPhotoList variable to update user photos
+    List<String> photos = [];
+    _userPhotoList.forEach((photo) {
+      photos.add(photo.getPhotoString());
+    });
 
-    // TODO: Code here
-    print("Updating activity information");
-    _userActivity.title = "[EDIT_ACTIVITY_TEST] Test updating info";
-    _userActivity.description =
-        "[EDIT_ACTIVITY_TEST] Short description will be here Short description will be here Short description will be here Short description will be here Short description will be here";
-    /*
-       ===== FLOW =====
-       + B1: Validate giá trị 4 fields ở trên nếu cần (title, description, showMap, _userPhotoList)
-       + B2: async await gọi API cập nhật user_activity và nhận giá trị trả về là bool (Cập nhật thành công hay Thất bại)
-        - Nếu thành công: Hiện showToastDefault(msg: R.strings.updateDataSuccessfully);
-        - Nếu thất bại: Hiện showCustomAlertDialog (title: R.strings.error, content: R.strings.errorUpdateDataFail)
-       + B3: Nếu B2 thành công, gọi 1 API để lấy dữ liệu user_activity mới nhất và setState lại giá trị của các fields.
+    Map<String, dynamic> params = {
+      "activityId": _userActivity.userActivityId,
+      "title": title,
+      "photo": photos,
+      "description": description,
+      "isShowMap": showMap
+    };
 
-      + Lưu ý:
-        - Đối với B2: Viết trực tiếp logic tại chỗ này, hàm này.
-        - Đối với B3: Nên viết 1 hàm riêng biệt.
-        - Nếu không có B3 (setState lại toàn bộ giá trị của các fields sau khi update) thì khi user bấm nút Back, hàm _dataHasChanged()
-        sẽ trả về true => User không thể pop trang => Logic chỗ này trở nên vô lý: "Update info mà data chưa thay đổi là sao???"
-    */
+    Response<dynamic> result = await UserManager.updateActivity(params);
+    if (result.success)
+      {
+        pop(context);
+        await showCustomAlertDialog(
+            context,
+            title: R.strings.announcement,
+            content: R.strings.successfullyEdited,
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () async{
+              pop(context);
+            }
+        );
+        pop(context);
+      }
+    else
+      {
+        showCustomAlertDialog(
+            context,
+            title: R.strings.announcement,
+            content: result.errorMessage,
+            firstButtonText: R.strings.ok,
+            firstButtonFunction: () async{
+              pop(context);
+            }
+        );
+      }
 
-    // TODO: End...
 
-    // Pop loading dialog
-    pop(context);
   }
 
   Widget _renderUpdatingButton() {

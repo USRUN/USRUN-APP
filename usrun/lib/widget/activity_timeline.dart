@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/util/image_cache_manager.dart';
 
 class _ActivityLine extends StatelessWidget {
@@ -59,7 +60,7 @@ class _ActivityContent extends StatelessWidget {
   final String activityID;
   final String dateTime;
   final double distance;
-  final bool isKM;
+  final RunningUnit runningUnit;
   final String title;
   final String time;
   final String pace;
@@ -95,7 +96,7 @@ class _ActivityContent extends StatelessWidget {
     @required this.activityID,
     this.dateTime = "N/A",
     this.distance = 0.0,
-    this.isKM = true,
+    this.runningUnit = RunningUnit.METER,
     this.title = "N/A",
     this.time = "N/A",
     this.pace = "N/A",
@@ -188,7 +189,7 @@ class _ActivityContent extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        (this.isKM ? "KM" : "M"),
+                        R.strings.distanceUnit[runningUnit.index],
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: R.appRatio.appFontSize16,
@@ -517,7 +518,7 @@ class ActivityTimeline extends StatefulWidget {
   final String activityID;
   final String dateTime;
   final double distance;
-  final bool isKM;
+  final RunningUnit runningUnit;
   final String title;
   final String time;
   final String pace;
@@ -536,7 +537,7 @@ class ActivityTimeline extends StatefulWidget {
     @required this.activityID,
     this.dateTime = "N/A",
     this.distance = 0.0,
-    this.isKM = true,
+    this.runningUnit = RunningUnit.METER,
     this.title = "N/A",
     this.time = "N/A",
     this.pace = "N/A",
@@ -620,7 +621,7 @@ class _ActivityTimelineState extends State<ActivityTimeline> {
             title: widget.title.isEmpty ? R.strings.na : widget.title,
             dateTime: widget.dateTime,
             distance: widget.distance,
-            isKM: widget.isKM,
+            runningUnit: widget.runningUnit,
             pace: widget.pace == "-1" ? R.strings.na : widget.pace,
             time: widget.time,
             calories: widget.calories == "-1" ? R.strings.na : widget.calories,

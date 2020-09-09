@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/widget/loading_dot.dart';
@@ -17,7 +18,7 @@ class ProfileActivity extends StatefulWidget {
 
 class ProfileActivityState extends State<ProfileActivity> {
   bool _isLoading;
-  bool _isKM;
+  RunningUnit _runningUnit;
   List _activityTimelineList;
   int _activityTimelineListOffset = 0;
   bool _allowLoadMore = true;
@@ -26,7 +27,7 @@ class ProfileActivityState extends State<ProfileActivity> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _isKM = DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? true : false;
+    _runningUnit = DataManager.getUserRunningUnit();
     _activityTimelineList = List();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => getProfileActivityData());
@@ -88,13 +89,13 @@ class ProfileActivityState extends State<ProfileActivity> {
     });
   }
 
-  _changeKM() {
-    // TODO: Implement function here
-    if (!mounted) return;
-    setState(() {
-      _isKM = !_isKM;
-    });
-  }
+//  _changeKM() {
+//    // TODO: Implement function here
+//    if (!mounted) return;
+//    setState(() {
+//      _isKM = !_isKM;
+//    });
+//  }
 
   void _pressEventBadge(data) {
     // TODO: Implement function here
@@ -204,8 +205,8 @@ class ProfileActivityState extends State<ProfileActivity> {
       dateTime: item['dateTime'],
       title: item['title'],
       calories: item['calories'],
-      distance: (_isKM ? item['distance'] /1000: item['distance']),
-      isKM: _isKM,
+      distance: switchDistanceUnit(item['distance'].toInt(),formatType: _runningUnit),
+      runningUnit: _runningUnit,
       elevation: item['elevation'],
       pace: item['pace'],
       time: item['time'],

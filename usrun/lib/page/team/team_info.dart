@@ -104,9 +104,9 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     setState(
       () {
         _teamTotalDistance =
-            switchBetweenMeterAndKm(toMap.totalDistance).toInt();
+            switchDistanceUnit(toMap.totalDistance).toInt();
         _teamLeadingDistance =
-            switchBetweenMeterAndKm(toMap.maxDistance).toInt();
+            switchDistanceUnit(toMap.maxDistance).toInt();
         _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
         _teamActivities = toMap.totalActivity;
         _teamRank = toMap.rank;

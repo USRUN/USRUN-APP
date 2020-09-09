@@ -122,22 +122,23 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
         }
         break;
       case 1:
-        // Delete current activity
-        showCustomAlertDialog(
-          context,
-          title: R.strings.caution,
-          content: R.strings.confirmActivityDeletion,
-          firstButtonText: R.strings.delete.toUpperCase(),
-          firstButtonFunction: () {
-            // TODO: Call API to delete this activity
-            print("Call API to delete this activity");
+      // Delete current activity
+        {
+          bool willDelete = await showCustomAlertDialog(
+            context,
+            title: R.strings.caution,
+            content: R.strings.confirmActivityDeletion,
+            firstButtonText: R.strings.delete.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context,object: true);
 
-            pop(context);
-            pop(context);
-          },
-          secondButtonText: R.strings.cancel.toUpperCase(),
-          secondButtonFunction: () => pop(context),
-        );
+            },
+            secondButtonText: R.strings.cancel.toUpperCase(),
+            secondButtonFunction: () => pop(context, object: false),
+          );
+          if (willDelete)
+            _deleteActivity();
+        }
         break;
     }
   }
@@ -351,7 +352,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     Widget _distanceWidget = _wrapWidgetData(
       firstTitle: R.strings.distance,
-      data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
+      data: switchDistanceUnit(_userActivity.totalDistance).toString(),
       unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
@@ -572,5 +573,34 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
         ],
       ),
     );
+  }
+
+  _deleteActivity() async
+  {
+    Response<dynamic> result = await UserManager.deleteActivity(_userActivity.userActivityId);
+    if (result.success)
+    {
+      showCustomAlertDialog(
+          context,
+          title: R.strings.announcement,
+          content: R.strings.successfullyDeleted,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () async{
+            pop(context);
+          }
+      );
+    }
+    else
+    {
+      showCustomAlertDialog(
+          context,
+          title: R.strings.announcement,
+          content: result.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () {
+            pop(context);
+          }
+      );
+    }
   }
 }

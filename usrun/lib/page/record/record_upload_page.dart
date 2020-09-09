@@ -141,7 +141,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                         ),
                         _buildStatsBox(
                             R.strings.time,
-                            secondToMinFormat(data.totalTime),
+                            secondToTimeFormat(data.totalTime),
                             R.strings.minutes),
                         _buildStatsBox(
                             R.strings.avgPace,

@@ -48,13 +48,13 @@ class RecordReport extends StatelessWidget {
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.time,
-                secondToMinFormat(snapshot.data.totalTime),
+                secondToTimeFormat(snapshot.data.totalTime),
                 unit: R.strings.minutes,
               ),
               SizedBox(width: 10),
               _buildInfoBox(
                 R.strings.distance,
-                switchBetweenMeterAndKm(snapshot.data.totalDistance),
+                switchDistanceUnit(snapshot.data.totalDistance),
                 unit: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
               ),
               SizedBox(width: 10),

@@ -343,4 +343,25 @@ class UserManager {
 
     return response;
   }
+
+  static Future<Response> deleteActivity(int activityId) async {
+    Map<String, dynamic> params = {
+      "activityId": activityId
+    };
+    Response<dynamic> res = await Client.post(
+      '/activity/deleteActivity',
+      params,
+    );
+    return res;
+  }
+
+  static Future<Response> updateActivity(Map<String, dynamic> params) async {
+
+    Response<dynamic> res = await Client.post(
+      '/activity/editActivity',
+      params,
+    );
+    return res;
+  }
+
 }
