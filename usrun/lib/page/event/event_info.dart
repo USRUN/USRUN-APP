@@ -207,7 +207,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             R.strings.information,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Event status
@@ -306,6 +306,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
         onTap: callback,
         radius: 5,
         enableShadow: true,
+        boxShadow: R.styles.boxShadowB,
       ),
     );
   }
@@ -380,14 +381,14 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             R.strings.organizations,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Org 0: Powered by
           _renderOrgList(
             _eventInfo.sponsorIds[0],
             R.strings.poweredBy,
-            R.colors.redPink,
+            R.colors.majorOrange,
           ),
           // Org 1: Gold
           _renderOrgList(
@@ -444,7 +445,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           // Label
           Text(
             labelTitle,
-            style: R.styles.shadowLabelStyle,
+            style: R.styles.labelStyle,
           ),
           SizedBox(height: R.appRatio.appSpacing15),
           // Leaderboard button
@@ -495,6 +496,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 boxSize: R.appRatio.appWidth100,
                 dataLine: totalParticipants,
                 secondTitleLine: R.strings.runners.toUpperCase(),
+                disableBoxShadow: true,
                 pressBox: (id) {
                   pushPage(
                       context, EventAthleteSearchPage(eventId: widget.eventId));
@@ -508,6 +510,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: distance,
                 secondTitleLine: R.strings
                     .distanceUnit[DataManager.getUserRunningUnit().index],
+                disableBoxShadow: true,
                 pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -517,6 +520,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 boxSize: R.appRatio.appWidth100,
                 dataLine: totalTeams,
                 secondTitleLine: R.strings.teams.toUpperCase(),
+                disableBoxShadow: true,
                 pressBox: (id) {
                   pushPage(
                       context, EventTeamSearchPage(eventId: widget.eventId));

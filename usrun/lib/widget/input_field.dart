@@ -4,7 +4,6 @@ import 'package:usrun/core/R.dart';
 
 class InputField extends StatefulWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
   final bool enableFullWidth;
   final int maxLines;
   final bool enableBottomUnderline;
@@ -31,7 +30,6 @@ class InputField extends StatefulWidget {
 
   InputField({
     this.labelTitle = "",
-    this.enableLabelShadow = false,
     this.enableFullWidth = true,
     this.maxLines,
     this.enableBottomUnderline = true,
@@ -102,9 +100,7 @@ class _InputFieldState extends State<InputField> {
                 ? null
                 : Text(
                     widget.labelTitle,
-                    style: (widget.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   )),
           ),
           TextField(

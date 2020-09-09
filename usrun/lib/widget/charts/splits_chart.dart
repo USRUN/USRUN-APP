@@ -11,7 +11,6 @@ class SplitsChart extends StatelessWidget {
   final List<SplitModel> splitModelArray;
   final String labelTitle;
   final EdgeInsets labelPadding;
-  final bool enableLabelShadow;
   final Color headingColor;
   final Color dividerColor;
   final Color textColor;
@@ -29,14 +28,12 @@ class SplitsChart extends StatelessWidget {
     @required this.splitModelArray,
     this.labelTitle = "",
     this.labelPadding = const EdgeInsets.all(0.0),
-    this.enableLabelShadow = true,
     this.headingColor = Colors.black,
     this.dividerColor = Colors.black,
     this.textColor = Colors.black,
     this.paceBoxColor = Colors.redAccent,
   }) : assert(chartPadding != null &&
-            labelTitle != null &&
-            enableLabelShadow != null);
+            labelTitle != null);
 
   Widget _renderHeading() {
     return Row(
@@ -221,9 +218,7 @@ class SplitsChart extends StatelessWidget {
                   child: Text(
                     this.labelTitle,
                     textScaleFactor: 1.0,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),

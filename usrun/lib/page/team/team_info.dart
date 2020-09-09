@@ -598,7 +598,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                               ),
                               child: Text(
                                 R.strings.teamStats,
-                                style: R.styles.shadowLabelStyle,
+                                style: R.styles.labelStyle,
                               ),
                             ),
                             GestureDetector(
@@ -641,13 +641,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine: numberDisplayAdapter(_teamRank),
                                   secondTitleLine: R.strings.rank,
+                                  disableBoxShadow: true,
                                   pressBox: (id) {
                                     pushPage(
-                                        context,
-                                        TeamRank(
-                                          teamId: widget.teamId,
-                                          reloadTeamPage: widget.reloadTeamPage,
-                                        ));
+                                      context,
+                                      TeamRank(
+                                        teamId: widget.teamId,
+                                        reloadTeamPage: widget.reloadTeamPage,
+                                      ),
+                                    );
                                   },
                                 ),
                                 SizedBox(
@@ -656,9 +658,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 NormalInfoBox(
                                   id: "1",
                                   boxSize: R.appRatio.appWidth100,
-                                  dataLine:
-                                      numberDisplayAdapter(_teamActivities),
+                                  dataLine: numberDisplayAdapter(
+                                    _teamActivities,
+                                  ),
                                   secondTitleLine: R.strings.activities,
+                                  disableBoxShadow: true,
                                   pressBox: (id) {
                                     pushPage(
                                       context,
@@ -680,9 +684,11 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                 NormalInfoBox(
                                   id: "2",
                                   boxSize: R.appRatio.appWidth100,
-                                  dataLine:
-                                      numberDisplayAdapter(_teamTotalDistance),
+                                  dataLine: numberDisplayAdapter(
+                                    _teamTotalDistance,
+                                  ),
                                   secondTitleLine: currentRunningUnit,
+                                  disableBoxShadow: true,
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -693,6 +699,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: _teamLeadingTime,
                                   secondTitleLine:
                                       "HH:MM:SS\n" + R.strings.leadingTime,
+                                  disableBoxShadow: true,
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -701,10 +708,12 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   id: "4",
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine: numberDisplayAdapter(
-                                      _teamLeadingDistance),
+                                    _teamLeadingDistance,
+                                  ),
                                   secondTitleLine: currentRunningUnit +
                                       "\n" +
                                       R.strings.leadingDist,
+                                  disableBoxShadow: true,
                                 ),
                               ],
                             ),
@@ -721,6 +730,7 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine:
                                       numberDisplayAdapter(_teamNewMemThisWeek),
                                   secondTitleLine: R.strings.newMemThisWeek,
+                                  disableBoxShadow: true,
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -730,13 +740,15 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   boxSize: R.appRatio.appWidth100,
                                   dataLine: numberDisplayAdapter(_teamMembers),
                                   secondTitleLine: R.strings.members,
+                                  disableBoxShadow: true,
                                   pressBox: (id) {
                                     pushPage(
-                                        context,
-                                        TeamMemberPage(
-                                          teamId: widget.teamId,
-                                          teamMemberType: _teamMemberType,
-                                        ));
+                                      context,
+                                      TeamMemberPage(
+                                        teamId: widget.teamId,
+                                        teamMemberType: _teamMemberType,
+                                      ),
+                                    );
                                   },
                                 ),
                               ],

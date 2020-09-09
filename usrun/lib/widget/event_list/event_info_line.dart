@@ -205,6 +205,7 @@ class _EventInfoLineState extends State<EventInfoLine> {
           onTap: callback,
           radius: 5,
           enableShadow: true,
+          boxShadow: R.styles.boxShadowB,
         ),
       );
     }

@@ -18,7 +18,7 @@ class ProfileStats extends StatefulWidget {
 
   final int userId;
 
-  ProfileStats({@required this.userId, Key key}): super(key: key);
+  ProfileStats({@required this.userId, Key key}) : super(key: key);
 
   final tabBarItems = [
     R.strings.day,
@@ -79,7 +79,8 @@ class ProfileStatsState extends State<ProfileStats> {
       DateTime toTime = DateTime(
           _selectedDay.year, _selectedDay.month, _selectedDay.day, 23, 59, 59);
 
-      await UserManager.getUserActivityByTimeWithSum(widget.userId, fromTime, toTime)
+      await UserManager.getUserActivityByTimeWithSum(
+          widget.userId, fromTime, toTime)
           .then((value) {
         var newValue = FormatProfileStats.formatDayObject(value);
         if (!mounted) return;
@@ -113,7 +114,7 @@ class ProfileStatsState extends State<ProfileStats> {
           break;
         case 2: // Month
           WeekDateTime weekOfMonth =
-              WeekDateTime.getCurrentWeek(_selectedMonth);
+          WeekDateTime.getCurrentWeek(_selectedMonth);
           DateTime weekFromDate = weekOfMonth.getFromDateValue();
           DateTime weekToDate = weekOfMonth.getToDateValue();
 
@@ -123,7 +124,7 @@ class ProfileStatsState extends State<ProfileStats> {
               weekToDate.year, weekToDate.month, weekToDate.day, 23, 59, 59);
 
           DateTime lastDayOfMonth =
-              DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
+          DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
           statsSectionFromTime =
               DateTime(_selectedMonth.year, _selectedMonth.month, 1, 0, 0, 0);
           statsSectionToTime = DateTime(_selectedMonth.year,
@@ -131,7 +132,7 @@ class ProfileStatsState extends State<ProfileStats> {
           break;
         case 3: // Year
           DateTime lastDayOfMonth =
-              DateTime(_selectedYear.year, _selectedYear.month + 1, 0);
+          DateTime(_selectedYear.year, _selectedYear.month + 1, 0);
           chartFromTime =
               DateTime(_selectedYear.year, _selectedYear.month, 1, 0, 0, 0);
           chartToTime = DateTime(_selectedYear.year, _selectedYear.month,
@@ -147,7 +148,8 @@ class ProfileStatsState extends State<ProfileStats> {
       var futures = List<Future>();
 
       futures.add(
-          UserManager.getUserActivityByTimeWithSum(widget.userId, chartFromTime, chartToTime));
+          UserManager.getUserActivityByTimeWithSum(
+              widget.userId, chartFromTime, chartToTime));
       futures.add(UserManager.getUserActivityByTimeWithSum(widget.userId,
           statsSectionFromTime, statsSectionToTime));
 
@@ -158,9 +160,9 @@ class ProfileStatsState extends State<ProfileStats> {
         dynamic statsSectionListResult = resultList[1];
 
         var newChartList =
-            FormatProfileStats.formatChartObject(chartListResult);
+        FormatProfileStats.formatChartObject(chartListResult);
         var newStatsSectionList =
-            FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
+        FormatProfileStats.formatStatsSectionObject(statsSectionListResult);
 
         if (!mounted) return;
         setState(() {
@@ -344,16 +346,16 @@ class ProfileStatsState extends State<ProfileStats> {
           height: R.appRatio.appSpacing25,
         ),
         UIButton(
-          color: R.colors.redPink,
+          color: R.colors.majorOrange,
           text: _stringSelectedDate,
           textSize: R.appRatio.appFontSize16,
           textColor: Colors.white,
           fontWeight: FontWeight.bold,
           enableShadow: true,
+          boxShadow: R.styles.boxShadowB,
           width: R.appRatio.appWidth220,
           height: R.appRatio.appHeight35,
           radius: 2,
-          boxShadow: R.styles.boxShadowB,
           onTap: _pressDateButton,
         ),
         SizedBox(

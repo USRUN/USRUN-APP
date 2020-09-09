@@ -46,20 +46,20 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       title: R.strings.editActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 0,
-      iconURL: R.myIcons.blackEditIcon,
+      iconURL: R.myIcons.editIconByTheme,
       iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 1,
-      iconURL: R.myIcons.blackCloseIcon,
+      iconURL: R.myIcons.closeIconByTheme,
       iconSize: 14,
     ),
   ];

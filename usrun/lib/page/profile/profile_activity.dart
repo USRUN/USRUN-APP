@@ -8,10 +8,10 @@ import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 
 class ProfileActivity extends StatefulWidget {
-
   final int userId;
 
-  ProfileActivity({@required this.userId, Key key}): super(key: key);
+  ProfileActivity({@required this.userId, Key key}) : super(key: key);
+
   @override
   ProfileActivityState createState() => ProfileActivityState();
 }
@@ -44,7 +44,8 @@ class ProfileActivityState extends State<ProfileActivity> {
     var futures = List<Future>();
 
     // Function: Get activityTimeline data
-    futures.add(UserManager.getActivityTimelineList(widget.userId,
+    futures.add(UserManager.getActivityTimelineList(
+      widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ));
@@ -72,7 +73,8 @@ class ProfileActivityState extends State<ProfileActivity> {
   }
 
   _loadMoreActivityTimelineItems() async {
-    await UserManager.getActivityTimelineList(widget.userId,
+    await UserManager.getActivityTimelineList(
+      widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ).then((value) {
@@ -142,7 +144,6 @@ class ProfileActivityState extends State<ProfileActivity> {
 //              EventBadgeList(
 //                items: DemoData().eventBadgeList,
 //                labelTitle: R.strings.personalEventBadges,
-//                enableLabelShadow: true,
 //                enableScrollBackgroundColor: true,
 //                pressItemFunction: _pressEventBadge,
 //              ),
@@ -153,7 +154,6 @@ class ProfileActivityState extends State<ProfileActivity> {
 //              PhotoList(
 //                items: DemoData().photoItemList,
 //                labelTitle: R.strings.personalPhotos,
-//                enableLabelShadow: true,
 //                enableScrollBackgroundColor: true,
 //              ),
 //              SizedBox(
@@ -168,7 +168,7 @@ class ProfileActivityState extends State<ProfileActivity> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   R.strings.personalActivities,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               ListView.builder(
@@ -185,7 +185,7 @@ class ProfileActivityState extends State<ProfileActivity> {
                         if (details.delta.dy >= -10.0) return;
                         if (_allowLoadMore) {
                           _allowLoadMore = false;
-                            _loadMoreActivityTimelineItems();
+                          _loadMoreActivityTimelineItems();
                         }
                       },
                       child: _renderActivityTimeline(item),

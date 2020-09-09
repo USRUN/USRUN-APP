@@ -7,7 +7,7 @@ import 'follower_following_item.dart';
 
 class FollowerFollowingList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
+
   final String subTitle;
   final bool enableSubtitleShadow;
   final List<FollowerFollowingItem> items;
@@ -27,7 +27,6 @@ class FollowerFollowingList extends StatelessWidget {
 
   FollowerFollowingList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     this.subTitle = "",
     this.enableSubtitleShadow = true,
     @required this.items,
@@ -71,9 +70,7 @@ class FollowerFollowingList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
@@ -85,9 +82,7 @@ class FollowerFollowingList extends StatelessWidget {
                   ),
                   child: Text(
                     this.subTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowSubTitleStyle
-                        : R.styles.subTitleStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),

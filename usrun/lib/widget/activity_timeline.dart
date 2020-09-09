@@ -74,7 +74,10 @@ class _ActivityContent extends StatelessWidget {
   final Function pressShareFunction;
   final Function pressInteractionFunction;
 
-  static double _boxHeight = R.appRatio.appHeight210;
+  // TODO: Change _boxHeight, _bottomHeightSmallRightBox
+  // (Turn off "love-comment-share-totalloves" feature)
+  static double _boxHeight =
+      R.appRatio.appHeight190; // R.appRatio.appHeight210;
   static Color _boxColor = Color(0xFFFFE4CF);
   static Color _pathIconColor = Color(0xFFE6CDBB);
   static double _boxRadius = 10;
@@ -85,7 +88,7 @@ class _ActivityContent extends StatelessWidget {
       ? R.appRatio.appWidth110
       : R.appRatio.appWidth90);
   static double _smallRightBoxWidth = _bigBoxWidth - _smallLeftBoxWidth;
-  static double _bottomHeightSmallRightBox = R.appRatio.appHeight40;
+  static double _bottomHeightSmallRightBox = 0; // R.appRatio.appHeight40;
   static double _topHeightSmallRightBox =
       _boxHeight - _bottomHeightSmallRightBox;
   static double _statsInfoWidth = (R.appRatio.deviceWidth >= 360
@@ -115,7 +118,7 @@ class _ActivityContent extends StatelessWidget {
   Widget build(BuildContext context) {
     String _formattedDistance =
         NumberFormat("#,##0.00", "en_US").format(this.distance);
-    String _formattedLoveNumber = '${this.loveNumber}' + " loves";
+    String _formattedLoveNumber = '${this.loveNumber}' + " love(s)";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -242,7 +245,7 @@ class _ActivityContent extends StatelessWidget {
                           Column(
                             children: <Widget>[
                               SizedBox(
-                                height: R.appRatio.appSpacing5,
+                                height: R.appRatio.appSpacing10,
                               ),
                               // Title
                               Row(
@@ -250,7 +253,7 @@ class _ActivityContent extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   SizedBox(
-                                    width: R.appRatio.appSpacing5,
+                                    width: R.appRatio.appSpacing10,
                                   ),
                                   ImageCacheManager.getImage(
                                     url: R.myIcons.blackRunnerIcon,
@@ -265,6 +268,7 @@ class _ActivityContent extends StatelessWidget {
                                     child: Text(
                                       this.title,
                                       overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
                                       style: TextStyle(
                                         fontSize: R.appRatio.appFontSize16,
                                         color: Colors.black,
@@ -558,8 +562,10 @@ class ActivityTimeline extends StatefulWidget {
 }
 
 class _ActivityTimelineState extends State<ActivityTimeline> {
-  static double _lineHeight = R.appRatio.appHeight270.roundToDouble();
-  static double _lineWidth = 3;
+  // TODO: Change _boxHeight, _bottomHeightSmallRightBox
+  // (Turn off "love-comment-share-totalloves" feature)
+  double _lineHeight = R.appRatio.appHeight240; // R.appRatio.appHeight270;
+  double _lineWidth = 3;
 
   bool _isLovedState = false;
   int _loveNumberState = 0;

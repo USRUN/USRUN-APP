@@ -75,7 +75,7 @@ class CustomTabBarStyle01 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: R.colors.redPink,
+      color: R.colors.majorOrange,
       height: R.appRatio.appHeight50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -7,7 +7,6 @@ import 'drop_down_object.dart';
 class DropDownMenu<T> extends StatefulWidget {
   final String labelTitle;
   final String hintText;
-  final bool enableLabelShadow;
   final bool enableHorizontalLabelTitle;
   final bool enableFullWidth;
   final Function onChanged;
@@ -22,7 +21,6 @@ class DropDownMenu<T> extends StatefulWidget {
     Key key,
     this.labelTitle = "",
     this.hintText = "",
-    this.enableLabelShadow = false,
     this.enableHorizontalLabelTitle = false,
     this.enableFullWidth = true,
     @required this.onChanged,
@@ -91,9 +89,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
                       ? null
                       : Text(
                           widget.labelTitle,
-                          style: (widget.enableLabelShadow
-                              ? R.styles.shadowLabelStyle
-                              : R.styles.labelStyle),
+                          style: R.styles.labelStyle,
                         )),
                 ),
                 Container(
@@ -122,9 +118,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
                       ? null
                       : Text(
                           widget.labelTitle,
-                          style: (widget.enableLabelShadow
-                              ? R.styles.shadowLabelStyle
-                              : R.styles.labelStyle),
+                          style: R.styles.labelStyle,
                         )),
                 ),
                 Container(
@@ -159,8 +153,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
-                    right:
-                        (hasImage ? R.appRatio.appSpacing10 : 0)),
+                    right: (hasImage ? R.appRatio.appSpacing10 : 0)),
                 child: (hasImage
                     ? ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -195,9 +188,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
               ? null
               : Text(
                   widget.labelTitle,
-                  style: (widget.enableLabelShadow
-                      ? R.styles.shadowLabelStyle
-                      : R.styles.labelStyle),
+                  style: R.styles.labelStyle,
                 )),
         ),
         DropdownButton<T>(
@@ -257,9 +248,7 @@ class _DropDownMenuState<T> extends State<DropDownMenu> {
                   ? null
                   : Text(
                       widget.labelTitle,
-                      style: (widget.enableLabelShadow
-                          ? R.styles.shadowLabelStyle
-                          : R.styles.labelStyle),
+                      style: R.styles.labelStyle,
                     )),
             ),
             Expanded(

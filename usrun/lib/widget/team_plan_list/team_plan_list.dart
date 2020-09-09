@@ -266,14 +266,13 @@ class _TeamPlanItem extends StatelessWidget {
 
 class TeamPlanList extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
+
   final List<TeamPlanItem> items;
   final bool enableScrollBackgroundColor;
   final void Function(TeamPlanItem data) pressItemFunction;
 
   TeamPlanList({
     this.labelTitle = "",
-    this.enableLabelShadow = true,
     @required this.items,
     this.enableScrollBackgroundColor = true,
     this.pressItemFunction(data),
@@ -294,9 +293,7 @@ class TeamPlanList extends StatelessWidget {
                   ),
                   child: Text(
                     this.labelTitle,
-                    style: (this.enableLabelShadow
-                        ? R.styles.shadowLabelStyle
-                        : R.styles.labelStyle),
+                    style: R.styles.labelStyle,
                   ),
                 )
               : Container()),
