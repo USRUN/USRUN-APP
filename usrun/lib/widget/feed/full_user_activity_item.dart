@@ -41,20 +41,20 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       title: R.strings.editActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 0,
-      iconURL: R.myIcons.blackEditIcon,
+      iconURL: R.myIcons.editIconByTheme,
       iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 1,
-      iconURL: R.myIcons.blackCloseIcon,
+      iconURL: R.myIcons.closeIconByTheme,
       iconSize: 14,
     ),
   ];
@@ -445,10 +445,9 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       return Container();
     }
 
-    double _boxHeight = 80;
-    double _imgWidth = 120;
+    double _boxHeight = 90;
+    double _imgWidth = 60;
 
-    // TODO: Code here
     return Container(
       color: R.colors.sectionBackgroundLayer,
       height: _boxHeight,
@@ -462,12 +461,12 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ImageCacheManager.getImage(
             url: _userActivity.eventThumbnail,
-            width: _boxHeight,
-            height: _boxHeight,
+            width: _imgWidth,
+            height: _imgWidth,
             fit: BoxFit.fill,
           ),
           SizedBox(width: _spacing),
@@ -568,7 +567,8 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           _renderDetailVisualization(),
           if (_userActivity.eventId != -1) _renderEventInfoBox(),
           _renderInteractionBox(),
-          if(!checkListIsNullOrEmpty(_userActivity.splitModelArray)) _renderSplits()
+          if (!checkListIsNullOrEmpty(_userActivity.splitModelArray))
+            _renderSplits()
         ],
       ),
     );
