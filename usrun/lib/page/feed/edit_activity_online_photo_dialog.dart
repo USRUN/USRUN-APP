@@ -47,7 +47,7 @@ class _CustomRemoveOldOnlinePhotoDialog extends StatelessWidget {
             enableShadow: false,
             height: 40,
             onTap: () {
-              pop(context);
+              pop(context, object: true);
             },
           ),
           SizedBox(

@@ -153,9 +153,46 @@ class _EventSearchPageState extends State<EventSearchPage> {
     });
   }
 
+  Widget _buildEmptyList() {
+    String systemNoti = R.strings.noResult;
+    String systemNotiSub = R.strings.noResultSubtitle;
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              systemNoti,
+              textAlign: TextAlign.justify,
+              style: TextStyle(
+                color: R.colors.contentText,
+                fontSize: R.appRatio.appFontSize18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              systemNotiSub,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: R.colors.contentText,
+                fontSize: R.appRatio.appFontSize14,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _renderEventList() {
     if (checkListIsNullOrEmpty(_originalList)) {
-      return Container();
+      return _buildEmptyList();
     }
 
     return ListView.builder(

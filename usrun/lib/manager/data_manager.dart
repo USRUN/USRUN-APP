@@ -87,7 +87,7 @@ class DataManager {
   }
 
   static int loadAppTheme() {
-    return _prefs.getInt(_APP_THEME);
+    return _prefs.getInt(_APP_THEME) ?? 0;
   }
 
   static void saveAppTheme(AppTheme appTheme) {
