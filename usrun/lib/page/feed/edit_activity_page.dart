@@ -183,9 +183,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
     bool showMap = _userActivity.showMap;
     List<String> photos = [];
 
-    if (showMap) {
-      photos.add(_userActivity.photos[0]);
-    }
+    photos.add(_userActivity.photos[0]);
 
     for (int i = 0; i < _userPhotoList.length; i++) {
       _UserPhotoItem photo = _userPhotoList[i];
