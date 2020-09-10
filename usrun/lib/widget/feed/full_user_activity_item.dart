@@ -570,7 +570,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     Response<dynamic> result = await UserManager.deleteActivity(_userActivity.userActivityId);
     if (result.success)
     {
-      showCustomAlertDialog(
+      await showCustomAlertDialog(
           context,
           title: R.strings.announcement,
           content: R.strings.successfullyDeleted,
@@ -579,6 +579,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
             pop(context);
           }
       );
+      pop(context);
     }
     else
     {
