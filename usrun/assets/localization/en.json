@@ -222,7 +222,7 @@
     "deleteTeamSubtitle": "Your team’ll be deleted after your deletion is confirmed and you receive the acceptance from the UA. There is no going back, please be certain",
     "listCouldNotBeLoad": "This list can not be loaded, please try again later!",
     "noResult": "We couldn't find any result",
-    "noResultSubtitle": "Please make sure that you typed the name correctly and try again",
+    "noResultSubtitle": "Please check your input and try again",
     "noMemberInList": "This list is empty",
     "noMemberInListSubtitle": "There is no member in this list",
     "memberOnly": "Only Members Can See This List",
