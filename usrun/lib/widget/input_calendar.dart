@@ -6,7 +6,6 @@ import 'package:usrun/widget/my_date_picker/my_date_picker.dart';
 
 class InputCalendar extends StatefulWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
   final bool enableFullWidth;
   final Function getDOBFunc;
   final String defaultDay;
@@ -17,7 +16,6 @@ class InputCalendar extends StatefulWidget {
     this.labelTitle = "",
     this.defaultDay = 'dd/MM/yyyy',
     this.initalDate,
-    this.enableLabelShadow = false,
     this.enableFullWidth = true,
     this.getDOBFunc,
   }) : super(key: key);
@@ -32,7 +30,9 @@ class _InputCalendarState extends State<InputCalendar> {
 
   @override
   void initState() {
-    _birthday = widget.initalDate!=null?formatDateTime(widget.initalDate):widget.defaultDay;
+    _birthday = widget.initalDate != null
+        ? formatDateTime(widget.initalDate)
+        : widget.defaultDay;
     _dateTime = null;
     super.initState();
   }
@@ -49,9 +49,7 @@ class _InputCalendarState extends State<InputCalendar> {
                   ? null
                   : Text(
                       widget.labelTitle,
-                      style: (widget.enableLabelShadow
-                          ? R.styles.shadowLabelStyle
-                          : R.styles.labelStyle),
+                      style: R.styles.labelStyle,
                     )),
             ),
             GestureDetector(
@@ -81,7 +79,8 @@ class _InputCalendarState extends State<InputCalendar> {
                   final DateTime today = new DateTime.now();
                   final datePick = await showMyDatePicker(
                       context: context,
-                      initialDate: widget.initalDate==null? today : widget.initalDate,
+                      initialDate:
+                          widget.initalDate == null ? today : widget.initalDate,
                       firstDate: new DateTime(1900),
                       lastDate: today);
 

@@ -160,7 +160,7 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
               String avatarImageURL = items[index].avatarImageURL;
               String name = items[index].name;
               String distance = NumberFormat.compact().format(
-                switchBetweenMeterAndKm(
+                switchDistanceUnit(
                   items[index].distance,
                   formatType: RunningUnit.KILOMETER,
                 ),

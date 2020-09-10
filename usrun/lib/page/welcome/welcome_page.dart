@@ -210,30 +210,34 @@ class _WelcomePageState extends State<WelcomePage>
         showPage(context, AppPage());
       }
     }
-    // else {
-    //   if (response.errorCode == USER_EMAIL_IS_USED) {
-    //     Map<String, dynamic> loginData = await UserManager.login(channel, params);
-    //     response = loginData['response'];
-    //     if (response.success) {
-    //       DataManager.setLoginChannel(channel.index);
-    //       showPage(context, AppPage());
-    //     }
-    //     else {
-    //       String message = UserManager.emailIsUserMessage(params['email']);
-    //       showAlert(context, R.strings.errorTitle, message, null);
-    //     }
-    //     return;
-    //   }
+//     else {
+//       if (response.errorCode == USER_EMAIL_IS_USED) {
+//         Map<String, dynamic> loginData = await UserManager.login(channel, params);
+//         response = loginData['response'];
+//         if (response.success) {
+//           DataManager.setLoginChannel(channel.index);
+//           showPage(context, AppPage());
+//         }
+//         else {
+//           String message = UserManager.emailIsUserMessage(params['email']);
+//           showAlert(context, R.strings.errorTitle, message, null);
+//         }
+//         return;
+//       }
 
-    //   if (response.success == false) {
-    //     // call channel logout with
-    //     showLoading(context);
-    //     UserManager.logout();
-    //     hideLoading(context);
+       if (response.success == false) {
+         // call channel logout with
+         UserManager.logout();
 
-    //     showAlert(context, R.strings.errorTitle, response.errorMessage, null);
-    //   }
-    // }
+         showCustomAlertDialog(
+           context,
+           title: R.strings.errorLoginFail,
+           content: response.errorMessage,
+           firstButtonText: R.strings.cancel.toUpperCase(),
+           firstButtonFunction: () => pop(this.context),
+         );
+       }
+
   }
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,

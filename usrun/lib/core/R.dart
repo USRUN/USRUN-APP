@@ -707,7 +707,6 @@ class _Colors {
   Color grayABABAB = Color(0xFFABABAB);
   Color gray515151 = Color(0xFF515151);
   Color gray808080 = Color(0xFF808080);
-  Color redPink = Color(0xFFFF5C4E);
   Color oldYellow = Color(0xFFF9C86A);
   Color labelText = Color(0xFFFD632C);
 
@@ -744,7 +743,7 @@ class _Colors {
       boxBackground = Color(0xFFFFFFFF);
       grayButtonColor = Color(0xFF515151);
       sectionBackgroundLayer = Color.fromRGBO(255, 235, 222, 0.4);
-      boxShadow = Color.fromRGBO(0, 0, 0, 0.15);
+      boxShadow = Color.fromRGBO(0, 0, 0, 0.2);
       textShadow = Color.fromRGBO(0, 0, 0, 0.15);
       tabLayer = Color.fromRGBO(253, 99, 44, 0.1);
       discussionLayer = Color.fromRGBO(253, 99, 44, 0.2);
@@ -765,13 +764,13 @@ class _Colors {
       boxBackground = Color(0xFF212121);
       grayButtonColor = Color(0xFFABABAB);
       sectionBackgroundLayer = Color.fromRGBO(33, 33, 33, 0.5);
-      boxShadow = Color.fromRGBO(255, 255, 255, 0.15);
+      boxShadow = Color.fromRGBO(255, 255, 255, 0.3);
       textShadow = Color.fromRGBO(255, 255, 255, 0.15);
       tabLayer = Color.fromRGBO(255, 255, 255, 0.1);
       discussionLayer = Color.fromRGBO(171, 171, 171, 0.2);
       notificationLayer = Color.fromRGBO(171, 171, 171, 0.2);
       supportAvatarBorder = Colors.transparent;
-      dialogBackground = Color(0xFF505050);
+      dialogBackground = Color(0xFF555555);
       firstButtonDialogColor = Color(0xFFFD632C);
       secondButtonDialogColor = Color(0xFFF2F2F2);
     }
@@ -1202,6 +1201,8 @@ class Strings {
   String successfullyUploaded;
   String failToUpload;
   String discardActivity;
+  String successfullyDeleted;
+  String successfullyEdited;
 
   String uFeed;
   String readMore;
@@ -1552,19 +1553,6 @@ class _Styles {
     fontWeight: FontWeight.bold,
     fontSize: R.appRatio.appFontSize18,
     color: R.colors.labelText,
-  );
-
-  final TextStyle shadowLabelStyle = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: R.appRatio.appFontSize18,
-    color: R.colors.labelText,
-    shadows: <Shadow>[
-      Shadow(
-        offset: Offset(1.25, 1.25),
-        blurRadius: 2.0,
-        color: R.colors.textShadow,
-      ),
-    ],
   );
 
   final TextStyle subTitleStyle = TextStyle(

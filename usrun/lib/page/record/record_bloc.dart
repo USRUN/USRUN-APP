@@ -4,18 +4,21 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/life_cycle.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/page/record/bloc_provider.dart';
 import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/kalman_filter.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
 import 'package:usrun/page/record/timer.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:location/location.dart';
 import 'package:location/location_background.dart';
@@ -59,6 +62,8 @@ class RecordBloc extends BlocBase {
   BuildContext context;
   //end test
 
+  String _mapStyle;
+
   RecordBloc(BuildContext c) {
     context = c;
     setCustomMapPin();
@@ -82,6 +87,15 @@ class RecordBloc extends BlocBase {
 
     this._pedometer = Pedometer();
     this._locationBackground = LocationBackground();
+
+    int themeIndex = DataManager.loadAppTheme();
+    AppTheme appTheme = AppTheme.values[themeIndex];
+    if (appTheme == AppTheme.DARK)
+    {
+      rootBundle.loadString('assets/map_style.txt').then((string) {
+        _mapStyle = string;
+      });
+    }
 
     _initTimeService(0);
     initListeners();
@@ -369,6 +383,7 @@ class RecordBloc extends BlocBase {
 
   onMapCreated(GoogleMapController controller) {
     this.mapController = controller;
+    this.mapController.setMapStyle(_mapStyle);
   }
 
   Future<LocationData> getCurrentLocation() async {
@@ -435,7 +450,7 @@ class RecordBloc extends BlocBase {
   }
 
   void _updatePositionCamera(LatLng latlng, {double zoom = 15}) {
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+    this.mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0.0,
         target: latlng,
         tilt: 0.0,
@@ -467,7 +482,7 @@ class RecordBloc extends BlocBase {
       Polyline polyline = Polyline(
           polylineId: PolylineId('${recordData.trackRequest.routes.length}'),
           color: R.colors.majorOrange,
-          width: 5,
+          width: 3,
           points: []);
 
       lData.add(polyline);
@@ -532,7 +547,7 @@ class RecordBloc extends BlocBase {
     });
     this.lifecycleEventHandler =
         new LifecycleEventHandler(resumeCallBack: () async {
-      mapController.setMapStyle("[]");
+        this.mapController.setMapStyle(_mapStyle);
 //      if (gpsStatus == GPSSignalStatus.NOT_AVAILABLE) {
 //        await this.onGpsStatusChecking();
 //      }
@@ -636,8 +651,8 @@ class RecordBloc extends BlocBase {
     var a = (v2 - v1) / (totalTimeElapsed / 1000);
     print("acceleration: " + a.toString());
 
-    print("total meters have to pass: " + (timePassed / 1000).toString());
-    if (distance < 1 * timePassed / 1000)
+    print("total meters have to pass: " + (0.75 * timePassed / 1000).toString());
+    if (distance < 0.5 * timePassed / 1000) //0.5m/s
     //||calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
     {
       print("Distance is less than required (1m/s) after: " +

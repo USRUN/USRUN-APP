@@ -30,7 +30,7 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiActLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -110,7 +110,7 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiEvtLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -206,7 +206,7 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiFFLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(
@@ -254,7 +254,7 @@ class InAppNotifications extends StatelessWidget {
                 child: Text(
                   R.strings.notiTMLabel,
                   textAlign: TextAlign.start,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               LineButton(

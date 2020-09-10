@@ -128,7 +128,6 @@ class _StatsSectionBox extends StatelessWidget {
 // ignore: must_be_immutable
 class StatsSection extends StatelessWidget {
   final String labelTitle;
-  final bool enableLabelShadow;
   final List items;
 
   /*
@@ -149,7 +148,6 @@ class StatsSection extends StatelessWidget {
 
   StatsSection({
     this.labelTitle = "",
-    this.enableLabelShadow = false,
     @required this.items,
   });
 
@@ -184,9 +182,7 @@ class StatsSection extends StatelessWidget {
                 ),
                 child: Text(
                   this.labelTitle,
-                  style: (this.enableLabelShadow
-                      ? R.styles.shadowLabelStyle
-                      : R.styles.labelStyle),
+                  style: R.styles.labelStyle,
                 ),
               )),
         Center(
@@ -237,8 +233,9 @@ class StatsSection extends StatelessWidget {
   Widget _buildList() {
     // Compute some data
     int _separatedPoint = (this.items.length / 2).round();
-    double _verticalDividerHeight = (R.appRatio.appHeight50 + 2) * _separatedPoint +
-        R.appRatio.appSpacing15 * (_separatedPoint - 1);
+    double _verticalDividerHeight =
+        (R.appRatio.appHeight50 + 2) * _separatedPoint +
+            R.appRatio.appSpacing15 * (_separatedPoint - 1);
     _verticalDividerHeight = _verticalDividerHeight.roundToDouble();
 
     List<Widget> _firstColumn = _renderAllItem(0, _separatedPoint);
@@ -259,9 +256,7 @@ class StatsSection extends StatelessWidget {
                 ),
                 child: Text(
                   this.labelTitle,
-                  style: (this.enableLabelShadow
-                      ? R.styles.shadowLabelStyle
-                      : R.styles.labelStyle),
+                  style: R.styles.labelStyle,
                 ),
               )),
         Row(

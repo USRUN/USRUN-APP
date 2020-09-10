@@ -82,19 +82,8 @@ class _TeamSearchPageState extends State<TeamSearchPage> {
     Response<dynamic> response = await TeamManager.findTeamRequest(
         _currentSearchKey, _currentPage, _pageSize);
 
-    if (response.success && (response.object as List).isNotEmpty) {
+    if (response.success && !checkListIsNullOrEmpty(response.object as List)) {
       result = response.object;
-    } else {
-      showCustomAlertDialog(
-        context,
-        title: R.strings.error,
-        content: response.errorMessage,
-        firstButtonText: R.strings.ok,
-        firstButtonFunction: () {
-          pop(context);
-        },
-        secondButtonText: "",
-      );
     }
 
     return result;

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/widget/loading_dot.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 
 class ProfileActivity extends StatefulWidget {
-
   final int userId;
 
-  ProfileActivity({@required this.userId, Key key}): super(key: key);
+  ProfileActivity({@required this.userId, Key key}) : super(key: key);
+
   @override
   ProfileActivityState createState() => ProfileActivityState();
 }
 
 class ProfileActivityState extends State<ProfileActivity> {
   bool _isLoading;
-  bool _isKM;
+  RunningUnit _runningUnit;
   List _activityTimelineList;
   int _activityTimelineListOffset = 0;
   bool _allowLoadMore = true;
@@ -26,7 +27,7 @@ class ProfileActivityState extends State<ProfileActivity> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _isKM = DataManager.getUserRunningUnit() == RunningUnit.KILOMETER? true : false;
+    _runningUnit = DataManager.getUserRunningUnit();
     _activityTimelineList = List();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => getProfileActivityData());
@@ -43,7 +44,8 @@ class ProfileActivityState extends State<ProfileActivity> {
     var futures = List<Future>();
 
     // Function: Get activityTimeline data
-    futures.add(UserManager.getActivityTimelineList(widget.userId,
+    futures.add(UserManager.getActivityTimelineList(
+      widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ));
@@ -71,7 +73,8 @@ class ProfileActivityState extends State<ProfileActivity> {
   }
 
   _loadMoreActivityTimelineItems() async {
-    await UserManager.getActivityTimelineList(widget.userId,
+    await UserManager.getActivityTimelineList(
+      widget.userId,
       limit: R.constants.activityTimelineNumber,
       offset: _activityTimelineListOffset,
     ).then((value) {
@@ -88,13 +91,13 @@ class ProfileActivityState extends State<ProfileActivity> {
     });
   }
 
-  _changeKM() {
-    // TODO: Implement function here
-    if (!mounted) return;
-    setState(() {
-      _isKM = !_isKM;
-    });
-  }
+//  _changeKM() {
+//    // TODO: Implement function here
+//    if (!mounted) return;
+//    setState(() {
+//      _isKM = !_isKM;
+//    });
+//  }
 
   void _pressEventBadge(data) {
     // TODO: Implement function here
@@ -141,7 +144,6 @@ class ProfileActivityState extends State<ProfileActivity> {
 //              EventBadgeList(
 //                items: DemoData().eventBadgeList,
 //                labelTitle: R.strings.personalEventBadges,
-//                enableLabelShadow: true,
 //                enableScrollBackgroundColor: true,
 //                pressItemFunction: _pressEventBadge,
 //              ),
@@ -152,7 +154,6 @@ class ProfileActivityState extends State<ProfileActivity> {
 //              PhotoList(
 //                items: DemoData().photoItemList,
 //                labelTitle: R.strings.personalPhotos,
-//                enableLabelShadow: true,
 //                enableScrollBackgroundColor: true,
 //              ),
 //              SizedBox(
@@ -167,7 +168,7 @@ class ProfileActivityState extends State<ProfileActivity> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   R.strings.personalActivities,
-                  style: R.styles.shadowLabelStyle,
+                  style: R.styles.labelStyle,
                 ),
               ),
               ListView.builder(
@@ -184,7 +185,7 @@ class ProfileActivityState extends State<ProfileActivity> {
                         if (details.delta.dy >= -10.0) return;
                         if (_allowLoadMore) {
                           _allowLoadMore = false;
-                            _loadMoreActivityTimelineItems();
+                          _loadMoreActivityTimelineItems();
                         }
                       },
                       child: _renderActivityTimeline(item),
@@ -204,8 +205,8 @@ class ProfileActivityState extends State<ProfileActivity> {
       dateTime: item['dateTime'],
       title: item['title'],
       calories: item['calories'],
-      distance: (_isKM ? item['distance'] /1000: item['distance']),
-      isKM: _isKM,
+      distance: switchDistanceUnit(item['distance'].toInt(),formatType: _runningUnit),
+      runningUnit: _runningUnit,
       elevation: item['elevation'],
       pace: item['pace'],
       time: item['time'],

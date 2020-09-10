@@ -11,7 +11,7 @@ void showToastDefault({
     msg: msg,
     toastLength: toastLength,
     gravity: gravity,
-    backgroundColor: R.colors.redPink,
+    backgroundColor: Color(0xFF666666),
     textColor: Colors.white,
     fontSize: 16.0,
   );

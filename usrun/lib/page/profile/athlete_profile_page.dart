@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/event_manager.dart';
+import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/widget/activity_timeline.dart';
 import 'package:usrun/widget/avatar_view.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -36,7 +38,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
   bool _enableProfileDescription;
   bool _enableFFButton;
   bool _isFollowingButton;
-  bool _isKM;
+  RunningUnit _runningUnit;
   int _activityNumber;
   List _activityTimelineList;
   int _followingNumber;
@@ -49,7 +51,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     _enableProfileDescription = true;
     _enableFFButton = true;
     _isFollowingButton = false;
-    _isKM = true;
+    _runningUnit = DataManager.getUserRunningUnit();
     _activityNumber = DemoData().activityTimelineList.length;
     _activityTimelineList = DemoData().activityTimelineList;
     _followingNumber = DemoData().ffItemList.length;
@@ -152,12 +154,12 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
     });
   }
 
-  _changeKM() {
-    // TODO: Implement function here
-    setState(() {
-      _isKM = !_isKM;
-    });
-  }
+//  _changeKM() {
+//    // TODO: Implement function here
+//    setState(() {
+//      _isKM = !_isKM;
+//    });
+//  }
 
   void _pressEventBadge(data) {
     // TODO: Implement function here
@@ -329,7 +331,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     EventBadgeList(
                       items: DemoData().eventBadgeList,
                       labelTitle: R.strings.athleteBadges,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressEventBadge,
                     ),
@@ -340,7 +341,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     PhotoList(
                       items: DemoData().photoItemList,
                       labelTitle: R.strings.athletePhotos,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                     ),
                     SizedBox(
@@ -351,7 +351,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       items: DemoData().ffItemList,
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowing,
-                      enableLabelShadow: true,
                       subTitle: "$_followingNumber " +
                           R.strings.athleteFollowingNotice,
                       enableSubtitleShadow: true,
@@ -367,7 +366,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       items: DemoData().ffItemList,
                       enableFFButton: false,
                       labelTitle: R.strings.athleteFollowers,
-                      enableLabelShadow: true,
                       subTitle: "$_followerNumber " +
                           R.strings.athleteFollowersNotice,
                       enableSubtitleShadow: true,
@@ -382,7 +380,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     EventList(
                       items: EventManager.userEvents,
                       labelTitle: R.strings.athleteEvents,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressEventItemFunction,
                     ),
@@ -393,7 +390,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     TeamList(
                       items: DemoData().teamList,
                       labelTitle: R.strings.athleteTeams,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressTeamItemFunction,
                     ),
@@ -408,7 +404,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                     TeamPlanList(
                       items: DemoData().teamPlanList,
                       labelTitle: R.strings.athleteTeamPlans,
-                      enableLabelShadow: true,
                       enableScrollBackgroundColor: true,
                       pressItemFunction: _pressTeamPlanItemFunction,
                     ),
@@ -424,7 +419,6 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       child: StatsSection(
                         items: DemoData().statsListStyle01,
                         labelTitle: R.strings.athleteStatsInCurrentYear,
-                        enableLabelShadow: true,
                       ),
                     ),
                     SizedBox(
@@ -439,7 +433,7 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         R.strings.athleteActivities + ": $_activityNumber",
-                        style: R.styles.shadowLabelStyle,
+                        style: R.styles.labelStyle,
                       ),
                     ),
                     ListView.builder(
@@ -455,10 +449,8 @@ class _AthleteProfilePageState extends State<AthleteProfilePage> {
                           dateTime: item['dateTime'],
                           title: item['title'],
                           calories: item['calories'],
-                          distance: (_isKM
-                              ? item['distance']
-                              : item['distance'] * 1000),
-                          isKM: _isKM,
+                          distance: switchDistanceUnit(item['distance']),
+                          runningUnit: _runningUnit,
                           elevation: item['elevation'],
                           pace: item['pace'],
                           time: item['time'],

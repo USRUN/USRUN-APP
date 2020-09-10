@@ -18,6 +18,8 @@ import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
+import 'package:usrun/page/record/helper/record_helper.dart';
+import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -48,11 +50,11 @@ class RecordUploadPage extends StatefulWidget {
 }
 
 class _RecordUploadPage extends State<RecordUploadPage> {
-  final double _buttonHeight = R.appRatio.appHeight60;
+  final double _buttonHeight = R.appRatio.appHeight60.roundToDouble();
 
   final TextEditingController _titleController = new TextEditingController();
   final TextEditingController _descriptionController =
-  new TextEditingController();
+      new TextEditingController();
 
   final FocusNode _titleNode = FocusNode();
   final FocusNode _descriptionNode = FocusNode();
@@ -77,10 +79,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   _buildStatsBox(String title, String value, String unit) {
     return NormalInfoBox(
-      boxSize: MediaQuery
-          .of(context)
-          .size
-          .width * 0.3,
+      boxSize: MediaQuery.of(context).size.width * 0.3,
       id: title,
       firstTitleLine: title,
       secondTitleLine: unit,
@@ -94,10 +93,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   _buildStats() {
     RecordData data = widget.bloc.recordData;
-    double deviceWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double deviceWidth = R.appRatio.deviceWidth;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,25 +126,20 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          switchBetweenMeterAndKm(data.totalDistance)
+                          switchDistanceUnit(data.totalDistance)
                               .toString(),
                           R.strings.distanceUnit[
-                          DataManager
-                              .getUserRunningUnit()
-                              .index],
+                              DataManager.getUserRunningUnit().index],
                         ),
                         _buildStatsBox(
                             R.strings.time,
-                            (Duration(seconds: data.totalTime).toString())
-                                .substring(0, 7),
+                            secondToTimeFormat(data.totalTime),
                             R.strings.timeUnit),
                         _buildStatsBox(
                             R.strings.avgPace,
                             data.avgPace == -1
                                 ? R.strings.na
-                                : (Duration(seconds: data.avgPace.toInt())
-                                .toString())
-                                .substring(0, 7),
+                                : secondToMinFormat(data.avgPace.toInt()),
                             R.strings.avgPaceUnit)
                       ],
                     ),
@@ -209,10 +200,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   Widget buildPhotoPreview(context, index) {
-    double deviceWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double deviceWidth = MediaQuery.of(context).size.width;
     File file = this.widget.activity.photos.length >= index + 1
         ? this.widget.activity.photos[index]
         : null;
@@ -234,15 +222,15 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         width: deviceWidth * 0.2,
         child: file != null
             ? Image.file(file,
-            height: R.appRatio.appWidth1 * 80,
-            width: R.appRatio.appWidth1 * 80,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.low)
+                height: R.appRatio.appWidth1 * 80,
+                width: R.appRatio.appWidth1 * 80,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.low)
             : Icon(
-          Icons.add,
-          size: R.appRatio.appWidth1 * 40,
-          color: R.colors.majorOrange,
-        ),
+                Icons.add,
+                size: R.appRatio.appWidth1 * 40,
+                color: R.colors.majorOrange,
+              ),
       ),
     );
   }
@@ -250,7 +238,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   Future<void> openSelectPhoto(BuildContext context, int indexPhoto) async {
     try {
       Map<String, dynamic> imageResult =
-      await getUserImageFile(CropStyle.rectangle, context);
+          await getUserImageFile(CropStyle.rectangle, context);
       bool result = imageResult["result"];
       File file = imageResult["file"];
       if (result != null && result) {
@@ -350,15 +338,17 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
             child: UIButton(
-              color: R.colors.gray515151,
+              color: R.colors.boxBackground,
               fontWeight: FontWeight.bold,
-              textColor: Colors.white,
+              textColor: R.colors.normalNoteText,
               text: R.strings.discard.toUpperCase(),
               enableShadow: false,
               radius: 0,
+              height: _buttonHeight,
               onTap: () {
                 _unFocusAllFields();
                 _clearRecordData();
@@ -382,6 +372,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
               text: R.strings.upload.toUpperCase(),
               enableShadow: false,
               radius: 0,
+              height: _buttonHeight,
               onTap: () {
                 _unFocusAllFields();
                 _uploadActivity();
@@ -439,7 +430,9 @@ class _RecordUploadPage extends State<RecordUploadPage> {
       showCustomAlertDialog(
         context,
         title: R.strings.notice,
-        content: response.errorMessage!=null?response.errorMessage:R.strings.failToUpload,
+        content: response.errorMessage != null
+            ? response.errorMessage
+            : R.strings.failToUpload,
         firstButtonText: R.strings.ok.toUpperCase(),
         firstButtonFunction: () {
           isUploading = false;
@@ -451,10 +444,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
 
   Future<Response<ActivityData>> upload() async {
     //await this.widget.bloc.recordData.createTrack();
-    String requestTime = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
+    String requestTime = DateTime.now().millisecondsSinceEpoch.toString();
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
@@ -478,8 +468,8 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     }
 
     Response<Map<String, dynamic>> response =
-    await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
-        '/activity/createUserActivity', params);
+        await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+            '/activity/createUserActivity', params);
 
     Response<ActivityData> result = Response();
 

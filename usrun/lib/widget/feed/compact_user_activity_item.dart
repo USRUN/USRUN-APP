@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -23,9 +24,11 @@ import 'package:usrun/widget/photo_list/photo_list.dart';
 
 class CompactUserActivityItem extends StatefulWidget {
   final UserActivity userActivity;
+  final Function callbackFunc;
 
   CompactUserActivityItem({
     @required this.userActivity,
+    @required this.callbackFunc
   });
 
   @override
@@ -37,25 +40,26 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
   final double _spacing = 15.0;
   final double _textSpacing = 5.0;
   bool isPushing = false;
+  BuildContext dialogContext;
   final List<PopupItem<int>> _popupItemList = [
     PopupItem<int>(
       title: R.strings.editActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 0,
-      iconURL: R.myIcons.blackEditIcon,
+      iconURL: R.myIcons.editIconByTheme,
       iconSize: 14,
     ),
     PopupItem<int>(
       title: R.strings.deleteActivity,
       titleStyle: TextStyle(
         fontSize: 16,
-        color: Colors.black,
+        color: R.colors.contentText,
       ),
       value: 1,
-      iconURL: R.myIcons.blackCloseIcon,
+      iconURL: R.myIcons.closeIconByTheme,
       iconSize: 14,
     ),
   ];
@@ -139,20 +143,22 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
         break;
       case 1:
         // Delete current activity
-        showCustomAlertDialog(
-          context,
-          title: R.strings.caution,
-          content: R.strings.confirmActivityDeletion,
-          firstButtonText: R.strings.delete.toUpperCase(),
-          firstButtonFunction: () {
-            // TODO: Call API to delete this activity
-            print("Call API to delete this activity");
+        {
+          bool willDelete = await showCustomAlertDialog(
+            context,
+            title: R.strings.caution,
+            content: R.strings.confirmActivityDeletion,
+            firstButtonText: R.strings.delete.toUpperCase(),
+            firstButtonFunction: () {
+              pop(context,object: true);
 
-            pop(context);
-          },
-          secondButtonText: R.strings.cancel.toUpperCase(),
-          secondButtonFunction: () => pop(context),
-        );
+            },
+            secondButtonText: R.strings.cancel.toUpperCase(),
+            secondButtonFunction: () => pop(context, object: false),
+          );
+          if (willDelete)
+            _deleteActivity();
+        }
         break;
     }
   }
@@ -403,7 +409,7 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
 
     Widget _distanceWidget = _wrapWidgetData(
       firstTitle: R.strings.distance,
-      data: switchBetweenMeterAndKm(_userActivity.totalDistance).toString(),
+      data: switchDistanceUnit(_userActivity.totalDistance).toString(),
       unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
@@ -464,6 +470,7 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
 
   @override
   Widget build(BuildContext context) {
+    dialogContext = context;
     return Container(
       decoration: BoxDecoration(
         color: R.colors.appBackground,
@@ -488,5 +495,35 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
         ],
       ),
     );
+  }
+
+  _deleteActivity() async
+  {
+    Response<dynamic> result = await UserManager.deleteActivity(_userActivity.userActivityId);
+    if (result.success)
+    {
+      showCustomAlertDialog(
+          context,
+          title: R.strings.announcement,
+          content: R.strings.successfullyDeleted,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () async{
+            pop(context);
+            await widget.callbackFunc();
+          }
+      );
+    }
+    else
+    {
+      showCustomAlertDialog(
+          context,
+          title: R.strings.announcement,
+          content: result.errorMessage,
+          firstButtonText: R.strings.ok,
+          firstButtonFunction: () {
+            pop(context);
+          }
+      );
+    }
   }
 }

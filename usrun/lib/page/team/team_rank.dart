@@ -184,7 +184,7 @@ class _TeamRankState extends State<TeamRank> {
               String name = items[index].name;
               String distance = NumberFormat.compact()
                   .format(
-                    switchBetweenMeterAndKm(
+                    switchDistanceUnit(
                       items[index].distance,
                       formatType: RunningUnit.KILOMETER,
                     ),
