@@ -81,7 +81,7 @@ public class LocationResultHelper {
                     PRIMARY_CHANNEL)
                     .setContentTitle(titleNotification)
                     .setContentText(contentNotification)
-                    .setSmallIcon(R.drawable.app_icon)
+                    .setSmallIcon(R.mipmap.app_icon)
                     .setAutoCancel(true);
                     //.setContentIntent(notificationPendingIntent);
             notificationManager.notify(0, mBuilder.build());
@@ -89,7 +89,7 @@ public class LocationResultHelper {
             mBuilder = new Notification.Builder(context);
             mBuilder.setContentTitle(titleNotification)
                     .setContentText(contentNotification)
-                    .setSmallIcon(R.drawable.app_icon)
+                    .setSmallIcon(R.mipmap.app_icon)
                     .setAutoCancel(true);
             notificationManager.notify(0, mBuilder.build());
         }

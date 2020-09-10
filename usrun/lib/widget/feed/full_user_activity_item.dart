@@ -113,6 +113,14 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           context,
           EditActivityPage(
             userActivity: _userActivity,
+            callBack: (activity){
+              setState(() {
+                  _userActivity.title = activity.title;
+                  _userActivity.description = activity.description;
+                  _userActivity.photos = activity.photos;
+                  _userActivity.showMap = activity.showMap;
+              });
+            },
           ),
         );
 
