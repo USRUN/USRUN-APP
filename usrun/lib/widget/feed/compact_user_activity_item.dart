@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/core/net/client.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
@@ -19,6 +18,7 @@ import 'package:usrun/widget/custom_cell.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_item.dart';
 import 'package:usrun/widget/custom_popup_menu/custom_popup_menu.dart';
+import 'package:usrun/widget/my_info_box/normal_info_box.dart';
 import 'package:usrun/widget/photo_list/photo_item.dart';
 import 'package:usrun/widget/photo_list/photo_list.dart';
 
@@ -26,10 +26,8 @@ class CompactUserActivityItem extends StatefulWidget {
   final UserActivity userActivity;
   final Function callbackFunc;
 
-  CompactUserActivityItem({
-    @required this.userActivity,
-    @required this.callbackFunc
-  });
+  CompactUserActivityItem(
+      {@required this.userActivity, @required this.callbackFunc});
 
   @override
   _CompactUserActivityItemState createState() =>
@@ -150,14 +148,12 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
             content: R.strings.confirmActivityDeletion,
             firstButtonText: R.strings.delete.toUpperCase(),
             firstButtonFunction: () {
-              pop(context,object: true);
-
+              pop(context, object: true);
             },
             secondButtonText: R.strings.cancel.toUpperCase(),
             secondButtonFunction: () => pop(context, object: false),
           );
-          if (willDelete)
-            _deleteActivity();
+          if (willDelete) _deleteActivity();
         }
         break;
     }
@@ -232,9 +228,14 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     bool enableReadMore = false;
     String description = _userActivity.description;
 
-    if (!checkStringNullOrEmpty(description) && description.length > 160) {
+    int maxDescriptionLength = 160;
+    if (!checkStringNullOrEmpty(description) &&
+        description.length > maxDescriptionLength) {
       enableReadMore = true;
-      description = description.substring(0, 160);
+      description = description.substring(
+        0,
+        maxDescriptionLength,
+      );
       description += "...";
     }
 
@@ -251,21 +252,24 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       ),
     );
 
-    Widget _descriptionWidget = Container(
-      margin: EdgeInsets.only(top: _textSpacing),
-      child: Text(
-        description,
-        textAlign: TextAlign.left,
-        textScaleFactor: 1.0,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 10,
-        style: TextStyle(
-          color: R.colors.contentText,
-          fontWeight: FontWeight.normal,
-          fontSize: 15,
+    Widget _descriptionWidget = Container();
+    if (!checkStringNullOrEmpty(description)) {
+      _descriptionWidget = Container(
+        margin: EdgeInsets.only(top: _textSpacing),
+        child: Text(
+          description,
+          textAlign: TextAlign.left,
+          textScaleFactor: 1.0,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 10,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontWeight: FontWeight.normal,
+            fontSize: 15,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     Widget _readMoreWidget = Container();
     if (enableReadMore) {
@@ -355,71 +359,38 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     );
   }
 
-  Widget _renderStatisticBox() {
-    Widget _wrapWidgetData({
-      @required String firstTitle,
-      @required String data,
-      @required String unitTitle,
-    }) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            firstTitle.toUpperCase(),
-            textScaleFactor: 1.0,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-            ),
-          ),
-          SizedBox(height: 6),
-          Text(
-            data.toUpperCase(),
-            textScaleFactor: 1.0,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 6),
-          Text(
-            unitTitle.toUpperCase(),
-            textScaleFactor: 1.0,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: R.colors.contentText,
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-            ),
-          ),
-        ],
-      );
-    }
+  Widget _buildStatsBox({
+    @required String firstTitle,
+    @required String data,
+    @required String unitTitle,
+  }) {
+    return NormalInfoBox(
+      boxSize: R.appRatio.deviceWidth * 0.3,
+      id: firstTitle,
+      firstTitleLine: firstTitle,
+      secondTitleLine: unitTitle,
+      dataLine: data,
+      disableGradientLine: true,
+      boxRadius: 0,
+      disableBoxShadow: true,
+      pressBox: null,
+    );
+  }
 
-    Widget _distanceWidget = _wrapWidgetData(
+  Widget _renderStatisticBox() {
+    Widget _distanceWidget = _buildStatsBox(
       firstTitle: R.strings.distance,
       data: switchDistanceUnit(_userActivity.totalDistance).toString(),
       unitTitle: R.strings.distanceUnit[DataManager.getUserRunningUnit().index],
     );
 
-    Widget _timeWidget = _wrapWidgetData(
+    Widget _timeWidget = _buildStatsBox(
       firstTitle: R.strings.time,
       data: secondToTimeFormat(_userActivity.totalTime),
       unitTitle: R.strings.timeUnit,
     );
 
-    Widget _avgPaceWidget = _wrapWidgetData(
+    Widget _avgPaceWidget = _buildStatsBox(
       firstTitle: R.strings.avgPace,
       data: secondToMinFormat(_userActivity.avgPace.toInt()),
       unitTitle: R.strings.avgPaceUnit,
@@ -432,6 +403,8 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
       margin: EdgeInsets.all(_spacing),
       child: Row(
         mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: _distanceWidget,
@@ -497,33 +470,24 @@ class _CompactUserActivityItemState extends State<CompactUserActivityItem> {
     );
   }
 
-  _deleteActivity() async
-  {
-    Response<dynamic> result = await UserManager.deleteActivity(_userActivity.userActivityId);
-    if (result.success)
-    {
-      showCustomAlertDialog(
-          context,
+  _deleteActivity() async {
+    Response<dynamic> result =
+        await UserManager.deleteActivity(_userActivity.userActivityId);
+    if (result.success) {
+      showCustomAlertDialog(context,
           title: R.strings.announcement,
           content: R.strings.successfullyDeleted,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () async{
-            pop(context);
-            await widget.callbackFunc();
-          }
-      );
-    }
-    else
-    {
-      showCustomAlertDialog(
-          context,
+          firstButtonText: R.strings.ok, firstButtonFunction: () async {
+        pop(context);
+        await widget.callbackFunc();
+      });
+    } else {
+      showCustomAlertDialog(context,
           title: R.strings.announcement,
           content: result.errorMessage,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () {
-            pop(context);
-          }
-      );
+          firstButtonText: R.strings.ok, firstButtonFunction: () {
+        pop(context);
+      });
     }
   }
 }
