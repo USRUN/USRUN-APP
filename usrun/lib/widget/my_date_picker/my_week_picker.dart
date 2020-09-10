@@ -261,7 +261,7 @@ class _MyWeekPickerState extends State<_MyWeekPicker> {
   }
 }
 
-Future<DateTime> showMyWeekPicker({
+Future<WeekDateTime> showMyWeekPicker({
   @required BuildContext context,
   @required DateTime initialDate,
   @required DateTime firstDate,
