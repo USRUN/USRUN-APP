@@ -206,7 +206,7 @@ class RegisterLeaveEventUtil {
         eventName,
       );
 
-      showCustomAlertDialog(
+      await showCustomAlertDialog(
         context,
         title: R.strings.announcement,
         content: message,
@@ -218,7 +218,7 @@ class RegisterLeaveEventUtil {
 
       return true;
     } else {
-      showCustomAlertDialog(
+      await showCustomAlertDialog(
         context,
         title: R.strings.error,
         content: R.strings.errorOccurred,

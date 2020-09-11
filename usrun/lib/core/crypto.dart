@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:usrun/manager/user_manager.dart';
 
-const ACTIVITY_SECRET_KEY = 'activityusrun1620';
+const ACTIVITY_SECRET_KEY = 'zXGtCuT6lpj4sqaPCLIq0HUYuw';
 const TRACK_SECRET_KEY = 'trackusrun1620';
 
 class UsrunCrypto{

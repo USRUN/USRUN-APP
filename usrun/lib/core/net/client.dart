@@ -13,7 +13,7 @@ import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/util/validator.dart';
 
 class Client {
-  static String _domain = 'http://128.199.168.137:8080';
+  static String _domain = 'http://128.199.168.137:8800';
 
   static Future<Response> post<T, E>(
       String endpoint, Map<String, dynamic> params) async {
