@@ -18,7 +18,6 @@ import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/page/record/record_bloc.dart';
 import 'package:usrun/page/record/record_const.dart';
 import 'package:usrun/page/record/record_data.dart';
-import 'package:usrun/page/record/helper/record_helper.dart';
 import 'package:usrun/util/date_time_utils.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 import 'package:usrun/widget/custom_dialog/custom_loading_dialog.dart';
@@ -126,8 +125,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
                       children: <Widget>[
                         _buildStatsBox(
                           R.strings.distance,
-                          switchDistanceUnit(data.totalDistance)
-                              .toString(),
+                          switchDistanceUnit(data.totalDistance).toString(),
                           R.strings.distanceUnit[
                               DataManager.getUserRunningUnit().index],
                         ),
@@ -200,7 +198,7 @@ class _RecordUploadPage extends State<RecordUploadPage> {
   }
 
   Widget buildPhotoPreview(context, index) {
-    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = R.appRatio.deviceWidth;
     File file = this.widget.activity.photos.length >= index + 1
         ? this.widget.activity.photos[index]
         : null;
@@ -221,11 +219,18 @@ class _RecordUploadPage extends State<RecordUploadPage> {
         height: deviceWidth * 0.2,
         width: deviceWidth * 0.2,
         child: file != null
-            ? Image.file(file,
-                height: R.appRatio.appWidth1 * 80,
-                width: R.appRatio.appWidth1 * 80,
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.low)
+            ? ClipRRect(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+                child: Image.file(
+                  file,
+                  height: R.appRatio.appWidth1 * 80,
+                  width: R.appRatio.appWidth1 * 80,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.low,
+                ),
+              )
             : Icon(
                 Icons.add,
                 size: R.appRatio.appWidth1 * 40,
@@ -448,8 +453,10 @@ class _RecordUploadPage extends State<RecordUploadPage> {
     widget.activity.sig = UsrunCrypto.buildActivitySig(requestTime);
     this.widget.activity.title = _titleController.text;
     this.widget.activity.description = _descriptionController.text;
-    Map<String, dynamic> params = await RecordHelper.generateParamsForRequest(
-        widget.activity, requestTime);
+    Map<String, dynamic> params = RecordHelper.generateParamsForRequest(
+      widget.activity,
+      requestTime,
+    );
 
     showCustomLoadingDialog(context, text: R.strings.uploading);
 
