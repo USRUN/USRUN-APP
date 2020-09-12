@@ -317,7 +317,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
   Widget _renderPhotoPreviewItem(int index) {
     double boxSize = 80;
-    BorderRadiusGeometry _borderRadius = BorderRadius.circular(5);
+    double radius = 5;
 
     Widget _getEmptyPhoto() {
       return Icon(
@@ -329,7 +329,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
     Widget _getOnlinePhoto(String onlinePhoto) {
       return ClipRRect(
-        borderRadius: _borderRadius,
+        borderRadius: BorderRadius.circular(radius),
         child: ImageCacheManager.getImage(
           url: onlinePhoto,
           fit: BoxFit.cover,
@@ -339,7 +339,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
     Widget _getPhotoFile(File file) {
       return ClipRRect(
-        borderRadius: _borderRadius,
+        borderRadius: BorderRadius.circular(radius - 1),
         child: Image.file(
           file,
           fit: BoxFit.cover,
@@ -404,7 +404,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           border: Border.all(
             color: R.colors.majorOrange,
           ),
-          borderRadius: _borderRadius,
+          borderRadius: BorderRadius.circular(radius),
         ),
         height: boxSize,
         width: boxSize,
