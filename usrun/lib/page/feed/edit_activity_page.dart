@@ -51,7 +51,7 @@ class _UserPhotoItem {
     if (photoFile != null) {
       img.Image data = img.decodeImage(photoFile.readAsBytesSync());
       data = img.bakeOrientation(data);
-      return base64Encode(img.encodePng(data, level: 3));
+      return base64Encode(img.encodeJpg(data));
     }
     return null;
   }

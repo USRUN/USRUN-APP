@@ -181,26 +181,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         .showCameraPickerActionSheet(context, imageQuality: 95);
     if (result == null || result == false) return "";
 
-    if (cropStyle == CropStyle.circle) {
-      result = await _selectedCameraFile.cropImage(
-        maxWidth: 800,
-        maxHeight: 600,
-        cropStyle: cropStyle,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-      );
-    } else {
-      result = await _selectedCameraFile.cropImage(
-        cropStyle: cropStyle,
-        maxWidth: 800,
-        maxHeight: 600,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
-        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-      );
-    }
-    if (!result) return "";
+//    if (cropStyle == CropStyle.circle) {
+//      result = await _selectedCameraFile.cropImage(
+//        maxWidth: 800,
+//        maxHeight: 600,
+//        cropStyle: cropStyle,
+//        compressFormat: ImageCompressFormat.jpg,
+//        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+//        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//      );
+//    } else {
+//      result = await _selectedCameraFile.cropImage(
+//        cropStyle: cropStyle,
+//        maxWidth: 800,
+//        maxHeight: 600,
+//        compressFormat: ImageCompressFormat.jpg,
+//        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+//        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//      );
+//    }
+    if (!result && result == null) return "";
 
     return _selectedCameraFile.toBase64();
   }

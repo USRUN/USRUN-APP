@@ -61,10 +61,14 @@ class _EventPageState extends State<EventPage>
 
   handleCallReload(int indexToReload) {
     if (indexToReload == 0) {
-      newEventTabBarPage.currentState.getNecessaryData();
+      if(newEventTabBarPage.currentState != null) {
+        newEventTabBarPage.currentState.getNecessaryData();
+      }
       historyEventTabBarPage.currentState.reloadOtherPage = false;
     } else {
-      historyEventTabBarPage.currentState.getNecessaryData();
+      if(historyEventTabBarPage.currentState != null) {
+        historyEventTabBarPage.currentState.getNecessaryData();
+      }
       newEventTabBarPage.currentState.reloadOtherPage = false;
     }
   }
