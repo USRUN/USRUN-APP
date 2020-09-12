@@ -13,7 +13,7 @@ import 'package:usrun/util/network_detector.dart';
 import 'package:usrun/util/validator.dart';
 
 class Client {
-  static String _domain = 'http://128.199.168.137:8080';
+  static String _domain = 'http://128.199.168.137:8800';
 
   static Future<Response> post<T, E>(
       String endpoint, Map<String, dynamic> params) async {
@@ -32,6 +32,13 @@ class Client {
         request.headers.set(
             'Authorization', 'Bearer ${UserManager.currentUser.accessToken}');
       }
+      else
+        {
+//          if (endpoint!='/user/signup' || endpoint!='/user/login')
+//            UserManager.logout();
+//            restartApp(0);
+//            return null;
+        }
 
       if (params != null) {
         request.add(utf8.encode(json.encode(params)));
@@ -54,6 +61,15 @@ class Client {
 
       setErrorCode(0);
       String reply = await response.transform(utf8.decoder).join();
+      Map<String, dynamic> body = json.decode(reply);
+
+//      if (body['code'] == 2007)
+//      {
+//        print("User doesn't have permission");
+//        UserManager.logout();
+//        restartApp(0);
+//        return null;
+//      }
       print(reply);
       return _handleResponse<T, E>(response, reply);
     } on TimeoutException catch (_) {
@@ -197,6 +213,8 @@ class Client {
     if (response.statusCode == 200) {
       try {
         int code = body['code'];
+
+
         if (code == 0) {
           result.success = true;
 

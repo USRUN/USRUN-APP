@@ -19,6 +19,7 @@
         android:name="vn.hcmus.usrun.MainApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="USRUN"
+        android:allowBackup="false"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <!--        <meta-data-->
