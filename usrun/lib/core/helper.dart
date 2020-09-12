@@ -227,15 +227,15 @@ Future<String> getUserImageAsBase64(
     CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
   bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
-  if (result == null || !result) return "";
-  result = await _selectedCameraFile.cropImage(
-    cropStyle: cropStyle,
-    maxHeight: R.imagePickerDefaults.maxHeight.toInt(),
-    maxWidth: R.imagePickerDefaults.maxWidth.toInt(),
-    compressQuality: R.imagePickerDefaults.imageQuality,
-    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-  );
-  if (!result || _selectedCameraFile.file == null) return "";
+//  if (result == null || !result) return "";
+//  result = await _selectedCameraFile.cropImage(
+//    cropStyle: cropStyle,
+//    maxHeight: R.imagePickerDefaults.maxHeight.toInt(),
+//    maxWidth: R.imagePickerDefaults.maxWidth.toInt(),
+//    compressQuality: R.imagePickerDefaults.imageQuality,
+//    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//  );
+  if (result == null || !result || _selectedCameraFile.file == null) return "";
   return _selectedCameraFile.toBase64();
 }
 
@@ -258,17 +258,17 @@ Future<Map<String, dynamic>> getUserImageFile(
     };
   }
 
-  result = await _selectedCameraFile.cropImage(
-    cropStyle: cropStyle,
-    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-  );
+//  result = await _selectedCameraFile.cropImage(
+//    cropStyle: cropStyle,
+//    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//  );
 
-  if (!result || _selectedCameraFile.file == null) {
-    return {
-      "result": false,
-      "file": null,
-    };
-  }
+//  if (!result || _selectedCameraFile.file == null) {
+//    return {
+//      "result": false,
+//      "file": null,
+//    };
+//  }
 
   return {
     "result": true,
