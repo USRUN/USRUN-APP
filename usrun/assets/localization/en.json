@@ -130,6 +130,7 @@
     "personalActivities": "Activities",
 
     "uFeed": "U-Feed",
+    "emptyFeedList": "There's no feed in this list now",
     "readMore": "Read more",
     "editActivity": "Edit activity",
     "deleteActivity": "Delete activity",

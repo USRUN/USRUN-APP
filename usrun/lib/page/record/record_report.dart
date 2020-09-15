@@ -25,7 +25,7 @@ class RecordReport extends StatelessWidget {
       secondTitleLine: unit,
       disableBoxShadow: true,
       border: Border.all(
-        color: Color(0xFFF0F0F0),
+        color: R.colors.recordReportBoxBorderColor,
         width: 1.25,
       ),
     );

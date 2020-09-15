@@ -130,6 +130,7 @@
     "personalActivities": "Hoạt động",
 
     "uFeed": "Bảng tin",
+    "emptyFeedList": "Hiện chưa có bảng tin nào trong danh sách này",
     "readMore": "Đọc thêm",
     "editActivity": "Chỉnh sửa hoạt động",
     "deleteActivity": "Xóa hoạt động",
@@ -168,7 +169,7 @@
     "yourStatus": "Trạng thái của bạn",
     "organizations": "Tổ chức",
     "runners": "Người chạy",
-    "emptyEventList": "Không có sự kiện nào trong danh sách này",
+    "emptyEventList": "Chưa có sự kiện nào trong danh sách này",
 
     "poweredBy": "Được tổ chức bởi",
     "goldSponsor": "Nhà tài trợ vàng",
