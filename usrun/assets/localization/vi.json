@@ -348,7 +348,7 @@
     "settingsAccountVerifyHcmusEmailDescription": "Chúng tôi đã gửi mã OTP đến địa chỉ email HCMUS của bạn, vui lòng nhập mã đó vào ô bên dưới",
     "settingsAccountVerifyHcmusEmailResendCode": "Gửi lại mã",
     "settingsAccountVerifyHcmusEmailInvalidCode": "Mã OTP không hợp lệ",
-    "settingsAccountVerifyHcmusEmailTimeRemaining": "Mã OTP chỉ có giá trị trong 300 giây, hiện tại còn @ # @ # @ # giây ...",
+    "settingsAccountVerifyHcmusEmailTimeRemaining": "Mã OTP chỉ có giá trị trong 300 giây, hiện tại còn @#@#@# giây ...",
     "settingsDisplayLabel": "Hiển thị",
     "settingsDisplayDefaultTabTitle": "Thẻ mặc định",
     "settingsDisplayMeasureTitle": "Đơn vị đo",
