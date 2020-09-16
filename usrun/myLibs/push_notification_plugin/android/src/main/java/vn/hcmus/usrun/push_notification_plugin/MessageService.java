@@ -113,6 +113,7 @@ public class MessageService extends FirebaseMessagingService {
                         .setSound(notificationSound)
                         .setColor(Color.rgb(238, 100, 4))
                         .setContentTitle(title)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                         .setContentIntent(contentIntent)
                         .setAutoCancel(true);
 
