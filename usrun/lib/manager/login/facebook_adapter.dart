@@ -14,7 +14,7 @@ class FacebookLoginAdapter extends LoginAdapter {
 
   Future<Map<String, dynamic>> login(Map params) async {
     if (await facebook.isLoggedIn == false) {
-      FacebookLoginResult result = await facebook.logIn(['email', 'public_profile', 'user_friends']);
+      FacebookLoginResult result = await facebook.logIn(['email', 'public_profile']);
 
       switch (result.status) {
         case FacebookLoginStatus.loggedIn:

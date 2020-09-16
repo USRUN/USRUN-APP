@@ -651,8 +651,9 @@ class RecordBloc extends BlocBase {
     var a = (v2 - v1) / (totalTimeElapsed / 1000);
     print("acceleration: " + a.toString());
 
-    print("total meters have to pass: " + (0.5 * timePassed / 1000).toString());
-    if (distance < 0.5 * timePassed / 1000) //0.5m/s
+    var minSpeed = 0.5;
+    print("total meters have to pass: " + ( minSpeed * timePassed / 1000).toString());
+    if (distance < minSpeed * timePassed / 1000) //0.5m/s
     //||calculateDistance(lastLoc.latitude, lastLoc.longitude, myLocation.latitude, myLocation.longitude).abs()>3)
     {
       print("Distance is less than required (1m/s) after: " +
