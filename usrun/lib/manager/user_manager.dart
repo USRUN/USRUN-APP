@@ -67,7 +67,7 @@ class UserManager {
 
       saveUser(result.object);
       DataManager.setLoginChannel(int.parse(params["type"]));
-      //sendDeviceToken();
+      updateProfileInfo({});
       DataManager.setLastLoginUserId(result.object.userId);
     } else {
       result.success = false;
@@ -97,7 +97,7 @@ class UserManager {
 
       saveUser(result.object);
       DataManager.setLoginChannel(int.parse(params["type"]));
-      //sendDeviceToken();
+      updateProfileInfo({});
       DataManager.setLastLoginUserId(result.object.userId);
     } else {
       result.success = false;
@@ -141,8 +141,12 @@ class UserManager {
   }
 
   static Future<Response<User>> updateProfileInfo(Map<String, dynamic> params) async {
+    String deviceToken = DataManager.getDeviceToken();
+    params['deviceToken'] = deviceToken!=null?deviceToken:"";
     params['userId'] = currentUser.userId.toString();
     params['accessToken'] = currentUser.accessToken;
+
+    print(deviceToken);
 
     Response<Map<String, dynamic>> response =
         await Client.post<Map<String, dynamic>, Map<String, dynamic>>(

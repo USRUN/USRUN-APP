@@ -16,6 +16,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
+import 'package:push_notification_plugin/push_notification_plugin.dart';
 import 'R.dart';
 
 // ================ PRIVATE VARIABLES ================
@@ -28,6 +29,10 @@ T cast<T>(x) => x is T ? x : null;
 Future<void> initializeConfigs(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
+  PushNotificationPlugin.initialize();
+  // get device token
+  PushNotificationPlugin.registerForPushNotification();
+
   loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
