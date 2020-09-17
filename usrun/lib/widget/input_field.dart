@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/util/image_cache_manager.dart';
+import 'package:usrun/widget/ui_button.dart';
 
 class InputField extends StatefulWidget {
   final String labelTitle;
@@ -19,6 +21,7 @@ class InputField extends StatefulWidget {
   final bool autoFocus;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
+  final bool enablePasswordEye;
   final Function onSubmittedFunction;
   final Function onChangedFunction;
   final bool enableSearchFeature;
@@ -45,6 +48,7 @@ class InputField extends StatefulWidget {
     this.textInputType = TextInputType.text,
     this.textInputAction,
     this.errorText = "",
+    this.enablePasswordEye = false,
     this.onSubmittedFunction(data),
     this.onChangedFunction(data),
     this.enableSearchFeature = false,
@@ -61,6 +65,7 @@ class InputField extends StatefulWidget {
 
 class _InputFieldState extends State<InputField> {
   FocusNode _focusNode;
+  bool _obscureText;
 
   String _capitalizeTheFirstLetter(String str) {
     return (str[0].toUpperCase() + str.substring(1).toLowerCase());
@@ -69,7 +74,19 @@ class _InputFieldState extends State<InputField> {
   @override
   void initState() {
     super.initState();
+    _initPrivateData();
     _initFocusNode();
+  }
+
+  void _initPrivateData() {
+    _obscureText = widget.obscureText;
+  }
+
+  void _updatePasswordEye() {
+    if (!widget.enablePasswordEye) return;
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   void _initFocusNode() {
@@ -83,6 +100,96 @@ class _InputFieldState extends State<InputField> {
     Future.delayed(Duration(milliseconds: 400), () {
       _focusNode.requestFocus();
     });
+  }
+
+  Widget _renderSuffixIcon() {
+    if (widget.enableSearchFeature) {
+      return Container(
+        width: R.appRatio.appWidth80,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            // Clear Text Button
+            GestureDetector(
+              onTap: () {
+                if (widget.clearTextFunction != null) {
+                  widget.clearTextFunction();
+                }
+              },
+              child: Image.asset(
+                R.myIcons.tabBarCloseBtn,
+                width: R.appRatio.appIconSize18,
+              ),
+            ),
+            SizedBox(
+              width: R.appRatio.appSpacing20,
+            ),
+            // Search Button
+            GestureDetector(
+              onTap: () {
+                if (widget.searchFunction != null) {
+                  widget.searchFunction();
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: R.appRatio.appSpacing10),
+                child: Image.asset(
+                  R.myIcons.tabBarSearchBtn,
+                  width: R.appRatio.appIconSize20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (widget.suffixText.length != 0) {
+      return Container(
+        width: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            SizedBox(
+              child: Text(
+                widget.suffixText,
+                style: TextStyle(
+                  color: R.colors.blurMajorOrange,
+                  fontSize: R.appRatio.appFontSize18,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (widget.enablePasswordEye) {
+      double btnSize = 30;
+      String url = R.myIcons.hiddenEyeByTheme;
+      if (!_obscureText) {
+        url = R.myIcons.openedEyeByTheme;
+      }
+
+      return UIButton(
+        child: Align(
+          alignment: Alignment.center,
+          child: ImageCacheManager.getImage(
+            url: url,
+            width: R.appRatio.appIconSize25,
+            height: R.appRatio.appIconSize25,
+            fit: BoxFit.contain,
+          ),
+        ),
+        width: btnSize,
+        height: btnSize,
+        radius: btnSize,
+        onTap: _updatePasswordEye,
+        enableShadow: false,
+      );
+    }
+
+    return null;
   }
 
   @override
@@ -106,7 +213,7 @@ class _InputFieldState extends State<InputField> {
           TextField(
             focusNode: _focusNode,
             controller: widget.controller,
-            obscureText: widget.obscureText,
+            obscureText: _obscureText,
             keyboardType: widget.textInputType ?? TextInputType.text,
             autofocus: false,
             cursorColor: widget.cursorColor ?? R.colors.majorOrange,
@@ -129,65 +236,7 @@ class _InputFieldState extends State<InputField> {
                     color: R.colors.contentText,
                     fontSize: R.appRatio.appFontSize18),
             decoration: InputDecoration(
-              suffixIcon: (widget.enableSearchFeature
-                  ? Container(
-                      width: R.appRatio.appWidth80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          // Clear Text Button
-                          GestureDetector(
-                            onTap: () {
-                              if (widget.clearTextFunction != null) {
-                                widget.clearTextFunction();
-                              }
-                            },
-                            child: Image.asset(
-                              R.myIcons.tabBarCloseBtn,
-                              width: R.appRatio.appIconSize18,
-                            ),
-                          ),
-                          SizedBox(
-                            width: R.appRatio.appSpacing20,
-                          ),
-                          // Search Button
-                          GestureDetector(
-                            onTap: () {
-                              if (widget.searchFunction != null) {
-                                widget.searchFunction();
-                              }
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  right: R.appRatio.appSpacing10),
-                              child: Image.asset(
-                                R.myIcons.tabBarSearchBtn,
-                                width: R.appRatio.appIconSize20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : (widget.suffixText.length != 0
-                      ? Container(
-                          width: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              SizedBox(
-                                child: Text(
-                                  widget.suffixText,
-                                  style: TextStyle(
-                                    color: R.colors.blurMajorOrange,
-                                    fontSize: R.appRatio.appFontSize18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : null)),
+              suffixIcon: _renderSuffixIcon(),
               isDense: widget.isDense,
               enabledBorder: (widget.enableBottomUnderline
                   ? UnderlineInputBorder(

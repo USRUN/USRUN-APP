@@ -99,6 +99,7 @@ class SignUpPage extends StatelessWidget {
                           labelTitle: R.strings.password,
                           hintText: R.strings.passwordHint,
                           obscureText: true,
+                          enablePasswordEye: true,
                           maxLines: 1,
                         ),
                         SizedBox(
@@ -110,6 +111,7 @@ class SignUpPage extends StatelessWidget {
                           labelTitle: R.strings.retypePassword,
                           hintText: R.strings.retypePasswordHint,
                           obscureText: true,
+                          enablePasswordEye: true,
                           maxLines: 1,
                         ),
                         SizedBox(

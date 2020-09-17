@@ -9,7 +9,6 @@ import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter/services.dart';
-import 'package:usrun/util/lifecycle_handler.dart';
 import 'main.reflectable.dart';
 
 GlobalKey<_UsRunAppState> _appGlobalKey = GlobalKey();

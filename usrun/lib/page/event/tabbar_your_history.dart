@@ -76,8 +76,6 @@ class HistoryEventTabBarState extends State<HistoryEventTabBar>
   }
 
   Widget _buildEmptyList() {
-    String systemNoti = R.strings.emptyEventList;
-
     return Center(
       child: Container(
         padding: EdgeInsets.only(

@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/user_activity.dart';
+import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/feed/compact_user_activity_item.dart';
 
 class FeedPage extends StatefulWidget {
@@ -59,7 +60,31 @@ class _FeedPageState extends State<FeedPage> {
     _refreshController.refreshCompleted();
   }
 
+  Widget _buildEmptyList() {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: R.appRatio.appSpacing25,
+          right: R.appRatio.appSpacing25,
+        ),
+        child: Text(
+          R.strings.emptyFeedList,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: R.colors.contentText,
+            fontSize: R.appRatio.appFontSize16,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderBodyContent() {
+    if (checkListIsNullOrEmpty(_userActivityList)) {
+      return _buildEmptyList();
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.all(0.0),
