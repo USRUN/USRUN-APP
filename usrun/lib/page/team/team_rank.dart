@@ -186,7 +186,6 @@ class _TeamRankState extends State<TeamRank> {
                   .format(
                     switchDistanceUnit(
                       items[index].distance,
-                      formatType: RunningUnit.KILOMETER,
                     ),
                   )
                   .toUpperCase();

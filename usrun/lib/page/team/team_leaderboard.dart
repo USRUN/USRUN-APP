@@ -162,7 +162,6 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
               String distance = NumberFormat.compact().format(
                 switchDistanceUnit(
                   items[index].distance,
-                  formatType: RunningUnit.KILOMETER,
                 ),
               );
               Color contentColor =
