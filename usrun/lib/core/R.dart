@@ -901,6 +901,8 @@ class _MyIcons {
   String posterByTheme = 'assets/myicons/icon-black-poster.png';
   String infoByTheme = 'assets/myicons/icon-black-info02.png';
   String laurelByTheme = 'assets/myicons/icon-black-laurel.png';
+  String openedEyeByTheme = 'assets/myicons/icon-black-opened-eye.png';
+  String hiddenEyeByTheme = 'assets/myicons/icon-black-hidden-eye.png';
 
   // User wants to change theme
   void changeTheme(AppTheme theme) {
@@ -935,6 +937,8 @@ class _MyIcons {
       posterByTheme = 'assets/myicons/icon-black-poster.png';
       infoByTheme = 'assets/myicons/icon-black-info02.png';
       laurelByTheme = 'assets/myicons/icon-black-laurel.png';
+      openedEyeByTheme = 'assets/myicons/icon-black-opened-eye.png';
+      hiddenEyeByTheme = 'assets/myicons/icon-black-hidden-eye.png';
 
       // TODO: Light theme (Black color)
     } else {
@@ -968,6 +972,8 @@ class _MyIcons {
       posterByTheme = 'assets/myicons/icon-white-poster.png';
       infoByTheme = 'assets/myicons/icon-white-info02.png';
       laurelByTheme = 'assets/myicons/icon-white-laurel.png';
+      openedEyeByTheme = 'assets/myicons/icon-white-opened-eye.png';
+      hiddenEyeByTheme = 'assets/myicons/icon-white-hidden-eye.png';
 
       // TODO: Black theme (Light color)
     }

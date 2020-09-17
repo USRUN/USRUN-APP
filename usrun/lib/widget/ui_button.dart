@@ -15,6 +15,7 @@ class UIButton extends StatelessWidget {
   final FontWeight fontWeight;
   final bool enableShadow;
   final BoxShadow boxShadow;
+  final Widget child;
 
   UIButton({
     this.width = double.maxFinite,
@@ -31,6 +32,7 @@ class UIButton extends StatelessWidget {
     this.fontWeight = FontWeight.w500,
     this.enableShadow = true,
     this.boxShadow,
+    this.child,
   });
 
   @override
@@ -43,6 +45,27 @@ class UIButton extends StatelessWidget {
     } else {
       gr = null;
       cl = Color(0xFFABABAB);
+    }
+
+    Widget buttonChild = Container();
+    if (this.child != null) {
+      buttonChild = this.child;
+    } else if (this.child == null &&
+        this.text != null &&
+        this.text.length != 0) {
+      buttonChild = Center(
+        child: Text(
+          this.text,
+          overflow: TextOverflow.ellipsis,
+          textScaleFactor: 1.0,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: this.textSize,
+            color: this.textColor,
+            fontWeight: this.fontWeight,
+          ),
+        ),
+      );
     }
 
     return Container(
@@ -74,19 +97,7 @@ class UIButton extends StatelessWidget {
         ),
         textColor: Colors.white,
         color: Colors.transparent,
-        child: Center(
-          child: Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            textScaleFactor: 1.0,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: this.textSize,
-              color: this.textColor,
-              fontWeight: this.fontWeight,
-            ),
-          ),
-        ),
+        child: buttonChild,
       ),
     );
   }
