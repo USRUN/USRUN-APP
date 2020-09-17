@@ -731,6 +731,7 @@ class _Colors {
   Color dialogBackground = Color(0xFFFFFFFF);
   Color firstButtonDialogColor = Color(0xFFFD632C);
   Color secondButtonDialogColor = Color(0xFF515151);
+  Color recordReportBoxBorderColor = Color(0xFFE6E6E6);
 
   // User need to change theme
   void changeTheme(AppTheme theme) {
@@ -752,6 +753,7 @@ class _Colors {
       dialogBackground = Color(0xFFFFFFFF);
       firstButtonDialogColor = Color(0xFFFD632C);
       secondButtonDialogColor = Color(0xFF515151);
+      recordReportBoxBorderColor = Color(0xFFDEDEDE);
     } else {
       // #212121 = RGB(33, 33, 33)
       // #FFFFFF = RGB(255, 255, 255)
@@ -773,6 +775,7 @@ class _Colors {
       dialogBackground = Color(0xFF555555);
       firstButtonDialogColor = Color(0xFFFD632C);
       secondButtonDialogColor = Color(0xFFF2F2F2);
+      recordReportBoxBorderColor = Color(0xFF808080);
     }
   }
 }
@@ -898,6 +901,8 @@ class _MyIcons {
   String posterByTheme = 'assets/myicons/icon-black-poster.png';
   String infoByTheme = 'assets/myicons/icon-black-info02.png';
   String laurelByTheme = 'assets/myicons/icon-black-laurel.png';
+  String openedEyeByTheme = 'assets/myicons/icon-black-opened-eye.png';
+  String hiddenEyeByTheme = 'assets/myicons/icon-black-hidden-eye.png';
 
   // User wants to change theme
   void changeTheme(AppTheme theme) {
@@ -932,6 +937,8 @@ class _MyIcons {
       posterByTheme = 'assets/myicons/icon-black-poster.png';
       infoByTheme = 'assets/myicons/icon-black-info02.png';
       laurelByTheme = 'assets/myicons/icon-black-laurel.png';
+      openedEyeByTheme = 'assets/myicons/icon-black-opened-eye.png';
+      hiddenEyeByTheme = 'assets/myicons/icon-black-hidden-eye.png';
 
       // TODO: Light theme (Black color)
     } else {
@@ -965,6 +972,8 @@ class _MyIcons {
       posterByTheme = 'assets/myicons/icon-white-poster.png';
       infoByTheme = 'assets/myicons/icon-white-info02.png';
       laurelByTheme = 'assets/myicons/icon-white-laurel.png';
+      openedEyeByTheme = 'assets/myicons/icon-white-opened-eye.png';
+      hiddenEyeByTheme = 'assets/myicons/icon-white-hidden-eye.png';
 
       // TODO: Black theme (Light color)
     }
@@ -1205,6 +1214,7 @@ class Strings {
   String successfullyEdited;
 
   String uFeed;
+  String emptyFeedList;
   String readMore;
   String editActivity;
   String deleteActivity;
