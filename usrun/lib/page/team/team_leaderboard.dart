@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:usrun/core/R.dart';
-import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/team_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
@@ -36,10 +35,9 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
   void initState() {
     super.initState();
     _isLoading = true;
+    items = List();
 
     _getLeaderBoard();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLoading());
   }
 
   void loadTeamMemberProfile(int index) async {
@@ -54,21 +52,22 @@ class _TeamLeaderBoardPageState extends State<TeamLeaderBoardPage> {
     Response<dynamic> teamLeaderboard =
         await TeamManager.getTeamLeaderBoard(widget.teamId);
     if (teamLeaderboard.success && teamLeaderboard.object != null) {
-      items = List();
+      List<TeamRankItem> newList = List();
       teamLeaderboard.object.forEach((element) {
-        items.add(TeamRankItem.from(element));
+        newList.add(TeamRankItem.from(element));
       });
-    } else
-      items = null;
-  }
+      if (mounted) {
+        setState(() {
+          items.addAll(newList);
+        });
+      }
+    }
 
-  void _updateLoading() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      if (!mounted) return;
+    if (mounted) {
       setState(() {
-        _isLoading = !_isLoading;
+        _isLoading = false;
       });
-    });
+    }
   }
 
   @override
