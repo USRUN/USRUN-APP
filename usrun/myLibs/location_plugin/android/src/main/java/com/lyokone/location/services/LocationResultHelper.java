@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 
+import android.graphics.Color;
 import com.lyokone.location.R;
 
 // import android.support.v4.app.TaskStackBuilder;
@@ -82,13 +83,15 @@ public class LocationResultHelper {
                     .setContentTitle(titleNotification)
                     .setContentText(contentNotification)
                     .setSmallIcon(R.drawable.app_icon)
-                    .setAutoCancel(true);
+                    .setAutoCancel(true)
+                     .setColor(Color.rgb(238, 100, 4));
                     //.setContentIntent(notificationPendingIntent);
             notificationManager.notify(0, mBuilder.build());
         } else {
             mBuilder = new Notification.Builder(context);
             mBuilder.setContentTitle(titleNotification)
                     .setContentText(contentNotification)
+                    .setColor(Color.rgb(238, 100, 4))
                     .setSmallIcon(R.drawable.app_icon)
                     .setAutoCancel(true);
             notificationManager.notify(0, mBuilder.build());

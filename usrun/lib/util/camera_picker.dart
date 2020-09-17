@@ -82,15 +82,15 @@ class CameraPicker {
     if (_file == null) return Future.value("");
     img.Image data = img.decodeImage(await _file.readAsBytes());
     data = img.bakeOrientation(data);
-    return base64Encode(img.encodePng(data, level: 3));
+    return base64Encode(img.encodeJpg(data));
   }
 
   Future<PickedFile> showImagePicker({
     BuildContext context,
     ImageSource imageSource: ImageSource.gallery,
-    double maxWidth: 1920,
-    double maxHeight: 1080,
-    int imageQuality: 100,
+    double maxWidth: 800,
+    double maxHeight: 600,
+    int imageQuality: 95,
     CameraDevice preferredCameraDevice: CameraDevice.rear,
   }) async {
     if (imageQuality < 0) imageQuality = 0;
@@ -109,9 +109,9 @@ class CameraPicker {
 
   Future<T> showCameraPickerActionSheet<T>(
     BuildContext context, {
-    double maxWidth: 1920,
-    double maxHeight: 1080,
-    int imageQuality: 100,
+    double maxWidth: 800,
+    double maxHeight: 600,
+    int imageQuality: 95,
     CameraDevice preferredCameraDevice: CameraDevice.rear,
     bool enableClearSelectedFile: false,
   }) {

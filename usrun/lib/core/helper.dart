@@ -16,6 +16,7 @@ import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
+import 'package:push_notification_plugin/push_notification_plugin.dart';
 import 'R.dart';
 
 // ================ PRIVATE VARIABLES ================
@@ -28,6 +29,10 @@ T cast<T>(x) => x is T ? x : null;
 Future<void> initializeConfigs(BuildContext context) async {
   R.initAppRatio(context);
   await DataManager.initialize();
+  PushNotificationPlugin.initialize();
+  // get device token
+  PushNotificationPlugin.registerForPushNotification();
+
   loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
@@ -227,15 +232,15 @@ Future<String> getUserImageAsBase64(
     CropStyle cropStyle, BuildContext context) async {
   final CameraPicker _selectedCameraFile = CameraPicker();
   bool result = await _selectedCameraFile.showCameraPickerActionSheet(context);
-  if (result == null || !result) return "";
-  result = await _selectedCameraFile.cropImage(
-    cropStyle: cropStyle,
-    maxHeight: R.imagePickerDefaults.maxHeight.toInt(),
-    maxWidth: R.imagePickerDefaults.maxWidth.toInt(),
-    compressQuality: R.imagePickerDefaults.imageQuality,
-    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-  );
-  if (!result || _selectedCameraFile.file == null) return "";
+//  if (result == null || !result) return "";
+//  result = await _selectedCameraFile.cropImage(
+//    cropStyle: cropStyle,
+//    maxHeight: R.imagePickerDefaults.maxHeight.toInt(),
+//    maxWidth: R.imagePickerDefaults.maxWidth.toInt(),
+//    compressQuality: R.imagePickerDefaults.imageQuality,
+//    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//  );
+  if (result == null || !result || _selectedCameraFile.file == null) return "";
   return _selectedCameraFile.toBase64();
 }
 
@@ -258,17 +263,17 @@ Future<Map<String, dynamic>> getUserImageFile(
     };
   }
 
-  result = await _selectedCameraFile.cropImage(
-    cropStyle: cropStyle,
-    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-  );
+//  result = await _selectedCameraFile.cropImage(
+//    cropStyle: cropStyle,
+//    androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//  );
 
-  if (!result || _selectedCameraFile.file == null) {
-    return {
-      "result": false,
-      "file": null,
-    };
-  }
+//  if (!result || _selectedCameraFile.file == null) {
+//    return {
+//      "result": false,
+//      "file": null,
+//    };
+//  }
 
   return {
     "result": true,

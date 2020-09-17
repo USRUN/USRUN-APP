@@ -127,9 +127,11 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _currentPWController,
                   enableFullWidth: true,
                   obscureText: true,
+                  enablePasswordEye: true,
                   labelTitle: R.strings.currentPassword,
                   hintText: R.strings.currentPassword,
                   autoFocus: true,
+                  maxLines: 1,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -139,8 +141,10 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _newPWController,
                   enableFullWidth: true,
                   obscureText: true,
+                  enablePasswordEye: true,
                   labelTitle: R.strings.newPassword,
                   hintText: R.strings.newPassword,
+                  maxLines: 1,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,
@@ -150,8 +154,10 @@ class ChangePasswordPage extends StatelessWidget {
                   controller: _retypePWController,
                   enableFullWidth: true,
                   obscureText: true,
+                  enablePasswordEye: true,
                   labelTitle: R.strings.retypePassword,
                   hintText: R.strings.retypePassword,
+                  maxLines: 1,
                 ),
                 SizedBox(
                   height: R.appRatio.appSpacing25,

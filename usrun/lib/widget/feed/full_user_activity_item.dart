@@ -113,6 +113,14 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
           context,
           EditActivityPage(
             userActivity: _userActivity,
+            callBack: (activity){
+              setState(() {
+                  _userActivity.title = activity.title;
+                  _userActivity.description = activity.description;
+                  _userActivity.photos = activity.photos;
+                  _userActivity.showMap = activity.showMap;
+              });
+            },
           ),
         );
 
@@ -123,7 +131,7 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
         }
         break;
       case 1:
-      // Delete current activity
+        // Delete current activity
         {
           bool willDelete = await showCustomAlertDialog(
             context,
@@ -131,14 +139,12 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
             content: R.strings.confirmActivityDeletion,
             firstButtonText: R.strings.delete.toUpperCase(),
             firstButtonFunction: () {
-              pop(context,object: true);
-
+              pop(context, object: true);
             },
             secondButtonText: R.strings.cancel.toUpperCase(),
             secondButtonFunction: () => pop(context, object: false),
           );
-          if (willDelete)
-            _deleteActivity();
+          if (willDelete) _deleteActivity();
         }
         break;
     }
@@ -223,21 +229,25 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       ),
     );
 
-    Widget _descriptionWidget = Container(
-      margin: EdgeInsets.only(top: _textSpacing),
-      child: Text(
-        _userActivity.description,
-        textAlign: TextAlign.left,
-        textScaleFactor: 1.0,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 10,
-        style: TextStyle(
-          color: R.colors.contentText,
-          fontWeight: FontWeight.normal,
-          fontSize: 15,
+    Widget _descriptionWidget = Container();
+    String description = _userActivity.description;
+    if (!checkStringNullOrEmpty(description)) {
+      _descriptionWidget = Container(
+        margin: EdgeInsets.only(top: _textSpacing),
+        child: Text(
+          description,
+          textAlign: TextAlign.left,
+          textScaleFactor: 1.0,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 10,
+          style: TextStyle(
+            color: R.colors.contentText,
+            fontWeight: FontWeight.normal,
+            fontSize: 15,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     return Container(
       margin: EdgeInsets.all(_spacing),
@@ -384,7 +394,12 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
 
     return Center(
       child: Container(
-        margin: EdgeInsets.fromLTRB(0, _spacing, 0, 0),
+        margin: EdgeInsets.fromLTRB(
+          0,
+          _spacing,
+          0,
+          _spacing,
+        ),
         height: deviceWidth * 0.6 + 2,
         width: deviceWidth * 0.9 + 3,
         child: Stack(
@@ -440,7 +455,6 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
       color: R.colors.sectionBackgroundLayer,
       height: _boxHeight,
       margin: EdgeInsets.only(
-        top: _spacing,
         bottom: _spacing,
       ),
       padding: EdgeInsets.only(
@@ -565,33 +579,24 @@ class _FullUserActivityItemState extends State<FullUserActivityItem> {
     );
   }
 
-  _deleteActivity() async
-  {
-    Response<dynamic> result = await UserManager.deleteActivity(_userActivity.userActivityId);
-    if (result.success)
-    {
-      await showCustomAlertDialog(
-          context,
+  _deleteActivity() async {
+    Response<dynamic> result =
+        await UserManager.deleteActivity(_userActivity.userActivityId);
+    if (result.success) {
+      await showCustomAlertDialog(context,
           title: R.strings.announcement,
           content: R.strings.successfullyDeleted,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () async{
-            pop(context);
-          }
-      );
+          firstButtonText: R.strings.ok, firstButtonFunction: () async {
+        pop(context);
+      });
       pop(context);
-    }
-    else
-    {
-      showCustomAlertDialog(
-          context,
+    } else {
+      showCustomAlertDialog(context,
           title: R.strings.announcement,
           content: result.errorMessage,
-          firstButtonText: R.strings.ok,
-          firstButtonFunction: () {
-            pop(context);
-          }
-      );
+          firstButtonText: R.strings.ok, firstButtonFunction: () {
+        pop(context);
+      });
     }
   }
 }

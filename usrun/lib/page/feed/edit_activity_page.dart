@@ -1,14 +1,16 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:image/image.dart' as img;
-import 'package:usrun/manager/user_manager.dart';
-import 'package:usrun/model/response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
+import 'package:usrun/core/net/image_client.dart';
+import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/mapper_object.dart';
+import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/feed/edit_activity_online_photo_dialog.dart';
 import 'package:usrun/util/image_cache_manager.dart';
@@ -41,15 +43,16 @@ class _UserPhotoItem {
     return File(photoFile.path);
   }
 
-  String getPhotoString(){
-    if (onlinePhoto!=null)
+  String getPhotoString() {
+    if (status == _UserPhotoStatus.HAS_ONLINE_PHOTO &&
+        !checkStringNullOrEmpty(onlinePhoto)) {
       return onlinePhoto;
-    if (photoFile!=null)
-      {
-        img.Image data = img.decodeImage(photoFile.readAsBytesSync());
-        data = img.bakeOrientation(data);
-        return base64Encode(img.encodePng(data, level: 3));
-      }
+    }
+    if (photoFile != null) {
+      img.Image data = img.decodeImage(photoFile.readAsBytesSync());
+      data = img.bakeOrientation(data);
+      return base64Encode(img.encodeJpg(data));
+    }
     return null;
   }
 
@@ -67,9 +70,11 @@ class _UserPhotoItem {
 
 class EditActivityPage extends StatefulWidget {
   final UserActivity userActivity;
+  final Function callBack;
 
   EditActivityPage({
     @required this.userActivity,
+    this.callBack,
   });
 
   @override
@@ -180,47 +185,64 @@ class _EditActivityPageState extends State<EditActivityPage> {
     String description = _descriptionTextController.text;
     bool showMap = _userActivity.showMap;
     List<String> photos = [];
-    _userPhotoList.forEach((photo) {
-      photos.add(photo.getPhotoString());
-    });
+
+    for (int i = 0; i < _userPhotoList.length; i++) {
+      _UserPhotoItem photo = _userPhotoList[i];
+      if (photo.status == _UserPhotoStatus.HAS_ONLINE_PHOTO) {
+        photos.add(photo.getPhotoString());
+        continue;
+      }
+
+      if (photo.status == _UserPhotoStatus.HAS_PHOTO_FILE) {
+        Response<dynamic> imageUploadResponse =
+            await ImageClient.uploadImage(photo.getPhotoString());
+        if (imageUploadResponse.success) {
+          photos.add(imageUploadResponse.object);
+        } else {
+          pop(context);
+          await showCustomAlertDialog(context,
+              title: R.strings.announcement,
+              content: imageUploadResponse.errorMessage,
+              firstButtonText: R.strings.ok, firstButtonFunction: () async {
+            pop(context);
+          });
+          return;
+        }
+      }
+    }
 
     Map<String, dynamic> params = {
       "activityId": _userActivity.userActivityId,
       "title": title,
-      "photo": photos,
+      "photos": photos,
       "description": description,
       "isShowMap": showMap
     };
 
     Response<dynamic> result = await UserManager.updateActivity(params);
-    if (result.success)
-      {
+    if (result.success) {
+      pop(context);
+      await showCustomAlertDialog(context,
+          title: R.strings.announcement,
+          content: R.strings.successfullyEdited,
+          firstButtonText: R.strings.ok, firstButtonFunction: () async {
         pop(context);
-        await showCustomAlertDialog(
-            context,
-            title: R.strings.announcement,
-            content: R.strings.successfullyEdited,
-            firstButtonText: R.strings.ok,
-            firstButtonFunction: () async{
-              pop(context);
-            }
-        );
+      });
+      if (widget.callBack!=null)
+        {
+          UserActivity activity = MapperObject.create<UserActivity>(result.object);
+          widget.callBack(activity);
+        }
+      pop(context);
+    } else {
+      pop(context);
+      showCustomAlertDialog(context,
+          title: R.strings.announcement,
+          content: result.errorMessage,
+          firstButtonText: R.strings.ok, firstButtonFunction: () async {
         pop(context);
-      }
-    else
-      {
-        showCustomAlertDialog(
-            context,
-            title: R.strings.announcement,
-            content: result.errorMessage,
-            firstButtonText: R.strings.ok,
-            firstButtonFunction: () async{
-              pop(context);
-            }
-        );
-      }
-
-
+      });
+    }
   }
 
   Widget _renderUpdatingButton() {
@@ -295,7 +317,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
   Widget _renderPhotoPreviewItem(int index) {
     double boxSize = 80;
-    BorderRadiusGeometry _borderRadius = BorderRadius.circular(5);
+    double radius = 5;
 
     Widget _getEmptyPhoto() {
       return Icon(
@@ -307,7 +329,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
     Widget _getOnlinePhoto(String onlinePhoto) {
       return ClipRRect(
-        borderRadius: _borderRadius,
+        borderRadius: BorderRadius.circular(radius),
         child: ImageCacheManager.getImage(
           url: onlinePhoto,
           fit: BoxFit.cover,
@@ -317,7 +339,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
 
     Widget _getPhotoFile(File file) {
       return ClipRRect(
-        borderRadius: _borderRadius,
+        borderRadius: BorderRadius.circular(radius - 1),
         child: Image.file(
           file,
           fit: BoxFit.cover,
@@ -365,6 +387,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
         bool result = await showCustomRemoveOldOnlinePhotoDialog(context);
         if (result == null || !result) return;
         photoItem.status = _UserPhotoStatus.EMPTY;
+
         setState(() {
           _userPhotoList[index] = photoItem;
         });
@@ -381,7 +404,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           border: Border.all(
             color: R.colors.majorOrange,
           ),
-          borderRadius: _borderRadius,
+          borderRadius: BorderRadius.circular(radius),
         ),
         height: boxSize,
         width: boxSize,

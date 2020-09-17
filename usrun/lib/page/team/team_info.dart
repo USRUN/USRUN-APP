@@ -103,10 +103,8 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
     if (!mounted) return;
     setState(
       () {
-        _teamTotalDistance =
-            switchDistanceUnit(toMap.totalDistance).toInt();
-        _teamLeadingDistance =
-            switchDistanceUnit(toMap.maxDistance).toInt();
+        _teamTotalDistance = switchDistanceUnit(toMap.totalDistance).toInt();
+        _teamLeadingDistance = switchDistanceUnit(toMap.maxDistance).toInt();
         _teamLeadingTime = DateFormat("hh:mm:ss").format(toMap.maxTime);
         _teamActivities = toMap.totalActivity;
         _teamRank = toMap.rank;
@@ -181,26 +179,26 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
         .showCameraPickerActionSheet(context, imageQuality: 95);
     if (result == null || result == false) return "";
 
-    if (cropStyle == CropStyle.circle) {
-      result = await _selectedCameraFile.cropImage(
-        maxWidth: 800,
-        maxHeight: 600,
-        cropStyle: cropStyle,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-      );
-    } else {
-      result = await _selectedCameraFile.cropImage(
-        cropStyle: cropStyle,
-        maxWidth: 800,
-        maxHeight: 600,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
-        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
-      );
-    }
-    if (!result) return "";
+//    if (cropStyle == CropStyle.circle) {
+//      result = await _selectedCameraFile.cropImage(
+//        maxWidth: 800,
+//        maxHeight: 600,
+//        cropStyle: cropStyle,
+//        compressFormat: ImageCompressFormat.jpg,
+//        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+//        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//      );
+//    } else {
+//      result = await _selectedCameraFile.cropImage(
+//        cropStyle: cropStyle,
+//        maxWidth: 800,
+//        maxHeight: 600,
+//        compressFormat: ImageCompressFormat.jpg,
+//        aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+//        androidUiSettings: R.imagePickerDefaults.defaultAndroidSettings,
+//      );
+//    }
+    if (!result && result == null) return "";
 
     return _selectedCameraFile.toBase64();
   }
@@ -642,6 +640,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: numberDisplayAdapter(_teamRank),
                                   secondTitleLine: R.strings.rank,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                   pressBox: (id) {
                                     pushPage(
                                       context,
@@ -663,6 +665,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   ),
                                   secondTitleLine: R.strings.activities,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                   pressBox: (id) {
                                     pushPage(
                                       context,
@@ -689,6 +695,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   ),
                                   secondTitleLine: currentRunningUnit,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -700,6 +710,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   secondTitleLine:
                                       "HH:MM:SS\n" + R.strings.leadingTime,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -714,6 +728,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                       "\n" +
                                       R.strings.leadingDist,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                 ),
                               ],
                             ),
@@ -731,6 +749,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                       numberDisplayAdapter(_teamNewMemThisWeek),
                                   secondTitleLine: R.strings.newMemThisWeek,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: R.appRatio.appSpacing15,
@@ -741,6 +763,10 @@ class _TeamInfoPageState extends State<TeamInfoPage> {
                                   dataLine: numberDisplayAdapter(_teamMembers),
                                   secondTitleLine: R.strings.members,
                                   disableBoxShadow: true,
+                                  border: Border.all(
+                                    color: R.colors.blurMajorOrange,
+                                    width: 1,
+                                  ),
                                   pressBox: (id) {
                                     pushPage(
                                       context,

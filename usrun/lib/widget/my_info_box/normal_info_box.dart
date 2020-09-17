@@ -14,6 +14,7 @@ class NormalInfoBox extends StatelessWidget {
   final BoxShadow boxShadow;
   final Border border;
 
+  final Color _titleColor = R.colors.contentText.withOpacity(0.5);
   final double _gradientLineHeight = R.appRatio.appHeight10;
 
   NormalInfoBox({
@@ -94,7 +95,7 @@ class NormalInfoBox extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
-                                color: R.colors.contentText.withOpacity(0.5),
+                                color: _titleColor,
                               ),
                             )
                           : Container()),
@@ -127,7 +128,7 @@ class NormalInfoBox extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: R.appRatio.appFontSize12,
                                 fontWeight: FontWeight.w500,
-                                color: R.colors.contentText.withOpacity(0.5),
+                                color: _titleColor,
                               ),
                             )
                           : Container()),

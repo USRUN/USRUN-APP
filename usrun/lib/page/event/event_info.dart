@@ -497,9 +497,15 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalParticipants,
                 secondTitleLine: R.strings.runners.toUpperCase(),
                 disableBoxShadow: true,
+                border: Border.all(
+                  color: R.colors.blurMajorOrange,
+                  width: 1,
+                ),
                 pressBox: (id) {
                   pushPage(
-                      context, EventAthleteSearchPage(eventId: widget.eventId));
+                    context,
+                    EventAthleteSearchPage(eventId: widget.eventId),
+                  );
                 },
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -511,6 +517,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 secondTitleLine: R.strings
                     .distanceUnit[DataManager.getUserRunningUnit().index],
                 disableBoxShadow: true,
+                border: Border.all(
+                  color: R.colors.blurMajorOrange,
+                  width: 1,
+                ),
                 pressBox: (id) {},
               ),
               SizedBox(width: R.appRatio.appSpacing15),
@@ -521,9 +531,15 @@ class _EventInfoPageState extends State<EventInfoPage> {
                 dataLine: totalTeams,
                 secondTitleLine: R.strings.teams.toUpperCase(),
                 disableBoxShadow: true,
+                border: Border.all(
+                  color: R.colors.blurMajorOrange,
+                  width: 1,
+                ),
                 pressBox: (id) {
                   pushPage(
-                      context, EventTeamSearchPage(eventId: widget.eventId));
+                    context,
+                    EventTeamSearchPage(eventId: widget.eventId),
+                  );
                 },
               ),
             ],

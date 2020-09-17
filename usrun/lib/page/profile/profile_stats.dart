@@ -283,7 +283,7 @@ class ProfileStatsState extends State<ProfileStats> {
           if (datePick != null && datePick != _selectedWeek) {
             if (!mounted) return;
             setState(() {
-              _selectedWeek = datePick as WeekDateTime;
+              _selectedWeek = datePick;
               _stringSelectedDate = _selectedWeek.getWeekString();
             });
             getProfileStatsData();
