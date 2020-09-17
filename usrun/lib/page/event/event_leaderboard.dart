@@ -211,7 +211,6 @@ class _EventLeaderboardPageState extends State<EventLeaderboardPage> {
         String formattedDistance = NumberFormat.compact().format(
           switchDistanceUnit(
             data.distance,
-            formatType: RunningUnit.KILOMETER,
           ),
         );
         Color contentColor = R.colors.contentText;
