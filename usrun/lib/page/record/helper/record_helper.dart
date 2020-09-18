@@ -89,7 +89,7 @@ class RecordHelper{
     activityData.photos.forEach((p){
       img.Image data = img.decodeImage(p.readAsBytesSync());
       data = img.bakeOrientation(data);
-      photos.add(base64Encode(img.encodeJpg(data)));
+      photos.add(base64Encode(img.encodePng(data)));
     });
 
 
