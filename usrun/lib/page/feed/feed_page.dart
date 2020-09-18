@@ -36,7 +36,10 @@ class _FeedPageState extends State<FeedPage> {
   Future<void> _loadData() async {
     if (!_allowLoadMore) return;
 
-    List<UserActivity> result = await UserManager.getUserActivity(UserManager.currentUser.userId,offset: _page);
+    List<UserActivity> result = await UserManager.getUserActivity(
+      UserManager.currentUser.userId,
+      offset: _page,
+    );
 
     if (result != null && result.length != 0) {
       setState(() {
@@ -99,7 +102,7 @@ class _FeedPageState extends State<FeedPage> {
               bottom: (index != _userActivityList.length - 1 ? 12.0 : 0)),
           child: CompactUserActivityItem(
             userActivity: _userActivityList[index],
-            callbackFunc: () async{
+            callbackFunc: () async {
               setState(() {
                 _userActivityList = List();
                 _page = 0;
