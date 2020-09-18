@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="vn.hcmus.usrun.push_notification_plugin">
+
+    <application>
+        <service android:name="vn.hcmus.usrun.push_notification_plugin.MessageService"
+            tools:ignore="WrongManifestParent">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>

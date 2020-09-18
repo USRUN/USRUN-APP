@@ -45,6 +45,7 @@ class DataManager {
   }
 
   static void setDeviceToken(String token) {
+    print(token);
     _prefs.setString(_DEVICE_TOKEN, token);
   }
 
@@ -326,7 +327,7 @@ class DataManager {
 
 const String _SYNC_IDS = "SYNC_IDS";
 const String _PROFILE = "PROFILE";
-const String _DEVICE_TOKEN = "UPRACE_DEVICE_TOKEN";
+const String _DEVICE_TOKEN = "USRUN_DEVICE_TOKEN";
 const String _LAST_LOGIN_USER_ID = "LAST_LOGIN_USER_ID";
 const String _LANGUAGE = "LANGUAGE";
 const String _SELECT_LANGUAGE_FIRST_TIME = "SELECT_LANGUAGE_FIRST_TIME";
