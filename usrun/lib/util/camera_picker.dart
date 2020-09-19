@@ -82,7 +82,7 @@ class CameraPicker {
     if (_file == null) return Future.value("");
     img.Image data = img.decodeImage(await _file.readAsBytes());
     data = img.bakeOrientation(data);
-    return base64Encode(img.encodeJpg(data));
+    return base64Encode(img.encodePng(data));
   }
 
   Future<PickedFile> showImagePicker({
