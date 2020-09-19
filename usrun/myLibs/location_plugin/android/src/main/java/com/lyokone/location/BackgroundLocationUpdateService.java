@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
+import android.graphics.Color;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.ApiException;
@@ -158,6 +159,7 @@ public class BackgroundLocationUpdateService extends Service implements GoogleAp
         Uri notificationSound = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(notificationSound);
         builder.setAutoCancel(true);
+        builder.setColor(Color.rgb(238, 100, 4));
         builder.setSmallIcon(R.drawable.app_icon);
         builder.setContentIntent(pendingIntent);
 

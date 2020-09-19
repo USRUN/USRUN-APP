@@ -434,7 +434,7 @@
     "calories":"CALORIES",
     "total":"TOTAL",
     "totalStep": "TOTAL STEPS",
-    "timeUnit":" ",
+    "timeUnit":"HH:MM:SS",
     "meters":"METERS",
     "miles": "MILES",
     "km": "km",

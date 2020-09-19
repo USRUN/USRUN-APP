@@ -9,6 +9,7 @@ import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/core/net/image_client.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/mapper_object.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user_activity.dart';
 import 'package:usrun/page/feed/edit_activity_online_photo_dialog.dart';
@@ -69,9 +70,11 @@ class _UserPhotoItem {
 
 class EditActivityPage extends StatefulWidget {
   final UserActivity userActivity;
+  final Function callBack;
 
   EditActivityPage({
     @required this.userActivity,
+    this.callBack,
   });
 
   @override
@@ -225,6 +228,11 @@ class _EditActivityPageState extends State<EditActivityPage> {
           firstButtonText: R.strings.ok, firstButtonFunction: () async {
         pop(context);
       });
+      if (widget.callBack!=null)
+        {
+          UserActivity activity = MapperObject.create<UserActivity>(result.object);
+          widget.callBack(activity);
+        }
       pop(context);
     } else {
       pop(context);
