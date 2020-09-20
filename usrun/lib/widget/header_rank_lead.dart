@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:usrun/core/R.dart';
+import 'package:usrun/core/define.dart';
+import 'package:usrun/manager/data_manager.dart';
 
 class HeaderRankLead extends StatelessWidget {
   final String _firstTitle = R.strings.numberOrder.toUpperCase();
   final String _secondTitle = R.strings.name.toUpperCase();
-  final String _thirdTitle = R.strings.distanceKm.toUpperCase();
+  final String _thirdTitle = _renderKmHeader();
 
   final bool enableShadow;
   final double height;
@@ -13,6 +15,19 @@ class HeaderRankLead extends StatelessWidget {
     this.enableShadow = true,
     this.height = 0,
   });
+
+  static String _renderKmHeader() {
+    switch(DataManager.getUserRunningUnit()){
+      case RunningUnit.KILOMETER:
+        return R.strings.distanceKm.toUpperCase();
+      case RunningUnit.METER:
+        return R.strings.distanceM.toUpperCase();
+      case RunningUnit.MILES:
+        return R.strings.distanceMiles.toUpperCase();
+      default:
+        return R.strings.distanceM.toUpperCase();
+    }
+  }
 
   Widget _renderHeader() {
     return Row(

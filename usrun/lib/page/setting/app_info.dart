@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/helper.dart';
-import 'package:usrun/page/aboutus/about_developers.dart';
 import 'package:usrun/page/aboutus/about_usrun.dart';
 import 'package:usrun/widget/aboutus_box.dart';
 import 'package:usrun/widget/custom_gradient_app_bar.dart';
@@ -49,18 +48,18 @@ class AppInfo extends StatelessWidget {
                   height: _spacing,
                 ),
                 // Developers
-                AboutUsBox(
-                  iconImageURL: R.myIcons.aboutUsDevelopers,
-                  subtitle: R.strings.appInfoDevelopersSubtitle,
-                  title: R.strings.appInfoDevelopersTitle,
-                  iconSize: _iconSize,
-                  pressBox: () {
-                    pushPage(context, AboutDevelopers());
-                  },
-                ),
-                SizedBox(
-                  height: _spacing,
-                ),
+//                AboutUsBox(
+//                  iconImageURL: R.myIcons.aboutUsDevelopers,
+//                  subtitle: R.strings.appInfoDevelopersSubtitle,
+//                  title: R.strings.appInfoDevelopersTitle,
+//                  iconSize: _iconSize,
+//                  pressBox: () {
+//                    pushPage(context, AboutDevelopers());
+//                  },
+//                ),
+//                SizedBox(
+//                  height: _spacing,
+//                ),
                 // Version
                 AboutUsBox(
                   iconImageURL: R.myIcons.aboutUsVersion,

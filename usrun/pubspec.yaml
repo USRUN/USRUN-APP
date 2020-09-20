@@ -11,7 +11,7 @@ description: HCMUS Run
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+2
+version: 1.0.3+3
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -38,7 +38,7 @@ dependencies:
   google_maps_flutter: ^0.5.27+1
   pedometer: 1.2.0
   reflectable: ^2.2.5
-  image_picker: ^0.6.7+4
+  image_picker: ^0.6.7+7
   image_cropper: ^1.2.3
   shared_preferences: ^0.5.0
   sprintf: ^4.0.2
