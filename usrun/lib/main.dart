@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:package_info/package_info.dart';
 import 'package:usrun/core/define.dart';
 import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/welcome/select_language.dart';
+import 'package:usrun/page/welcome/update_app_page.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter/services.dart';
@@ -112,19 +114,34 @@ class _SplashPageState extends State<StatefulWidget> {
   }
 
   void openStartPage() async {
-    if (hasSelectedLanguageFirstTime()) {
+
+  //Check for app version
+    String version = await getAppVersion();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String currentVersion = packageInfo.version;
+    print("Current version: $currentVersion");
+
+    if (currentVersion!=version)
+      showPage(context, UpdateAppPage());
+    else
+      {
+        if (hasSelectedLanguageFirstTime()) {
 //      WidgetsBinding.instance.addObserver(
 //          NetworkObserver(context: navigatorKey.currentState.overlay.context));
 
-      if (UserManager.currentUser.userId == null) {
-        showPage(context, WelcomePage());
-      } else {
-        showOnboardingPagesOrAppPage(context);
+
+
+          if (UserManager.currentUser.userId == null) {
+            showPage(context, WelcomePage());
+          } else {
+            showOnboardingPagesOrAppPage(context);
+          }
+        } else {
+          UserManager.logout();
+          showPage(context, SelectLanguagePage());
+        }
       }
-    } else {
-      UserManager.logout();
-      showPage(context, SelectLanguagePage());
-    }
+
   }
 
   @override

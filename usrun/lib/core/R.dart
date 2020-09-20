@@ -995,6 +995,9 @@ class _Images {
   final String onboarding06 = 'assets/images/onboarding-06.png';
   final String onboardingLine = 'assets/images/onboarding-line.png';
 
+  //Update app image
+  final String updateAppImg = 'assets/images/update_app.png';
+
   // Common images
   final String pageBackground = 'assets/images/page-background.png';
   final String loginFacebookEnglish = 'assets/images/login-fb-en.png';
@@ -1027,6 +1030,9 @@ class _Images {
 class Strings {
   String usrun;
   String hcmus;
+
+  String updateAvailable;
+  String update;
 
   String firstName;
   String lastName;
