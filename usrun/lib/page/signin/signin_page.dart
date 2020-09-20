@@ -151,11 +151,7 @@ class SignInPage extends StatelessWidget {
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
         Future.delayed(Duration(milliseconds: 250), () {
-          showPage(
-            context,
-            AppPage(),
-            popUntilFirstRoutes: true,
-          );
+          showOnboardingPagesOrAppPage(context);
         });
       }
     } else {

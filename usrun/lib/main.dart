@@ -120,7 +120,7 @@ class _SplashPageState extends State<StatefulWidget> {
       if (UserManager.currentUser.userId == null) {
         showPage(context, WelcomePage());
       } else {
-        showPage(context, AppPage());
+        showOnboardingPagesOrAppPage(context);
       }
     } else {
       UserManager.logout();

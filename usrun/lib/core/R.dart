@@ -986,7 +986,16 @@ class _Images {
   final String logoText = 'assets/usrunlogo/logo-text.png';
   final String logo = 'assets/usrunlogo/logo.png';
 
-  // Common image
+  // Onboarding images
+  final String onboarding01 = 'assets/images/onboarding-01.png';
+  final String onboarding02 = 'assets/images/onboarding-02.png';
+  final String onboarding03 = 'assets/images/onboarding-03.png';
+  final String onboarding04 = 'assets/images/onboarding-04.png';
+  final String onboarding05 = 'assets/images/onboarding-05.png';
+  final String onboarding06 = 'assets/images/onboarding-06.png';
+  final String onboardingLine = 'assets/images/onboarding-line.png';
+
+  // Common images
   final String pageBackground = 'assets/images/page-background.png';
   final String loginFacebookEnglish = 'assets/images/login-fb-en.png';
   final String loginFacebookVietnam = 'assets/images/login-fb-vi.png';

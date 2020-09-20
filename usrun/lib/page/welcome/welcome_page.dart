@@ -207,7 +207,10 @@ class _WelcomePageState extends State<WelcomePage>
         DataManager.setLoginChannel(channel.index);
         //UserManager.sendDeviceToken(); //only need when using fcm
         DataManager.setLastLoginUserId(response.object.userId);
-        showPage(context, AppPage());
+        showOnboardingPagesOrAppPage(
+          context,
+          popUntilFirstRoutes: false,
+        );
       }
     }
 //     else {
@@ -225,19 +228,18 @@ class _WelcomePageState extends State<WelcomePage>
 //         return;
 //       }
 
-       if (response.success == false) {
-         // call channel logout with
-         UserManager.logout();
+    if (response.success == false) {
+      // call channel logout with
+      UserManager.logout();
 
-         showCustomAlertDialog(
-           context,
-           title: R.strings.errorLoginFail,
-           content: response.errorMessage,
-           firstButtonText: R.strings.cancel.toUpperCase(),
-           firstButtonFunction: () => pop(this.context),
-         );
-       }
-
+      showCustomAlertDialog(
+        context,
+        title: R.strings.errorLoginFail,
+        content: response.errorMessage,
+        firstButtonText: R.strings.cancel.toUpperCase(),
+        firstButtonFunction: () => pop(this.context),
+      );
+    }
   }
 
   void _adapterSignUp(LoginChannel channel, Map<String, dynamic> params,

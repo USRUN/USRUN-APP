@@ -13,6 +13,8 @@ import 'package:usrun/core/define.dart';
 import 'package:usrun/main.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/page/welcome/onboarding.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
@@ -32,7 +34,6 @@ Future<void> initializeConfigs(BuildContext context) async {
   PushNotificationPlugin.initialize();
   // get device token
   PushNotificationPlugin.registerForPushNotification();
-
   loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
@@ -130,6 +131,35 @@ int hexaStringColorToInt(String hexaStringColor) {
     hexaStringColor = hexaStringColor.substring(1);
     hexaStringColor = "0xFF" + hexaStringColor;
     return int.parse(hexaStringColor);
+  }
+}
+
+void showOnboardingPagesOrAppPage(
+  BuildContext context, {
+  bool popUntilFirstRoutes: true,
+}) {
+  bool hasShowed = DataManager.hasShowedOnboading();
+
+  void onIntroEndFunc() {
+    showPage(
+      context,
+      AppPage(),
+      popUntilFirstRoutes: popUntilFirstRoutes,
+    );
+  }
+
+  if (hasShowed == null || !hasShowed) {
+    pushPage(
+      context,
+      OnBoardingPage(
+        onIntroEndFunc: () {
+          onIntroEndFunc();
+          DataManager.updateShowedOnboarding(true);
+        },
+      ),
+    );
+  } else {
+    onIntroEndFunc();
   }
 }
 

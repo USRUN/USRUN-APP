@@ -209,11 +209,7 @@ class SignUpPage extends StatelessWidget {
         DataManager.setLastLoginUserId(response.object.userId);
 
         Future.delayed(Duration(milliseconds: 250), () {
-          showPage(
-            context,
-            AppPage(),
-            popUntilFirstRoutes: true,
-          );
+          showOnboardingPagesOrAppPage(context);
         });
       }
     }
