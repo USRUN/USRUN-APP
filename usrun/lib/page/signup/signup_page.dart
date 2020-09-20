@@ -8,7 +8,6 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/setting/hcmus_email_verification.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';

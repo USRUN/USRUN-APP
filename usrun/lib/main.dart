@@ -6,7 +6,6 @@ import 'package:usrun/core/helper.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/page/welcome/select_language.dart';
 import 'package:usrun/page/welcome/welcome_page.dart';
-import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/core/R.dart';
 import 'package:flutter/services.dart';
 import 'main.reflectable.dart';
