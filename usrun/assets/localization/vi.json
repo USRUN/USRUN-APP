@@ -2,6 +2,9 @@
     "usrun":"USRUN",
     "hcmus": "HCMUS",
 
+    "updateAvailable": "Đã có bản cập nhật mới!",
+    "update": "Cập nhật",
+
     "firstName": "Tên",
     "lastName": "Họ & Tên đệm",
     "password": "Mật khẩu",

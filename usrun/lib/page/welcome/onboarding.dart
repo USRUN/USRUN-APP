@@ -130,7 +130,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         description: _description05,
       ),
       _renderFinalPage(
-        imageURL: R.images.onboarding05,
+        imageURL: R.images.onboarding06,
         message: _finalMessage,
       ),
     ];

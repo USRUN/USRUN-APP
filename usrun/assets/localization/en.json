@@ -2,6 +2,10 @@
     "usrun":"USRUN",
     "hcmus": "HCMUS",
 
+    "update": "Update",
+
+    "updateAvailable": "Update available!",
+
     "firstName": "First Name",
     "lastName": "Last Name",
     "password": "Password",
