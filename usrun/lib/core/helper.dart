@@ -10,9 +10,13 @@ import 'package:latlong/latlong.dart';
 import 'package:usrun/core/R.dart';
 import 'package:usrun/core/animation/slide_page_route.dart';
 import 'package:usrun/core/define.dart';
+import 'package:usrun/core/net/client.dart';
 import 'package:usrun/main.dart';
 import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
+import 'package:usrun/model/response.dart';
+import 'package:usrun/page/app/app_page.dart';
+import 'package:usrun/page/welcome/onboarding.dart';
 import 'package:usrun/util/camera_picker.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
 
@@ -32,7 +36,6 @@ Future<void> initializeConfigs(BuildContext context) async {
   PushNotificationPlugin.initialize();
   // get device token
   PushNotificationPlugin.registerForPushNotification();
-
   loadAppTheme();
   UserManager.initialize();
   await R.initPackageAndDeviceInfo();
@@ -100,6 +103,23 @@ Future<void> setLanguage(String lang) async {
   R.initLocalization(lang, jsonContent);
 }
 
+Future<String> getAppVersion() async {
+  Map<String,dynamic> params = {};
+  Response<Map<String, dynamic>> response =
+  await Client.post<Map<String, dynamic>, Map<String, dynamic>>(
+      '/app/version', params);
+
+  if (response.success){
+    return response.object['version'];
+  }
+  else
+    {
+      return null;
+    }
+
+}
+
+
 Map<int, Color> rgbToMaterialColor(int r, int g, int b) {
   return {
     50: Color.fromRGBO(r, g, b, .1),
@@ -130,6 +150,35 @@ int hexaStringColorToInt(String hexaStringColor) {
     hexaStringColor = hexaStringColor.substring(1);
     hexaStringColor = "0xFF" + hexaStringColor;
     return int.parse(hexaStringColor);
+  }
+}
+
+void showOnboardingPagesOrAppPage(
+  BuildContext context, {
+  bool popUntilFirstRoutes: true,
+}) {
+  bool hasShowed = DataManager.hasShowedOnboading();
+
+  void onIntroEndFunc() {
+    showPage(
+      context,
+      AppPage(),
+      popUntilFirstRoutes: popUntilFirstRoutes,
+    );
+  }
+
+  if (hasShowed == null || !hasShowed) {
+    pushPage(
+      context,
+      OnBoardingPage(
+        onIntroEndFunc: () {
+          onIntroEndFunc();
+          DataManager.updateShowedOnboarding(true);
+        },
+      ),
+    );
+  } else {
+    onIntroEndFunc();
   }
 }
 

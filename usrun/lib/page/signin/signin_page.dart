@@ -8,7 +8,6 @@ import 'package:usrun/manager/data_manager.dart';
 import 'package:usrun/manager/user_manager.dart';
 import 'package:usrun/model/response.dart';
 import 'package:usrun/model/user.dart';
-import 'package:usrun/page/app/app_page.dart';
 import 'package:usrun/page/reset_password/reset_password.dart';
 import 'package:usrun/util/validator.dart';
 import 'package:usrun/widget/custom_dialog/custom_alert_dialog.dart';
@@ -151,11 +150,7 @@ class SignInPage extends StatelessWidget {
         //UserManager.sendDeviceToken();
         DataManager.setLastLoginUserId(response.object.userId);
         Future.delayed(Duration(milliseconds: 250), () {
-          showPage(
-            context,
-            AppPage(),
-            popUntilFirstRoutes: true,
-          );
+          showOnboardingPagesOrAppPage(context);
         });
       }
     } else {

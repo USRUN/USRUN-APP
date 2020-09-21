@@ -95,6 +95,15 @@ class DataManager {
     _prefs.setInt(_APP_THEME, appTheme.index);
   }
 
+  static bool hasShowedOnboading() {
+    return _prefs.getBool(_HAS_SHOWED_ONBOARDING) ?? false;
+  }
+
+  static void updateShowedOnboarding(bool value) {
+    assert(value != null);
+    _prefs.setBool(_HAS_SHOWED_ONBOARDING, value);
+  }
+
   static void setLoginChannel(int channel) {
     _prefs.setInt(_LOGIN_CHANNEL, channel);
   }
@@ -337,6 +346,7 @@ const String _VERSION = "VERSION";
 const String _DEVICE_NAME = "DEVICE_NAME";
 const String _OS_VERSION = "OS_VERSION";
 const String _LOGIN_CHANNEL = "LOGIN_CHANNEL";
+const String _HAS_SHOWED_ONBOARDING = "HAS_SHOWED_ONBOARDING";
 
 const String _FEED_SELECTED_TEAM_ID = "FEED_SELECTED_TEAM_ID";
 const String _EVENT_SELECTED_TEAM_ID = "EVENT_SELECTED_TEAM_ID";
